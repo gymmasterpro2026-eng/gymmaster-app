@@ -371,6 +371,22 @@ class DataService {
     }
   }
 
+  updateProfile(profileId: string, updates: Partial<Profile>): Profile | undefined {
+    const profile = this.profiles.find((p) => p.id === profileId);
+    if (profile) {
+      Object.assign(profile, updates);
+      this.persist();
+
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase.from('gym_profiles').update(updates).eq('id', profileId);
+        });
+      }
+      this.notify();
+    }
+    return profile;
+  }
+
   // EXERCISES CATALOG
   getExercises(): Exercise[] {
     if (this.language === 'es') {
@@ -484,6 +500,66 @@ class DataService {
     return {
       ...newRoutine,
       logs: newLogs,
+    };
+  }
+
+  updateRoutine(
+    routineId: string,
+    nombreRutina: string,
+    logsData: {
+      id?: string;
+      exercise_id: string;
+      semana?: number;
+      dia?: string;
+      series: number;
+      repeticiones: number;
+      peso_objetivo: number;
+      peso_real?: number;
+      orden?: number;
+      notas?: string;
+    }[]
+  ): RoutineWithLogs | undefined {
+    const routine = this.routines.find((r) => r.id === routineId);
+    if (!routine) return undefined;
+
+    routine.nombre_rutina = nombreRutina;
+    routine.updated_at = new Date().toISOString();
+
+    // Remove existing logs for this routine and replace with updated ones
+    this.logs = this.logs.filter((l) => l.routine_id !== routineId);
+
+    const updatedLogs: RoutineLog[] = logsData.map((log, idx) => ({
+      id: log.id || `log-${Date.now()}-${idx}`,
+      routine_id: routineId,
+      exercise_id: log.exercise_id,
+      semana: log.semana || 1,
+      dia: log.dia || 'Lunes',
+      series: log.series,
+      repeticiones: log.repeticiones,
+      peso_objetivo: log.peso_objetivo,
+      peso_real: log.peso_real || 0,
+      orden: log.orden || idx + 1,
+      notas: log.notas || '',
+      completed_series: new Array(log.series).fill(false),
+      fecha_ultimo_cambio: new Date().toISOString(),
+      exercise: this.getExerciseById(log.exercise_id),
+    }));
+
+    this.logs.push(...updatedLogs);
+    this.persist();
+
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_routines').update({ nombre_rutina: nombreRutina, updated_at: routine.updated_at }).eq('id', routineId);
+        await supabase.from('gym_routine_logs').delete().eq('routine_id', routineId);
+        await supabase.from('gym_routine_logs').insert(updatedLogs.map(({ exercise, ...l }) => l));
+      });
+    }
+
+    this.notify();
+    return {
+      ...routine,
+      logs: updatedLogs,
     };
   }
 

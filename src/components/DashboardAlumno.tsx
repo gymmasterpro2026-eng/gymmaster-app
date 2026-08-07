@@ -16,10 +16,15 @@ import {
   Check,
   Save,
   Timer,
-  Maximize2
+  Maximize2,
+  Camera,
+  Edit3,
+  Pencil
 } from 'lucide-react';
 import { Profile, RoutineWithLogs, RoutineLog } from '../types';
 import { dataService } from '../services/dataService';
+import { EditProfileModal } from './EditProfileModal';
+import { EditRoutineModal } from './EditRoutineModal';
 
 interface DashboardAlumnoProps {
   alumno: Profile;
@@ -38,6 +43,8 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const [activeRoutine, setActiveRoutine] = useState<RoutineWithLogs | null>(null);
   const [expandedExerciseId, setExpandedExerciseId] = useState<string | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+  const [showEditProfileModal, setShowEditProfileModal] = useState<boolean>(false);
+  const [showEditRoutineModal, setShowEditRoutineModal] = useState<boolean>(false);
   
   // Group available days from logs
   const availableWorkouts = React.useMemo(() => {
@@ -328,32 +335,62 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
-            <img
-              src={alumno.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}
-              alt={alumno.full_name}
-              className="w-14 h-14 rounded-none object-cover ring-2 ring-amber-500/50 shadow-md"
-            />
+            {/* Clickable Profile Avatar */}
+            <div
+              onClick={() => setShowEditProfileModal(true)}
+              className="relative group cursor-pointer shrink-0"
+              title="Cambiar Foto de Perfil"
+            >
+              <img
+                src={alumno.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}
+                alt={alumno.full_name}
+                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-amber-500/50 shadow-md group-hover:scale-105 transition-all"
+              />
+              <div className="absolute inset-0 bg-black/40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera className="w-5 h-5 text-amber-400" />
+              </div>
+              <span className="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 p-1 rounded-full text-[9px]">
+                <Pencil className="w-2.5 h-2.5" />
+              </span>
+            </div>
+
             <div>
               <div className="flex items-center space-x-2">
                 <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30 uppercase tracking-wide">
                   Plan Activo ✅
                 </span>
-                <span className="text-xs text-slate-400 font-mono">
-                  SaaS Gym ID: {alumno.gym_id}
-                </span>
+                <button
+                  onClick={() => setShowEditProfileModal(true)}
+                  className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30 flex items-center space-x-1 transition-all cursor-pointer"
+                >
+                  <Pencil className="w-2.5 h-2.5" />
+                  <span>Editar Foto & Datos</span>
+                </button>
               </div>
-              <h1 className="text-xl sm:text-2xl font-black text-white mt-1">
-                {alumno.full_name}
+              
+              <h1 className="text-xl sm:text-2xl font-black text-white mt-1 flex items-center gap-2">
+                <span>{alumno.full_name}</span>
               </h1>
-              <p className="text-xs text-amber-400 font-semibold flex items-center mt-0.5">
-                <Dumbbell className="w-3.5 h-3.5 mr-1" />
-                {activeRoutine.nombre_rutina}
-              </p>
+
+              <div className="flex items-center space-x-2 mt-0.5">
+                <p className="text-xs text-amber-400 font-semibold flex items-center">
+                  <Dumbbell className="w-3.5 h-3.5 mr-1" />
+                  {activeRoutine.nombre_rutina}
+                </p>
+                <button
+                  onClick={() => setShowEditRoutineModal(true)}
+                  className="bg-slate-800 hover:bg-slate-700 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-700 flex items-center space-x-1 transition-all cursor-pointer"
+                  title="Modificar ejercicios, cargas o repeticiones de la rutina"
+                >
+                  <Edit3 className="w-3 h-3" />
+                  <span>Editar Rutina</span>
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Quick Progress Metric */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-none p-3 min-w-[140px] text-center">
+          <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 min-w-[140px] text-center">
             <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
               <span>Progreso Hoy</span>
               <span className="font-bold text-amber-400">{progressPercent}%</span>
@@ -728,6 +765,31 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
             />
           </div>
         </div>
+      )}
+
+      {/* Edit Profile Modal */}
+      {showEditProfileModal && (
+        <EditProfileModal
+          profile={alumno}
+          onClose={() => setShowEditProfileModal(false)}
+          onProfileUpdated={() => {
+            onRefreshData();
+            loadRoutine();
+          }}
+        />
+      )}
+
+      {/* Edit Routine Modal */}
+      {showEditRoutineModal && activeRoutine && (
+        <EditRoutineModal
+          routine={activeRoutine}
+          exercises={dataService.getExercises()}
+          onClose={() => setShowEditRoutineModal(false)}
+          onRoutineUpdated={() => {
+            onRefreshData();
+            loadRoutine();
+          }}
+        />
       )}
     </div>
   );
