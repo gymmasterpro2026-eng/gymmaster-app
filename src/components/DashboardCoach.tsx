@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  Users, UserPlus, Dumbbell, Shield, Calendar, Plus, CheckCircle2, Clock, AlertCircle, FileSpreadsheet, ChevronRight, TrendingUp, Sparkles, Zap, RotateCcw, Edit2, Save, X
+  Users, UserPlus, Dumbbell, Shield, Calendar, Plus, CheckCircle2, Clock, AlertCircle, FileSpreadsheet, ChevronRight, TrendingUp, Sparkles, Zap, RotateCcw, Edit2, Save, X, Upload, Camera, Image as ImageIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Profile, Exercise, RoutineWithLogs } from '../types';
@@ -12,6 +12,15 @@ interface DashboardCoachProps {
   exercises: Exercise[];
   onRefreshData: () => void;
 }
+
+const AVATAR_PRESETS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+];
 
 export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises, onRefreshData }) => {
   if (!coach) {
@@ -35,9 +44,26 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newTelefono, setNewTelefono] = useState('');
-  const [newPlanExpiry, setNewPlanExpiry] = useState('2026-12-31T23:59:59Z');
+  const [newPlanExpiry, setNewPlanExpiry] = useState<string>(
+    new Date(Date.now() + 30 * 86400000).toISOString()
+  );
+  const [newAvatarUrl, setNewAvatarUrl] = useState<string>(AVATAR_PRESETS[0]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const alumnos = coach.id ? dataService.getAlumnosByCoach(coach.id) : [];
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setNewAvatarUrl(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleCreateAlumno = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +76,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
       email: newEmail,
       password: newPassword,
       phone: newTelefono,
+      avatar_url: newAvatarUrl,
       plan_active_until: new Date(newPlanExpiry).toISOString(),
     });
 
@@ -57,6 +84,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
     setNewEmail('');
     setNewPassword('');
     setNewTelefono('');
+    setNewAvatarUrl(AVATAR_PRESETS[0]);
     setShowAddAlumnoModal(false);
     onRefreshData();
   };
@@ -124,7 +152,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             </button>
             <button
               onClick={() => { setRoutineBuilderAlumnoId(undefined); setShowRoutineBuilder(true); }}
-              className="bg-blue-900 hover:bg-blue-800 text-black font-black px-6 py-3 rounded-none text-xs shadow-[0_0_20px_rgba(30,58,138,0.2)] flex items-center gap-2 transition-all cursor-pointer uppercase tracking-widest"
+              className="bg-blue-900 hover:bg-blue-800 text-white font-black px-6 py-3 rounded-none text-xs shadow-[0_0_20px_rgba(30,58,138,0.2)] flex items-center gap-2 transition-all cursor-pointer uppercase tracking-widest"
             >
               <Plus className="w-4 h-4" />
               <span>Crear Rutina</span>
@@ -168,6 +196,62 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
               </div>
 
               <form onSubmit={handleCreateAlumno} className="space-y-5">
+                {/* Foto de Perfil & Upload */}
+                <div className="space-y-2 bg-gray-50 border border-gray-200 p-4 rounded-none text-center">
+                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest block">
+                    Foto de Perfil del Alumno
+                  </label>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <img
+                      src={newAvatarUrl}
+                      alt="Avatar"
+                      className="w-16 h-16 rounded-full object-cover ring-2 ring-blue-900/40 shadow-md"
+                    />
+
+                    <div className="flex flex-col gap-2 text-left">
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="bg-blue-900 text-white px-3 py-1.5 rounded-none text-xs font-bold flex items-center gap-1.5 hover:bg-blue-800 transition-all cursor-pointer shadow-sm"
+                      >
+                        <Upload className="w-3.5 h-3.5 text-white" />
+                        <span>Subir Foto del Celular / PC</span>
+                      </button>
+
+                      <div className="flex items-center gap-1">
+                        {AVATAR_PRESETS.map((preset, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => setNewAvatarUrl(preset)}
+                            className={`w-6 h-6 rounded-full overflow-hidden border transition-all ${
+                              newAvatarUrl === preset ? 'border-blue-900 scale-110' : 'border-gray-300 opacity-60'
+                            }`}
+                          >
+                            <img src={preset} alt={`P ${idx}`} className="w-full h-full object-cover" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <input
+                    type="text"
+                    value={newAvatarUrl}
+                    onChange={(e) => setNewAvatarUrl(e.target.value)}
+                    placeholder="URL de foto o imagen base64..."
+                    className="w-full bg-white border border-gray-200 text-xs px-3 py-1.5 rounded-none outline-none focus:border-blue-900 font-mono text-gray-600 mt-2"
+                  />
+                </div>
+
                 <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Nombre Completo</label>
                   <input type="text" value={newNombre} onChange={(e) => setNewNombre(e.target.value)} required className="w-full bg-gray-50 border border-gray-200 text-black px-4 py-3 rounded-none outline-none focus:border-blue-900/50 focus:ring-1 focus:ring-blue-900/30 transition-all font-medium" placeholder="Ej: Laura Ramírez" />
@@ -194,7 +278,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                   <button type="button" onClick={() => setShowAddAlumnoModal(false)} className="px-5 py-2.5 rounded-none text-xs font-bold text-gray-500 hover:text-black transition-colors">Cancelar</button>
-                  <button type="submit" className="px-6 py-2.5 rounded-none text-xs font-black text-black bg-blue-900 hover:bg-blue-800 uppercase tracking-widest transition-all">Guardar</button>
+                  <button type="submit" className="px-6 py-2.5 rounded-none text-xs font-black text-white bg-blue-900 hover:bg-blue-800 uppercase tracking-widest transition-all shadow-md">Guardar</button>
                 </div>
               </form>
             </motion.div>
