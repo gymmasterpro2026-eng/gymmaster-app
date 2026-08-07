@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Database, Search, Filter, Dumbbell, ExternalLink, Sparkles, Plus, Image as ImageIcon } from 'lucide-react';
 import { Exercise } from '../types';
 import { dataService } from '../services/dataService';
+import { fixImageUrl } from '../utils/imageUrl';
 
 interface ExerciseCatalogProps {
   exercises: Exercise[];
@@ -172,8 +173,11 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
               {/* Image Preview */}
               <div className="relative h-64 bg-white overflow-hidden">
                 <img
-                  src={ex.image_urls[0] || 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'}
+                  src={fixImageUrl(ex.image_urls[0])}
                   alt={ex.name}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80';
+                  }}
                   className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-amber-400 border border-slate-700 uppercase">

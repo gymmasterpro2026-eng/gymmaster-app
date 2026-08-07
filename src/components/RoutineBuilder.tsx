@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Trash2, Dumbbell, Save, Check, X, Search, Sparkles, Link2 } from 'lucide-react';
 import { Exercise, Profile } from '../types';
 import { dataService } from '../services/dataService';
+import { fixImageUrl } from '../utils/imageUrl';
 
 interface RoutineBuilderProps {
   coachId: string;
@@ -506,8 +507,11 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
               >
                 <div className="flex items-center space-x-4">
                   <img
-                    src={ex.image_urls[0] || 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'}
+                    src={fixImageUrl(ex.image_urls[0])}
                     alt={ex.name}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
+                    }}
                     className="w-24 h-24 object-contain p-1.5 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm"
                   />
                   <div>

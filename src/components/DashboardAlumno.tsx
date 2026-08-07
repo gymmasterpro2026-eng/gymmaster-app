@@ -25,6 +25,7 @@ import { Profile, RoutineWithLogs, RoutineLog } from '../types';
 import { dataService } from '../services/dataService';
 import { EditProfileModal } from './EditProfileModal';
 import { EditRoutineModal } from './EditRoutineModal';
+import { fixImageUrl } from '../utils/imageUrl';
 
 interface DashboardAlumnoProps {
   alumno: Profile;
@@ -559,9 +560,12 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                     <img
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (ex?.image_urls[0]) setFullscreenImage(ex.image_urls[0]);
+                        if (ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));
                       }}
-                      src={ex?.image_urls[0] || 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=300&q=80'}
+                      src={fixImageUrl(ex?.image_urls[0])}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=300&q=80';
+                      }}
                       alt={ex?.name || 'Ejercicio'}
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-none object-contain bg-white p-1 border border-slate-800 cursor-pointer hover:scale-105 hover:ring-2 hover:ring-amber-500 transition-all"
                     />

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Dumbbell, Save, X, Plus, Trash2, Search, Calendar, ChevronRight } from 'lucide-react';
 import { Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
+import { fixImageUrl } from '../utils/imageUrl';
 
 interface EditRoutineModalProps {
   routine: RoutineWithLogs;
@@ -161,7 +162,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     >
                       <div className="flex items-center space-x-2">
                         {ex.image_urls?.[0] && (
-                          <img src={ex.image_urls[0]} alt={ex.name} className="w-8 h-8 rounded-lg object-cover" />
+                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="w-8 h-8 rounded-lg object-cover bg-white" />
                         )}
                         <div>
                           <p className="text-xs font-bold text-white">{ex.name}</p>
