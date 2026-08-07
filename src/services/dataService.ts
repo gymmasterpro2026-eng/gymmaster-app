@@ -2,6 +2,7 @@ import { Exercise, Profile, Routine, RoutineLog, RoutineWithLogs, GymTenant } fr
 import { INITIAL_EXERCISES } from '../data/exerciseDatasetMock';
 import { MOCK_PROFILES, MOCK_ROUTINES, MOCK_ROUTINE_LOGS, INITIAL_GYMS } from '../data/mockDatabase';
 import { translateExercise, translateExerciseList } from './translationService';
+import { supabase, isSupabaseConfigured } from './supabaseClient';
 
 class DataService {
   private profiles: Profile[] = [...MOCK_PROFILES];
@@ -10,9 +11,132 @@ class DataService {
   private logs: RoutineLog[] = [...MOCK_ROUTINE_LOGS];
   private gyms: GymTenant[] = [...INITIAL_GYMS];
   private language: 'es' | 'en' = 'es';
+  private listeners: Array<() => void> = [];
 
   constructor() {
     this.loadFromLocalStorage();
+    if (isSupabaseConfigured && supabase) {
+      this.initCloudSync();
+      this.subscribeRealtime();
+    }
+  }
+
+  public subscribe(listener: () => void) {
+    this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== listener);
+    };
+  }
+
+  private notify() {
+    this.listeners.forEach((l) => l());
+  }
+
+  private async saveToCloud(operation: () => Promise<any>) {
+    if (!supabase) return;
+    try {
+      await operation();
+    } catch (e) {
+      console.warn('Cloud operation error:', e);
+    }
+  }
+
+  private async initCloudSync() {
+    if (!supabase) return;
+    try {
+      // 1. Gym Tenants
+      const { data: remoteGyms } = await supabase.from('gym_tenants').select('*');
+      if (remoteGyms && remoteGyms.length > 0) {
+        this.gyms = remoteGyms as GymTenant[];
+      } else {
+        await supabase.from('gym_tenants').upsert(this.gyms);
+      }
+
+      // 2. Profiles
+      const { data: remoteProfiles } = await supabase.from('gym_profiles').select('*');
+      if (remoteProfiles && remoteProfiles.length > 0) {
+        this.profiles = remoteProfiles as Profile[];
+      } else {
+        await supabase.from('gym_profiles').upsert(this.profiles);
+      }
+
+      // 3. Routines
+      const { data: remoteRoutines } = await supabase.from('gym_routines').select('*');
+      if (remoteRoutines && remoteRoutines.length > 0) {
+        this.routines = remoteRoutines as Routine[];
+      } else {
+        await supabase.from('gym_routines').upsert(this.routines);
+      }
+
+      // 4. Routine Logs
+      const { data: remoteLogs } = await supabase.from('gym_routine_logs').select('*');
+      if (remoteLogs && remoteLogs.length > 0) {
+        this.logs = remoteLogs as RoutineLog[];
+      } else {
+        await supabase.from('gym_routine_logs').upsert(this.logs);
+      }
+
+      // 5. Custom Exercises
+      const { data: remoteExercises } = await supabase.from('gym_exercises').select('*');
+      if (remoteExercises && remoteExercises.length > 0) {
+        const existingIds = new Set(this.exercises.map((e) => e.id));
+        remoteExercises.forEach((re) => {
+          if (!existingIds.has(re.id)) {
+            this.exercises.unshift(re as Exercise);
+          }
+        });
+      }
+
+      this.persist();
+      this.notify();
+    } catch (e) {
+      console.warn('Error during Supabase sync, staying on local state:', e);
+    }
+  }
+
+  private subscribeRealtime() {
+    if (!supabase) return;
+    try {
+      supabase
+        .channel('gymmaster-realtime')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'gym_routine_logs' },
+          (payload) => {
+            if (payload.new && (payload.new as any).id) {
+              const updatedLog = payload.new as RoutineLog;
+              const idx = this.logs.findIndex((l) => l.id === updatedLog.id);
+              if (idx >= 0) {
+                this.logs[idx] = { ...this.logs[idx], ...updatedLog };
+              } else {
+                this.logs.push(updatedLog);
+              }
+              this.persist();
+              this.notify();
+            }
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'gym_profiles' },
+          (payload) => {
+            if (payload.new && (payload.new as any).id) {
+              const updatedProfile = payload.new as Profile;
+              const idx = this.profiles.findIndex((p) => p.id === updatedProfile.id);
+              if (idx >= 0) {
+                this.profiles[idx] = { ...this.profiles[idx], ...updatedProfile };
+              } else {
+                this.profiles.push(updatedProfile);
+              }
+              this.persist();
+              this.notify();
+            }
+          }
+        )
+        .subscribe();
+    } catch (e) {
+      console.warn('Realtime subscription warning:', e);
+    }
   }
 
   private loadFromLocalStorage() {
@@ -38,7 +162,6 @@ class DataService {
           if (parsed[0].image_urls) {
             this.exercises = parsed;
           } else {
-            console.warn('Old exercise schema detected, resetting exercises to default.');
             this.exercises = [...INITIAL_EXERCISES];
           }
         }
@@ -93,6 +216,15 @@ class DataService {
     this.gyms = [...INITIAL_GYMS];
     this.language = 'es';
     this.persist();
+
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_tenants').upsert(this.gyms);
+        await supabase.from('gym_profiles').upsert(this.profiles);
+        await supabase.from('gym_routines').upsert(this.routines);
+        await supabase.from('gym_routine_logs').upsert(this.logs);
+      });
+    }
   }
 
   // GYMS & TENANTS
@@ -138,6 +270,13 @@ class DataService {
     this.profiles.push(newCoach);
     this.persist();
 
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_tenants').insert(newGym);
+        await supabase.from('gym_profiles').insert(newCoach);
+      });
+    }
+
     return { gym: newGym, coach: newCoach };
   }
 
@@ -145,7 +284,6 @@ class DataService {
     const cleanId = identifier.trim().toLowerCase();
     const cleanPass = (password || '').trim();
 
-    // User 'gym' with password '12345'
     if (cleanId === 'gym' && (cleanPass === '12345' || !cleanPass)) {
       const coach = this.profiles.find((p) => p.role === 'coach') || this.profiles[0];
       const gym = this.gyms.find((g) => g.id === coach.gym_id) || this.gyms[0];
@@ -194,6 +332,13 @@ class DataService {
     };
     this.profiles.push(newAlumno);
     this.persist();
+
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_profiles').insert(newAlumno);
+      });
+    }
+
     return newAlumno;
   }
 
@@ -202,6 +347,12 @@ class DataService {
     if (alumno) {
       alumno.plan_active_until = newDateIso;
       this.persist();
+
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase.from('gym_profiles').update({ plan_active_until: newDateIso }).eq('id', alumnoId);
+        });
+      }
     }
   }
 
@@ -211,6 +362,12 @@ class DataService {
       alumno.email = email;
       alumno.password = password;
       this.persist();
+
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase.from('gym_profiles').update({ email, password }).eq('id', alumnoId);
+        });
+      }
     }
   }
 
@@ -235,6 +392,13 @@ class DataService {
     };
     this.exercises.unshift(newEx);
     this.persist();
+
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_exercises').insert(newEx);
+      });
+    }
+
     return newEx;
   }
 
@@ -280,7 +444,6 @@ class DataService {
     routineData: Omit<Routine, 'id' | 'created_at' | 'updated_at'>,
     exerciseLogs: Omit<RoutineLog, 'id' | 'routine_id' | 'fecha_ultimo_cambio'>[]
   ): RoutineWithLogs {
-    // Deactivate existing active routines if this new one is active
     if (routineData.activa) {
       this.routines.forEach((r) => {
         if (r.alumno_id === routineData.alumno_id) {
@@ -305,11 +468,18 @@ class DataService {
       routine_id: routineId,
       fecha_ultimo_cambio: new Date().toISOString(),
       completed_series: new Array(log.series).fill(false),
-      exercise: this.exercises.find((e) => e.id === log.exercise_id),
+      exercise: this.getExerciseById(log.exercise_id),
     }));
 
     this.logs.push(...newLogs);
     this.persist();
+
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_routines').insert(newRoutine);
+        await supabase.from('gym_routine_logs').insert(newLogs.map(({ exercise, ...l }) => l));
+      });
+    }
 
     return {
       ...newRoutine,
@@ -317,15 +487,14 @@ class DataService {
     };
   }
 
-  // REAL-TIME PESO_REAL UPDATE (Operational core for Alumno in Training Mode)
+  // REAL-TIME PESO_REAL UPDATE
   updatePesoReal(logId: string, nuevoPesoKg: number, alumnoId: string): { success: boolean; message: string } {
-    // 1. Time-Hack Immunity Server-time Check Simulation
     const alumno = this.profiles.find((p) => p.id === alumnoId);
     if (!alumno) {
       return { success: false, message: 'Alumno no encontrado' };
     }
 
-    const nowServerTime = new Date(); // Simulating PostgreSQL server `now()`
+    const nowServerTime = new Date();
     const planExpiry = new Date(alumno.plan_active_until);
 
     if (planExpiry < nowServerTime) {
@@ -335,7 +504,6 @@ class DataService {
       };
     }
 
-    // 2. Strict RLS Check Simulation: Check if log belongs to alumno's active routine
     const log = this.logs.find((l) => l.id === logId);
     if (!log) {
       return { success: false, message: 'Ejercicio de la rutina no encontrado' };
@@ -346,15 +514,22 @@ class DataService {
       return { success: false, message: 'Aislamiento Multi-Tenant (RLS): Operación denegada.' };
     }
 
-    // 3. Perform update on peso_real and update fecha_ultimo_cambio
     log.peso_real = nuevoPesoKg;
     log.fecha_ultimo_cambio = new Date().toISOString();
     this.persist();
 
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase
+          .from('gym_routine_logs')
+          .update({ peso_real: nuevoPesoKg, fecha_ultimo_cambio: log.fecha_ultimo_cambio })
+          .eq('id', logId);
+      });
+    }
+
     return { success: true, message: 'Peso cargado en tiempo real correctamente' };
   }
 
-  // Toggle completed set for Alumno in Training Mode
   toggleSetCompleted(logId: string, setIndex: number) {
     const log = this.logs.find((l) => l.id === logId);
     if (log) {
@@ -363,6 +538,15 @@ class DataService {
       }
       log.completed_series[setIndex] = !log.completed_series[setIndex];
       this.persist();
+
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase
+            .from('gym_routine_logs')
+            .update({ completed_series: log.completed_series })
+            .eq('id', logId);
+        });
+      }
     }
   }
 }
