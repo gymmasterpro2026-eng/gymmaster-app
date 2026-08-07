@@ -44,8 +44,8 @@ export interface RoutineLog {
   id: string;
   routine_id: string;
   exercise_id: string;
-  semana: number; // Ej: 1, 2, 3
-  dia: string; // Ej: 'Lunes', 'Martes', etc.
+  semana?: number; // Ej: 1, 2, 3
+  dia?: string; // Ej: 'Lunes', 'Martes', etc.
   series: number;
   repeticiones: number;
   peso_objetivo: number; // KG specified by Coach

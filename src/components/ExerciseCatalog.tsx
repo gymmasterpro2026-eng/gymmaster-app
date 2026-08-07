@@ -69,9 +69,13 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30 uppercase">
               GitHub exercises-dataset
+            </span>
+            <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5">
+              <span>🇪🇸</span>
+              <span>Traductor Español Activo</span>
             </span>
             <span className="text-xs text-slate-400">Total: {exercises.length} ejercicios</span>
           </div>
@@ -79,7 +83,7 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
             Catálogo Global de Ejercicios & Máquinas
           </h1>
           <p className="text-xs text-slate-400">
-            Base de datos unificada con mapeo de músculos, instrucciones y recursos visuales (GIFs/Fotos)
+            Base de datos unificada en español con mapeo de músculos, instrucciones y animaciones GIF (1,324 ejercicios)
           </p>
         </div>
 

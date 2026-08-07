@@ -1,6 +1,7 @@
 import { Exercise, Profile, Routine, RoutineLog, RoutineWithLogs, GymTenant } from '../types';
 import { INITIAL_EXERCISES } from '../data/exerciseDatasetMock';
 import { MOCK_PROFILES, MOCK_ROUTINES, MOCK_ROUTINE_LOGS, INITIAL_GYMS } from '../data/mockDatabase';
+import { translateExercise, translateExerciseList } from './translationService';
 
 class DataService {
   private profiles: Profile[] = [...MOCK_PROFILES];
@@ -8,6 +9,7 @@ class DataService {
   private routines: Routine[] = [...MOCK_ROUTINES];
   private logs: RoutineLog[] = [...MOCK_ROUTINE_LOGS];
   private gyms: GymTenant[] = [...INITIAL_GYMS];
+  private language: 'es' | 'en' = 'es';
 
   constructor() {
     this.loadFromLocalStorage();
@@ -20,6 +22,11 @@ class DataService {
       const savedRoutines = localStorage.getItem('gymmaster_routines');
       const savedLogs = localStorage.getItem('gymmaster_logs');
       const savedGyms = localStorage.getItem('gymmaster_gyms');
+      const savedLang = localStorage.getItem('gymmaster_lang');
+
+      if (savedLang === 'en' || savedLang === 'es') {
+        this.language = savedLang;
+      }
 
       if (savedProfiles) {
         const parsed = JSON.parse(savedProfiles);
@@ -61,9 +68,20 @@ class DataService {
       localStorage.setItem('gymmaster_routines', JSON.stringify(this.routines));
       localStorage.setItem('gymmaster_logs', JSON.stringify(this.logs));
       localStorage.setItem('gymmaster_gyms', JSON.stringify(this.gyms));
+      localStorage.setItem('gymmaster_lang', this.language);
     } catch (e) {
       console.error('Error persisting to localStorage', e);
     }
+  }
+
+  // LANGUAGE TOGGLE
+  setLanguage(lang: 'es' | 'en') {
+    this.language = lang;
+    this.persist();
+  }
+
+  getLanguage(): 'es' | 'en' {
+    return this.language;
   }
 
   // RESET
@@ -73,6 +91,7 @@ class DataService {
     this.routines = [...MOCK_ROUTINES];
     this.logs = [...MOCK_ROUTINE_LOGS];
     this.gyms = [...INITIAL_GYMS];
+    this.language = 'es';
     this.persist();
   }
 
@@ -197,7 +216,16 @@ class DataService {
 
   // EXERCISES CATALOG
   getExercises(): Exercise[] {
+    if (this.language === 'es') {
+      return translateExerciseList(this.exercises);
+    }
     return this.exercises;
+  }
+
+  getExerciseById(id: string): Exercise | undefined {
+    const found = this.exercises.find((e) => e.id === id);
+    if (!found) return undefined;
+    return this.language === 'es' ? translateExercise(found) : found;
   }
 
   addCustomExercise(exercise: Omit<Exercise, 'id'>): Exercise {
@@ -220,7 +248,7 @@ class DataService {
         .sort((a, b) => a.orden - b.orden)
         .map((log) => ({
           ...log,
-          exercise: this.exercises.find((e) => e.id === log.exercise_id),
+          exercise: this.getExerciseById(log.exercise_id),
         }));
 
       return {
@@ -239,7 +267,7 @@ class DataService {
       .sort((a, b) => a.orden - b.orden)
       .map((log) => ({
         ...log,
-        exercise: this.exercises.find((e) => e.id === log.exercise_id),
+        exercise: this.getExerciseById(log.exercise_id),
       }));
 
     return {
