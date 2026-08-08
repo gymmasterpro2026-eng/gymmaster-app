@@ -38,7 +38,7 @@ const S = {
   statVal: { fontSize: '20px', fontWeight: 900, color: '#fff', margin: 0 },
   statLbl: { fontSize: '10px', fontWeight: 800, color: '#555', textTransform: 'uppercase' as const, letterSpacing: '0.1em', margin: 0 },
   
-  circleWrap: { position: 'relative' as const, width: '280px', height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '40px' },
+  circleWrap: { position: 'relative' as const, width: '100%', maxWidth: '280px', aspectRatio: '1/1', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 40px' },
   svg: { position: 'absolute' as const, inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)' },
   circleInner: { position: 'absolute' as const, inset: 0, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', paddingTop: '8px' },
   timeRemaining: { fontSize: '56px', fontWeight: 900, color: '#fff', fontFamily: 'monospace', letterSpacing: '-2px', margin: 0, lineHeight: 1 },
@@ -172,11 +172,24 @@ export function RunningTrainer() {
   };
 
   return (
-    <div style={S.page}>
+    <div style={S.page} className="gm-run-page">
+      <style>{`
+        @media (max-width: 768px) {
+          .gm-run-page { padding: 16px 12px !important; }
+          .gm-run-header { padding: 16px !important; gap: 12px !important; flex-direction: row !important; margin-bottom: 16px !important; }
+          .gm-run-title { font-size: 18px !important; }
+          .gm-level-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+          .gm-timer-box { padding: 24px 16px !important; }
+          .gm-timer-stats { margin-bottom: 24px !important; }
+          .gm-controls { gap: 16px !important; }
+          .gm-circle-inner-time { font-size: 42px !important; }
+          .gm-circle-inner-total { font-size: 16px !important; }
+        }
+      `}</style>
       {/* HEADER */}
-      <div style={S.header}>
+      <div style={S.header} className="gm-run-header">
         <div>
-          <h2 style={S.title}><Activity color="#f59e0b" size={28} /> Entrenador de Running</h2>
+          <h2 style={S.title} className="gm-run-title"><Activity color="#f59e0b" size={28} /> Entrenador de Running</h2>
           <p style={S.subtitle}>Generador algorítmico de rutinas de intervalos con TTS.</p>
         </div>
         <button style={{ ...S.btnIcon, background: ttsEnabled ? 'rgba(245,158,11,0.1)' : '#1e293b', color: ttsEnabled ? '#f59e0b' : '#666', borderColor: ttsEnabled ? 'rgba(245,158,11,0.2)' : '#334155' }} onClick={() => setTtsEnabled(!ttsEnabled)}>
@@ -187,7 +200,7 @@ export function RunningTrainer() {
       {!routine ? (
         <div style={S.levelCard}>
           <h3 style={S.levelTitle}>Selecciona tu Nivel de Condición</h3>
-          <div style={S.levelGrid}>
+          <div style={S.levelGrid} className="gm-level-grid">
             {[1,2,3,4,5,6,7,8,9,10].map(level => (
               <div key={level} style={S.levelBtn} onClick={() => handleLevelSelect(level)}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.background = '#1e293b'; }}
@@ -205,8 +218,8 @@ export function RunningTrainer() {
             ← Volver a selección de nivel
           </button>
 
-          <div style={S.timerBox}>
-            <div style={S.timerStats}>
+          <div style={S.timerBox} className="gm-timer-box">
+            <div style={S.timerStats} className="gm-timer-stats">
               <div style={S.statCol}><span style={S.statVal}>{currentPhaseIndex + 1}/{routine.estructura.length}</span><span style={S.statLbl}>Fases</span></div>
               <div style={S.statCol}><span style={S.statVal}>--</span><span style={S.statLbl}>BPM</span></div>
               <div style={S.statCol}><span style={S.statVal}>{Math.ceil((currentPhaseIndex + 1)/2)}/{Math.ceil(routine.estructura.length/2)}</span><span style={S.statLbl}>Ciclos</span></div>
@@ -233,17 +246,17 @@ export function RunningTrainer() {
                 
                 return (
                   <>
-                    <svg style={S.svg}>
-                      <circle cx="50%" cy="50%" r="130" fill="none" stroke="#1e293b" strokeWidth="6" />
-                      <circle cx="50%" cy="50%" r="130" fill="none" stroke="#ef4444" strokeWidth="6" strokeLinecap="round"
+                    <svg style={S.svg} viewBox="0 0 280 280">
+                      <circle cx="140" cy="140" r="130" fill="none" stroke="#1e293b" strokeWidth="6" />
+                      <circle cx="140" cy="140" r="130" fill="none" stroke="#ef4444" strokeWidth="6" strokeLinecap="round"
                         strokeDasharray={2 * Math.PI * 130} strokeDashoffset={(2 * Math.PI * 130) * (1 - ((totalSecondsElapsed % 60) / 60))} style={{ transition: 'stroke-dashoffset 1s linear' }} />
                       
-                      <circle cx="50%" cy="50%" r="112" fill="none" stroke="#1e293b" strokeWidth="14" />
-                      <circle cx="50%" cy="50%" r="112" fill="none" stroke={getPhaseColor(currentPhase?.fase || '')} strokeWidth="14" strokeLinecap="round"
+                      <circle cx="140" cy="140" r="112" fill="none" stroke="#1e293b" strokeWidth="14" />
+                      <circle cx="140" cy="140" r="112" fill="none" stroke={getPhaseColor(currentPhase?.fase || '')} strokeWidth="14" strokeLinecap="round"
                         strokeDasharray={2 * Math.PI * 112} strokeDashoffset={(2 * Math.PI * 112) * (1 - pPercent)} style={{ transition: 'all 1s linear' }} />
                       
-                      <circle cx="50%" cy="50%" r="90" fill="none" stroke="#1e293b" strokeWidth="18" />
-                      <circle cx="50%" cy="50%" r="90" fill="none" stroke="#34d399" strokeWidth="18" strokeLinecap="round"
+                      <circle cx="140" cy="140" r="90" fill="none" stroke="#1e293b" strokeWidth="18" />
+                      <circle cx="140" cy="140" r="90" fill="none" stroke="#34d399" strokeWidth="18" strokeLinecap="round"
                         strokeDasharray={2 * Math.PI * 90} strokeDashoffset={(2 * Math.PI * 90) * (1 - totalPercent)} style={{ transition: 'stroke-dashoffset 1s linear' }} />
                     </svg>
                     
@@ -255,8 +268,8 @@ export function RunningTrainer() {
                           onFocus={e => e.target.style.borderBottomColor = '#34d399'} onMouseLeave={e => e.target.style.borderBottomColor = 'transparent'} />
                         <span style={{ color: '#34d399', fontSize: '12px', fontWeight: 800 }}>MIN</span>
                       </div>
-                      <span style={S.timeRemaining}>{formatTime(pRemainingSecs)}</span>
-                      <span style={S.timeTotal}>{formatTime(totalSecondsElapsed)}</span>
+                      <span style={S.timeRemaining} className="gm-circle-inner-time">{formatTime(pRemainingSecs)}</span>
+                      <span style={S.timeTotal} className="gm-circle-inner-total">{formatTime(totalSecondsElapsed)}</span>
                     </div>
                   </>
                 );
@@ -268,7 +281,7 @@ export function RunningTrainer() {
               <p style={S.phaseSpeed}>{routine.estructura[currentPhaseIndex]?.velocidad_sugerida_kmh} <span style={{ fontSize: '14px', color: '#888' }}>km/h</span></p>
             </div>
 
-            <div style={S.controls}>
+            <div style={S.controls} className="gm-controls">
               <button style={S.ctrlBtnSm} onClick={resetTimer} onMouseEnter={e=>{e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='#555'}} onMouseLeave={e=>{e.currentTarget.style.color='#888'; e.currentTarget.style.borderColor='#333'}}>Parar</button>
               <button style={S.ctrlBtnLg} onClick={toggleTimer} onMouseEnter={e=>e.currentTarget.style.transform='scale(1.05)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>
                 {isActive ? <><Pause size={28} /><span style={S.ctrlTextLg}>Pausa</span></> : <><Play size={28} style={{ marginLeft: '4px' }} /><span style={S.ctrlTextLg}>Iniciar</span></>}

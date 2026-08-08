@@ -224,12 +224,34 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const progressPercent = dayLogs.length > 0 ? Math.round((completedCount / dayLogs.length) * 100) : 0;
 
   return (
-    <div style={S.page}>
+    <div style={S.page} className="gm-dashboard-page">
+      <style>{`
+        @media (max-width: 768px) {
+          .gm-dashboard-page { padding: 12px 12px 80px 12px !important; }
+          .gm-header-banner { padding: 16px !important; margin-bottom: 24px !important; }
+          .gm-header-content { flex-direction: column !important; align-items: stretch !important; gap: 16px !important; }
+          .gm-avatar-row { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 12px !important; }
+          .gm-timer-bar { 
+            top: 70px !important; 
+            padding: 8px 12px !important; 
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 12px !important;
+          }
+          .gm-series-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+          .gm-series-grid > div { padding: 8px !important; font-size: 10px !important; }
+          .gm-exercise-title { font-size: 14px !important; }
+          .gm-wi-controls { flex-wrap: wrap !important; }
+          .gm-c-header { padding: 12px !important; gap: 8px !important; }
+          .gm-c-img { width: 80px !important; height: 80px !important; min-width: 80px !important; min-height: 80px !important; }
+        }
+      `}</style>
       {/* Banner Superior */}
-      <div style={S.headerBanner}>
+      <div style={S.headerBanner} className="gm-header-banner">
         <div style={S.glow} />
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="gm-header-content" style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
+          <div className="gm-avatar-row" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={S.avatarWrap} onClick={() => setShowEditProfileModal(true)}
               onMouseEnter={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '1'; }}
               onMouseLeave={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '0'; }}>
@@ -261,7 +283,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
       <video ref={videoRef} autoPlay playsInline muted style={{ display: 'none' }} />
 
       {/* Timer Flotante */}
-      <div style={S.timerBar}>
+      <div style={S.timerBar} className="gm-timer-bar">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Timer size={20} />
           {timerMode === 'timer' && timerStatus !== 'running' ? (
@@ -313,10 +335,10 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
           return (
             <div key={log.id} style={S.card(exp, done)}>
-              <div style={S.cHeader} onClick={() => setExpandedExerciseId(exp ? null : log.id)}>
+              <div style={S.cHeader} className="gm-c-header" onClick={() => setExpandedExerciseId(exp ? null : log.id)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={S.cImgWrap}>
-                    <img src={fixImageUrl(ex?.image_urls[0])} alt={ex?.name} style={S.cImg} onClick={e=>{e.stopPropagation(); if(ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));}} />
+                    <img src={fixImageUrl(ex?.image_urls[0])} alt={ex?.name} style={S.cImg} className="gm-c-img" onClick={e=>{e.stopPropagation(); if(ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));}} />
                     <div style={S.cNumBadge}>#{idx+1}</div>
                   </div>
                   <div>
@@ -324,12 +346,12 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                       <span style={S.cEquipBadge}>{ex?.equipment || 'Máquina'}</span>
                       {ex?.primary_muscles?.slice(0,2).map(m => <span key={m} style={S.cMuscleBadge}>{m}</span>)}
                     </div>
-                    <h3 style={S.cTitle}>{ex?.name}</h3>
+                    <h3 style={S.cTitle} className="gm-exercise-title">{ex?.name}</h3>
                     <p style={S.cMeta}>{log.series} series × {log.repeticiones} reps @ <span style={{ color: '#f59e0b', fontWeight: 800 }}>{log.peso_real} KG</span></p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div className="gm-series-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '12px', flex: 1, width: '100%' }}>
                     {Array.from({ length: log.series }).map((_, sIdx) => {
                       const d = log.completed_series?.[sIdx] || false;
                       return (
@@ -422,7 +444,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                       <div><div style={S.wiTitle}>Registro de Peso (KG)</div><div style={S.wiSubtitle}>Actualización en vivo RLS</div></div>
                       <div style={S.wiCurrent}>Actual: {log.peso_real} KG</div>
                     </div>
-                    <div style={S.wiControls}>
+                    <div style={S.wiControls} className="gm-wi-controls">
                       <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, Math.max(0, log.peso_real-5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-5</button>
                       <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, Math.max(0, log.peso_real-2.5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-2.5</button>
                       <div style={S.wiInputWrap}>
