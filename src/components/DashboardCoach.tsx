@@ -114,7 +114,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
         animate={{ opacity: 1, y: 0 }}
         className="bg-white shadow-xl border border-gray-200 p-8 rounded-none relative overflow-hidden group"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-900 rounded-full blur-[100px] opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-700 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-900 rounded-none blur-[100px] opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-700 pointer-events-none" />
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="flex items-center gap-5">
@@ -130,7 +130,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="bg-blue-900/10 text-blue-900 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-blue-900/20 uppercase tracking-widest">
+                <span className="bg-blue-900/10 text-blue-900 text-[10px] font-black px-2.5 py-0.5 rounded-none border border-blue-900/20 uppercase tracking-widest">
                   ADMINISTRADOR
                 </span>
                 <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">ID: {coach.gym_id}</span>
@@ -206,7 +206,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     <img
                       src={newAvatarUrl}
                       alt="Avatar"
-                      className="w-16 h-16 rounded-full object-cover ring-2 ring-blue-900/40 shadow-md"
+                      className="w-16 h-16 rounded-none object-cover ring-2 ring-blue-900/40 shadow-md"
                     />
 
                     <div className="flex flex-col gap-2 text-left">
@@ -232,7 +232,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                             key={idx}
                             type="button"
                             onClick={() => setNewAvatarUrl(preset)}
-                            className={`w-6 h-6 rounded-full overflow-hidden border transition-all ${
+                            className={`w-6 h-6 rounded-none overflow-hidden border transition-all ${
                               newAvatarUrl === preset ? 'border-blue-900 scale-110' : 'border-gray-300 opacity-60'
                             }`}
                           >
@@ -320,7 +320,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                       <p className="text-xs text-gray-500 font-medium truncate mt-0.5">{alumno.email}</p>
                     </div>
                   </div>
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-full border ${isPlanActive ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-none border ${isPlanActive ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
                     {isPlanActive ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
                   </div>
                 </div>
@@ -433,7 +433,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="bg-white shadow-xl border border-gray-200 p-8 rounded-none mt-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-200 pb-6 mb-6 gap-4">
               <div>
-                <span className="bg-blue-900/10 text-blue-900 text-[10px] font-black px-3 py-1 rounded-full border border-blue-900/20 uppercase tracking-widest">
+                <span className="bg-blue-900/10 text-blue-900 text-[10px] font-black px-3 py-1 rounded-none border border-blue-900/20 uppercase tracking-widest">
                   Monitoreo de Cargas
                 </span>
                 <h3 className="text-2xl font-black text-black mt-3">
@@ -456,7 +456,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                         <h4 className="font-bold text-black text-lg">{routine.nombre_rutina}</h4>
                         <span className="text-xs text-gray-400 font-medium">Creada el {new Date(routine.created_at).toLocaleDateString()}</span>
                       </div>
-                      <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest border ${routine.activa ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-gray-50 text-gray-400 border-gray-200'}`}>
+                      <span className={`text-[10px] font-black px-3 py-1 rounded-none uppercase tracking-widest border ${routine.activa ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-gray-50 text-gray-400 border-gray-200'}`}>
                         {routine.activa ? 'En Uso Actualmente' : 'Archivada'}
                       </span>
                     </div>

@@ -83,11 +83,11 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-3xl w-full shadow-2xl space-y-5 my-8 max-h-[90vh] flex flex-col">
+      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 max-w-3xl w-full shadow-2xl space-y-5 my-8 max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="bg-amber-500/20 text-amber-400 p-2.5 rounded-2xl border border-amber-500/30">
+            <div className="bg-amber-500/20 text-amber-400 p-2.5 rounded-none border border-amber-500/30">
               <Dumbbell className="w-6 h-6" />
             </div>
             <div>
@@ -95,7 +95,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               <p className="text-xs text-slate-400">Modifica los ejercicios, cargas, repeticiones y días</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800">
+          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-none hover:bg-slate-800">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -109,7 +109,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               value={nombreRutina}
               onChange={(e) => setNombreRutina(e.target.value)}
               required
-              className="w-full bg-slate-950 text-white font-bold text-sm rounded-2xl px-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
+              className="w-full bg-slate-950 text-white font-bold text-sm rounded-none px-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
               placeholder="Ej: Hipertrofia Torso - Piernas"
             />
           </div>
@@ -123,7 +123,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddExercisePicker(true)}
-                className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all cursor-pointer"
+                className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-none flex items-center space-x-1.5 transition-all cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Agregar Ejercicio del Catálogo</span>
@@ -132,7 +132,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
             {/* Exercise Add Picker Modal */}
             {showAddExercisePicker && (
-              <div className="bg-slate-950 border border-amber-500/30 rounded-2xl p-4 space-y-3 shadow-xl">
+              <div className="bg-slate-950 border border-amber-500/30 rounded-none p-4 space-y-3 shadow-xl">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-white flex items-center gap-1.5">
                     <Search className="w-3.5 h-3.5 text-amber-400" />
@@ -151,25 +151,25 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   placeholder="Buscar ejercicio en español..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-900 text-white text-xs rounded-xl px-3 py-2 border border-slate-800 focus:border-amber-500 focus:outline-none"
+                  className="w-full bg-slate-900 text-white text-xs rounded-none px-3 py-2 border border-slate-800 focus:border-amber-500 focus:outline-none"
                 />
                 <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
                   {filteredExercises.slice(0, 15).map((ex) => (
                     <div
                       key={ex.id}
                       onClick={() => handleAddExercise(ex)}
-                      className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl flex items-center justify-between cursor-pointer transition-all"
+                      className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-none flex items-center justify-between cursor-pointer transition-all"
                     >
                       <div className="flex items-center space-x-2">
                         {ex.image_urls?.[0] && (
-                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="w-8 h-8 rounded-lg object-cover bg-white" />
+                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="w-8 h-8 rounded-none object-cover bg-white" />
                         )}
                         <div>
                           <p className="text-xs font-bold text-white">{ex.name}</p>
                           <p className="text-[10px] text-slate-400">{ex.primary_muscles.join(', ')} | {ex.equipment}</p>
                         </div>
                       </div>
-                      <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded-lg">+ Añadir</span>
+                      <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded-none">+ Añadir</span>
                     </div>
                   ))}
                 </div>
@@ -178,10 +178,10 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
             {/* List of routine items */}
             {logsItems.map((item, idx) => (
-              <div key={item.id || idx} className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 relative group">
+              <div key={item.id || idx} className="bg-slate-950 border border-slate-800 rounded-none p-4 space-y-3 relative group">
                 <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
                   <div className="flex items-center space-x-3">
-                    <span className="bg-slate-800 text-amber-400 text-xs font-mono font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                    <span className="bg-slate-800 text-amber-400 text-xs font-mono font-bold w-6 h-6 rounded-none flex items-center justify-center">
                       {idx + 1}
                     </span>
                     <span className="text-sm font-bold text-white">
@@ -191,7 +191,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemoveExercise(idx)}
-                    className="text-rose-400 hover:text-rose-300 p-1.5 rounded-lg hover:bg-rose-500/10 transition-all"
+                    className="text-rose-400 hover:text-rose-300 p-1.5 rounded-none hover:bg-rose-500/10 transition-all"
                     title="Eliminar de la rutina"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -205,7 +205,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     <select
                       value={item.dia}
                       onChange={(e) => handleItemChange(idx, 'dia', e.target.value)}
-                      className="w-full bg-slate-900 text-white rounded-xl px-2.5 py-2 border border-slate-800 focus:border-amber-500"
+                      className="w-full bg-slate-900 text-white rounded-none px-2.5 py-2 border border-slate-800 focus:border-amber-500"
                     >
                       {DAYS.map((d) => (
                         <option key={d} value={d}>
@@ -223,7 +223,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                       min="1"
                       value={item.series}
                       onChange={(e) => handleItemChange(idx, 'series', parseInt(e.target.value) || 1)}
-                      className="w-full bg-slate-900 text-white font-bold rounded-xl px-2.5 py-2 border border-slate-800 focus:border-amber-500"
+                      className="w-full bg-slate-900 text-white font-bold rounded-none px-2.5 py-2 border border-slate-800 focus:border-amber-500"
                     />
                   </div>
 
@@ -235,7 +235,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                       min="1"
                       value={item.repeticiones}
                       onChange={(e) => handleItemChange(idx, 'repeticiones', parseInt(e.target.value) || 1)}
-                      className="w-full bg-slate-900 text-white font-bold rounded-xl px-2.5 py-2 border border-slate-800 focus:border-amber-500"
+                      className="w-full bg-slate-900 text-white font-bold rounded-none px-2.5 py-2 border border-slate-800 focus:border-amber-500"
                     />
                   </div>
 
@@ -248,7 +248,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                       min="0"
                       value={item.peso_objetivo}
                       onChange={(e) => handleItemChange(idx, 'peso_objetivo', parseFloat(e.target.value) || 0)}
-                      className="w-full bg-slate-900 text-amber-400 font-extrabold rounded-xl px-2.5 py-2 border border-amber-500/40 focus:border-amber-500"
+                      className="w-full bg-slate-900 text-amber-400 font-extrabold rounded-none px-2.5 py-2 border border-amber-500/40 focus:border-amber-500"
                     />
                   </div>
                 </div>
@@ -260,7 +260,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     placeholder="Notas o técnica (ej: Mantener codos a 45°)..."
                     value={item.notas}
                     onChange={(e) => handleItemChange(idx, 'notas', e.target.value)}
-                    className="w-full bg-slate-900 text-slate-300 text-xs rounded-xl px-3 py-2 border border-slate-800 focus:border-amber-500"
+                    className="w-full bg-slate-900 text-slate-300 text-xs rounded-none px-3 py-2 border border-slate-800 focus:border-amber-500"
                   />
                 </div>
               </div>
@@ -272,13 +272,13 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-2xl text-xs font-bold text-slate-400 hover:text-white"
+              className="px-4 py-2.5 rounded-none text-xs font-bold text-slate-400 hover:text-white"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-6 py-2.5 rounded-2xl text-xs shadow-lg flex items-center space-x-2 hover:brightness-110 transition-all cursor-pointer uppercase tracking-wider"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-6 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 hover:brightness-110 transition-all cursor-pointer uppercase tracking-wider"
             >
               <Save className="w-4 h-4" />
               <span>Guardar Cambios de Rutina</span>

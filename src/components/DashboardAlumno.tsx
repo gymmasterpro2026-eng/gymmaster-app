@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Dumbbell,
-  CheckCircle2,
-  Clock,
-  AlertTriangle,
-  Play,
-  Pause,
-  RotateCcw,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
-  Info,
-  ShieldCheck,
-  Zap,
-  Check,
-  Save,
-  Timer,
-  Maximize2,
-  Camera,
-  Edit3,
-  Pencil
+  Dumbbell, AlertTriangle, RotateCcw, ChevronDown, Check, Save,
+  Timer, Maximize2, Camera, Edit3, Pencil, Info, ShieldCheck, Zap
 } from 'lucide-react';
-import { Profile, RoutineWithLogs, RoutineLog } from '../types';
+import { Profile, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { EditProfileModal } from './EditProfileModal';
 import { EditRoutineModal } from './EditRoutineModal';
@@ -32,714 +14,365 @@ interface DashboardAlumnoProps {
   onRefreshData: () => void;
 }
 
+const S = {
+  page: { padding: '24px', maxWidth: '900px', margin: '0 auto', fontFamily: "'Inter', sans-serif" },
+  headerBanner: {
+    background: 'linear-gradient(135deg, #0f172a, #121212)', border: '1px solid #1e293b',
+    borderRadius: '0', padding: '24px', display: 'flex', flexDirection: 'column' as const, gap: '20px',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.3)', position: 'relative' as const, overflow: 'hidden' as const,
+    marginBottom: '32px'
+  },
+  glow: { position: 'absolute' as const, top: '-50px', right: '-50px', width: '200px', height: '200px', background: '#f59e0b', filter: 'blur(100px)', opacity: 0.1, pointerEvents: 'none' as const },
+  avatarWrap: { position: 'relative' as const, width: '72px', height: '72px', flexShrink: 0, cursor: 'pointer' },
+  avatarImg: { width: '100%', height: '100%', borderRadius: '0', objectFit: 'cover' as const, border: '2px solid rgba(245,158,11,0.3)', transition: 'all 0.2s' },
+  avatarIconOverlay: { position: 'absolute' as const, inset: 0, background: 'rgba(0,0,0,0.5)', borderRadius: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.2s' },
+  badgeGreen: { background: 'rgba(16,185,129,0.1)', color: '#34d399', border: '1px solid rgba(16,185,129,0.2)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
+  editBtn: { background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' },
+  name: { fontSize: '24px', fontWeight: 900, color: '#fff', margin: '4px 0', letterSpacing: '-0.5px' },
+  routinePill: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#f59e0b', fontWeight: 700 },
+  editRoutineBtn: { background: '#1e293b', color: '#f59e0b', border: '1px solid #334155', padding: '4px 10px', borderRadius: '0', fontSize: '10px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' },
+  
+  progressBox: { background: 'rgba(0,0,0,0.5)', border: '1px solid #334155', borderRadius: '0', padding: '16px', minWidth: '160px', textAlign: 'center' as const },
+  progressLblRow: { display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#888', fontWeight: 700, marginBottom: '6px' },
+  progressBar: { height: '8px', background: '#1e293b', borderRadius: '0', overflow: 'hidden' as const, marginBottom: '6px' },
+  progressFill: { height: '100%', background: 'linear-gradient(90deg, #f59e0b, #a8cc00)', transition: 'width 0.5s' },
+  progressText: { fontSize: '10px', color: '#666', fontWeight: 600 },
+
+  timerBar: { position: 'sticky' as const, top: '16px', zIndex: 40, background: 'rgba(245,158,11,0.95)', backdropFilter: 'blur(10px)', color: '#000', padding: '12px 20px', borderRadius: '0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', marginBottom: '24px', border: '1px solid rgba(255,255,255,0.2)' },
+  timerDisplay: { fontFamily: 'monospace', fontSize: '24px', fontWeight: 900, letterSpacing: '-1px' },
+  timerInput: { background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '0', color: '#000', fontFamily: 'monospace', fontSize: '24px', fontWeight: 900, width: '100px', textAlign: 'center' as const, outline: 'none' },
+  timerBtns: { display: 'flex', gap: '8px' },
+  tBtn: { background: '#000', color: '#f59e0b', border: 'none', padding: '8px', borderRadius: '0', display: 'flex', cursor: 'pointer' },
+
+  dayTabs: { display: 'flex', gap: '8px', overflowX: 'auto' as const, paddingBottom: '8px', marginBottom: '16px' },
+  tabBtn: (active: boolean): React.CSSProperties => ({
+    background: active ? '#f59e0b' : '#1e293b', color: active ? '#000' : '#888', border: `1px solid ${active ? '#f59e0b' : '#334155'}`,
+    padding: '10px 16px', borderRadius: '0', fontSize: '11px', fontWeight: 800, whiteSpace: 'nowrap' as const, cursor: 'pointer', transition: 'all 0.2s'
+  }),
+
+  emptyState: { background: 'rgba(255,255,255,0.02)', border: '2px dashed #334155', borderRadius: '0', padding: '48px 24px', textAlign: 'center' as const, color: '#666', fontSize: '13px', fontWeight: 600 },
+  
+  card: (expanded: boolean, completed: boolean): React.CSSProperties => ({
+    background: completed ? 'rgba(16,185,129,0.05)' : '#0f172a',
+    border: `1px solid ${completed ? 'rgba(16,185,129,0.2)' : expanded ? 'rgba(245,158,11,0.3)' : '#1e293b'}`,
+    borderRadius: '0', overflow: 'hidden' as const, marginBottom: '16px', transition: 'all 0.3s'
+  }),
+  cHeader: { padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', userSelect: 'none' as const },
+  cImgWrap: { position: 'relative' as const },
+  cImg: { width: '72px', height: '72px', borderRadius: '0', objectFit: 'contain' as const, background: '#fff', padding: '4px' },
+  cNumBadge: { position: 'absolute' as const, top: '-8px', left: '-8px', background: '#000', color: '#f59e0b', width: '24px', height: '24px', borderRadius: '0', border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 900 },
+  cEquipBadge: { background: 'rgba(245,158,11,0.1)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' as const },
+  cMuscleBadge: { background: '#1e293b', color: '#888', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase' as const },
+  cTitle: { fontSize: '16px', fontWeight: 900, color: '#fff', margin: '6px 0 2px' },
+  cMeta: { fontSize: '11px', color: '#666', fontWeight: 600, margin: 0 },
+  cChevron: (expanded: boolean): React.CSSProperties => ({
+    background: expanded ? '#f59e0b' : '#1e293b', color: expanded ? '#000' : '#fff', padding: '8px', borderRadius: '0', transition: 'all 0.3s', transform: expanded ? 'rotate(180deg)' : 'none'
+  }),
+
+  cExpanded: { padding: '0 20px 20px', borderTop: '1px solid #1e293b', marginTop: '4px', paddingTop: '20px', display: 'flex', flexDirection: 'column' as const, gap: '24px' },
+  coachNote: { background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.1)', borderRadius: '0', padding: '12px', display: 'flex', gap: '12px', fontSize: '11px', color: '#ccc' },
+  
+  weightInputBox: { background: '#000', border: '2px solid rgba(245,158,11,0.2)', borderRadius: '0', padding: '20px', boxShadow: 'inset 0 4px 20px rgba(0,0,0,0.5)' },
+  wiHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' },
+  wiTitle: { fontSize: '10px', fontWeight: 800, color: '#f59e0b', textTransform: 'uppercase' as const, letterSpacing: '0.1em' },
+  wiSubtitle: { fontSize: '9px', color: '#666' },
+  wiCurrent: { background: 'rgba(16,185,129,0.1)', color: '#34d399', border: '1px solid rgba(16,185,129,0.2)', padding: '4px 10px', borderRadius: '0', fontSize: '10px', fontWeight: 800 },
+  
+  wiControls: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' as const },
+  wiBtnMod: { width: '48px', height: '48px', background: '#1e293b', border: '1px solid #334155', color: '#fff', borderRadius: '0', fontSize: '14px', fontWeight: 800, cursor: 'pointer', transition: 'all 0.1s' },
+  wiInputWrap: { position: 'relative' as const },
+  wiInput: { width: '120px', height: '56px', background: '#0f172a', border: '2px solid #f59e0b', borderRadius: '0', color: '#f59e0b', fontSize: '28px', fontWeight: 900, fontFamily: 'monospace', textAlign: 'center' as const, outline: 'none' },
+  wiInputLbl: { position: 'absolute' as const, right: '12px', bottom: '8px', fontSize: '10px', color: 'rgba(245,158,11,0.5)', fontWeight: 800 },
+  wiSaveBtn: { background: '#f59e0b', color: '#000', border: 'none', borderRadius: '0', padding: '0 24px', height: '56px', fontSize: '13px', fontWeight: 900, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', textTransform: 'uppercase' as const, flex: 1, minWidth: '140px', justifyContent: 'center' },
+
+  seriesGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '12px' },
+  seriesBtn: (done: boolean): React.CSSProperties => ({
+    background: done ? 'rgba(16,185,129,0.1)' : '#1e293b', border: `1px solid ${done ? 'rgba(16,185,129,0.3)' : '#334155'}`, color: done ? '#34d399' : '#888',
+    padding: '12px', borderRadius: '0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px', fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s'
+  }),
+  seriesCheck: (done: boolean): React.CSSProperties => ({ width: '20px', height: '20px', borderRadius: '0', border: `1px solid ${done ? '#34d399' : '#333'}`, background: done ? '#34d399' : 'transparent', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }),
+
+  instructBox: { background: '#1e293b', border: '1px solid #334155', borderRadius: '0', padding: '16px' },
+  iTitle: { fontSize: '10px', fontWeight: 800, color: '#fff', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '8px' },
+  iList: { margin: 0, paddingLeft: '16px', fontSize: '11px', color: '#888', lineHeight: 1.5 },
+  
+  expiredCard: { background: '#1A0505', border: '1px solid #ff4444', borderRadius: '0', padding: '40px 24px', textAlign: 'center' as const, boxShadow: '0 20px 40px rgba(255,0,0,0.1)' },
+};
+
 export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefreshData }) => {
-  if (!alumno) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-12 text-center text-zinc-500 font-mono">
-        Sin información del perfil de alumno.
-      </div>
-    );
-  }
+  if (!alumno) return <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>Sin información del perfil.</div>;
 
   const [activeRoutine, setActiveRoutine] = useState<RoutineWithLogs | null>(null);
   const [expandedExerciseId, setExpandedExerciseId] = useState<string | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
-  const [showEditProfileModal, setShowEditProfileModal] = useState<boolean>(false);
-  const [showEditRoutineModal, setShowEditRoutineModal] = useState<boolean>(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [showEditRoutineModal, setShowEditRoutineModal] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<{ id: string; type: 'success' | 'error'; msg: string } | null>(null);
   
-  // Group available days from logs
+  // Timer State
+  const [timerMode, setTimerMode] = useState<'timer' | 'stopwatch'>('timer');
+  const [timerStatus, setTimerStatus] = useState<'idle' | 'running' | 'paused'>('idle');
+  const [timerStartAt, setTimerStartAt] = useState<number | null>(null);
+  const [timerElapsedMs, setTimerElapsedMs] = useState(0);
+  const [timerTargetMs, setTimerTargetMs] = useState(90000);
+  const [displayMs, setDisplayMs] = useState(90000);
+  
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const isPlanActive = alumno.plan_active_until ? new Date(alumno.plan_active_until) >= new Date() : false;
+
   const availableWorkouts = React.useMemo(() => {
     if (!activeRoutine) return [];
-    
-    const uniqueCombos = new Map<string, { semana: number, dia: string }>();
-    
-    activeRoutine.logs.forEach(log => {
-      // Default to semana 1 for backwards compatibility if needed
-      const sem = log.semana || 1;
-      const key = `${sem}-${log.dia}`;
-      if (!uniqueCombos.has(key)) {
-        uniqueCombos.set(key, { semana: sem, dia: log.dia });
-      }
-    });
-
-    // Sort by week then day
-    const DAYS_ORDER = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    return Array.from(uniqueCombos.values()).sort((a, b) => {
-      if (a.semana !== b.semana) return a.semana - b.semana;
-      return DAYS_ORDER.indexOf(a.dia) - DAYS_ORDER.indexOf(b.dia);
-    });
+    const unique = new Map<string, { semana: number, dia: string }>();
+    activeRoutine.logs.forEach(l => { const sem = l.semana || 1; unique.set(`${sem}-${l.dia}`, { semana: sem, dia: l.dia }); });
+    const order = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    return Array.from(unique.values()).sort((a,b) => a.semana !== b.semana ? a.semana - b.semana : order.indexOf(a.dia) - order.indexOf(b.dia));
   }, [activeRoutine]);
 
   const [activeCombo, setActiveCombo] = useState<{ semana: number, dia: string } | null>(null);
 
-  // Auto-select the first available combo when routine loads
-  useEffect(() => {
-    if (availableWorkouts.length > 0 && !activeCombo) {
-      // Try to match current day
-      const currentDayName = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][new Date().getDay()];
-      const todayCombo = availableWorkouts.find(w => w.dia === currentDayName);
-      if (todayCombo) {
-        setActiveCombo(todayCombo);
-      } else {
-        setActiveCombo(availableWorkouts[0]);
-      }
-    }
-  }, [availableWorkouts, activeCombo]);
-  
-  // Real-time status toast messages
-  const [saveStatus, setSaveStatus] = useState<{ id: string; type: 'success' | 'error'; msg: string } | null>(null);
-  
-  // Advanced Rest Timer State
-  const [timerMode, setTimerMode] = useState<'timer' | 'stopwatch'>('timer');
-  const [timerStatus, setTimerStatus] = useState<'idle' | 'running' | 'paused'>('idle');
-  const [timerStartAt, setTimerStartAt] = useState<number | null>(null);
-  const [timerElapsedMs, setTimerElapsedMs] = useState<number>(0);
-  const [timerTargetMs, setTimerTargetMs] = useState<number>(90000); // 90s default
-  const [displayMs, setDisplayMs] = useState<number>(90000); // Initialize for timer
-  const [selectedLogForTimer, setSelectedLogForTimer] = useState<string | null>(null);
-
-  // PiP Refs
-  const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
-  const videoRef = React.useRef<HTMLVideoElement | null>(null);
-
-  // Time-hack protection check
-  const isPlanActive = alumno.plan_active_until ? new Date(alumno.plan_active_until) >= new Date() : false;
-
   useEffect(() => {
     if (alumno?.id) {
-      loadRoutine();
+      const routine = dataService.getActiveRoutineForAlumno(alumno.id);
+      setActiveRoutine(routine);
+      if (routine && routine.logs.length > 0 && !expandedExerciseId) setExpandedExerciseId(routine.logs[0].id);
     }
   }, [alumno?.id]);
 
-  const loadRoutine = () => {
-    if (!alumno?.id) return;
-    const routine = dataService.getActiveRoutineForAlumno(alumno.id);
-    setActiveRoutine(routine);
-    if (routine && routine.logs.length > 0 && !expandedExerciseId) {
-      setExpandedExerciseId(routine.logs[0].id);
-    }
-  };
-
-  // Rest timer loop
   useEffect(() => {
-    let animationFrameId: number;
+    if (availableWorkouts.length > 0 && !activeCombo) {
+      const today = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][new Date().getDay()];
+      setActiveCombo(availableWorkouts.find(w => w.dia === today) || availableWorkouts[0]);
+    }
+  }, [availableWorkouts, activeCombo]);
 
+  // Timer loop
+  useEffect(() => {
+    let animId: number;
     const updateTimer = () => {
       let currentMs = timerElapsedMs;
-      
-      if (timerStatus === 'running' && timerStartAt) {
-        currentMs += Date.now() - timerStartAt;
-      }
-      
-      let newDisplayMs = currentMs;
+      if (timerStatus === 'running' && timerStartAt) currentMs += Date.now() - timerStartAt;
+      let newDisp = currentMs;
       if (timerMode === 'timer') {
-        newDisplayMs = Math.max(0, timerTargetMs - currentMs);
-        if (newDisplayMs === 0 && timerStatus === 'running') {
-          setTimerStatus('idle');
-          setTimerElapsedMs(0);
-          setTimerStartAt(null);
-        }
+        newDisp = Math.max(0, timerTargetMs - currentMs);
+        if (newDisp === 0 && timerStatus === 'running') { setTimerStatus('idle'); setTimerElapsedMs(0); setTimerStartAt(null); }
       }
-
-      setDisplayMs(newDisplayMs);
-
-      // Render to PiP Canvas if available
+      setDisplayMs(newDisp);
       if (canvasRef.current) {
         const ctx = canvasRef.current.getContext('2d');
         if (ctx) {
-          ctx.fillStyle = '#030303'; // slate-950
-          ctx.fillRect(0, 0, 300, 150);
-          ctx.fillStyle = '#f59e0b'; // amber-500
-          ctx.font = 'bold 64px monospace';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          
-          const totalSeconds = Math.floor(newDisplayMs / 1000);
-          const fractionStr = ('0' + Math.floor((newDisplayMs % 1000) / 10)).slice(-2);
-          const timeString = `${Math.floor(totalSeconds / 60)}:${('0' + (totalSeconds % 60)).slice(-2)}.${fractionStr}`;
-          ctx.fillText(timeString, 150, 75);
+          ctx.fillStyle = '#0f172a'; ctx.fillRect(0,0,300,150);
+          ctx.fillStyle = '#f59e0b'; ctx.font = 'bold 64px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
+          const ts = Math.floor(newDisp / 1000);
+          ctx.fillText(`${Math.floor(ts/60)}:${('0'+(ts%60)).slice(-2)}.${('0'+Math.floor((newDisp%1000)/10)).slice(-2)}`, 150, 75);
         }
       }
-
-      if (timerStatus === 'running') {
-        animationFrameId = requestAnimationFrame(updateTimer);
-      }
+      if (timerStatus === 'running') animId = requestAnimationFrame(updateTimer);
     };
-
-    if (timerStatus === 'running') {
-      animationFrameId = requestAnimationFrame(updateTimer);
-    } else {
-      updateTimer(); // Force one render when paused
-    }
-
-    return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-    };
+    if (timerStatus === 'running') animId = requestAnimationFrame(updateTimer); else updateTimer();
+    return () => { if (animId) cancelAnimationFrame(animId); };
   }, [timerStatus, timerStartAt, timerElapsedMs, timerTargetMs, timerMode]);
 
-  const startRestTimer = (logId: string) => {
-    setSelectedLogForTimer(logId);
-    setTimerMode('timer');
-    setTimerElapsedMs(0);
-    setTimerStartAt(Date.now());
-    setTimerStatus('running');
-  };
-
   const toggleTimer = () => {
-    if (timerStatus === 'running') {
-      setTimerElapsedMs(prev => prev + (Date.now() - (timerStartAt || Date.now())));
-      setTimerStatus('paused');
-      setTimerStartAt(null);
-    } else {
-      setTimerStartAt(Date.now());
-      setTimerStatus('running');
-    }
+    if (timerStatus === 'running') { setTimerElapsedMs(p => p + (Date.now() - (timerStartAt || Date.now()))); setTimerStatus('paused'); setTimerStartAt(null); }
+    else { setTimerStartAt(Date.now()); setTimerStatus('running'); }
   };
-
-  const resetTimer = () => {
-    setTimerStatus('idle');
-    setTimerElapsedMs(0);
-    setTimerStartAt(null);
-  };
-
-  const toggleTimerMode = () => {
-    resetTimer();
-    setTimerMode(prev => prev === 'timer' ? 'stopwatch' : 'timer');
-    setTimerTargetMs(90000);
-  };
+  const resetTimer = () => { setTimerStatus('idle'); setTimerElapsedMs(0); setTimerStartAt(null); };
 
   const handlePiP = async () => {
-    try {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      } else if (videoRef.current && canvasRef.current) {
-        const stream = canvasRef.current.captureStream(30);
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-        await videoRef.current.requestPictureInPicture();
-      }
-    } catch (err) {
-      console.error('PiP Failed:', err);
-      // fallback handling o alert if needed
+    if (document.pictureInPictureElement) await document.exitPictureInPicture();
+    else if (videoRef.current && canvasRef.current) {
+      videoRef.current.srcObject = canvasRef.current.captureStream(30);
+      await videoRef.current.play(); await videoRef.current.requestPictureInPicture();
     }
   };
 
-  // OPERATIONAL CORE: Real-time update of `peso_real` by Alumno
-  const handlePesoRealChange = (logId: string, newWeight: number) => {
-    if (isNaN(newWeight) || newWeight < 0) return;
-
-    // Call dataService with strict RLS and Server-Time plan check
-    const result = dataService.updatePesoReal(logId, newWeight, alumno.id);
-
-    if (result.success) {
-      setSaveStatus({
-        id: logId,
-        type: 'success',
-        msg: `✨ Peso de ${newWeight} KG guardado en tiempo real (RLS verificado)`,
-      });
-      loadRoutine();
-    } else {
-      setSaveStatus({
-        id: logId,
-        type: 'error',
-        msg: result.message,
-      });
-    }
-
-    setTimeout(() => {
-      setSaveStatus(null);
-    }, 4000);
+  const handlePesoRealChange = (logId: string, w: number) => {
+    if (isNaN(w) || w < 0) return;
+    const r = dataService.updatePesoReal(logId, w, alumno.id);
+    setSaveStatus({ id: logId, type: r.success ? 'success' : 'error', msg: r.success ? `✨ Peso guardado (${w}KG)` : r.message });
+    if (r.success) { setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }
+    setTimeout(() => setSaveStatus(null), 4000);
   };
 
-  const handleAdjustWeight = (logId: string, currentWeight: number, delta: number) => {
-    const updated = Math.max(0, parseFloat((currentWeight + delta).toFixed(1)));
-    handlePesoRealChange(logId, updated);
-  };
-
-  const handleToggleSeries = (logId: string, setIdx: number) => {
-    dataService.toggleSetCompleted(logId, setIdx);
-    loadRoutine();
-    startRestTimer(logId);
+  const handleToggleSeries = (logId: string, sIdx: number) => {
+    dataService.toggleSetCompleted(logId, sIdx);
+    setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id));
+    setTimerMode('timer'); setTimerElapsedMs(0); setTimerStartAt(Date.now()); setTimerStatus('running');
   };
 
   if (!isPlanActive) {
     return (
-      <div id="plan-expired-screen" className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-gradient-to-br from-rose-950/80 to-slate-900 border-2 border-rose-500/40 rounded-none p-6 sm:p-10 text-center shadow-2xl backdrop-blur-xl">
-          <div className="w-16 h-16 bg-rose-500/20 text-rose-400 rounded-none flex items-center justify-center mx-auto mb-4 border border-rose-500/30">
-            <AlertTriangle className="w-8 h-8 animate-bounce" />
-          </div>
-          <span className="bg-rose-500/20 text-rose-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-rose-500/30">
-            Inmunidad al Time-Hack Activa
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 mb-2">
-            Membresía Vencida
-          </h2>
-          <p className="text-slate-300 max-w-md mx-auto text-sm leading-relaxed mb-6">
-            Hola <span className="font-semibold text-white">{alumno.full_name}</span>. Tu plan de entrenamiento finalizó el{' '}
-            <span className="font-bold text-rose-400">
-              {new Date(alumno.plan_active_until).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </span>
-            . La validación en el servidor (<code className="text-amber-300 text-xs font-mono">now()</code>) bloquea la actualización de pesos.
-          </p>
-          <div className="bg-slate-900/80 border border-slate-800 rounded-none p-4 text-left max-w-lg mx-auto text-xs text-slate-400 space-y-2 mb-6">
-            <div className="flex items-center text-amber-400 font-semibold mb-1">
-              <ShieldCheck className="w-4 h-4 mr-1.5" />
-              <span>Regla de Seguridad RLS de Anexo Cobro:</span>
-            </div>
-            <p>
-              Aunque cambies la fecha u hora en los ajustes de tu teléfono móvil, el trigger SQL de Supabase valida el tiempo del servidor en PostgreSQL y deniega la mutación sobre <code className="text-white">routine_logs</code>.
-            </p>
-          </div>
-          <button
-            onClick={onRefreshData}
-            className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold px-6 py-3 rounded-none text-sm shadow-lg hover:brightness-110 transition-all inline-flex items-center space-x-2 cursor-pointer"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>Simular Renovación de Plan por Coach</span>
-          </button>
+      <div style={S.page}>
+        <div style={S.expiredCard}>
+          <AlertTriangle color="#ff4444" size={48} style={{ margin: '0 auto 16px' }} />
+          <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 900, margin: '0 0 12px' }}>Membresía Vencida</h2>
+          <p style={{ color: '#888', fontSize: '13px', margin: '0 0 24px' }}>Tu plan finalizó. La seguridad RLS bloquea actualizaciones hasta que renueves.</p>
+          <button style={{ background: '#ff4444', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: '0', fontWeight: 800, cursor: 'pointer' }} onClick={onRefreshData}>Recargar</button>
         </div>
       </div>
     );
   }
 
   if (!activeRoutine) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 text-center">
-        <div className="bg-slate-900 border border-slate-800 rounded-none p-8 max-w-lg mx-auto">
-          <Dumbbell className="w-12 h-12 text-amber-500 mx-auto mb-3 opacity-60" />
-          <h3 className="text-xl font-bold text-white mb-2">Sin Rutina Activa</h3>
-          <p className="text-slate-400 text-sm mb-4">
-            Tu Coach aún no ha activado una rutina para ti hoy. Cambia al rol de Coach arriba para crear y asignarte una nueva rutina.
-          </p>
-        </div>
-      </div>
-    );
+    return <div style={S.page}><div style={S.emptyState}><Dumbbell size={40} style={{ margin:'0 auto 16px', opacity: 0.2 }} />Sin rutina activa asignada.</div></div>;
   }
 
-  // Calculate workout completion stats
-  const dayLogs = activeRoutine.logs.filter(log => 
-    (log.semana || 1) === activeCombo?.semana && log.dia === activeCombo?.dia
-  );
-  
-  const totalExercises = dayLogs.length;
-  const completedExercises = dayLogs.filter((l) =>
-    l.completed_series?.every((s) => s)
-  ).length;
-  const progressPercent = totalExercises > 0 ? Math.round((completedExercises / totalExercises) * 100) : 0;
+  const dayLogs = activeRoutine.logs.filter(l => (l.semana||1) === activeCombo?.semana && l.dia === activeCombo?.dia);
+  const completedCount = dayLogs.filter(l => l.completed_series?.every(s=>s)).length;
+  const progressPercent = dayLogs.length > 0 ? Math.round((completedCount / dayLogs.length) * 100) : 0;
 
   return (
-    <div id="dashboard-alumno-root" className="max-w-4xl mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-6">
-      {/* Alumno Mobile Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-5 shadow-xl relative overflow-hidden">
-        <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-        
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center space-x-4">
-            {/* Clickable Profile Avatar */}
-            <div
-              onClick={() => setShowEditProfileModal(true)}
-              className="relative group cursor-pointer shrink-0"
-              title="Cambiar Foto de Perfil"
-            >
-              <img
-                src={alumno.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}
-                alt={alumno.full_name}
-                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-amber-500/50 shadow-md group-hover:scale-105 transition-all"
-              />
-              <div className="absolute inset-0 bg-black/40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="w-5 h-5 text-amber-400" />
-              </div>
-              <span className="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 p-1 rounded-full text-[9px]">
-                <Pencil className="w-2.5 h-2.5" />
-              </span>
+    <div style={S.page}>
+      {/* Banner Superior */}
+      <div style={S.headerBanner}>
+        <div style={S.glow} />
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={S.avatarWrap} onClick={() => setShowEditProfileModal(true)}
+              onMouseEnter={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '1'; }}
+              onMouseLeave={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '0'; }}>
+              <img src={alumno.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'} alt="Avatar" style={S.avatarImg} />
+              <div className="av-overlay" style={S.avatarIconOverlay}><Camera size={20} color="#f59e0b" /></div>
             </div>
-
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30 uppercase tracking-wide">
-                  Plan Activo ✅
-                </span>
-                <button
-                  onClick={() => setShowEditProfileModal(true)}
-                  className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30 flex items-center space-x-1 transition-all cursor-pointer"
-                >
-                  <Pencil className="w-2.5 h-2.5" />
-                  <span>Editar Foto & Datos</span>
-                </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <span style={S.badgeGreen}>Plan Activo ✅</span>
+                <button style={S.editBtn} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
               </div>
-              
-              <h1 className="text-xl sm:text-2xl font-black text-white mt-1 flex items-center gap-2">
-                <span>{alumno.full_name}</span>
-              </h1>
-
-              <div className="flex items-center space-x-2 mt-0.5">
-                <p className="text-xs text-amber-400 font-semibold flex items-center">
-                  <Dumbbell className="w-3.5 h-3.5 mr-1" />
-                  {activeRoutine.nombre_rutina}
-                </p>
-                <button
-                  onClick={() => setShowEditRoutineModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-700 flex items-center space-x-1 transition-all cursor-pointer"
-                  title="Modificar ejercicios, cargas o repeticiones de la rutina"
-                >
-                  <Edit3 className="w-3 h-3" />
-                  <span>Editar Rutina</span>
-                </button>
+              <h1 style={S.name}>{alumno.full_name}</h1>
+              <div style={S.routinePill}>
+                <Dumbbell size={12} /> {activeRoutine.nombre_rutina}
+                <button style={S.editRoutineBtn} onClick={() => setShowEditRoutineModal(true)}><Edit3 size={10} /> Editar</button>
               </div>
             </div>
           </div>
-
-          {/* Quick Progress Metric */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 min-w-[140px] text-center">
-            <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-              <span>Progreso Hoy</span>
-              <span className="font-bold text-amber-400">{progressPercent}%</span>
-            </div>
-            <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-            <span className="text-[11px] text-slate-500 mt-1 block">
-              {completedExercises} de {totalExercises} ejercicios completados
-            </span>
+          
+          <div style={S.progressBox}>
+            <div style={S.progressLblRow}><span>Progreso Hoy</span><span style={{ color: '#f59e0b' }}>{progressPercent}%</span></div>
+            <div style={S.progressBar}><div style={{ ...S.progressFill, width: `${progressPercent}%` }} /></div>
+            <span style={S.progressText}>{completedCount} de {dayLogs.length} completados</span>
           </div>
         </div>
       </div>
 
-      {/* Hidden elements for PiP */}
-      <canvas ref={canvasRef} width="300" height="150" className="hidden" />
-      <video ref={videoRef} autoPlay playsInline muted className="hidden" />
+      <canvas ref={canvasRef} width="300" height="150" style={{ display: 'none' }} />
+      <video ref={videoRef} autoPlay playsInline muted style={{ display: 'none' }} />
 
-      {/* Floating Global Rest Timer Bar */}
-      <div id="rest-timer-bar" className="sticky top-20 z-40 bg-amber-500 text-slate-950 px-4 py-3 rounded-none shadow-2xl flex items-center justify-between border border-amber-300 font-bold">
-        <div className="flex items-center space-x-2">
-          <Clock className="w-5 h-5" />
-          <span className="text-sm uppercase tracking-wide hidden sm:inline">
-            {timerMode === 'timer' ? 'Descanso:' : 'Cronómetro:'}
-          </span>
-          
+      {/* Timer Flotante */}
+      <div style={S.timerBar}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Timer size={20} />
           {timerMode === 'timer' && timerStatus !== 'running' ? (
-            <input 
-              type="text" 
-              className="bg-slate-950/10 font-mono text-3xl font-black w-28 text-center outline-none border border-slate-950/20 rounded-md focus:border-slate-950 focus:bg-amber-400 placeholder:text-slate-950/50" 
-              value={`${Math.floor((timerTargetMs - timerElapsedMs) / 1000 / 60)}:${('0' + (Math.floor((timerTargetMs - timerElapsedMs) / 1000) % 60)).slice(-2)}`}
-              onChange={(e) => {
-                const parts = e.target.value.split(':');
-                if (parts.length === 2) {
-                  const mins = parseInt(parts[0]) || 0;
-                  const secs = parseInt(parts[1]) || 0;
-                  setTimerTargetMs(Math.max(0, (mins * 60 + secs) * 1000 + timerElapsedMs));
-                } else if (!isNaN(parseInt(e.target.value))) {
-                  setTimerTargetMs(Math.max(0, (parseInt(e.target.value) || 0) * 1000 + timerElapsedMs));
-                }
+            <input style={S.timerInput} type="text"
+              value={`${Math.floor((timerTargetMs - timerElapsedMs) / 60000)}:${('0' + Math.floor((timerTargetMs - timerElapsedMs) / 1000 % 60)).slice(-2)}`}
+              onChange={e => {
+                const p = e.target.value.split(':');
+                if (p.length === 2) setTimerTargetMs(Math.max(0, ((parseInt(p[0])||0)*60 + (parseInt(p[1])||0))*1000 + timerElapsedMs));
               }}
             />
           ) : (
-            <span className="font-mono text-3xl font-black w-32 text-center tracking-tighter">
-              {`${Math.floor(displayMs / 1000 / 60)}:${('0' + (Math.floor(displayMs / 1000) % 60)).slice(-2)}.${('0' + Math.floor((displayMs % 1000) / 10)).slice(-2)}`}
+            <span style={S.timerDisplay}>
+              {`${Math.floor(displayMs/60000)}:${('0'+Math.floor(displayMs/1000%60)).slice(-2)}.${('0'+Math.floor(displayMs%1000/10)).slice(-2)}`}
             </span>
           )}
         </div>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={handlePiP}
-            className="bg-amber-600 hover:bg-amber-700 text-slate-950 p-1.5 rounded-none text-xs transition-colors"
-            title="Ventana Flotante (PiP)"
-          >
-            <Maximize2 className="w-4 h-4" />
-          </button>
-          <button
-            onClick={toggleTimerMode}
-            className="bg-amber-600 hover:bg-amber-700 text-slate-950 p-1.5 rounded-none text-xs transition-colors"
-            title="Cambiar Modo"
-          >
-            <Timer className="w-4 h-4" />
-          </button>
-          <button
-            onClick={toggleTimer}
-            className="bg-slate-950 text-white p-1.5 rounded-none text-xs transition-colors"
-          >
-            {timerStatus === 'running' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          </button>
-          <button
-            onClick={resetTimer}
-            className="bg-slate-950 text-white p-1.5 rounded-none text-xs transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
+        <div style={S.timerBtns}>
+          <button style={S.tBtn} onClick={handlePiP}><Maximize2 size={16} /></button>
+          <button style={S.tBtn} onClick={() => { resetTimer(); setTimerMode(timerMode==='timer'?'stopwatch':'timer'); setTimerTargetMs(90000); }}><RotateCcw size={16} /></button>
+          <button style={{ ...S.tBtn, background: '#f59e0b', color: '#000' }} onClick={toggleTimer}>{timerStatus === 'running' ? <Pause size={16} /> : <Play size={16} style={{ marginLeft: '2px' }} />}</button>
         </div>
       </div>
-      {/* Toast status alert for real-time peso_real saving */}
+
       {saveStatus && (
-        <div
-          id="realtime-save-toast"
-          className={`p-4 rounded-none border text-sm font-semibold flex items-center space-x-3 transition-all ${
-            saveStatus.type === 'success'
-              ? 'bg-emerald-950/90 text-emerald-200 border-emerald-500/50 shadow-lg shadow-emerald-900/30'
-              : 'bg-rose-950/90 text-rose-200 border-rose-500/50 shadow-lg'
-          }`}
-        >
-          {saveStatus.type === 'success' ? (
-            <Sparkles className="w-5 h-5 text-emerald-400 shrink-0" />
-          ) : (
-            <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0" />
-          )}
-          <span>{saveStatus.msg}</span>
+        <div style={{ background: saveStatus.type === 'success' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', border: `1px solid ${saveStatus.type === 'success' ? '#34d399' : '#f87171'}`, color: saveStatus.type === 'success' ? '#34d399' : '#f87171', padding: '12px', borderRadius: '0', marginBottom: '24px', fontSize: '13px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {saveStatus.msg}
         </div>
       )}
 
-      {/* OPERATIONAL "TRAINING MODE" LIST - Optimized for Weight Room Floor Mobile Use */}
-      <div className="space-y-4">
-        
-        {/* Dynamic Day Selector Tabs */}
-        {availableWorkouts.length > 0 && (
-          <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
-            {availableWorkouts.map((combo) => {
-              const isSelected = activeCombo?.semana === combo.semana && activeCombo?.dia === combo.dia;
-              return (
-                <button
-                  key={`${combo.semana}-${combo.dia}`}
-                  onClick={() => setActiveCombo(combo)}
-                  className={`px-4 py-2 rounded-none text-xs font-bold whitespace-nowrap transition-all flex items-center border ${
-                    isSelected
-                      ? 'bg-amber-500 border-amber-500 text-slate-950 shadow-lg shadow-amber-500/20'
-                      : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800 hover:border-slate-600 hover:text-white'
-                  }`}
-                >
-                  <span className="opacity-70 font-medium mr-1.5">Sem {combo.semana}</span>
-                  {combo.dia}
-                </button>
-              )
-            })}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between px-1 mt-2">
-          <div className="flex items-center space-x-2">
-            <Zap className="w-5 h-5 text-amber-500" />
-            <h2 className="text-lg font-bold text-slate-900">
-              Entrenamiento: {activeCombo ? `Semana ${activeCombo.semana} - ${activeCombo.dia}` : 'Sin Asignar'}
-            </h2>
-          </div>
-          <span className="text-xs text-slate-600 font-medium">Sincronización RLS</span>
+      {/* Días Selector */}
+      {availableWorkouts.length > 0 && (
+        <div style={S.dayTabs}>
+          {availableWorkouts.map(c => (
+            <button key={`${c.semana}-${c.dia}`} style={S.tabBtn(activeCombo?.semana === c.semana && activeCombo?.dia === c.dia)} onClick={() => setActiveCombo(c)}>
+              <span style={{ opacity: 0.6, marginRight: '4px' }}>Sem {c.semana}</span> {c.dia}
+            </button>
+          ))}
         </div>
+      )}
 
-        {dayLogs.length === 0 ? (
-          <div className="bg-slate-900/50 border-2 border-dashed border-slate-800 rounded-none p-10 text-center">
-             <CheckCircle2 className="w-12 h-12 text-slate-600 mx-auto mb-3 opacity-50" />
-             <p className="text-slate-400 text-sm font-medium">¡Día libre de entrenamiento! No hay ejercicios asignados.</p>
-          </div>
-        ) : (
-          dayLogs.map((log, index) => {
-            const isExpanded = expandedExerciseId === log.id;
-            const ex = log.exercise;
-          const isCompleted = log.completed_series?.every((s) => s);
+      {/* Lista de Ejercicios */}
+      {dayLogs.length === 0 ? (
+        <div style={S.emptyState}>¡Día libre! No hay ejercicios asignados.</div>
+      ) : (
+        dayLogs.map((log, idx) => {
+          const ex = log.exercise;
+          const exp = expandedExerciseId === log.id;
+          const done = log.completed_series?.every(s => s) || false;
 
           return (
-            <div
-              key={log.id}
-              id={`exercise-card-${log.id}`}
-              className={`bg-slate-900 border rounded-none transition-all duration-300 overflow-hidden ${
-                isCompleted
-                  ? 'border-emerald-500/40 bg-gradient-to-br from-slate-900 to-emerald-950/20'
-                  : isExpanded
-                  ? 'border-amber-500/60 ring-1 ring-amber-500/30 shadow-2xl'
-                  : 'border-slate-800 hover:border-slate-700'
-              }`}
-            >
-              {/* Card Header Header Bar */}
-              <div
-                onClick={() => setExpandedExerciseId(isExpanded ? null : log.id)}
-                className="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none"
-              >
-                <div className="flex items-center space-x-3.5">
-                  <div className="relative">
-                    <img
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));
-                      }}
-                      src={fixImageUrl(ex?.image_urls[0])}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=300&q=80';
-                      }}
-                      alt={ex?.name || 'Ejercicio'}
-                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-none object-contain bg-white p-1 border border-slate-800 cursor-pointer hover:scale-105 hover:ring-2 hover:ring-amber-500 transition-all"
-                    />
-                    <span className="absolute -top-2 -left-2 bg-slate-950 text-amber-400 text-xs font-black w-6 h-6 rounded-full flex items-center justify-center border border-slate-800">
-                      #{index + 1}
-                    </span>
+            <div key={log.id} style={S.card(exp, done)}>
+              <div style={S.cHeader} onClick={() => setExpandedExerciseId(exp ? null : log.id)}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div style={S.cImgWrap}>
+                    <img src={fixImageUrl(ex?.image_urls[0])} alt={ex?.name} style={S.cImg} onClick={e=>{e.stopPropagation(); if(ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));}} />
+                    <div style={S.cNumBadge}>#{idx+1}</div>
                   </div>
-
                   <div>
-                    <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-                      <span className="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-none border border-amber-500/20 uppercase">
-                        {ex?.equipment || 'Máquina'}
-                      </span>
-                      {ex?.primary_muscles?.map((m) => (
-                        <span key={m} className="bg-slate-800 text-slate-300 text-[10px] font-medium px-2 py-0.5 rounded-none uppercase">
-                          {m}
-                        </span>
-                      ))}
+                    <div style={{ display: 'flex', gap: '6px', marginBottom: '4px', flexWrap: 'wrap' }}>
+                      <span style={S.cEquipBadge}>{ex?.equipment || 'Máquina'}</span>
+                      {ex?.primary_muscles?.slice(0,2).map(m => <span key={m} style={S.cMuscleBadge}>{m}</span>)}
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-white mt-1 leading-snug">
-                      {ex?.name || 'Ejercicio sin nombre'}
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-0.5 font-medium">
-                      Meta Coach: <span className="text-white font-bold">{log.series} series</span> ×{' '}
-                      <span className="text-white font-bold">{log.repeticiones} reps</span> @{' '}
-                      <span className="text-amber-400 font-bold">{log.peso_real} KG</span>
-                    </p>
+                    <h3 style={S.cTitle}>{ex?.name}</h3>
+                    <p style={S.cMeta}>{log.series} series × {log.repeticiones} reps @ <span style={{ color: '#f59e0b', fontWeight: 800 }}>{log.peso_real} KG</span></p>
                   </div>
                 </div>
-
-                <div className="flex items-center space-x-3">
-                  {/* Current Lifted Weight Pill */}
-                  <div className="text-right hidden sm:block">
-                    <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Peso Levantado</span>
-                    <span className="text-lg font-black text-amber-400 font-mono">{log.peso_real} KG</span>
-                  </div>
-
-                  {/* Expand Chevron */}
-                  <div className={`p-2 rounded-none bg-slate-800 text-slate-300 transition-transform ${isExpanded ? 'rotate-180 bg-amber-500 text-slate-950' : ''}`}>
-                    <ChevronDown className="w-5 h-5" />
-                  </div>
-                </div>
+                <div style={S.cChevron(exp)}><ChevronDown size={20} /></div>
               </div>
 
-              {/* Card Expanded Content - Touch-Friendly Inputs for Weight Room */}
-              {isExpanded && (
-                <div className="px-4 pb-5 pt-2 border-t border-slate-800/80 space-y-5 bg-slate-950/40">
-                  {/* Coach Notes & Instructions */}
+              {exp && (
+                <div style={S.cExpanded}>
                   {log.notas && (
-                    <div className="bg-slate-900 border border-slate-800 rounded-none p-3 flex items-start space-x-2 text-xs">
-                      <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                      <div>
-                        <span className="font-bold text-amber-400">Indicación del Coach: </span>
-                        <span className="text-slate-300">{log.notas}</span>
-                      </div>
-                    </div>
+                    <div style={S.coachNote}><Info size={14} color="#f59e0b" style={{ flexShrink: 0, marginTop: '2px' }} /><div><strong style={{ color: '#f59e0b' }}>Coach:</strong> {log.notas}</div></div>
                   )}
 
-                  {/* BIG OPERATIONAL TOUCH INPUT FOR PESO_REAL */}
-                  <div className="bg-slate-900 border-2 border-amber-500/40 rounded-none p-4 sm:p-5 shadow-inner">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
-                          REGISTRO DE PESO LEVANTADO (KG)
-                        </span>
-                        <span className="text-[11px] text-slate-400">
-                          Edición en tiempo real • Último cambio:{' '}
-                          {new Date(log.fecha_ultimo_cambio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      </div>
-                      <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-none border border-emerald-500/20">
-                        Actual: {log.peso_real} KG
-                      </span>
+                  <div style={S.weightInputBox}>
+                    <div style={S.wiHeader}>
+                      <div><div style={S.wiTitle}>Registro de Peso (KG)</div><div style={S.wiSubtitle}>Actualización en vivo RLS</div></div>
+                      <div style={S.wiCurrent}>Actual: {log.peso_real} KG</div>
                     </div>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                      {/* Big Numeric Input with Touch Controls */}
-                      <div className="flex items-center space-x-2 w-full sm:w-auto justify-center">
-                        <button
-                          id={`btn-minus-5-${log.id}`}
-                          onClick={() => handleAdjustWeight(log.id, log.peso_real, -5)}
-                          className="bg-slate-800 hover:bg-slate-700 text-white font-bold w-12 h-12 rounded-none text-sm border border-slate-700 active:scale-95 transition-all cursor-pointer"
-                        >
-                          -5
-                        </button>
-                        <button
-                          id={`btn-minus-2.5-${log.id}`}
-                          onClick={() => handleAdjustWeight(log.id, log.peso_real, -2.5)}
-                          className="bg-slate-800 hover:bg-slate-700 text-white font-bold w-12 h-12 rounded-none text-sm border border-slate-700 active:scale-95 transition-all cursor-pointer"
-                        >
-                          -2.5
-                        </button>
-
-                        <div className="relative">
-                          <input
-                            id={`input-peso-real-${log.id}`}
-                            type="number"
-                            step="0.5"
-                            value={log.peso_real}
-                            onChange={(e) => handlePesoRealChange(log.id, parseFloat(e.target.value) || 0)}
-                            className="bg-slate-950 text-amber-400 font-mono font-black text-3xl w-28 h-14 text-center rounded-none border-2 border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/30"
-                          />
-                          <span className="absolute right-2 bottom-1 text-[10px] font-bold text-amber-500/60 uppercase">
-                            KG
-                          </span>
-                        </div>
-
-                        <button
-                          id={`btn-plus-2.5-${log.id}`}
-                          onClick={() => handleAdjustWeight(log.id, log.peso_real, 2.5)}
-                          className="bg-slate-800 hover:bg-slate-700 text-white font-bold w-12 h-12 rounded-none text-sm border border-slate-700 active:scale-95 transition-all cursor-pointer"
-                        >
-                          +2.5
-                        </button>
-                        <button
-                          id={`btn-plus-5-${log.id}`}
-                          onClick={() => handleAdjustWeight(log.id, log.peso_real, 5)}
-                          className="bg-slate-800 hover:bg-slate-700 text-white font-bold w-12 h-12 rounded-none text-sm border border-slate-700 active:scale-95 transition-all cursor-pointer"
-                        >
-                          +5
-                        </button>
+                    <div style={S.wiControls}>
+                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, Math.max(0, log.peso_real-5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-5</button>
+                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, Math.max(0, log.peso_real-2.5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-2.5</button>
+                      <div style={S.wiInputWrap}>
+                        <input style={S.wiInput} type="number" step="0.5" value={log.peso_real} onChange={e=>handlePesoRealChange(log.id, parseFloat(e.target.value)||0)} />
+                        <span style={S.wiInputLbl}>KG</span>
                       </div>
-
-                      {/* Quick Save Confirmation Button */}
-                      <button
-                        onClick={() => handlePesoRealChange(log.id, log.peso_real)}
-                        className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-3 rounded-none text-sm shadow-md flex items-center justify-center space-x-2 transition-all cursor-pointer"
-                      >
-                        <Save className="w-4 h-4" />
-                        <span>Guardar Peso</span>
-                      </button>
+                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, log.peso_real+2.5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+2.5</button>
+                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, log.peso_real+5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+5</button>
+                      <button style={S.wiSaveBtn} onClick={()=>handlePesoRealChange(log.id, log.peso_real)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.98)'} onMouseUp={e=>e.currentTarget.style.transform='none'}><Save size={18} /> Guardar</button>
                     </div>
                   </div>
 
-                  {/* SERIES CHECKLIST */}
                   <div>
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                      SEGUIMIENTO DE SERIES DE TRABAJO
-                    </span>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div style={{ fontSize: '10px', fontWeight: 800, color: '#888', textTransform: 'uppercase', marginBottom: '12px' }}>Seguimiento de Series</div>
+                    <div style={S.seriesGrid}>
                       {Array.from({ length: log.series }).map((_, sIdx) => {
-                        const isSetDone = log.completed_series?.[sIdx] || false;
+                        const d = log.completed_series?.[sIdx] || false;
                         return (
-                          <button
-                            key={sIdx}
-                            id={`series-check-${log.id}-${sIdx}`}
-                            onClick={() => handleToggleSeries(log.id, sIdx)}
-                            className={`p-3 rounded-none border flex items-center justify-between font-bold text-xs transition-all cursor-pointer ${
-                              isSetDone
-                                ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-md shadow-emerald-950/40'
-                                : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <span>Serie #{sIdx + 1}</span>
-                            <div className={`w-5 h-5 rounded-full flex items-center justify-center border ${isSetDone ? 'bg-emerald-500 border-emerald-400 text-slate-950' : 'border-slate-700'}`}>
-                              {isSetDone ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : null}
-                            </div>
-                          </button>
+                          <div key={sIdx} style={S.seriesBtn(d)} onClick={() => handleToggleSeries(log.id, sIdx)}>
+                            Serie #{sIdx+1} <div style={S.seriesCheck(d)}>{d && <Check size={12} strokeWidth={4} />}</div>
+                          </div>
                         );
                       })}
                     </div>
                   </div>
 
-                  {/* Exercise Instructions & GIF / Image Preview */}
                   {ex?.instructions && ex.instructions.length > 0 && (
-                    <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-2">
-                      <span className="text-xs font-semibold text-slate-300 uppercase tracking-wide block">
-                        Instrucciones de Ejecución de la Máquina:
-                      </span>
-                      <ol className="list-decimal list-inside text-xs text-slate-400 space-y-1">
-                        {ex.instructions.map((step, i) => (
-                          <li key={i}>{step}</li>
-                        ))}
-                      </ol>
+                    <div style={S.instructBox}>
+                      <div style={S.iTitle}>Instrucciones de Ejecución</div>
+                      <ol style={S.iList}>{ex.instructions.map((step, i) => <li key={i} style={{ marginBottom: '4px' }}>{step}</li>)}</ol>
                     </div>
                   )}
                 </div>
@@ -748,53 +381,16 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
           );
         })
       )}
-      </div>
-      {/* Lightbox / Fullscreen Image Viewer */}
+
       {fullscreenImage && (
-        <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
-          onClick={() => setFullscreenImage(null)}
-        >
-          <div className="relative max-w-3xl w-full">
-            <button 
-              onClick={() => setFullscreenImage(null)}
-              className="absolute -top-12 right-0 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors cursor-pointer"
-            >
-              Cerrar ✕
-            </button>
-            <img 
-              src={fullscreenImage} 
-              alt="Ejercicio ampliado" 
-              className="w-full h-auto max-h-[85vh] object-contain bg-white rounded-none p-4 shadow-2xl ring-1 ring-white/10"
-            />
-          </div>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }} onClick={() => setFullscreenImage(null)}>
+          <button style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '0', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>Cerrar ✕</button>
+          <img src={fullscreenImage} alt="" style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', background: '#fff', padding: '16px', borderRadius: '0' }} />
         </div>
       )}
 
-      {/* Edit Profile Modal */}
-      {showEditProfileModal && (
-        <EditProfileModal
-          profile={alumno}
-          onClose={() => setShowEditProfileModal(false)}
-          onProfileUpdated={() => {
-            onRefreshData();
-            loadRoutine();
-          }}
-        />
-      )}
-
-      {/* Edit Routine Modal */}
-      {showEditRoutineModal && activeRoutine && (
-        <EditRoutineModal
-          routine={activeRoutine}
-          exercises={dataService.getExercises()}
-          onClose={() => setShowEditRoutineModal(false)}
-          onRoutineUpdated={() => {
-            onRefreshData();
-            loadRoutine();
-          }}
-        />
-      )}
+      {showEditProfileModal && <EditProfileModal profile={alumno} onClose={() => setShowEditProfileModal(false)} onProfileUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} />}
+      {showEditRoutineModal && activeRoutine && <EditRoutineModal routine={activeRoutine} exercises={dataService.getExercises()} onClose={() => setShowEditRoutineModal(false)} onRoutineUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} />}
     </div>
   );
 };

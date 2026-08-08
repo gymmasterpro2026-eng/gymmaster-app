@@ -166,7 +166,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
     <div className="bg-white border border-slate-200 rounded-none p-6 shadow-2xl space-y-6">
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <div>
-          <span className="bg-amber-500/10 text-amber-600 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20 uppercase">
+          <span className="bg-amber-500/10 text-amber-600 text-xs font-bold px-3 py-1 rounded-none border border-amber-500/20 uppercase">
             Diseñador de Rutinas
           </span>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
@@ -229,7 +229,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
               }`}
             >
               <span>{activa ? 'RUTINA ACTIVA EN SALA DE PESAS' : 'RUTINA BORRADOR / INACTIVA'}</span>
-              <div className={`w-4 h-4 rounded-full ${activa ? 'bg-emerald-500' : 'bg-slate-400'}`} />
+              <div className={`w-4 h-4 rounded-none ${activa ? 'bg-emerald-500' : 'bg-slate-400'}`} />
             </button>
           </div>
         </div>
@@ -251,7 +251,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
               >
                 Semana {weekNum}
                 {hasExercises && (
-                  <span className={`ml-2 w-1.5 h-1.5 rounded-full ${selectedWeek === weekNum ? 'bg-white' : 'bg-emerald-500'}`} />
+                  <span className={`ml-2 w-1.5 h-1.5 rounded-none ${selectedWeek === weekNum ? 'bg-white' : 'bg-emerald-500'}`} />
                 )}
               </button>
             )
@@ -276,7 +276,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
               >
                 {day}
                 {hasExercises && (
-                  <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${selectedDay === day ? 'bg-slate-900 text-amber-400' : 'bg-slate-200 text-slate-600'}`}>
+                  <span className={`ml-2 px-1.5 py-0.5 rounded-none text-[10px] ${selectedDay === day ? 'bg-slate-900 text-amber-400' : 'bg-slate-200 text-slate-600'}`}>
                     {count} ej.
                   </span>
                 )}

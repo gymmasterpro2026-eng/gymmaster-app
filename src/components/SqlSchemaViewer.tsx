@@ -160,10 +160,10 @@ CREATE POLICY "RoutineLogs: Coach full access"
   return (
     <div id="sql-schema-viewer-root" className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30 uppercase flex items-center">
+            <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-none border border-emerald-500/30 uppercase flex items-center">
               <ShieldCheck className="w-3.5 h-3.5 mr-1" /> RLS Strict Security
             </span>
             <span className="text-xs text-slate-400">PostgreSQL / Supabase Engine</span>
@@ -179,14 +179,14 @@ CREATE POLICY "RoutineLogs: Coach full access"
         <div className="flex items-center space-x-3">
           <button
             onClick={handleCopy}
-            className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-2xl text-xs border border-slate-700 flex items-center space-x-2 transition-all cursor-pointer"
+            className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-none text-xs border border-slate-700 flex items-center space-x-2 transition-all cursor-pointer"
           >
             {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-amber-400" />}
             <span>{copied ? '¡Copiado!' : 'Copiar SQL'}</span>
           </button>
           <button
             onClick={handleDownload}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl text-xs shadow-lg flex items-center space-x-2 transition-all cursor-pointer"
+            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 transition-all cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>Descargar .SQL</span>
@@ -196,7 +196,7 @@ CREATE POLICY "RoutineLogs: Coach full access"
 
       {/* RLS Highlights Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1">
+        <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-1">
           <div className="flex items-center text-amber-400 font-bold text-xs uppercase">
             <Lock className="w-4 h-4 mr-1.5" />
             1. Regla de Oro Multi-Tenant
@@ -206,7 +206,7 @@ CREATE POLICY "RoutineLogs: Coach full access"
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1">
+        <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-1">
           <div className="flex items-center text-emerald-400 font-bold text-xs uppercase">
             <ShieldCheck className="w-4 h-4 mr-1.5" />
             2. Inmunidad al Time-Hack
@@ -216,7 +216,7 @@ CREATE POLICY "RoutineLogs: Coach full access"
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-1">
+        <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-1">
           <div className="flex items-center text-sky-400 font-bold text-xs uppercase">
             <Key className="w-4 h-4 mr-1.5" />
             3. Control Coach (<code className="text-sky-300">managed_by</code>)
@@ -228,13 +228,13 @@ CREATE POLICY "RoutineLogs: Coach full access"
       </div>
 
       {/* Code Viewer Container */}
-      <div className="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-slate-950 border border-slate-800 rounded-none overflow-hidden shadow-2xl">
         <div className="bg-slate-900 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
           <div className="flex items-center space-x-2 font-mono">
             <Terminal className="w-4 h-4 text-amber-400" />
             <span>supabase/schema.sql</span>
           </div>
-          <span className="text-[10px] bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-semibold">
+          <span className="text-[10px] bg-slate-800 px-2.5 py-1 rounded-none text-slate-300 font-semibold">
             PostgreSQL 15+ / Supabase RLS
           </span>
         </div>

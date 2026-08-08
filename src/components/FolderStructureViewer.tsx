@@ -32,9 +32,9 @@ export const FolderStructureViewer: React.FC = () => {
   return (
     <div id="folder-structure-viewer-root" className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-3xl p-6 shadow-xl">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-6 shadow-xl">
         <div className="flex items-center space-x-2">
-          <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30 uppercase flex items-center">
+          <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-none border border-amber-500/30 uppercase flex items-center">
             <FolderTree className="w-3.5 h-3.5 mr-1" /> Arquitectura de Software
           </span>
           <span className="text-xs text-slate-400">GymMaster Pro Architecture</span>
@@ -48,7 +48,7 @@ export const FolderStructureViewer: React.FC = () => {
       </div>
 
       {/* Tree Visualization Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 shadow-2xl space-y-4">
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
             Directorio Raíz del Proyecto React
@@ -60,7 +60,7 @@ export const FolderStructureViewer: React.FC = () => {
           {structureTree.map((item, index) => (
             <div
               key={index}
-              className={`p-2.5 rounded-xl flex items-center justify-between transition-colors ${
+              className={`p-2.5 rounded-none flex items-center justify-between transition-colors ${
                 item.isDir ? 'bg-slate-950 font-bold text-amber-300' : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800/80'
               }`}
             >

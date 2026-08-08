@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Dumbbell, Eye, EyeOff, Lock, User, ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Activity } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { GymTenant, Profile } from '../types';
 
@@ -13,142 +12,496 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isHoveringBtn, setIsHoveringBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles: {x: number; y: number; vx: number; vy: number; size: number; opacity: number}[] = [];
+    for (let i = 0; i < 60; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.5 + 0.1,
+      });
+    }
+
+    let animId: number;
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212, 255, 0, ${p.opacity})`;
+        ctx.fill();
+      });
+      particles.forEach((p1, i) => {
+        particles.slice(i + 1).forEach(p2 => {
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(212, 255, 0, ${0.05 * (1 - dist / 100)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        });
+      });
+      animId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
     if (!username.trim()) {
       setError('Por favor, ingresa tu usuario.');
       return;
     }
+    setIsLoading(true);
+    setTimeout(() => {
+      const result = dataService.login(username, password);
+      if (!result) {
+        setError('Usuario o contraseña incorrectos.');
+        setIsLoading(false);
+        return;
+      }
+      onEnterApp(result.gym, result.profile);
+      setIsLoading(false);
+    }, 600);
+  };
 
-    const result = dataService.login(username, password);
-    if (!result) {
-      setError('Usuario o contraseña incorrectos.');
-      return;
-    }
+  const quickLogin = (user: string, pass: string) => {
+    const result = dataService.login(user, pass);
+    if (result) onEnterApp(result.gym, result.profile);
+  };
 
-    onEnterApp(result.gym, result.profile);
+  const S: Record<string, React.CSSProperties> = {
+    root: {
+      minHeight: '100vh',
+      background: 'url(/gym_environment.png) center/cover no-repeat',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+      position: 'relative',
+      overflow: 'hidden',
+      padding: '20px',
+    },
+    canvas: {
+      position: 'absolute',
+      inset: 0,
+      width: '100%',
+      height: '100%',
+      pointerEvents: 'none',
+    },
+    glow1: {
+      position: 'absolute',
+      top: '-20%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '600px',
+      height: '400px',
+      background: 'radial-gradient(ellipse, rgba(245,158,11,0.08) 0%, transparent 70%)',
+      pointerEvents: 'none',
+    },
+    glow2: {
+      position: 'absolute',
+      bottom: '-10%',
+      right: '-10%',
+      width: '400px',
+      height: '400px',
+      background: 'radial-gradient(ellipse, rgba(245,158,11,0.04) 0%, transparent 70%)',
+      pointerEvents: 'none',
+    },
+    card: {
+      position: 'relative',
+      zIndex: 10,
+      width: '100%',
+      maxWidth: '440px',
+      background: 'rgba(255,255,255,0.02)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '0',
+      padding: '48px 40px',
+      backdropFilter: 'blur(40px)',
+      WebkitBackdropFilter: 'blur(40px)',
+      boxShadow: '0 25px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
+      opacity: mounted ? 1 : 0,
+      transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+      transition: 'opacity 0.7s ease, transform 0.7s ease',
+    },
+    shine: {
+      position: 'absolute',
+      inset: 0,
+      borderRadius: '0',
+      background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%)',
+      pointerEvents: 'none',
+    },
+    logoWrap: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginBottom: '40px',
+    },
+    logoBox: {
+      width: '64px',
+      height: '64px',
+      background: 'linear-gradient(135deg, #f59e0b, #a8cc00)',
+      borderRadius: '0',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: '20px',
+      boxShadow: '0 0 40px rgba(245,158,11,0.4), 0 8px 30px rgba(0,0,0,0.3)',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    logoShine: {
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(135deg, rgba(255,255,255,0.3), transparent)',
+      borderRadius: '0',
+    },
+    title: {
+      fontSize: '36px',
+      fontWeight: 900,
+      color: '#ffffff',
+      margin: 0,
+      letterSpacing: '-1px',
+      textAlign: 'center',
+      lineHeight: 1.1,
+    },
+    accent: { color: '#D4FF00' },
+    subtitle: {
+      fontSize: '13px',
+      color: 'rgba(255,255,255,0.4)',
+      margin: '8px 0 0',
+      textAlign: 'center',
+      fontWeight: 500,
+    },
+    form: { display: 'flex', flexDirection: 'column', gap: '20px' },
+    errorBox: {
+      background: 'rgba(239,68,68,0.08)',
+      border: '1px solid rgba(239,68,68,0.2)',
+      borderRadius: '0',
+      padding: '12px 16px',
+      color: '#fc8181',
+      fontSize: '13px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+    },
+    errDot: {
+      width: '6px', height: '6px',
+      borderRadius: '0', background: '#fc8181', flexShrink: 0,
+    },
+    fieldGroup: { display: 'flex', flexDirection: 'column', gap: '8px' },
+    label: {
+      fontSize: '11px', fontWeight: 700,
+      color: 'rgba(255,255,255,0.4)',
+      textTransform: 'uppercase', letterSpacing: '0.1em',
+    },
+    inputWrap: { position: 'relative', display: 'flex', alignItems: 'center' },
+    inputIcon: {
+      position: 'absolute', left: '16px',
+      color: '#64748b', pointerEvents: 'none',
+      display: 'flex', alignItems: 'center',
+    },
+    input: {
+      width: '100%',
+      background: '#e2e8f0',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '0',
+      padding: '14px 16px 14px 46px',
+      color: '#0f172a', fontSize: '14px', fontWeight: 500,
+      outline: 'none', boxSizing: 'border-box',
+      transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
+    },
+    inputPr: {
+      width: '100%',
+      background: '#e2e8f0',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '0',
+      padding: '14px 48px 14px 46px',
+      color: '#0f172a', fontSize: '14px', fontWeight: 500,
+      outline: 'none', boxSizing: 'border-box',
+      transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
+    },
+    eyeBtn: {
+      position: 'absolute', right: '14px',
+      background: 'none', border: 'none', cursor: 'pointer',
+      color: 'rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center',
+      padding: '4px', transition: 'color 0.2s',
+    },
+    submitBtn: {
+      width: '100%',
+      background: 'linear-gradient(135deg, #f59e0b, #b8db00)',
+      color: '#000000', fontWeight: 900, fontSize: '12px',
+      letterSpacing: '0.12em', textTransform: 'uppercase',
+      border: 'none', borderRadius: '0', padding: '16px',
+      cursor: 'pointer', display: 'flex', alignItems: 'center',
+      justifyContent: 'center', gap: '8px', marginTop: '4px',
+      boxShadow: '0 0 30px rgba(245,158,11,0.2)',
+      transition: 'transform 0.15s, box-shadow 0.2s, filter 0.2s',
+    },
+    divider: {
+      display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px',
+    },
+    divLine: { flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' },
+    divText: {
+      fontSize: '11px', color: 'rgba(255,255,255,0.2)', fontWeight: 600,
+      letterSpacing: '0.1em', textTransform: 'uppercase',
+    },
+    quickGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' },
+    qBtn: {
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '0', padding: '12px 14px',
+      cursor: 'pointer', textAlign: 'left',
+      transition: 'background 0.2s, border-color 0.2s, transform 0.15s',
+      display: 'flex', flexDirection: 'column', gap: '2px',
+    },
+    qLabel: { fontSize: '11px', fontWeight: 700, color: '#D4FF00' },
+    qSub: { fontSize: '10px', color: 'rgba(255,255,255,0.3)' },
+    footer: {
+      marginTop: '32px', textAlign: 'center',
+      fontSize: '11px', color: 'rgba(255,255,255,0.2)', lineHeight: 1.8,
+    },
+    dot: { color: 'rgba(245,158,11,0.4)', margin: '0 6px' },
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center p-4 selection:bg-[#D4FF00] selection:text-black font-sans text-white relative overflow-hidden bg-black">
-      
-      {/* Full-screen Background Image */}
-      <div 
-        className="absolute inset-0 bg-[url('/gym_bg.jpg')] bg-cover bg-center bg-no-repeat"
-      />
+    <div style={S.root}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @keyframes spin { to { transform: rotate(360deg); } }
+        input[data-gm]::placeholder { color: #94a3b8 !important; }
+        * { box-sizing: border-box; }
+      `}</style>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-md relative z-10"
-      >
-        <div className="backdrop-blur-xl bg-white/[0.02] border border-white/10 rounded-3xl p-10 shadow-2xl overflow-hidden relative">
-          
-          {/* Shine effect across the card */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.01] to-white/[0.05] pointer-events-none rounded-3xl" />
+      <canvas ref={canvasRef} style={S.canvas} />
+      <div style={S.glow1} />
+      <div style={S.glow2} />
 
-          <div className="relative z-10 flex flex-col items-center mb-10">
-            <motion.div 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
-              className="bg-gradient-to-br from-[#D4FF00] to-[#b8db00] p-4 rounded-2xl text-black shadow-[0_0_30px_rgba(212,255,0,0.3)] mb-6 relative group cursor-default"
-            >
-              <Dumbbell className="w-8 h-8 stroke-[2.5] transform group-hover:rotate-12 transition-transform duration-300" />
-            </motion.div>
-            <h1 className="text-4xl font-black tracking-tighter text-white mb-2 text-center">
-              GymMaster <span className="text-[#D4FF00]">PRO</span>
-            </h1>
-            <p className="text-sm text-zinc-400 font-medium text-center">Gestión inteligente de entrenamientos</p>
+      <div style={S.card}>
+        <div style={S.shine} />
+
+        <div style={S.logoWrap}>
+          <div style={S.logoBox}>
+            <div style={S.logoShine} />
+            <Activity size={32} color="#000" />
           </div>
-
-          <form onSubmit={handleLogin} className="relative z-10 space-y-6">
-            {error && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center font-medium flex items-center justify-center gap-2"
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                {error}
-              </motion.div>
-            )}
-            
-            <div className="space-y-2">
-              <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Usuario</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <User className="w-5 h-5 text-zinc-500 group-focus-within:text-[#D4FF00] transition-colors" />
-                </div>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 text-white pl-12 pr-4 py-3.5 rounded-xl outline-none focus:border-[#D4FF00]/50 focus:bg-black/60 focus:ring-4 focus:ring-[#D4FF00]/10 transition-all placeholder:text-zinc-600 font-medium"
-                  placeholder="Ej. admin"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2 relative">
-              <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Contraseña</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="w-5 h-5 text-zinc-500 group-focus-within:text-[#D4FF00] transition-colors" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 text-white pl-12 pr-12 py-3.5 rounded-xl outline-none focus:border-[#D4FF00]/50 focus:bg-black/60 focus:ring-4 focus:ring-[#D4FF00]/10 transition-all placeholder:text-zinc-600 font-medium tracking-wider"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-zinc-500 hover:text-[#D4FF00] transition-colors focus:outline-none"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            <motion.button
-              type="submit"
-              onMouseEnter={() => setIsHoveringBtn(true)}
-              onMouseLeave={() => setIsHoveringBtn(false)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-[#D4FF00] to-[#b8db00] text-black font-black py-4 rounded-xl uppercase tracking-widest text-xs transition-all shadow-[0_0_20px_rgba(212,255,0,0.2)] hover:shadow-[0_0_30px_rgba(212,255,0,0.4)] mt-4 flex items-center justify-center gap-2 overflow-hidden relative"
-            >
-              <span className="relative z-10">Ingresar al Sistema</span>
-              <motion.div
-                animate={{ x: isHoveringBtn ? 5 : 0 }}
-                className="relative z-10"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </motion.div>
-              {/* Button shine effect */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent hover:animate-[shimmer_1.5s_infinite]" />
-            </motion.button>
-          </form>
+          <h1 style={S.title}>
+            GymMaster <span style={S.accent}>PRO</span>
+          </h1>
+          <p style={S.subtitle}>Gestión inteligente de entrenamientos</p>
         </div>
 
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-8 text-xs text-center text-zinc-600 font-medium flex flex-col items-center gap-1"
-        >
-          <span>© 2026 GymMaster Pro</span>
-          <span className="text-zinc-700">Arquitectura RLS Estricta • Multi-Tenant</span>
-        </motion.p>
-      </motion.div>
+        <form onSubmit={handleLogin} style={S.form}>
+          {error && (
+            <div style={S.errorBox}>
+              <div style={S.errDot} />
+              {error}
+            </div>
+          )}
+
+          <div style={S.fieldGroup}>
+            <label style={S.label}>Usuario</label>
+            <div style={S.inputWrap}>
+              <span style={S.inputIcon}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input
+                data-gm
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                placeholder="gym"
+                style={S.input}
+                onFocus={e => {
+                  e.target.style.borderColor = 'rgba(245,158,11,0.4)';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.06)';
+                  e.target.style.background = '#f8fafc';
+                }}
+                onBlur={e => {
+                  e.target.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#e2e8f0';
+                }}
+              />
+            </div>
+          </div>
+
+          <div style={S.fieldGroup}>
+            <label style={S.label}>Contraseña</label>
+            <div style={S.inputWrap}>
+              <span style={S.inputIcon}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input
+                data-gm
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="12345"
+                style={S.inputPr}
+                onFocus={e => {
+                  e.target.style.borderColor = 'rgba(245,158,11,0.4)';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.06)';
+                  e.target.style.background = '#f8fafc';
+                }}
+                onBlur={e => {
+                  e.target.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#e2e8f0';
+                }}
+              />
+              <button
+                type="button"
+                style={S.eyeBtn}
+                onClick={() => setShowPassword(!showPassword)}
+                onMouseEnter={e => { e.currentTarget.style.color = 'rgba(245,158,11,0.8)'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.3)'; }}
+              >
+                {showPassword ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            style={{ ...S.submitBtn, filter: isLoading ? 'brightness(0.85)' : 'brightness(1)' }}
+            onMouseEnter={e => {
+              if (!isLoading) {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 0 40px rgba(245,158,11,0.35)';
+              }
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(245,158,11,0.2)';
+            }}
+          >
+            {isLoading ? (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                  style={{ animation: 'spin 0.8s linear infinite' }}>
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                </svg>
+                Verificando...
+              </>
+            ) : (
+              <>
+                Ingresar al Sistema
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </>
+            )}
+          </button>
+        </form>
+
+        <div style={S.divider}>
+          <div style={S.divLine} />
+          <span style={S.divText}>Acceso rápido</span>
+          <div style={S.divLine} />
+        </div>
+
+        <div style={S.quickGrid}>
+          <button
+            type="button"
+            style={S.qBtn}
+            onClick={() => quickLogin('gym', '12345')}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(245,158,11,0.05)';
+              e.currentTarget.style.borderColor = 'rgba(245,158,11,0.2)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.transform = 'none';
+            }}
+          >
+            <span style={S.qLabel}>⚡ Coach Principal</span>
+            <span style={S.qSub}>gym / 12345</span>
+          </button>
+
+          <button
+            type="button"
+            style={S.qBtn}
+            onClick={() => quickLogin('santiago.gomez@alumno.gymmaster.io', 'santi123')}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.transform = 'none';
+            }}
+          >
+            <span style={{ ...S.qLabel, color: 'rgba(255,255,255,0.65)' }}>🏋️ Santiago Gómez</span>
+            <span style={S.qSub}>Alumno demo</span>
+          </button>
+        </div>
+
+        <p style={S.footer}>
+          © 2026 GymMaster Pro
+          <span style={S.dot}>•</span>
+          Arquitectura RLS Estricta
+          <span style={S.dot}>•</span>
+          Multi-Tenant
+        </p>
+      </div>
     </div>
   );
 }

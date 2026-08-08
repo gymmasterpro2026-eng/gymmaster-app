@@ -91,10 +91,10 @@ runImport();`;
   return (
     <div id="import-script-viewer-root" className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/30 uppercase flex items-center">
+            <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-none border border-amber-500/30 uppercase flex items-center">
               <FileCode2 className="w-3.5 h-3.5 mr-1" /> Script Node.js de Importación
             </span>
             <span className="text-xs text-slate-400">GitHub exercises-dataset Parser</span>
@@ -110,14 +110,14 @@ runImport();`;
         <div className="flex items-center space-x-3">
           <button
             onClick={handleCopy}
-            className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-2xl text-xs border border-slate-700 flex items-center space-x-2 transition-all cursor-pointer"
+            className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-none text-xs border border-slate-700 flex items-center space-x-2 transition-all cursor-pointer"
           >
             {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-amber-400" />}
             <span>{copied ? '¡Copiado!' : 'Copiar Script'}</span>
           </button>
           <button
             onClick={handleDownload}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl text-xs shadow-lg flex items-center space-x-2 transition-all cursor-pointer"
+            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 transition-all cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>Descargar .JS</span>
@@ -126,18 +126,18 @@ runImport();`;
       </div>
 
       {/* Instruction Steps */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-3">
+      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 space-y-3">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center">
           <Play className="w-4 h-4 text-amber-400 mr-2" />
           ¿Cómo ejecutar la migración en producción?
         </h3>
         <ol className="list-decimal list-inside text-xs text-slate-300 space-y-2">
           <li>
-            Asegúrate de instalar las dependencias con <code className="bg-slate-950 px-2 py-1 rounded text-amber-300 font-mono">npm install @supabase/supabase-js</code>.
+            Asegúrate de instalar las dependencias con <code className="bg-slate-950 px-2 py-1 rounded-none text-amber-300 font-mono">npm install @supabase/supabase-js</code>.
           </li>
           <li>
             Ejecuta el script pasando tus llaves de Supabase:
-            <pre className="mt-1 bg-slate-950 p-3 rounded-xl text-amber-400 font-mono overflow-x-auto">
+            <pre className="mt-1 bg-slate-950 p-3 rounded-none text-amber-400 font-mono overflow-x-auto">
               SUPABASE_URL=https://tu-proyecto.supabase.co SUPABASE_SERVICE_ROLE_KEY=ey... node scripts/import-exercises.js
             </pre>
           </li>
@@ -148,7 +148,7 @@ runImport();`;
       </div>
 
       {/* Code Container */}
-      <div className="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-slate-950 border border-slate-800 rounded-none overflow-hidden shadow-2xl">
         <div className="bg-slate-900 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
           <div className="flex items-center space-x-2">
             <Terminal className="w-4 h-4 text-amber-400" />

@@ -126,10 +126,8 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full overflow-hidden bg-slate-300 relative">
-      
-      {/* Subtle Background Texture for entire App */}
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none mix-blend-overlay z-0"></div>
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', width: '100%', overflow: 'hidden', background: '#cbd5e1', position: 'relative', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'); * { box-sizing: border-box; margin: 0; }`}</style>
       
       <Navbar
         currentRole={currentRole}
@@ -147,12 +145,11 @@ export default function App() {
       />
 
       {/* Main Content Scrollable Area */}
-      <div className="flex-1 flex flex-col h-screen overflow-y-auto custom-scrollbar relative z-10">
-        
-        {/* Glow effect at top of main area */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-[#D4FF00] rounded-full blur-[120px] opacity-[0.03] pointer-events-none" />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflowY: 'auto', position: 'relative', zIndex: 10 }}>
+        {/* Glow */}
+        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '75%', height: '128px', background: '#f59e0b', borderRadius: '0', filter: 'blur(120px)', opacity: 0.02, pointerEvents: 'none' }} />
 
-        <main id="main-content-area" className="flex-1 p-6 md:p-10 max-w-[1600px] mx-auto w-full">
+        <main id="main-content-area" style={{ flex: 1, padding: '32px 40px', maxWidth: '1600px', margin: '0 auto', width: '100%' }}>
           {currentTab === 'home' && (
           <>
             {currentRole === 'alumno' ? (

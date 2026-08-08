@@ -41,11 +41,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-5 relative">
+      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 max-w-md w-full shadow-2xl space-y-5 relative">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-4">
           <div className="flex items-center space-x-2">
-            <div className="bg-amber-500/20 text-amber-400 p-2 rounded-2xl border border-amber-500/30">
+            <div className="bg-amber-500/20 text-amber-400 p-2 rounded-none border border-amber-500/30">
               <Camera className="w-5 h-5" />
             </div>
             <div>
@@ -53,7 +53,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
               <p className="text-xs text-slate-400">Personaliza la imagen y datos del alumno</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800">
+          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-none hover:bg-slate-800">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -65,12 +65,12 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
               <img
                 src={avatarUrl}
                 alt="Vista previa"
-                className="w-24 h-24 rounded-full object-cover ring-4 ring-amber-500/40 shadow-xl"
+                className="w-24 h-24 rounded-none object-cover ring-4 ring-amber-500/40 shadow-xl"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = AVATAR_PRESETS[0];
                 }}
               />
-              <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 bg-black/40 rounded-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera className="w-6 h-6 text-amber-400" />
               </div>
             </div>
@@ -86,7 +86,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                     key={idx}
                     type="button"
                     onClick={() => setAvatarUrl(preset)}
-                    className={`w-9 h-9 rounded-full overflow-hidden border-2 transition-all cursor-pointer ${
+                    className={`w-9 h-9 rounded-none overflow-hidden border-2 transition-all cursor-pointer ${
                       avatarUrl === preset ? 'border-amber-500 scale-110 shadow-lg' : 'border-slate-800 opacity-60 hover:opacity-100'
                     }`}
                   >
@@ -105,7 +105,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://..."
-              className="w-full bg-slate-950 text-white text-xs rounded-2xl px-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
+              className="w-full bg-slate-950 text-white text-xs rounded-none px-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
             />
           </div>
 
@@ -119,7 +119,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="w-full bg-slate-950 text-white text-xs rounded-2xl pl-9 pr-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
+                className="w-full bg-slate-950 text-white text-xs rounded-none pl-9 pr-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
               />
             </div>
           </div>
@@ -134,7 +134,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+52 55 0000 0000"
-                className="w-full bg-slate-950 text-white text-xs rounded-2xl pl-9 pr-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
+                className="w-full bg-slate-950 text-white text-xs rounded-none pl-9 pr-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
               />
             </div>
           </div>
@@ -144,14 +144,14 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-2xl text-xs font-bold text-slate-400 hover:text-white"
+              className="px-4 py-2.5 rounded-none text-xs font-bold text-slate-400 hover:text-white"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSaving}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-5 py-2.5 rounded-2xl text-xs shadow-lg flex items-center space-x-2 hover:brightness-110 transition-all cursor-pointer"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-5 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 hover:brightness-110 transition-all cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>{isSaving ? 'Guardando...' : 'Guardar Cambios'}</span>
