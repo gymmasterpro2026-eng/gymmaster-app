@@ -39,8 +39,8 @@ const S = {
   statLbl: { fontSize: '10px', fontWeight: 800, color: '#555', textTransform: 'uppercase' as const, letterSpacing: '0.1em', margin: 0 },
   
   circleWrap: { position: 'relative' as const, width: '100%', maxWidth: '280px', aspectRatio: '1/1', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 40px' },
-  svg: { position: 'absolute' as const, inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)' },
-  circleInner: { position: 'absolute' as const, inset: 0, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', paddingTop: '8px' },
+  svg: { position: 'absolute' as const, inset: 0, width: '100%', height: '100%', transform: 'rotate(-90deg)', pointerEvents: 'none' as const },
+  circleInner: { position: 'absolute' as const, inset: 0, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', paddingTop: '8px', zIndex: 10 },
   timeRemaining: { fontSize: '56px', fontWeight: 900, color: '#fff', fontFamily: 'monospace', letterSpacing: '-2px', margin: 0, lineHeight: 1 },
   timeTotal: { fontSize: '20px', fontWeight: 800, color: '#34d399', fontFamily: 'monospace', margin: '4px 0 0' },
   minInput: { width: '60px', background: 'transparent', border: 'none', borderBottom: '2px solid transparent', color: '#34d399', fontSize: '24px', fontWeight: 900, textAlign: 'center' as const, outline: 'none', marginBottom: '8px' },
@@ -109,6 +109,12 @@ export function RunningTrainer() {
   };
 
   const handleLevelSelect = (level: number) => {
+    // Unlock Web Speech API para móviles
+    if ('speechSynthesis' in window) {
+      const unlock = new SpeechSynthesisUtterance('');
+      unlock.volume = 0;
+      window.speechSynthesis.speak(unlock);
+    }
     setRoutine(generateRoutine(level));
     setSelectedLevel(level); setTotalSecondsElapsed(0); setCurrentPhaseIndex(0); setIsActive(false);
   };
@@ -261,12 +267,31 @@ export function RunningTrainer() {
                     </svg>
                     
                     <div style={S.circleInner}>
-                      <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                        <input type="number" min="11" max="120" style={S.minInput} defaultValue={routine.duracion_total_minutos}
-                          onBlur={e => { const val = parseInt(e.target.value); if (val > 10 && selectedLevel && val !== routine.duracion_total_minutos) { setRoutine(generateRoutine(selectedLevel, val)); if (isActive || totalSecondsElapsed > 0) resetTimer(); } else e.target.value = routine.duracion_total_minutos.toString(); }}
-                          onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.blur(); }}
-                          onFocus={e => e.target.style.borderBottomColor = '#34d399'} onMouseLeave={e => e.target.style.borderBottomColor = 'transparent'} />
-                        <span style={{ color: '#34d399', fontSize: '12px', fontWeight: 800 }}>MIN</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button 
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            if (routine.duracion_total_minutos > 11 && selectedLevel) {
+                              setRoutine(generateRoutine(selectedLevel, routine.duracion_total_minutos - 1));
+                              if (isActive || totalSecondsElapsed > 0) resetTimer();
+                            }
+                          }}
+                          style={{ background: 'transparent', border: '1px solid #334155', color: '#888', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '14px', padding: 0 }}
+                        >-</button>
+                        <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                          <span style={{ color: '#34d399', fontSize: '24px', fontWeight: 900 }}>{routine.duracion_total_minutos}</span>
+                          <span style={{ color: '#34d399', fontSize: '12px', fontWeight: 800, marginLeft: '4px' }}>MIN</span>
+                        </div>
+                        <button 
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            if (routine.duracion_total_minutos < 120 && selectedLevel) {
+                              setRoutine(generateRoutine(selectedLevel, routine.duracion_total_minutos + 1));
+                              if (isActive || totalSecondsElapsed > 0) resetTimer();
+                            }
+                          }}
+                          style={{ background: 'transparent', border: '1px solid #334155', color: '#888', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '14px', padding: 0 }}
+                        >+</button>
                       </div>
                       <span style={S.timeRemaining} className="gm-circle-inner-time">{formatTime(pRemainingSecs)}</span>
                       <span style={S.timeTotal} className="gm-circle-inner-total">{formatTime(totalSecondsElapsed)}</span>
