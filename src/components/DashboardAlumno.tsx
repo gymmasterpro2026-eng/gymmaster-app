@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Dumbbell, AlertTriangle, RotateCcw, ChevronDown, Check, Save,
-  Timer, Maximize2, Camera, Edit3, Pencil, Info, ShieldCheck, Zap
+  Timer, Maximize2, Camera, Edit3, Pencil, Info, ShieldCheck, Zap, Play, Pause, Square
 } from 'lucide-react';
 import { Profile, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
@@ -328,7 +328,40 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                     <p style={S.cMeta}>{log.series} series × {log.repeticiones} reps @ <span style={{ color: '#f59e0b', fontWeight: 800 }}>{log.peso_real} KG</span></p>
                   </div>
                 </div>
-                <div style={S.cChevron(exp)}><ChevronDown size={20} /></div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    {Array.from({ length: log.series }).map((_, sIdx) => {
+                      const d = log.completed_series?.[sIdx] || false;
+                      return (
+                        <div 
+                          key={sIdx} 
+                          style={{ 
+                            display: 'flex', alignItems: 'center', gap: '8px',
+                            cursor: 'pointer', transition: 'all 0.2s', 
+                            background: d ? 'rgba(16,185,129,0.15)' : '#1e293b', 
+                            border: `1px solid ${d ? '#34d399' : '#334155'}`, 
+                            padding: '8px 12px',
+                            color: d ? '#34d399' : '#94a3b8',
+                            fontSize: '11px', fontWeight: 800, textTransform: 'uppercase',
+                            userSelect: 'none'
+                          }} 
+                          onClick={(e) => { e.stopPropagation(); handleToggleSeries(log.id, sIdx); }}
+                          title={`Marcar ${sIdx+1} Serie`}
+                        >
+                          {sIdx+1} Serie
+                          <div style={{ 
+                            width: '16px', height: '16px', border: `2px solid ${d ? '#34d399' : '#475569'}`, 
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            background: d ? '#34d399' : 'transparent'
+                          }}>
+                            {d && <Check size={12} strokeWidth={4} color="#000" />}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={S.cChevron(exp)}><ChevronDown size={20} /></div>
+                </div>
               </div>
 
               {exp && (
@@ -355,19 +388,6 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                     </div>
                   </div>
 
-                  <div>
-                    <div style={{ fontSize: '10px', fontWeight: 800, color: '#888', textTransform: 'uppercase', marginBottom: '12px' }}>Seguimiento de Series</div>
-                    <div style={S.seriesGrid}>
-                      {Array.from({ length: log.series }).map((_, sIdx) => {
-                        const d = log.completed_series?.[sIdx] || false;
-                        return (
-                          <div key={sIdx} style={S.seriesBtn(d)} onClick={() => handleToggleSeries(log.id, sIdx)}>
-                            Serie #{sIdx+1} <div style={S.seriesCheck(d)}>{d && <Check size={12} strokeWidth={4} />}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
 
                   {ex?.instructions && ex.instructions.length > 0 && (
                     <div style={S.instructBox}>
@@ -385,7 +405,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
       {fullscreenImage && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }} onClick={() => setFullscreenImage(null)}>
           <button style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '0', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>Cerrar ✕</button>
-          <img src={fullscreenImage} alt="" style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', background: '#fff', padding: '16px', borderRadius: '0' }} />
+          <img src={fullscreenImage} alt="" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#fff', padding: '16px', borderRadius: '0' }} />
         </div>
       )}
 
