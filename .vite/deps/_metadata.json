@@ -1,52 +1,8 @@
 {
-  "hash": "87a44ab9",
+  "hash": "21177570",
   "configHash": "8458719d",
-  "lockfileHash": "dcccb003",
-  "browserHash": "1189a14b",
-  "optimized": {
-    "react/jsx-dev-runtime": {
-      "src": "../../node_modules/react/jsx-dev-runtime.js",
-      "file": "react_jsx-dev-runtime.js",
-      "fileHash": "978ca0c3",
-      "needsInterop": true
-    },
-    "react": {
-      "src": "../../node_modules/react/index.js",
-      "file": "react.js",
-      "fileHash": "c3843c74",
-      "needsInterop": true
-    },
-    "react-dom/client": {
-      "src": "../../node_modules/react-dom/client.js",
-      "file": "react-dom_client.js",
-      "fileHash": "f1994cec",
-      "needsInterop": true
-    },
-    "lucide-react": {
-      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
-      "file": "lucide-react.js",
-      "fileHash": "879eb541",
-      "needsInterop": false
-    },
-    "motion/react": {
-      "src": "../../node_modules/motion/dist/es/react.mjs",
-      "file": "motion_react.js",
-      "fileHash": "f0230aab",
-      "needsInterop": false
-    },
-    "@supabase/supabase-js": {
-      "src": "../../node_modules/@supabase/supabase-js/dist/index.mjs",
-      "file": "@supabase_supabase-js.js",
-      "fileHash": "3f1dbab8",
-      "needsInterop": false
-    }
-  },
-  "chunks": {
-    "chunk-JCOLI5TX": {
-      "file": "chunk-JCOLI5TX.js"
-    },
-    "chunk-PR4QN5HX": {
-      "file": "chunk-PR4QN5HX.js"
-    }
-  }
+  "lockfileHash": "b62b0114",
+  "browserHash": "8100b5b6",
+  "optimized": {},
+  "chunks": {}
 }
