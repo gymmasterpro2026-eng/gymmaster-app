@@ -387,6 +387,19 @@ class DataService {
     return profile;
   }
 
+  deleteAlumno(alumnoId: string) {
+    this.profiles = this.profiles.filter((p) => p.id !== alumnoId);
+    this.routines = this.routines.filter((r) => r.alumno_id !== alumnoId);
+    this.persist();
+
+    if (supabase) {
+      this.saveToCloud(async () => {
+        await supabase.from('gym_profiles').delete().eq('id', alumnoId);
+      });
+    }
+    this.notify();
+  }
+
   // EXERCISES CATALOG
   getExercises(): Exercise[] {
     if (this.language === 'es') {

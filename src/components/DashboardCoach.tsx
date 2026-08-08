@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import {
-  Users, UserPlus, Dumbbell, Shield, Plus, CheckCircle2, AlertCircle, ChevronRight, RotateCcw, Edit2, Save, X, Upload
+  Users, UserPlus, Dumbbell, Shield, Plus, CheckCircle2, AlertCircle, ChevronRight, RotateCcw, Edit2, Save, X, Upload, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Profile, Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { RoutineBuilder } from './RoutineBuilder';
+import { EditProfileModal } from './EditProfileModal';
 
 interface DashboardCoachProps {
   coach: Profile;
@@ -67,6 +68,14 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [routineBuilderAlumnoId, setRoutineBuilderAlumnoId] = useState<string | undefined>(undefined);
   const [showAddAlumnoModal, setShowAddAlumnoModal] = useState<boolean>(false);
   const [selectedAlumnoForDetails, setSelectedAlumnoForDetails] = useState<string | null>(null);
+  const [editingProfileTarget, setEditingProfileTarget] = useState<Profile | null>(null);
+
+  const handleDeleteAlumno = (alumno: Profile) => {
+    if (window.confirm(`¿Estás seguro de eliminar a "${alumno.full_name}"? Se cancelará su acceso y eliminarán sus rutinas.`)) {
+      dataService.deleteAlumno(alumno.id);
+      onRefreshData();
+    }
+  };
 
   const [editingCredsAlumnoId, setEditingCredsAlumnoId] = useState<string | null>(null);
   const [editCredsEmail, setEditCredsEmail] = useState('');
@@ -142,17 +151,39 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
       {/* Coach Header Banner */}
       <div style={S.headerBanner}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <img
-            src={coach.avatar_url || AVATAR_PRESETS[4]}
-            alt={coach.full_name}
-            style={S.coachAvatar}
-          />
+          <div style={{ position: 'relative' }}>
+            <img
+              src={coach.avatar_url || AVATAR_PRESETS[4]}
+              alt={coach.full_name}
+              style={S.coachAvatar}
+            />
+            <button
+              onClick={() => setEditingProfileTarget(coach)}
+              title="Editar Mi Foto y Nombre"
+              style={{
+                position: 'absolute', bottom: '-4px', right: '-4px',
+                background: '#f59e0b', color: '#000', border: 'none',
+                borderRadius: '50%', padding: '4px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}
+            >
+              <Edit2 size={12} />
+            </button>
+          </div>
           <div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <span style={S.badgeGold}>ADMINISTRADOR COACH</span>
               <span style={{ fontSize: '10px', color: '#64748b', fontFamily: 'monospace' }}>ID: {coach.gym_id}</span>
             </div>
-            <h1 style={S.title}>{coach.full_name}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h1 style={S.title}>{coach.full_name}</h1>
+              <button
+                onClick={() => setEditingProfileTarget(coach)}
+                style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: '11px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+              >
+                <Edit2 size={12} /> Editar
+              </button>
+            </div>
             <p style={S.subtitle}>Gestión de Alumnos y Rutinas con Aislamiento RLS</p>
           </div>
         </div>
@@ -289,19 +320,58 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
               <div key={alumno.id} style={S.card(isSelected)}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <img src={alumno.avatar_url || AVATAR_PRESETS[0]} alt={alumno.full_name} style={S.alumnoAvatar} />
+                    <div style={{ position: 'relative' }}>
+                      <img src={alumno.avatar_url || AVATAR_PRESETS[0]} alt={alumno.full_name} style={S.alumnoAvatar} />
+                      <button
+                        onClick={() => setEditingProfileTarget(alumno)}
+                        title="Editar foto y nombre"
+                        style={{
+                          position: 'absolute', bottom: '-4px', right: '-4px',
+                          background: '#f59e0b', color: '#000', border: 'none',
+                          borderRadius: '50%', padding: '3px', cursor: 'pointer',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}
+                      >
+                        <Edit2 size={10} />
+                      </button>
+                    </div>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 900, color: '#ffffff' }}>{alumno.full_name}</h3>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 900, color: '#ffffff' }}>{alumno.full_name}</h3>
+                        <button
+                          onClick={() => setEditingProfileTarget(alumno)}
+                          title="Editar Perfil"
+                          style={{ background: 'none', border: 'none', color: '#f59e0b', cursor: 'pointer', padding: '2px' }}
+                        >
+                          <Edit2 size={12} />
+                        </button>
+                      </div>
                       <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#94a3b8' }}>{alumno.email}</p>
                     </div>
                   </div>
-                  <div style={{
-                    width: '32px', height: '32px',
-                    background: isPlanActive ? 'rgba(16,185,129,0.15)' : 'rgba(248,113,113,0.15)',
-                    border: `1px solid ${isPlanActive ? '#34d399' : '#f87171'}`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                  }}>
-                    {isPlanActive ? <CheckCircle2 size={16} color="#34d399" /> : <AlertCircle size={16} color="#f87171" />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{
+                      width: '32px', height: '32px',
+                      background: isPlanActive ? 'rgba(16,185,129,0.15)' : 'rgba(248,113,113,0.15)',
+                      border: `1px solid ${isPlanActive ? '#34d399' : '#f87171'}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      {isPlanActive ? <CheckCircle2 size={16} color="#34d399" /> : <AlertCircle size={16} color="#f87171" />}
+                    </div>
+                    <button
+                      onClick={() => handleDeleteAlumno(alumno)}
+                      title="Eliminar Alumno"
+                      style={{
+                        width: '32px', height: '32px',
+                        background: 'rgba(248,113,113,0.15)',
+                        border: '1px solid rgba(248,113,113,0.3)',
+                        color: '#f87171',
+                        cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                      }}
+                    >
+                      <Trash2 size={15} />
+                    </button>
                   </div>
                 </div>
 
@@ -473,6 +543,18 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             </div>
           )}
         </div>
+      )}
+
+      {/* Edit Profile Modal (Photo, Name, Phone for any Profile) */}
+      {editingProfileTarget && (
+        <EditProfileModal
+          profile={editingProfileTarget}
+          onClose={() => setEditingProfileTarget(null)}
+          onProfileUpdated={() => {
+            setEditingProfileTarget(null);
+            onRefreshData();
+          }}
+        />
       )}
     </div>
   );
