@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dumbbell, Save, X, Plus, Trash2, Search, Calendar, ChevronRight } from 'lucide-react';
+import { Dumbbell, Save, X, Plus, Trash2, Search } from 'lucide-react';
 import { Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
@@ -35,13 +35,24 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
   const [showAddExercisePicker, setShowAddExercisePicker] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedMuscle, setSelectedMuscle] = useState('all');
+  const [selectedEquipment, setSelectedEquipment] = useState('all');
+  const [selectedLevel, setSelectedLevel] = useState('all');
+  const [previewExercise, setPreviewExercise] = useState<Exercise | null>(null);
   const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-  const filteredExercises = exercises.filter(
-    (ex) =>
+  const musclesList: string[] = Array.from<string>(new Set(exercises.flatMap((ex) => ex.primary_muscles))).sort();
+  const equipmentList: string[] = Array.from<string>(new Set(exercises.map((ex) => ex.equipment).filter((e): e is string => Boolean(e)))).sort();
+
+  const filteredExercises = exercises.filter((ex) => {
+    const matchesSearch =
       ex.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ex.primary_muscles.some((m) => m.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+      ex.primary_muscles.some((m) => m.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
+    const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
+    const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+    return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
+  });
 
   const handleAddExercise = (exercise: Exercise) => {
     setLogsItems((prev) => [
@@ -74,218 +85,526 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     dataService.updateRoutine(routine.id, nombreRutina, logsItems);
-
     onRoutineUpdated();
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 max-w-3xl w-full shadow-2xl space-y-5 my-8 max-h-[90vh] flex flex-col">
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 1000,
+      background: 'rgba(0, 0, 0, 0.85)',
+      backdropFilter: 'blur(8px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '16px',
+      boxSizing: 'border-box'
+    }}>
+      <div style={{
+        background: '#0f172a',
+        border: '1px solid #334155',
+        width: '100%',
+        maxWidth: '720px',
+        maxHeight: '90vh',
+        padding: '24px',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        boxSizing: 'border-box',
+        overflow: 'hidden'
+      }}>
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
-          <div className="flex items-center space-x-3">
-            <div className="bg-amber-500/20 text-amber-400 p-2.5 rounded-none border border-amber-500/30">
-              <Dumbbell className="w-6 h-6" />
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderBottom: '1px solid #1e293b',
+          paddingBottom: '14px',
+          flexShrink: 0
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              background: 'rgba(245, 158, 11, 0.15)',
+              color: '#f59e0b',
+              padding: '10px',
+              border: '1px solid rgba(245, 158, 11, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Dumbbell size={20} />
             </div>
             <div>
-              <h3 className="text-xl font-black text-white">Editar Rutina de Entrenamiento</h3>
-              <p className="text-xs text-slate-400">Modifica los ejercicios, cargas, repeticiones y días</p>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Editar Mi Rutina de Entrenamiento
+              </h3>
+              <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#94a3b8' }}>
+                Agrega o modifica ejercicios, días, series, repeticiones y cargas
+              </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-none hover:bg-slate-800">
-            <X className="w-5 h-5" />
+          <button 
+            type="button" 
+            onClick={onClose} 
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#94a3b8',
+              cursor: 'pointer',
+              padding: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-5 pr-2 custom-scrollbar">
-          {/* Routine Name */}
-          <div className="space-y-1">
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">Nombre de la Rutina:</label>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', flex: 1, paddingRight: '4px' }}>
+          {/* Routine Name Input */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Nombre de la Rutina:
+            </label>
             <input
               type="text"
               value={nombreRutina}
               onChange={(e) => setNombreRutina(e.target.value)}
               required
-              className="w-full bg-slate-950 text-white font-bold text-sm rounded-none px-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
-              placeholder="Ej: Hipertrofia Torso - Piernas"
+              placeholder="Ej. Mi Plan Personalizado"
+              style={{
+                width: '100%',
+                background: '#020617',
+                color: '#ffffff',
+                fontSize: '14px',
+                fontWeight: 800,
+                padding: '12px 14px',
+                border: '1px solid #334155',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
             />
           </div>
 
-          {/* Exercise List */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                Ejercicios Asignados ({logsItems.length})
-              </h4>
-              <button
-                type="button"
-                onClick={() => setShowAddExercisePicker(true)}
-                className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-none flex items-center space-x-1.5 transition-all cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Agregar Ejercicio del Catálogo</span>
-              </button>
-            </div>
+          {/* Catalog Add Section */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+            <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>
+              Ejercicios Asignados ({logsItems.length})
+            </h4>
+            <button
+              type="button"
+              onClick={() => setShowAddExercisePicker(!showAddExercisePicker)}
+              style={{
+                background: 'rgba(245, 158, 11, 0.15)',
+                color: '#f59e0b',
+                border: '1px solid rgba(245, 158, 11, 0.4)',
+                padding: '8px 14px',
+                fontSize: '11px',
+                fontWeight: 900,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                textTransform: 'uppercase'
+              }}
+            >
+              <Plus size={14} />
+              <span>Agregar Ejercicio del Catálogo</span>
+            </button>
+          </div>
 
-            {/* Exercise Add Picker Modal */}
-            {showAddExercisePicker && (
-              <div className="bg-slate-950 border border-amber-500/30 rounded-none p-4 space-y-3 shadow-xl">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                    <Search className="w-3.5 h-3.5 text-amber-400" />
-                    Seleccionar Ejercicio (Base de 1,324 GIFs)
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setShowAddExercisePicker(false)}
-                    className="text-xs text-slate-400 hover:text-white"
-                  >
-                    ✕ Cerrar
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Buscar ejercicio en español..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-900 text-white text-xs rounded-none px-3 py-2 border border-slate-800 focus:border-amber-500 focus:outline-none"
-                />
-                <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
-                  {filteredExercises.slice(0, 15).map((ex) => (
-                    <div
-                      key={ex.id}
-                      onClick={() => handleAddExercise(ex)}
-                      className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-none flex items-center justify-between cursor-pointer transition-all"
-                    >
-                      <div className="flex items-center space-x-2">
-                        {ex.image_urls?.[0] && (
-                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="w-8 h-8 rounded-none object-cover bg-white" />
-                        )}
-                        <div>
-                          <p className="text-xs font-bold text-white">{ex.name}</p>
-                          <p className="text-[10px] text-slate-400">{ex.primary_muscles.join(', ')} | {ex.equipment}</p>
-                        </div>
-                      </div>
-                      <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded-none">+ Añadir</span>
-                    </div>
-                  ))}
-                </div>
+          {/* Exercise Add Picker */}
+          {showAddExercisePicker && (
+            <div style={{
+              background: '#020617',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              padding: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Search size={14} color="#f59e0b" />
+                  Buscar en el Catálogo (1,324 GIFs)
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowAddExercisePicker(false)}
+                  style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '11px', cursor: 'pointer' }}
+                >
+                  ✕ Cerrar
+                </button>
               </div>
-            )}
+              <input
+                type="text"
+                placeholder="Buscar por nombre o músculo (ej. sentadillas, pecho, mancuerna)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%',
+                  background: '#0f172a',
+                  color: '#ffffff',
+                  fontSize: '12px',
+                  padding: '10px 12px',
+                  border: '1px solid #334155',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
 
-            {/* List of routine items */}
+              {/* Persianas / Dropdown Filters */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+                <select
+                  value={selectedMuscle}
+                  onChange={(e) => setSelectedMuscle(e.target.value)}
+                  style={{
+                    background: '#0f172a',
+                    color: '#f59e0b',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    padding: '8px 10px',
+                    border: '1px solid #334155',
+                    outline: 'none',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="all">MÚSCULO: TODOS</option>
+                  {musclesList.map((m) => (
+                    <option key={m} value={m}>{m.toUpperCase()}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={selectedEquipment}
+                  onChange={(e) => setSelectedEquipment(e.target.value)}
+                  style={{
+                    background: '#0f172a',
+                    color: '#f59e0b',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    padding: '8px 10px',
+                    border: '1px solid #334155',
+                    outline: 'none',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="all">EQUIPAMIENTO: TODOS</option>
+                  {equipmentList.map((eq) => (
+                    <option key={eq} value={eq}>{eq.toUpperCase()}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={selectedLevel}
+                  onChange={(e) => setSelectedLevel(e.target.value)}
+                  style={{
+                    background: '#0f172a',
+                    color: '#f59e0b',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    padding: '8px 10px',
+                    border: '1px solid #334155',
+                    outline: 'none',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="all">NIVEL: TODOS</option>
+                  <option value="beginner">PRINCIPIANTE</option>
+                  <option value="intermediate">INTERMEDIO</option>
+                  <option value="expert">AVANZADO</option>
+                </select>
+              </div>
+              <div style={{ maxHeight: '200px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {filteredExercises.slice(0, 25).map((ex) => (
+                  <div
+                    key={ex.id}
+                    onClick={() => setPreviewExercise(ex)}
+                    title="Toca para ver vista previa y detalles"
+                    style={{
+                      padding: '8px 12px',
+                      background: '#0f172a',
+                      border: '1px solid #1e293b',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                      transition: 'background 0.2s'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      {ex.image_urls?.[0] && (
+                        <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#fff', padding: '2px' }} />
+                      )}
+                      <div>
+                        <p style={{ margin: 0, fontSize: '12px', fontWeight: 800, color: '#ffffff' }}>{ex.name}</p>
+                        <p style={{ margin: 0, fontSize: '10px', color: '#94a3b8' }}>{ex.primary_muscles.join(', ')} | {ex.equipment}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddExercise(ex);
+                      }}
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 900,
+                        color: '#f59e0b',
+                        background: 'rgba(245,158,11,0.15)',
+                        border: '1px solid rgba(245,158,11,0.3)',
+                        padding: '6px 12px',
+                        cursor: 'pointer',
+                        textTransform: 'uppercase'
+                      }}
+                    >
+                      + Añadir
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* List of Exercises in Routine */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {logsItems.map((item, idx) => (
-              <div key={item.id || idx} className="bg-slate-950 border border-slate-800 rounded-none p-4 space-y-3 relative group">
-                <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                  <div className="flex items-center space-x-3">
-                    <span className="bg-slate-800 text-amber-400 text-xs font-mono font-bold w-6 h-6 rounded-none flex items-center justify-center">
-                      {idx + 1}
+              <div key={item.id || idx} style={{
+                background: '#020617',
+                border: '1px solid #1e293b',
+                padding: '16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ background: '#1e293b', color: '#f59e0b', fontSize: '12px', fontWeight: 900, width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      #{idx + 1}
                     </span>
-                    <span className="text-sm font-bold text-white">
+                    <span style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>
                       {item.exercise?.name || 'Ejercicio'}
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={() => handleRemoveExercise(idx)}
-                    className="text-rose-400 hover:text-rose-300 p-1.5 rounded-none hover:bg-rose-500/10 transition-all"
+                    style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', padding: '4px' }}
                     title="Eliminar de la rutina"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 size={16} />
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                  {/* Día */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '10px' }}>
                   <div>
-                    <label className="text-[10px] font-semibold text-slate-400 block mb-1">Día de Semana:</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Día:</label>
                     <select
                       value={item.dia}
                       onChange={(e) => handleItemChange(idx, 'dia', e.target.value)}
-                      className="w-full bg-slate-900 text-white rounded-none px-2.5 py-2 border border-slate-800 focus:border-amber-500"
+                      style={{ width: '100%', background: '#0f172a', color: '#fff', fontSize: '12px', fontWeight: 700, padding: '8px', border: '1px solid #334155' }}
                     >
                       {DAYS.map((d) => (
-                        <option key={d} value={d}>
-                          {d}
-                        </option>
+                        <option key={d} value={d}>{d}</option>
                       ))}
                     </select>
                   </div>
 
-                  {/* Series */}
                   <div>
-                    <label className="text-[10px] font-semibold text-slate-400 block mb-1">Series:</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Series:</label>
                     <input
                       type="number"
                       min="1"
                       value={item.series}
                       onChange={(e) => handleItemChange(idx, 'series', parseInt(e.target.value) || 1)}
-                      className="w-full bg-slate-900 text-white font-bold rounded-none px-2.5 py-2 border border-slate-800 focus:border-amber-500"
+                      style={{ width: '100%', background: '#0f172a', color: '#fff', fontSize: '12px', fontWeight: 800, padding: '8px', border: '1px solid #334155', boxSizing: 'border-box' }}
                     />
                   </div>
 
-                  {/* Repeticiones */}
                   <div>
-                    <label className="text-[10px] font-semibold text-slate-400 block mb-1">Repeticiones:</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Reps:</label>
                     <input
                       type="number"
                       min="1"
                       value={item.repeticiones}
                       onChange={(e) => handleItemChange(idx, 'repeticiones', parseInt(e.target.value) || 1)}
-                      className="w-full bg-slate-900 text-white font-bold rounded-none px-2.5 py-2 border border-slate-800 focus:border-amber-500"
+                      style={{ width: '100%', background: '#0f172a', color: '#fff', fontSize: '12px', fontWeight: 800, padding: '8px', border: '1px solid #334155', boxSizing: 'border-box' }}
                     />
                   </div>
 
-                  {/* Peso Objetivo (KG) */}
                   <div>
-                    <label className="text-[10px] font-semibold text-amber-400 block mb-1">Peso Objetivo (KG):</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#f59e0b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Objetivo (KG):</label>
                     <input
                       type="number"
                       step="0.5"
                       min="0"
                       value={item.peso_objetivo}
                       onChange={(e) => handleItemChange(idx, 'peso_objetivo', parseFloat(e.target.value) || 0)}
-                      className="w-full bg-slate-900 text-amber-400 font-extrabold rounded-none px-2.5 py-2 border border-amber-500/40 focus:border-amber-500"
+                      style={{ width: '100%', background: '#0f172a', color: '#f59e0b', fontSize: '12px', fontWeight: 900, padding: '8px', border: '1px solid rgba(245, 158, 11, 0.4)', boxSizing: 'border-box' }}
                     />
                   </div>
-                </div>
-
-                {/* Notas */}
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Notas o técnica (ej: Mantener codos a 45°)..."
-                    value={item.notas}
-                    onChange={(e) => handleItemChange(idx, 'notas', e.target.value)}
-                    className="w-full bg-slate-900 text-slate-300 text-xs rounded-none px-3 py-2 border border-slate-800 focus:border-amber-500"
-                  />
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Action buttons */}
-          <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-800 shrink-0">
+          {/* Action Buttons */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: '12px',
+            paddingTop: '14px',
+            borderTop: '1px solid #1e293b',
+            flexShrink: 0
+          }}>
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-none text-xs font-bold text-slate-400 hover:text-white"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94a3b8',
+                fontSize: '12px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                padding: '8px 12px',
+                textTransform: 'uppercase'
+              }}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-6 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 hover:brightness-110 transition-all cursor-pointer uppercase tracking-wider"
+              style={{
+                background: '#f59e0b',
+                color: '#000000',
+                border: 'none',
+                padding: '10px 20px',
+                fontSize: '12px',
+                fontWeight: 900,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                textTransform: 'uppercase'
+              }}
             >
-              <Save className="w-4 h-4" />
+              <Save size={16} />
               <span>Guardar Cambios de Rutina</span>
             </button>
           </div>
         </form>
       </div>
+      {/* Preview Modal for Selected Exercise */}
+      {previewExercise && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 1100,
+          background: 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px',
+          boxSizing: 'border-box'
+        }} onClick={() => setPreviewExercise(null)}>
+          <div style={{
+            background: '#0f172a',
+            border: '1px solid #334155',
+            width: '100%',
+            maxWidth: '520px',
+            maxHeight: '90vh',
+            padding: '24px',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            overflowY: 'auto',
+            boxSizing: 'border-box'
+          }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff' }}>{previewExercise.name}</h3>
+              <button onClick={() => setPreviewExercise(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* GIF Large Container */}
+            {previewExercise.image_urls?.[0] && (
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '240px',
+                background: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '16px',
+                border: '1px solid #334155',
+                boxSizing: 'border-box'
+              }}>
+                <img src={fixImageUrl(previewExercise.image_urls[0])} alt={previewExercise.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+              </div>
+            )}
+
+            {/* Muscle and Equipment Badges */}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase' }}>
+                {previewExercise.equipment || 'Máquina'}
+              </span>
+              {previewExercise.primary_muscles.map((m) => (
+                <span key={m} style={{ background: '#1e293b', color: '#94a3b8', padding: '4px 10px', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase' }}>
+                  {m}
+                </span>
+              ))}
+            </div>
+
+            {/* Execution Instructions */}
+            {previewExercise.instructions && previewExercise.instructions.length > 0 && (
+              <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '14px' }}>
+                <h4 style={{ margin: '0 0 8px', fontSize: '11px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>Instrucciones de Ejecución</h4>
+                <ol style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: '#cbd5e1', lineHeight: '1.6' }}>
+                  {previewExercise.instructions.map((step, idx) => (
+                    <li key={idx} style={{ marginBottom: '4px' }}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
+              <button
+                type="button"
+                onClick={() => setPreviewExercise(null)}
+                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: 800, cursor: 'pointer', padding: '8px 12px', textTransform: 'uppercase' }}
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleAddExercise(previewExercise);
+                  setPreviewExercise(null);
+                }}
+                style={{ background: '#f59e0b', color: '#000000', border: 'none', padding: '10px 20px', fontSize: '12px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'uppercase' }}
+              >
+                <Plus size={16} />
+                <span>Añadir a la Rutina</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FolderTree, FileCode, Folder, CheckCircle, Database, Shield, Zap } from 'lucide-react';
+import { FolderTree, FileCode, Folder } from 'lucide-react';
 
 export const FolderStructureViewer: React.FC = () => {
   const structureTree = [
@@ -30,49 +30,61 @@ export const FolderStructureViewer: React.FC = () => {
   ];
 
   return (
-    <div id="folder-structure-viewer-root" className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif", display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-6 shadow-xl">
-        <div className="flex items-center space-x-2">
-          <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-none border border-amber-500/30 uppercase flex items-center">
-            <FolderTree className="w-3.5 h-3.5 mr-1" /> Arquitectura de Software
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a, #1e293b, #451a03)',
+        border: '1px solid #334155',
+        padding: '24px 32px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <FolderTree size={14} /> Arquitectura de Software
           </span>
-          <span className="text-xs text-slate-400">GymMaster Pro Architecture</span>
+          <span style={{ fontSize: '11px', color: '#94a3b8' }}>GymMaster Pro Architecture</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+        <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 900, color: '#ffffff' }}>
           Estructura de Carpetas del Proyecto (Entregable #2)
         </h1>
-        <p className="text-xs text-slate-400">
+        <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#94a3b8' }}>
           Diseño modular, desacoplado y optimizado para escalabilidad SaaS Multi-tenant en React + Supabase + Capacitor
         </p>
       </div>
 
       {/* Tree Visualization Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 shadow-2xl space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-          <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+      <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
+          <span style={{ fontSize: '12px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>
             Directorio Raíz del Proyecto React
           </span>
-          <span className="text-xs text-slate-400 font-mono">/ (Raíz Workspace)</span>
+          <span style={{ fontSize: '11px', color: '#94a3b8', fontFamily: 'monospace' }}>/ (Raíz Workspace)</span>
         </div>
 
-        <div className="space-y-2 font-mono text-xs">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontFamily: 'monospace', fontSize: '12px' }}>
           {structureTree.map((item, index) => (
             <div
               key={index}
-              className={`p-2.5 rounded-none flex items-center justify-between transition-colors ${
-                item.isDir ? 'bg-slate-950 font-bold text-amber-300' : 'bg-slate-900/60 text-slate-300 hover:bg-slate-800/80'
-              }`}
+              style={{
+                padding: '10px 14px',
+                background: item.isDir ? '#020617' : 'rgba(15, 23, 42, 0.6)',
+                border: `1px solid ${item.isDir ? 'rgba(245, 158, 11, 0.2)' : '#1e293b'}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                color: item.isDir ? '#f59e0b' : '#cbd5e1',
+                fontWeight: item.isDir ? 800 : 400
+              }}
             >
-              <div className="flex items-center space-x-2 truncate pr-2">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden' }}>
                 {item.isDir ? (
-                  <Folder className="w-4 h-4 text-amber-400 shrink-0" />
+                  <Folder size={16} color="#f59e0b" style={{ flexShrink: 0 }} />
                 ) : (
-                  <FileCode className="w-4 h-4 text-slate-400 shrink-0" />
+                  <FileCode size={16} color="#94a3b8" style={{ flexShrink: 0 }} />
                 )}
-                <span className="truncate">{item.name}</span>
+                <span style={{ whiteSpace: 'pre' }}>{item.name}</span>
               </div>
-              <span className="text-[11px] text-slate-400 font-sans font-normal truncate max-w-xs sm:max-w-md">
+              <span style={{ fontSize: '11px', color: '#64748b', fontFamily: "'Inter', sans-serif", fontWeight: 500, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '400px' }}>
                 {item.desc}
               </span>
             </div>

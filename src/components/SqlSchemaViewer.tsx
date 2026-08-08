@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Copy, Check, Download, Database, Lock, Key, Terminal, Code } from 'lucide-react';
+import { ShieldCheck, Copy, Check, Download, Lock, Key, Terminal } from 'lucide-react';
 
 export const SqlSchemaViewer: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -158,88 +158,122 @@ CREATE POLICY "RoutineLogs: Coach full access"
   };
 
   return (
-    <div id="sql-schema-viewer-root" className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif", display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a, #1e293b, #451a03)',
+        border: '1px solid #334155',
+        padding: '24px 32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '20px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+      }}>
         <div>
-          <div className="flex items-center space-x-2">
-            <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-none border border-emerald-500/30 uppercase flex items-center">
-              <ShieldCheck className="w-3.5 h-3.5 mr-1" /> RLS Strict Security
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <ShieldCheck size={14} /> RLS Strict Security
             </span>
-            <span className="text-xs text-slate-400">PostgreSQL / Supabase Engine</span>
+            <span style={{ fontSize: '11px', color: '#94a3b8' }}>PostgreSQL / Supabase Engine</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+          <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 900, color: '#ffffff' }}>
             Arquitectura SQL & Políticas RLS (Entregable #1)
           </h1>
-          <p className="text-xs text-slate-400">
-            Aislamiento multi-tenant de datos, triggers automáticos e inmunidad al time-hack con server-side <code className="text-amber-300">now()</code>
+          <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#94a3b8' }}>
+            Aislamiento multi-tenant de datos, triggers automáticos e inmunidad al time-hack con server-side <code style={{ color: '#f59e0b' }}>now()</code>
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div style={{ display: 'flex', gap: '12px' }}>
           <button
             onClick={handleCopy}
-            className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-none text-xs border border-slate-700 flex items-center space-x-2 transition-all cursor-pointer"
+            style={{
+              background: 'rgba(245, 158, 11, 0.15)',
+              color: '#f59e0b',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              padding: '10px 18px',
+              fontSize: '12px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-amber-400" />}
+            {copied ? <Check size={16} color="#34d399" /> : <Copy size={16} />}
             <span>{copied ? '¡Copiado!' : 'Copiar SQL'}</span>
           </button>
           <button
             onClick={handleDownload}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 transition-all cursor-pointer"
+            style={{
+              background: '#f59e0b',
+              color: '#000000',
+              border: 'none',
+              padding: '10px 20px',
+              fontSize: '12px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
           >
-            <Download className="w-4 h-4" />
+            <Download size={16} />
             <span>Descargar .SQL</span>
           </button>
         </div>
       </div>
 
       {/* RLS Highlights Banner */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-1">
-          <div className="flex items-center text-amber-400 font-bold text-xs uppercase">
-            <Lock className="w-4 h-4 mr-1.5" />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f59e0b', fontWeight: 900, fontSize: '12px', textTransform: 'uppercase' }}>
+            <Lock size={16} />
             1. Regla de Oro Multi-Tenant
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            El Alumno solo posee permisos SELECT sobre sus propias rutinas y UPDATE exclusivamente sobre el campo <code className="text-amber-300">peso_real</code> en <code className="text-slate-200">routine_logs</code>.
+          <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>
+            El Alumno solo posee permisos SELECT sobre sus propias rutinas y UPDATE exclusivamente sobre el campo <code style={{ color: '#f59e0b' }}>peso_real</code> en <code style={{ color: '#94a3b8' }}>routine_logs</code>.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-1">
-          <div className="flex items-center text-emerald-400 font-bold text-xs uppercase">
-            <ShieldCheck className="w-4 h-4 mr-1.5" />
+        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontWeight: 900, fontSize: '12px', textTransform: 'uppercase' }}>
+            <ShieldCheck size={16} />
             2. Inmunidad al Time-Hack
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Las validaciones de vigencia del plan de gimnasio se ejecutan en PostgreSQL usando <code className="text-emerald-300">now()</code> del servidor, anulando intentos de modificación de reloj en móviles.
+          <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>
+            Las validaciones de vigencia del plan de gimnasio se ejecutan en PostgreSQL usando <code style={{ color: '#34d399' }}>now()</code> del servidor, anulando intentos de modificación de reloj en móviles.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-none p-4 space-y-1">
-          <div className="flex items-center text-sky-400 font-bold text-xs uppercase">
-            <Key className="w-4 h-4 mr-1.5" />
-            3. Control Coach (<code className="text-sky-300">managed_by</code>)
+        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontWeight: 900, fontSize: '12px', textTransform: 'uppercase' }}>
+            <Key size={16} />
+            3. Control Coach (managed_by)
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            El Coach ostenta control CRUD total sobre alumnos bajo su tutoría (<code className="text-slate-200">managed_by = auth.uid()</code>) y sobre rutinas de su gimnasio.
+          <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>
+            El Coach ostenta control CRUD total sobre alumnos bajo su tutoría (<code style={{ color: '#38bdf8' }}>managed_by = auth.uid()</code>) y sobre rutinas de su gimnasio.
           </p>
         </div>
       </div>
 
       {/* Code Viewer Container */}
-      <div className="bg-slate-950 border border-slate-800 rounded-none overflow-hidden shadow-2xl">
-        <div className="bg-slate-900 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center space-x-2 font-mono">
-            <Terminal className="w-4 h-4 text-amber-400" />
+      <div style={{ background: '#020617', border: '1px solid #1e293b', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+        <div style={{ background: '#0f172a', padding: '12px 20px', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'monospace', color: '#f59e0b', fontSize: '12px', fontWeight: 700 }}>
+            <Terminal size={16} />
             <span>supabase/schema.sql</span>
           </div>
-          <span className="text-[10px] bg-slate-800 px-2.5 py-1 rounded-none text-slate-300 font-semibold">
+          <span style={{ fontSize: '10px', background: '#1e293b', color: '#94a3b8', padding: '4px 8px', fontWeight: 800 }}>
             PostgreSQL 15+ / Supabase RLS
           </span>
         </div>
 
-        <pre className="p-6 text-xs font-mono text-slate-300 leading-relaxed overflow-x-auto max-h-[500px]">
+        <pre style={{ margin: 0, padding: '24px', fontSize: '12px', fontFamily: 'monospace', color: '#cbd5e1', lineHeight: '1.6', overflowX: 'auto', maxHeight: '500px' }}>
           <code>{sqlCode}</code>
         </pre>
       </div>

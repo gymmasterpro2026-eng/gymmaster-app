@@ -57,9 +57,9 @@ const S = {
     border: `1px solid ${completed ? 'rgba(16,185,129,0.2)' : expanded ? 'rgba(245,158,11,0.3)' : '#1e293b'}`,
     borderRadius: '0', overflow: 'hidden' as const, marginBottom: '16px', transition: 'all 0.3s'
   }),
-  cHeader: { padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', userSelect: 'none' as const },
-  cImgWrap: { position: 'relative' as const },
-  cImg: { width: '72px', height: '72px', borderRadius: '0', objectFit: 'contain' as const, background: '#fff', padding: '4px' },
+  cHeader: { padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: '12px', cursor: 'pointer', userSelect: 'none' as const },
+  cImgWrap: { position: 'relative' as const, flexShrink: 0 },
+  cImg: { width: '105px', height: '105px', minWidth: '105px', minHeight: '105px', borderRadius: '0', objectFit: 'contain' as const, background: '#fff', padding: '6px', flexShrink: 0 },
   cNumBadge: { position: 'absolute' as const, top: '-8px', left: '-8px', background: '#000', color: '#f59e0b', width: '24px', height: '24px', borderRadius: '0', border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 900 },
   cEquipBadge: { background: 'rgba(245,158,11,0.1)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' as const },
   cMuscleBadge: { background: '#1e293b', color: '#888', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase' as const },
@@ -233,7 +233,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
             <div style={S.avatarWrap} onClick={() => setShowEditProfileModal(true)}
               onMouseEnter={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '1'; }}
               onMouseLeave={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '0'; }}>
-              <img src={alumno.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'} alt="Avatar" style={S.avatarImg} />
+              <img src={alumno.avatar_url || 'https://api.dicebear.com/7.x/big-smile/svg?seed=SimpsonsHomer&backgroundColor=fcd34d'} alt="Avatar" style={S.avatarImg} />
               <div className="av-overlay" style={S.avatarIconOverlay}><Camera size={20} color="#f59e0b" /></div>
             </div>
             <div>
@@ -366,6 +366,53 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
               {exp && (
                 <div style={S.cExpanded}>
+                  {/* Cuadro de GIF Principal en Grande */}
+                  {ex?.image_urls?.[0] && (
+                    <div 
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '240px',
+                        background: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '16px',
+                        boxSizing: 'border-box',
+                        border: '1px solid #334155',
+                        cursor: 'pointer',
+                        overflow: 'hidden'
+                      }}
+                      onClick={() => setFullscreenImage(fixImageUrl(ex.image_urls[0]))}
+                      title="Toca para ver en pantalla completa"
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        background: '#1e293b',
+                        color: '#f59e0b',
+                        border: '1px solid rgba(245,158,11,0.3)',
+                        padding: '4px 10px',
+                        fontSize: '10px',
+                        fontWeight: 900,
+                        textTransform: 'uppercase',
+                        zIndex: 2
+                      }}>
+                        {ex?.equipment || 'PESO CORPORAL'}
+                      </span>
+                      <img 
+                        src={fixImageUrl(ex.image_urls[0])} 
+                        alt={ex?.name} 
+                        style={{
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                          objectFit: 'contain'
+                        }} 
+                      />
+                    </div>
+                  )}
+
                   {log.notas && (
                     <div style={S.coachNote}><Info size={14} color="#f59e0b" style={{ flexShrink: 0, marginTop: '2px' }} /><div><strong style={{ color: '#f59e0b' }}>Coach:</strong> {log.notas}</div></div>
                   )}

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Camera, Save, X, User, Phone, Check, Sparkles } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Camera, Save, X, User, Phone, Upload } from 'lucide-react';
 import { Profile } from '../types';
 import { dataService } from '../services/dataService';
 
@@ -10,12 +10,12 @@ interface EditProfileModalProps {
 }
 
 const AVATAR_PRESETS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+  'https://api.dicebear.com/7.x/big-smile/svg?seed=SimpsonsHomer&backgroundColor=fcd34d',
+  'https://api.dicebear.com/7.x/adventurer/svg?seed=AnimeBoy1&backgroundColor=b6e3f4',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=SimpsonBart&skinColor=f8d25c&backgroundColor=fbbf24',
+  'https://api.dicebear.com/7.x/adventurer/svg?seed=AnimeGirl1&backgroundColor=ffdfbf',
+  'https://api.dicebear.com/7.x/big-smile/svg?seed=SimpsonCoach&backgroundColor=f59e0b',
+  'https://api.dicebear.com/7.x/pixel-art/svg?seed=AnimeHero2&backgroundColor=c084fc',
 ];
 
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, onProfileUpdated }) => {
@@ -23,6 +23,20 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url || AVATAR_PRESETS[0]);
   const [phone, setPhone] = useState(profile.phone || '');
   const [isSaving, setIsSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setAvatarUrl(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,120 +54,260 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 max-w-md w-full shadow-2xl space-y-5 relative">
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 1000,
+      background: 'rgba(0, 0, 0, 0.85)',
+      backdropFilter: 'blur(8px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '16px',
+      boxSizing: 'border-box'
+    }}>
+      <div style={{
+        background: '#0f172a',
+        border: '1px solid #334155',
+        width: '100%',
+        maxWidth: '440px',
+        padding: '24px',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        position: 'relative',
+        boxSizing: 'border-box'
+      }}>
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-          <div className="flex items-center space-x-2">
-            <div className="bg-amber-500/20 text-amber-400 p-2 rounded-none border border-amber-500/30">
-              <Camera className="w-5 h-5" />
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderBottom: '1px solid #1e293b',
+          paddingBottom: '14px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              background: 'rgba(245, 158, 11, 0.15)',
+              color: '#f59e0b',
+              padding: '10px',
+              border: '1px solid rgba(245, 158, 11, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <User size={20} />
             </div>
             <div>
-              <h3 className="text-lg font-black text-white">Editar Perfil & Foto</h3>
-              <p className="text-xs text-slate-400">Personaliza la imagen y datos del alumno</p>
+              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Editar Mi Perfil
+              </h3>
+              <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#94a3b8' }}>
+                Actualiza tu foto, nombre y teléfono
+              </p>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white p-2 rounded-none hover:bg-slate-800">
-            <X className="w-5 h-5" />
+          <button 
+            type="button" 
+            onClick={onClose} 
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#94a3b8',
+              cursor: 'pointer',
+              padding: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Avatar Preview */}
-          <div className="flex flex-col items-center justify-center space-y-3">
-            <div className="relative group">
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Avatar Section */}
+          <div style={{
+            background: '#020617',
+            border: '1px solid #1e293b',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px'
+          }}>
+            <div style={{ position: 'relative' }}>
               <img
                 src={avatarUrl}
-                alt="Vista previa"
-                className="w-24 h-24 rounded-none object-cover ring-4 ring-amber-500/40 shadow-xl"
+                alt="Foto de Perfil"
+                style={{
+                  width: '96px',
+                  height: '96px',
+                  objectFit: 'cover',
+                  border: '2px solid #f59e0b',
+                  display: 'block'
+                }}
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = AVATAR_PRESETS[0];
                 }}
               />
-              <div className="absolute inset-0 bg-black/40 rounded-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="w-6 h-6 text-amber-400" />
-              </div>
             </div>
 
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleFileUpload}
+              style={{ display: 'none' }}
+            />
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              style={{
+                background: '#1e293b',
+                color: '#f59e0b',
+                border: '1px solid rgba(245, 158, 11, 0.4)',
+                padding: '8px 16px',
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                textTransform: 'uppercase'
+              }}
+            >
+              <Upload size={14} />
+              <span>Subir Foto Nueva</span>
+            </button>
+
             {/* Presets Grid */}
-            <div className="w-full space-y-1.5">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block text-center">
-                Seleccionar avatar prediseñado o escribir enlace URL:
+            <div style={{ width: '100%', paddingTop: '10px', borderTop: '1px solid #1e293b', textAlign: 'center' }}>
+              <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+                O elige un avatar prediseñado:
               </label>
-              <div className="flex justify-center items-center space-x-2">
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
                 {AVATAR_PRESETS.map((preset, idx) => (
-                  <button
+                  <img
                     key={idx}
-                    type="button"
+                    src={preset}
+                    alt={`Preset ${idx}`}
                     onClick={() => setAvatarUrl(preset)}
-                    className={`w-9 h-9 rounded-none overflow-hidden border-2 transition-all cursor-pointer ${
-                      avatarUrl === preset ? 'border-amber-500 scale-110 shadow-lg' : 'border-slate-800 opacity-60 hover:opacity-100'
-                    }`}
-                  >
-                    <img src={preset} alt={`Preset ${idx}`} className="w-full h-full object-cover" />
-                  </button>
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      objectFit: 'cover',
+                      cursor: 'pointer',
+                      border: avatarUrl === preset ? '2px solid #f59e0b' : '1px solid #334155',
+                      opacity: avatarUrl === preset ? 1 : 0.6,
+                      transition: 'all 0.2s'
+                    }}
+                  />
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Avatar URL Input */}
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300">URL de Foto de Perfil:</label>
-            <input
-              type="text"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              placeholder="https://..."
-              className="w-full bg-slate-950 text-white text-xs rounded-none px-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
-            />
-          </div>
-
           {/* Full Name Input */}
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300">Nombre Completo:</label>
-            <div className="relative">
-              <User className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Nombre Completo:
+            </label>
+            <div style={{ position: 'relative' }}>
+              <User size={16} color="#f59e0b" style={{ position: 'absolute', left: '12px', top: '12px' }} />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="w-full bg-slate-950 text-white text-xs rounded-none pl-9 pr-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
+                placeholder="Ej. Diego Perez"
+                style={{
+                  width: '100%',
+                  background: '#020617',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px 10px 38px',
+                  border: '1px solid #334155',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
               />
             </div>
           </div>
 
           {/* Phone Input */}
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-300">Teléfono:</label>
-            <div className="relative">
-              <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Número de Celular / WhatsApp:
+            </label>
+            <div style={{ position: 'relative' }}>
+              <Phone size={16} color="#f59e0b" style={{ position: 'absolute', left: '12px', top: '12px' }} />
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+52 55 0000 0000"
-                className="w-full bg-slate-950 text-white text-xs rounded-none pl-9 pr-4 py-3 border border-slate-800 focus:border-amber-500 focus:outline-none"
+                placeholder="+54 9 11 1234-5678"
+                style={{
+                  width: '100%',
+                  background: '#020617',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px 10px 38px',
+                  border: '1px solid #334155',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
               />
             </div>
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-800">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: '12px',
+            paddingTop: '12px',
+            borderTop: '1px solid #1e293b'
+          }}>
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-none text-xs font-bold text-slate-400 hover:text-white"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94a3b8',
+                fontSize: '12px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                padding: '8px 12px',
+                textTransform: 'uppercase'
+              }}
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSaving}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black px-5 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 hover:brightness-110 transition-all cursor-pointer"
+              style={{
+                background: '#f59e0b',
+                color: '#000000',
+                border: 'none',
+                padding: '10px 20px',
+                fontSize: '12px',
+                fontWeight: 900,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                textTransform: 'uppercase'
+              }}
             >
-              <Save className="w-4 h-4" />
+              <Save size={16} />
               <span>{isSaving ? 'Guardando...' : 'Guardar Cambios'}</span>
             </button>
           </div>

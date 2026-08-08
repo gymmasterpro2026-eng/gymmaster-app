@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Terminal, Copy, Check, Download, FileCode2, Play, Sparkles } from 'lucide-react';
+import { Terminal, Copy, Check, Download, FileCode2, Play } from 'lucide-react';
 
 export const ImportScriptViewer: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -89,75 +89,111 @@ runImport();`;
   };
 
   return (
-    <div id="import-script-viewer-root" className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif", display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950/40 border border-slate-800 rounded-none p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a, #1e293b, #451a03)',
+        border: '1px solid #334155',
+        padding: '24px 32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '20px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+      }}>
         <div>
-          <div className="flex items-center space-x-2">
-            <span className="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-none border border-amber-500/30 uppercase flex items-center">
-              <FileCode2 className="w-3.5 h-3.5 mr-1" /> Script Node.js de Importación
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <FileCode2 size={14} /> Script Node.js de Importación
             </span>
-            <span className="text-xs text-slate-400">GitHub exercises-dataset Parser</span>
+            <span style={{ fontSize: '11px', color: '#94a3b8' }}>GitHub exercises-dataset Parser</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+          <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 900, color: '#ffffff' }}>
             Script de Migración de Ejercicios (Entregable #4)
           </h1>
-          <p className="text-xs text-slate-400">
+          <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#94a3b8' }}>
             Descarga, transforma y pobla el catálogo en Supabase en lotes de 50 registros
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div style={{ display: 'flex', gap: '12px' }}>
           <button
             onClick={handleCopy}
-            className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2.5 rounded-none text-xs border border-slate-700 flex items-center space-x-2 transition-all cursor-pointer"
+            style={{
+              background: 'rgba(245, 158, 11, 0.15)',
+              color: '#f59e0b',
+              border: '1px solid rgba(245, 158, 11, 0.4)',
+              padding: '10px 18px',
+              fontSize: '12px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-amber-400" />}
+            {copied ? <Check size={16} color="#34d399" /> : <Copy size={16} />}
             <span>{copied ? '¡Copiado!' : 'Copiar Script'}</span>
           </button>
           <button
             onClick={handleDownload}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-none text-xs shadow-lg flex items-center space-x-2 transition-all cursor-pointer"
+            style={{
+              background: '#f59e0b',
+              color: '#000000',
+              border: 'none',
+              padding: '10px 20px',
+              fontSize: '12px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
           >
-            <Download className="w-4 h-4" />
+            <Download size={16} />
             <span>Descargar .JS</span>
           </button>
         </div>
       </div>
 
       {/* Instruction Steps */}
-      <div className="bg-slate-900 border border-slate-800 rounded-none p-6 space-y-3">
-        <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center">
-          <Play className="w-4 h-4 text-amber-400 mr-2" />
+      <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Play size={16} color="#f59e0b" />
           ¿Cómo ejecutar la migración en producción?
         </h3>
-        <ol className="list-decimal list-inside text-xs text-slate-300 space-y-2">
+        <ol style={{ margin: 0, paddingLeft: '20px', fontSize: '12px', color: '#cbd5e1', lineHeight: '1.8' }}>
           <li>
-            Asegúrate de instalar las dependencias con <code className="bg-slate-950 px-2 py-1 rounded-none text-amber-300 font-mono">npm install @supabase/supabase-js</code>.
+            Asegúrate de instalar las dependencias con <code style={{ background: '#020617', padding: '2px 8px', color: '#f59e0b', fontFamily: 'monospace' }}>npm install @supabase/supabase-js</code>.
           </li>
           <li>
             Ejecuta el script pasando tus llaves de Supabase:
-            <pre className="mt-1 bg-slate-950 p-3 rounded-none text-amber-400 font-mono overflow-x-auto">
+            <pre style={{ margin: '6px 0 0', background: '#020617', padding: '12px', color: '#f59e0b', fontFamily: 'monospace', fontSize: '11px', overflowX: 'auto', border: '1px solid #1e293b' }}>
               SUPABASE_URL=https://tu-proyecto.supabase.co SUPABASE_SERVICE_ROLE_KEY=ey... node scripts/import-exercises.js
             </pre>
           </li>
           <li>
-            El script descargará automáticamente el JSON de ejercicios de GitHub, transformará los campos (<code className="text-slate-200">name</code>, <code className="text-slate-200">force</code>, <code className="text-slate-200">equipment</code>, <code className="text-slate-200">primaryMuscles</code>, <code className="text-slate-200">instructions</code>, e <code className="text-slate-200">image_urls</code>) e insertará en Supabase en lotes.
+            El script descargará automáticamente el JSON de ejercicios de GitHub, transformará los campos (<code style={{ color: '#ffffff' }}>name</code>, <code style={{ color: '#ffffff' }}>force</code>, <code style={{ color: '#ffffff' }}>equipment</code>, <code style={{ color: '#ffffff' }}>primaryMuscles</code>, <code style={{ color: '#ffffff' }}>instructions</code>, e <code style={{ color: '#ffffff' }}>image_urls</code>) e insertará en Supabase en lotes.
           </li>
         </ol>
       </div>
 
       {/* Code Container */}
-      <div className="bg-slate-950 border border-slate-800 rounded-none overflow-hidden shadow-2xl">
-        <div className="bg-slate-900 px-5 py-3 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
-          <div className="flex items-center space-x-2">
-            <Terminal className="w-4 h-4 text-amber-400" />
+      <div style={{ background: '#020617', border: '1px solid #1e293b', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+        <div style={{ background: '#0f172a', padding: '12px 20px', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'monospace', color: '#f59e0b', fontSize: '12px', fontWeight: 700 }}>
+            <Terminal size={16} />
             <span>scripts/import-exercises.js</span>
           </div>
-          <span>ES Modules / Node 18+</span>
+          <span style={{ fontSize: '10px', background: '#1e293b', color: '#94a3b8', padding: '4px 8px', fontWeight: 800 }}>
+            ES Modules / Node 18+
+          </span>
         </div>
 
-        <pre className="p-6 text-xs font-mono text-slate-300 leading-relaxed overflow-x-auto max-h-[450px]">
+        <pre style={{ margin: 0, padding: '24px', fontSize: '12px', fontFamily: 'monospace', color: '#cbd5e1', lineHeight: '1.6', overflowX: 'auto', maxHeight: '450px' }}>
           <code>{scriptCode}</code>
         </pre>
       </div>
