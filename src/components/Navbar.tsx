@@ -416,8 +416,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Administración */}
-        {currentRole === 'coach' && (
+        {/* Administración — solo visible para el Admin Master (Titan Fitness Center) */}
+        {currentRole === 'coach' && activeGym?.id === 'gym-titan-001' && (
           <div style={S.section}>
             <p style={S.sectionLabel}>Administración</p>
             <NavButton active={currentTab === 'create-gym'} onClick={() => handleNavClick('create-gym')} icon={Building2} label="Nuevo Gimnasio" />
