@@ -294,32 +294,44 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 1000,
-      background: 'rgba(0, 0, 0, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '16px',
-      boxSizing: 'border-box'
-    }}>
-      <div style={{
-        background: '#0f172a',
-        border: '1px solid #334155',
-        width: '100%',
-        maxWidth: '720px',
-        maxHeight: '90vh',
-        padding: '24px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-        boxSizing: 'border-box',
-        overflow: 'hidden'
-      }}>
+    <>
+      <style>{`
+        @media (max-width: 768px) {
+          .gm-modal-overlay { left: 0 !important; }
+        }
+      `}</style>
+      <div
+        className="gm-modal-overlay"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: '260px',
+          right: 0,
+          bottom: 0,
+          zIndex: 1000,
+          background: 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '16px',
+          boxSizing: 'border-box'
+        }}
+      >
+        <div style={{
+          background: '#0f172a',
+          border: '1px solid #334155',
+          width: '100%',
+          maxWidth: '800px',
+          maxHeight: '92vh',
+          padding: '24px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          boxSizing: 'border-box',
+          overflow: 'hidden'
+        }}>
         {/* Header */}
         <div style={{
           display: 'flex',
@@ -1056,5 +1068,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
         );
       })()}
     </div>
+    </>
   );
 };
