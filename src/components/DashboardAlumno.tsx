@@ -9,6 +9,16 @@ import { EditProfileModal } from './EditProfileModal';
 import { EditRoutineModal } from './EditRoutineModal';
 import { fixImageUrl } from '../utils/imageUrl';
 
+const DAY_COLOR_MAP: Record<string, { main: string; border: string; bg: string; text: string }> = {
+  'Lunes':     { main: '#f59e0b', border: 'rgba(245, 158, 11, 0.45)', bg: 'rgba(245, 158, 11, 0.08)', text: '#fbbf24' },
+  'Martes':    { main: '#06b6d4', border: 'rgba(6, 182, 212, 0.45)',  bg: 'rgba(6, 182, 212, 0.08)',  text: '#38bdf8' },
+  'Miércoles': { main: '#10b981', border: 'rgba(16, 185, 129, 0.45)', bg: 'rgba(16, 185, 129, 0.08)', text: '#34d399' },
+  'Jueves':    { main: '#a855f7', border: 'rgba(168, 85, 247, 0.45)', bg: 'rgba(168, 85, 247, 0.08)', text: '#c084fc' },
+  'Viernes':   { main: '#f43f5e', border: 'rgba(244, 63, 94, 0.45)',  bg: 'rgba(244, 63, 94, 0.08)',  text: '#fb7185' },
+  'Sábado':    { main: '#f97316', border: 'rgba(249, 115, 22, 0.45)',  bg: 'rgba(249, 115, 22, 0.08)',  text: '#fb923c' },
+  'Domingo':   { main: '#6366f1', border: 'rgba(99, 102, 241, 0.45)', bg: 'rgba(99, 102, 241, 0.08)', text: '#818cf8' },
+};
+
 interface DashboardAlumnoProps {
   alumno: Profile;
   onRefreshData: () => void;
@@ -332,21 +342,49 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
           const ex = log.exercise;
           const exp = expandedExerciseId === log.id;
           const done = log.completed_series?.every(s => s) || false;
+          const allExercises = dataService.getExercises();
+          const catIdx = ex?.id ? allExercises.findIndex(e => e.id === ex.id) : -1;
+          const catPosStr = catIdx >= 0 ? `${catIdx + 1}/${allExercises.length}` : null;
+          const dayColor = DAY_COLOR_MAP[log.dia] || DAY_COLOR_MAP['Lunes'];
 
           return (
-            <div key={log.id} style={S.card(exp, done)}>
+            <div key={log.id} style={{ ...S.card(exp, done), borderLeft: `5px solid ${dayColor.main}` }}>
               <div style={S.cHeader} className="gm-c-header" onClick={() => setExpandedExerciseId(exp ? null : log.id)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={S.cImgWrap}>
                     <img src={fixImageUrl(ex?.image_urls[0])} alt={ex?.name} style={S.cImg} className="gm-c-img" onClick={e=>{e.stopPropagation(); if(ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));}} />
-                    <div style={S.cNumBadge}>#{idx+1}</div>
+                    <div style={{ ...S.cNumBadge, background: dayColor.main, color: '#090d16', fontWeight: 900 }}>#{idx+1}</div>
                   </div>
                   <div>
                     <div style={{ display: 'flex', gap: '6px', marginBottom: '4px', flexWrap: 'wrap' }}>
+                      <span style={{ background: dayColor.bg, color: dayColor.text, border: `1px solid ${dayColor.border}`, padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase' }}>
+                        Sem {log.semana || 1} • {log.dia || 'Lunes'}
+                      </span>
                       <span style={S.cEquipBadge}>{ex?.equipment || 'Máquina'}</span>
                       {ex?.primary_muscles?.slice(0,2).map(m => <span key={m} style={S.cMuscleBadge}>{m}</span>)}
                     </div>
-                    <h3 style={S.cTitle} className="gm-exercise-title">{ex?.name}</h3>
+                    <h3 style={S.cTitle} className="gm-exercise-title">
+                      {ex?.name}
+                      {catPosStr && (
+                        <span 
+                          title={`Ejercicio #${catIdx + 1} de ${allExercises.length} en la biblioteca`}
+                          style={{
+                            fontSize: '11px',
+                            fontWeight: 900,
+                            color: '#f59e0b',
+                            background: 'rgba(245,158,11,0.15)',
+                            border: '1px solid rgba(245,158,11,0.35)',
+                            padding: '2px 8px',
+                            marginLeft: '8px',
+                            display: 'inline-block',
+                            verticalAlign: 'middle',
+                            fontFamily: 'monospace'
+                          }}
+                        >
+                          Nº {catPosStr}
+                        </span>
+                      )}
+                    </h3>
                     <p style={S.cMeta}>{log.series} series × {log.repeticiones} reps @ <span style={{ color: '#f59e0b', fontWeight: 800 }}>{log.peso_real} KG</span></p>
                   </div>
                 </div>

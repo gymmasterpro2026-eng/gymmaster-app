@@ -93,13 +93,50 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
   const musclesList = Array.from(new Set(exercises.flatMap(ex => ex.primary_muscles))).sort();
   const equipmentList = Array.from(new Set(exercises.map(ex => ex.equipment).filter(Boolean))).sort();
 
-  const filtered = exercises.filter(ex => {
-    const matchesSearch = ex.name.toLowerCase().includes(search.toLowerCase()) || ex.primary_muscles.some(m => m.toLowerCase().includes(search.toLowerCase()));
-    const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
-    const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
-    const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
-    return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
-  });
+  const getSearchNumber = (q: string): number | null => {
+    const trimmed = q.trim().toLowerCase();
+    if (!trimmed) return null;
+    const part = trimmed.split('/')[0];
+    const digitsOnly = part.replace(/[^0-9]/g, '');
+    if (digitsOnly.length > 0) {
+      const num = parseInt(digitsOnly, 10);
+      if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+    }
+    return null;
+  };
+
+  const filtered = exercises
+    .map((ex, origIndex) => ({ ex, catalogIndex: origIndex + 1 }))
+    .filter(({ ex, catalogIndex }) => {
+      const query = search.trim().toLowerCase();
+      const targetNum = getSearchNumber(query);
+
+      if (targetNum !== null && catalogIndex === targetNum) {
+        return true;
+      }
+
+      let matchesSearch = true;
+      if (query) {
+        matchesSearch =
+          ex.name.toLowerCase().includes(query) ||
+          ex.primary_muscles.some((m) => m.toLowerCase().includes(query));
+      }
+
+      const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
+      const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
+      const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+
+      return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
+    })
+    .sort((a, b) => {
+      const targetNum = getSearchNumber(search);
+      if (targetNum !== null) {
+        if (a.catalogIndex === targetNum) return -1;
+        if (b.catalogIndex === targetNum) return 1;
+      }
+      return 0;
+    })
+    .map(({ ex }) => ex);
 
   const handleCreateCustom = (e: React.FormEvent) => {
     e.preventDefault();

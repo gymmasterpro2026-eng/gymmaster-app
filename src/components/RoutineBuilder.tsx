@@ -63,16 +63,50 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
     new Set(exercises.map((ex) => ex.equipment).filter(Boolean))
   ).sort();
 
-  const filteredCatalog = exercises.filter((ex) => {
-    const matchesSearch =
-      ex.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ex.primary_muscles.some((m) => m.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
-    const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
-    const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+  const getSearchNumber = (q: string): number | null => {
+    const trimmed = q.trim().toLowerCase();
+    if (!trimmed) return null;
+    const part = trimmed.split('/')[0];
+    const digitsOnly = part.replace(/[^0-9]/g, '');
+    if (digitsOnly.length > 0) {
+      const num = parseInt(digitsOnly, 10);
+      if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+    }
+    return null;
+  };
 
-    return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
-  });
+  const filteredCatalog = exercises
+    .map((ex, origIndex) => ({ ex, catalogIndex: origIndex + 1 }))
+    .filter(({ ex, catalogIndex }) => {
+      const query = searchQuery.trim().toLowerCase();
+      const targetNum = getSearchNumber(query);
+
+      if (targetNum !== null && catalogIndex === targetNum) {
+        return true;
+      }
+
+      let matchesSearch = true;
+      if (query) {
+        matchesSearch =
+          ex.name.toLowerCase().includes(query) ||
+          ex.primary_muscles.some((m) => m.toLowerCase().includes(query));
+      }
+
+      const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
+      const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
+      const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+
+      return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
+    })
+    .sort((a, b) => {
+      const targetNum = getSearchNumber(searchQuery);
+      if (targetNum !== null) {
+        if (a.catalogIndex === targetNum) return -1;
+        if (b.catalogIndex === targetNum) return 1;
+      }
+      return 0;
+    })
+    .map(({ ex }) => ex);
 
   const handleAddExerciseToRoutine = (exercise: Exercise) => {
     setRoutineItems((prev) => [
@@ -236,7 +270,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
 
         {/* Week Tabs */}
         <div className="flex space-x-2 border-b border-slate-200 pb-3">
-          {[1, 2, 3].map((weekNum) => {
+          {[1, 2, 3, 4, 5].map((weekNum) => {
             const hasExercises = routineItems.some(item => item.semana === weekNum);
             return (
               <button
