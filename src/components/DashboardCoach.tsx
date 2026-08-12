@@ -172,7 +172,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
           </div>
           <div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span style={S.badgeGold}>ADMINISTRADOR COACH</span>
+              <span style={S.badgeGold}>SUCURSAL COACH</span>
               <span style={{ fontSize: '10px', color: '#64748b', fontFamily: 'monospace' }}>ID: {coach.gym_id}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
