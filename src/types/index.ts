@@ -68,4 +68,5 @@ export interface GymTenant {
   plan: 'free' | 'pro' | 'enterprise';
   created_at?: string;
   admin_email?: string;
+  valid_until?: string; // ISO timestamp
 }

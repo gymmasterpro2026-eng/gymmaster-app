@@ -409,9 +409,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           {currentRole === 'coach' && (
             <>
               <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" iconColor="rgba(96,165,250,0.7)" />
-              <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" iconColor="rgba(251,191,36,0.7)" />
-              <NavButton active={currentTab === 'import'} onClick={() => handleNavClick('import')} icon={Code2} label="Import Node" iconColor="rgba(52,211,153,0.7)" />
-              <NavButton active={currentTab === 'structure'} onClick={() => handleNavClick('structure')} icon={FolderTree} label="Estructura" iconColor="rgba(167,139,250,0.7)" />
+              {activeGym?.id === 'gym-titan-001' && (
+                <>
+                  <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" iconColor="rgba(251,191,36,0.7)" />
+                  <NavButton active={currentTab === 'import'} onClick={() => handleNavClick('import')} icon={Code2} label="Import Node" iconColor="rgba(52,211,153,0.7)" />
+                  <NavButton active={currentTab === 'structure'} onClick={() => handleNavClick('structure')} icon={FolderTree} label="Estructura" iconColor="rgba(167,139,250,0.7)" />
+                </>
+              )}
             </>
           )}
         </div>
