@@ -63,7 +63,7 @@ const S = {
 
 /* ─── Create Gym View ─── */
 export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Profile) => void }> = ({ onGymCreated }) => {
-  const [gymName, setGymName] = useState('');
+  const [gymName, setGymName] = useState('Sucursal Coach');
   const [plan, setPlan] = useState<'free' | 'pro' | 'enterprise'>('pro');
   const [adminName, setAdminName] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
@@ -106,7 +106,7 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
 
           <div style={S.fieldGroup}>
             <label style={S.label}>Nombre del Gimnasio / Negocio</label>
-            <input style={S.input} type="text" value={gymName} onChange={e => setGymName(e.target.value)} placeholder="Ej. Titan Fitness Center" required onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+            <input style={S.input} type="text" value={gymName} onChange={e => setGymName(e.target.value)} placeholder="Sucursal Coach" required onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
           </div>
 
           <div style={S.grid2}>
