@@ -207,9 +207,6 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
               <div style={S.imgWrap}>
                 <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={S.img} onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'; }} />
                 <div style={S.equipBadge}>{ex.equipment || 'General'}</div>
-                <div style={{ position: 'absolute', top: '8px', left: '8px', background: '#f59e0b', color: '#000', fontSize: '10px', fontWeight: 900, padding: '2px 6px', fontFamily: 'monospace' }}>
-                  Nº {catalogIndex}
-                </div>
               </div>
               <div style={S.cardBody}>
                 <div style={S.tagWrap}>

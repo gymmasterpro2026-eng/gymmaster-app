@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Dumbbell, Save, Check, X, Search, Sparkles, Link2 } from 'lucide-react';
+import { Plus, Trash2, Dumbbell, Save, Check, X, Search, Sparkles, Link2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Exercise, Profile } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
@@ -54,6 +54,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
   const [selectedMuscle, setSelectedMuscle] = useState<string>('all');
   const [selectedEquipment, setSelectedEquipment] = useState<string>('all');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
+  const [previewExercise, setPreviewExercise] = useState<Exercise | null>(null);
 
   const musclesList = Array.from(
     new Set(exercises.flatMap((ex) => ex.primary_muscles))
@@ -541,10 +542,13 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
             {filteredCatalog.map(({ ex, catalogIndex }) => (
               <div
                 key={ex.id}
-                onClick={() => handleAddExerciseToRoutine(ex)}
-                className="bg-white border border-slate-200 hover:border-amber-400 p-3.5 rounded-none flex items-center justify-between cursor-pointer group transition-all shadow-sm"
+                className="bg-white border border-slate-200 hover:border-amber-400 p-3.5 rounded-none flex items-center justify-between transition-all shadow-sm group"
               >
-                <div className="flex items-center space-x-4">
+                <div
+                  onClick={() => setPreviewExercise(ex)}
+                  className="flex items-center space-x-4 cursor-pointer flex-1 mr-2"
+                  title="Toca para ver el GIF ampliado y detalles del ejercicio"
+                >
                   <div className="relative shrink-0">
                     <img
                       src={fixImageUrl(ex.image_urls[0])}
@@ -552,11 +556,8 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
                       }}
-                      className="w-20 h-20 object-contain p-1 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm"
+                      className="w-20 h-20 object-contain p-1 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm group-hover:scale-105 transition-transform"
                     />
-                    <span className="absolute top-0 left-0 bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-none shadow font-mono">
-                      Nº {catalogIndex}
-                    </span>
                   </div>
                   <div>
                     <h5 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors leading-snug mb-1 flex items-center gap-2 flex-wrap">
@@ -572,7 +573,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); handleAddCombined(ex); }}
-                    className="p-2.5 rounded-none bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-transparent hover:border-indigo-200 transition-all shrink-0"
+                    className="p-2.5 rounded-none bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200 transition-all shrink-0 cursor-pointer"
                     title="Combinar con el último ejercicio (Biserie/Triserie)"
                   >
                     <Link2 className="w-4 h-4" />
@@ -580,8 +581,8 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); handleAddExerciseToRoutine(ex); }}
-                    className="p-2.5 rounded-none bg-amber-50 text-amber-600 hover:bg-amber-100 border border-transparent hover:border-amber-200 transition-all shrink-0"
-                    title="Añadir solo"
+                    className="p-2.5 rounded-none bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 transition-all shrink-0 cursor-pointer"
+                    title="Añadir a la rutina"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -590,6 +591,133 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
             ))}
           </div>
         </div>
+
+        {/* Modal Enlarged Exercise GIF Preview */}
+        {previewExercise && (() => {
+          const currentItemIndex = filteredCatalog.findIndex(({ ex }) => ex.id === previewExercise.id);
+          const catalogNum = currentItemIndex >= 0 ? filteredCatalog[currentItemIndex].catalogIndex : exercises.findIndex(e => e.id === previewExercise.id) + 1;
+          const hasPrev = currentItemIndex > 0;
+          const hasNext = currentItemIndex >= 0 && currentItemIndex < filteredCatalog.length - 1;
+
+          return (
+            <div
+              className="fixed inset-0 z-[100] bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4"
+              onClick={() => setPreviewExercise(null)}
+            >
+              <div
+                className="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-none shadow-2xl overflow-hidden flex flex-col max-h-[90vh] relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Navigation Arrow Left */}
+                {hasPrev && (
+                  <button
+                    type="button"
+                    onClick={() => setPreviewExercise(filteredCatalog[currentItemIndex - 1].ex)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-slate-800/90 hover:bg-amber-400 hover:text-slate-950 text-amber-400 border border-amber-400/50 p-3 rounded-full transition-all shadow-xl cursor-pointer"
+                    title="Ejercicio anterior"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                )}
+
+                {/* Navigation Arrow Right */}
+                {hasNext && (
+                  <button
+                    type="button"
+                    onClick={() => setPreviewExercise(filteredCatalog[currentItemIndex + 1].ex)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-slate-800/90 hover:bg-amber-400 hover:text-slate-950 text-amber-400 border border-amber-400/50 p-3 rounded-full transition-all shadow-xl cursor-pointer"
+                    title="Siguiente ejercicio"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                )}
+
+                {/* Modal Header */}
+                <div className="p-4 bg-slate-800/80 border-b border-slate-700 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-black bg-amber-500 text-slate-950 px-2 py-0.5 font-mono">
+                      Nº {catalogNum} / {exercises.length}
+                    </span>
+                    <h3 className="text-base font-extrabold text-white">{previewExercise.name}</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewExercise(null)}
+                    className="text-slate-400 hover:text-white p-1 cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Modal Body */}
+                <div className="p-5 overflow-y-auto space-y-4 text-slate-200">
+                  <div className="flex justify-center bg-white border border-slate-700 p-3">
+                    <img
+                      src={fixImageUrl(previewExercise.image_urls[0])}
+                      alt={previewExercise.name}
+                      className="max-h-[300px] w-auto object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80';
+                      }}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold uppercase">
+                    <div className="bg-slate-800 p-2 border border-slate-700">
+                      <span className="text-slate-400 block text-[10px]">Músculos</span>
+                      <span className="text-amber-400">{previewExercise.primary_muscles.join(', ')}</span>
+                    </div>
+                    <div className="bg-slate-800 p-2 border border-slate-700">
+                      <span className="text-slate-400 block text-[10px]">Equipamiento</span>
+                      <span className="text-amber-400">{previewExercise.equipment || 'General'}</span>
+                    </div>
+                    <div className="bg-slate-800 p-2 border border-slate-700">
+                      <span className="text-slate-400 block text-[10px]">Nivel</span>
+                      <span className="text-amber-400">{previewExercise.level || 'Todos'}</span>
+                    </div>
+                  </div>
+
+                  {previewExercise.instructions && previewExercise.instructions.length > 0 && (
+                    <div className="bg-slate-950 p-3 border border-slate-800 space-y-1">
+                      <h4 className="text-xs font-extrabold text-amber-500 uppercase">Instrucciones de Ejecución</h4>
+                      <ol className="list-decimal list-inside text-xs text-slate-300 space-y-1 leading-relaxed">
+                        {previewExercise.instructions.map((step, idx) => (
+                          <li key={idx}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+                </div>
+
+                {/* Modal Footer Actions */}
+                <div className="p-4 bg-slate-800/80 border-t border-slate-700 flex items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleAddCombined(previewExercise);
+                      setPreviewExercise(null);
+                    }}
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Link2 className="w-4 h-4" />
+                    <span>Combinar con Anterior</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleAddExerciseToRoutine(previewExercise);
+                      setPreviewExercise(null);
+                    }}
+                    className="px-5 py-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold text-xs uppercase flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Añadir a Sem {selectedWeek} ({selectedDay})</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Action Buttons */}
         <div className="flex items-center justify-end space-x-3 pt-4 border-t border-slate-200">
