@@ -20,6 +20,8 @@ const AVATAR_PRESETS = [
 
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, onProfileUpdated }) => {
   const [fullName, setFullName] = useState(profile.full_name || '');
+  const [email, setEmail] = useState(profile.email || '');
+  const [password, setPassword] = useState(profile.password || '');
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url || AVATAR_PRESETS[0]);
   const [phone, setPhone] = useState(profile.phone || '');
   const [isSaving, setIsSaving] = useState(false);
@@ -44,6 +46,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
 
     dataService.updateProfile(profile.id, {
       full_name: fullName,
+      email: email,
+      password: password,
       avatar_url: avatarUrl,
       phone: phone,
     });
@@ -235,6 +239,61 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                   boxSizing: 'border-box'
                 }}
               />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {/* Email Input */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
+              <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+                Usuario (Correo):
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="coach@gym.com"
+                  style={{
+                    width: '100%',
+                    background: '#020617',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    padding: '10px 12px',
+                    border: '1px solid #334155',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Password Input */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
+              <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+                Contraseña:
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="********"
+                  style={{
+                    width: '100%',
+                    background: '#020617',
+                    color: '#ffffff',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    padding: '10px 12px',
+                    border: '1px solid #334155',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
             </div>
           </div>
 
