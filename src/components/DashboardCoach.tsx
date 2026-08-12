@@ -70,9 +70,9 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [selectedAlumnoForDetails, setSelectedAlumnoForDetails] = useState<string | null>(null);
   const [editingProfileTarget, setEditingProfileTarget] = useState<Profile | null>(null);
 
-  const handleDeleteAlumno = (alumno: Profile) => {
-    if (window.confirm(`¿Estás seguro de eliminar a "${alumno.full_name}"? Se cancelará su acceso y eliminarán sus rutinas.`)) {
-      dataService.deleteAlumno(alumno.id);
+  const handleDeleteAlumno = async (alumno: Profile) => {
+    if (window.confirm(`⚠️ ADVERTENCIA: ¿Estás seguro de eliminar a "${alumno.full_name}"?\n\nEsta acción es IRREVERSIBLE. Se borrarán todas sus rutinas, su historial de ejercicios y su acceso de Supabase para siempre.`)) {
+      await dataService.deleteAlumno(alumno.id);
       onRefreshData();
     }
   };

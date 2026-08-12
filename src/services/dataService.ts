@@ -474,17 +474,32 @@ class DataService {
     return profile;
   }
 
-  deleteAlumno(alumnoId: string) {
+  async deleteAlumno(alumnoId: string) {
+    // Primero, encontrar todas las rutinas asociadas a este alumno
+    const routinesToDelete = this.routines.filter(r => r.alumno_id === alumnoId);
+    const routineIds = routinesToDelete.map(r => r.id);
+
+    // Borrar de local
     this.profiles = this.profiles.filter((p) => p.id !== alumnoId);
     this.routines = this.routines.filter((r) => r.alumno_id !== alumnoId);
     this.persist();
-
-    if (supabase) {
-      this.saveToCloud(async () => {
-        await supabase.from('gym_profiles').delete().eq('id', alumnoId);
-      });
-    }
     this.notify();
+
+    // Borrar de Supabase en cascada inversa
+    if (supabase) {
+      try {
+        if (routineIds.length > 0) {
+          // 1. Borrar todos los ejercicios (logs) de esas rutinas
+          await supabase.from('gym_routine_logs').delete().in('routine_id', routineIds);
+          // 2. Borrar las rutinas
+          await supabase.from('gym_routines').delete().in('id', routineIds);
+        }
+        // 3. Finalmente borrar el perfil del alumno
+        await supabase.from('gym_profiles').delete().eq('id', alumnoId);
+      } catch (err) {
+        console.error('Error al borrar alumno en cascada:', err);
+      }
+    }
   }
 
   // EXERCISES CATALOG
