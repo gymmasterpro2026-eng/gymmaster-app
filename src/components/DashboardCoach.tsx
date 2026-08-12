@@ -172,7 +172,9 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
           </div>
           <div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span style={S.badgeGold}>SUCURSAL COACH</span>
+              <span style={coach.gym_id === 'gym-titan-001' ? { ...S.badgeGold, background: 'linear-gradient(135deg, #f59e0b, #dc2626)', color: '#fff' } : S.badgeGold}>
+                {coach.gym_id === 'gym-titan-001' ? '⭐ ADMINISTRADOR MASTER' : 'SUCURSAL COACH'}
+              </span>
               <span style={{ fontSize: '10px', color: '#64748b', fontFamily: 'monospace' }}>ID: {coach.gym_id}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
