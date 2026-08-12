@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Activity } from 'lucide-react';
+import { Activity, Eye, EyeOff } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { GymTenant, Profile } from '../types';
 
@@ -111,7 +111,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const S: Record<string, React.CSSProperties> = {
     root: {
       minHeight: '100vh',
-      background: 'url(/gym_environment.png) center/cover no-repeat',
+      background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(/gymmaster-app/gym_environment.png) center/cover no-repeat fixed, url(/gym_environment.png) center/cover no-repeat fixed',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -151,13 +151,13 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       zIndex: 10,
       width: '100%',
       maxWidth: '440px',
-      background: 'rgba(255,255,255,0.02)',
-      border: '1px solid rgba(255,255,255,0.08)',
+      background: 'rgba(15, 23, 42, 0.40)',
+      border: '1px solid rgba(255,255,255,0.18)',
       borderRadius: '0',
       padding: '48px 40px',
-      backdropFilter: 'blur(40px)',
-      WebkitBackdropFilter: 'blur(40px)',
-      boxShadow: '0 25px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      boxShadow: '0 25px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15)',
       opacity: mounted ? 1 : 0,
       transform: mounted ? 'translateY(0)' : 'translateY(30px)',
       transition: 'opacity 0.7s ease, transform 0.7s ease',
@@ -206,18 +206,18 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
     accent: { color: '#D4FF00' },
     subtitle: {
       fontSize: '13px',
-      color: 'rgba(255,255,255,0.4)',
+      color: 'rgba(255,255,255,0.7)',
       margin: '8px 0 0',
       textAlign: 'center',
-      fontWeight: 500,
+      fontWeight: 600,
     },
     form: { display: 'flex', flexDirection: 'column', gap: '20px' },
     errorBox: {
-      background: 'rgba(239,68,68,0.08)',
-      border: '1px solid rgba(239,68,68,0.2)',
+      background: 'rgba(239,68,68,0.12)',
+      border: '1px solid rgba(239,68,68,0.3)',
       borderRadius: '0',
       padding: '12px 16px',
-      color: '#fc8181',
+      color: '#fca5a5',
       fontSize: '13px',
       display: 'flex',
       alignItems: 'center',
@@ -229,41 +229,42 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
     },
     fieldGroup: { display: 'flex', flexDirection: 'column', gap: '8px' },
     label: {
-      fontSize: '11px', fontWeight: 700,
-      color: 'rgba(255,255,255,0.4)',
+      fontSize: '11px', fontWeight: 800,
+      color: '#cbd5e1',
       textTransform: 'uppercase', letterSpacing: '0.1em',
     },
     inputWrap: { position: 'relative', display: 'flex', alignItems: 'center' },
     inputIcon: {
       position: 'absolute', left: '16px',
-      color: '#64748b', pointerEvents: 'none',
-      display: 'flex', alignItems: 'center',
+      color: '#334155', pointerEvents: 'none',
+      display: 'flex', alignItems: 'center', zIndex: 2,
     },
     input: {
       width: '100%',
       background: '#e2e8f0',
-      border: '1px solid rgba(255,255,255,0.08)',
+      border: '1px solid rgba(255,255,255,0.2)',
       borderRadius: '0',
       padding: '14px 16px 14px 46px',
-      color: '#0f172a', fontSize: '14px', fontWeight: 500,
+      color: '#0f172a', fontSize: '14px', fontWeight: 700,
       outline: 'none', boxSizing: 'border-box',
       transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
     },
     inputPr: {
       width: '100%',
       background: '#e2e8f0',
-      border: '1px solid rgba(255,255,255,0.08)',
+      border: '1px solid rgba(255,255,255,0.2)',
       borderRadius: '0',
       padding: '14px 48px 14px 46px',
-      color: '#0f172a', fontSize: '14px', fontWeight: 500,
+      color: '#0f172a', fontSize: '14px', fontWeight: 700,
       outline: 'none', boxSizing: 'border-box',
       transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
     },
     eyeBtn: {
-      position: 'absolute', right: '14px',
-      background: 'none', border: 'none', cursor: 'pointer',
-      color: 'rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center',
-      padding: '4px', transition: 'color 0.2s',
+      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+      background: 'rgba(15, 23, 42, 0.08)', border: '1px solid rgba(15, 23, 42, 0.15)',
+      borderRadius: '0', cursor: 'pointer',
+      color: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '6px', transition: 'all 0.2s', zIndex: 5,
     },
     submitBtn: {
       width: '100%',
@@ -273,33 +274,33 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       border: 'none', borderRadius: '0', padding: '16px',
       cursor: 'pointer', display: 'flex', alignItems: 'center',
       justifyContent: 'center', gap: '8px', marginTop: '4px',
-      boxShadow: '0 0 30px rgba(245,158,11,0.2)',
+      boxShadow: '0 0 30px rgba(245,158,11,0.3)',
       transition: 'transform 0.15s, box-shadow 0.2s, filter 0.2s',
     },
     divider: {
       display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px',
     },
-    divLine: { flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' },
+    divLine: { flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' },
     divText: {
-      fontSize: '11px', color: 'rgba(255,255,255,0.2)', fontWeight: 600,
+      fontSize: '11px', color: 'rgba(255,255,255,0.5)', fontWeight: 700,
       letterSpacing: '0.1em', textTransform: 'uppercase',
     },
     quickGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' },
     qBtn: {
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
+      background: 'rgba(15, 23, 42, 0.6)',
+      border: '1px solid rgba(255,255,255,0.15)',
       borderRadius: '0', padding: '12px 14px',
       cursor: 'pointer', textAlign: 'left',
       transition: 'background 0.2s, border-color 0.2s, transform 0.15s',
       display: 'flex', flexDirection: 'column', gap: '2px',
     },
-    qLabel: { fontSize: '11px', fontWeight: 700, color: '#D4FF00' },
-    qSub: { fontSize: '10px', color: 'rgba(255,255,255,0.3)' },
+    qLabel: { fontSize: '11px', fontWeight: 800, color: '#D4FF00' },
+    qSub: { fontSize: '10px', color: '#cbd5e1', fontWeight: 500 },
     footer: {
       marginTop: '32px', textAlign: 'center',
-      fontSize: '11px', color: 'rgba(255,255,255,0.2)', lineHeight: 1.8,
+      fontSize: '11px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.8, fontWeight: 600,
     },
-    dot: { color: 'rgba(245,158,11,0.4)', margin: '0 6px' },
+    dot: { color: '#f59e0b', margin: '0 6px' },
   };
 
   return (
@@ -307,7 +308,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         @keyframes spin { to { transform: rotate(360deg); } }
-        input[data-gm]::placeholder { color: #94a3b8 !important; }
+        input[data-gm]::placeholder { color: #64748b !important; }
         * { box-sizing: border-box; }
       `}</style>
 
@@ -353,12 +354,12 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 placeholder="gym"
                 style={S.input}
                 onFocus={e => {
-                  e.target.style.borderColor = 'rgba(245,158,11,0.4)';
-                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.06)';
-                  e.target.style.background = '#f8fafc';
+                  e.target.style.borderColor = '#f59e0b';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.15)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.target.style.borderColor = 'rgba(255,255,255,0.2)';
                   e.target.style.boxShadow = 'none';
                   e.target.style.background = '#e2e8f0';
                 }}
@@ -382,12 +383,12 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 placeholder="12345"
                 style={S.inputPr}
                 onFocus={e => {
-                  e.target.style.borderColor = 'rgba(245,158,11,0.4)';
-                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.06)';
-                  e.target.style.background = '#f8fafc';
+                  e.target.style.borderColor = '#f59e0b';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.15)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={e => {
-                  e.target.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.target.style.borderColor = 'rgba(255,255,255,0.2)';
                   e.target.style.boxShadow = 'none';
                   e.target.style.background = '#e2e8f0';
                 }}
@@ -396,19 +397,14 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 type="button"
                 style={S.eyeBtn}
                 onClick={() => setShowPassword(!showPassword)}
-                onMouseEnter={e => { e.currentTarget.style.color = 'rgba(245,158,11,0.8)'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.3)'; }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#f59e0b'; e.currentTarget.style.borderColor = '#f59e0b'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = '#0f172a'; e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.15)'; }}
+                title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
                 {showPassword ? (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                    <line x1="1" y1="1" x2="23" y2="23"/>
-                  </svg>
+                  <EyeOff size={18} />
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                  </svg>
+                  <Eye size={18} />
                 )}
               </button>
             </div>
