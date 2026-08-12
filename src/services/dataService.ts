@@ -12,6 +12,8 @@ class DataService {
   private gyms: GymTenant[] = [...INITIAL_GYMS];
   private language: 'es' | 'en' = 'es';
   private listeners: Array<() => void> = [];
+  private isSyncing: boolean = false;
+  private lastSyncTime: Date | null = new Date();
 
   constructor() {
     this.loadFromLocalStorage();
@@ -19,6 +21,12 @@ class DataService {
       this.initCloudSync();
       this.subscribeRealtime();
     }
+    // Auto-polling heartbeat every 20 seconds to keep APK, Web and Local 100% synchronized
+    setInterval(() => {
+      if (isSupabaseConfigured && supabase && !this.isSyncing) {
+        this.syncNow();
+      }
+    }, 20000);
   }
 
   public subscribe(listener: () => void) {
@@ -30,6 +38,29 @@ class DataService {
 
   private notify() {
     this.listeners.forEach((l) => l());
+  }
+
+  public getSyncState() {
+    return {
+      isSyncing: this.isSyncing,
+      lastSyncTime: this.lastSyncTime,
+    };
+  }
+
+  public async syncNow(): Promise<void> {
+    if (!supabase) return;
+    this.isSyncing = true;
+    this.notify();
+
+    try {
+      await this.initCloudSync();
+    } catch (e) {
+      console.warn('Manual/Auto sync error:', e);
+    } finally {
+      this.isSyncing = false;
+      this.lastSyncTime = new Date();
+      this.notify();
+    }
   }
 
   private async saveToCloud(operation: () => Promise<any>) {
@@ -88,7 +119,6 @@ class DataService {
       }
 
       this.persist();
-      this.notify();
     } catch (e) {
       console.warn('Error during Supabase sync, staying on local state:', e);
     }
@@ -98,41 +128,11 @@ class DataService {
     if (!supabase) return;
     try {
       supabase
-        .channel('gymmaster-realtime')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'gym_routine_logs' },
-          (payload) => {
-            if (payload.new && (payload.new as any).id) {
-              const updatedLog = payload.new as RoutineLog;
-              const idx = this.logs.findIndex((l) => l.id === updatedLog.id);
-              if (idx >= 0) {
-                this.logs[idx] = { ...this.logs[idx], ...updatedLog };
-              } else {
-                this.logs.push(updatedLog);
-              }
-              this.persist();
-              this.notify();
-            }
-          }
-        )
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'gym_profiles' },
-          (payload) => {
-            if (payload.new && (payload.new as any).id) {
-              const updatedProfile = payload.new as Profile;
-              const idx = this.profiles.findIndex((p) => p.id === updatedProfile.id);
-              if (idx >= 0) {
-                this.profiles[idx] = { ...this.profiles[idx], ...updatedProfile };
-              } else {
-                this.profiles.push(updatedProfile);
-              }
-              this.persist();
-              this.notify();
-            }
-          }
-        )
+        .channel('gymmaster-realtime-all')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routines' }, () => this.syncNow())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routine_logs' }, () => this.syncNow())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_profiles' }, () => this.syncNow())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_exercises' }, () => this.syncNow())
         .subscribe();
     } catch (e) {
       console.warn('Realtime subscription warning:', e);

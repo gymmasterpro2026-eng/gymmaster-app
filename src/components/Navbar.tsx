@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dumbbell, Shield, User, Code2, FolderTree, Database,
-  RefreshCw, Building2, LogOut, LogIn, Globe2, Activity, Menu, X, ChevronRight
+  RefreshCw, Building2, LogOut, LogIn, Globe2, Activity, Menu, X, ChevronRight, Check
 } from 'lucide-react';
 import { Profile, UserRole, GymTenant } from '../types';
+import { dataService } from '../services/dataService';
 
 interface NavbarProps {
   currentRole: UserRole;
@@ -83,6 +84,33 @@ export const Navbar: React.FC<NavbarProps> = ({
   const activeAlumno = safeAlumnos.find(a => a && a.id === selectedAlumnoId);
   const isPlanExpired = activeAlumno ? new Date(activeAlumno.plan_active_until) < new Date() : false;
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  const [syncState, setSyncState] = useState(() => dataService.getSyncState());
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const unsub = dataService.subscribe(() => {
+      setSyncState(dataService.getSyncState());
+    });
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => {
+      unsub();
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleSyncClick = () => {
+    dataService.syncNow();
+  };
+
+  const getTimeAgo = () => {
+    if (!syncState.lastSyncTime) return 'En vivo';
+    const diffSec = Math.max(0, Math.floor((now - syncState.lastSyncTime.getTime()) / 1000));
+    if (diffSec < 5) return 'Ahora';
+    if (diffSec < 60) return `Hace ${diffSec}s`;
+    const diffMin = Math.floor(diffSec / 60);
+    return `Hace ${diffMin}m`;
+  };
 
   const handleNavClick = (tab: string, role?: UserRole) => {
     if (role) setCurrentRole(role);
@@ -409,6 +437,73 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
         )}
+
+        {/* Realtime Sync Status Button */}
+        <button
+          type="button"
+          onClick={handleSyncClick}
+          title="Toca para sincronizar en tiempo real con Supabase (APK, Web y Local)"
+          style={{
+            width: '100%',
+            padding: '9px 12px',
+            background: syncState.isSyncing
+              ? 'rgba(245, 158, 11, 0.15)'
+              : 'rgba(15, 23, 42, 0.6)',
+            border: syncState.isSyncing
+              ? '1px solid #f59e0b'
+              : '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '0',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            transition: 'all 0.2s ease',
+            boxShadow: syncState.isSyncing ? '0 0 15px rgba(245,158,11,0.2)' : 'none',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <RefreshCw
+              size={14}
+              style={{
+                color: syncState.isSyncing ? '#f59e0b' : '#22c55e',
+                animation: syncState.isSyncing ? 'spin 1s linear infinite' : 'none',
+              }}
+            />
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 900,
+                color: syncState.isSyncing ? '#f59e0b' : '#0f172a',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+              }}
+            >
+              {syncState.isSyncing ? 'SINCRONIZANDO...' : 'SINCRONIZADO'}
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span
+              style={{
+                fontSize: '9px',
+                fontWeight: 700,
+                color: syncState.isSyncing ? '#f59e0b' : '#475569',
+                fontFamily: 'monospace',
+              }}
+            >
+              {syncState.isSyncing ? 'En vivo' : getTimeAgo()}
+            </span>
+            <div
+              className={syncState.isSyncing ? 'nav-glow-dot' : ''}
+              style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: syncState.isSyncing ? '#f59e0b' : '#22c55e',
+                boxShadow: syncState.isSyncing ? '0 0 8px #f59e0b' : '0 0 6px #22c55e',
+              }}
+            />
+          </div>
+        </button>
 
         {/* Alumno selector */}
         {currentRole === 'alumno' && safeAlumnos.length > 0 && (
