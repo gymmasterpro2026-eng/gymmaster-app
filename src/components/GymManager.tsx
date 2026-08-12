@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Sparkles, ArrowRight, Shield, Globe2 } from 'lucide-react';
+import { Building2, Sparkles, ArrowRight, Shield, Globe2, Trash2, AlertTriangle } from 'lucide-react';
 import { dataService } from '../services/dataService';
+import { supabase } from '../services/supabaseClient';
 import { GymTenant, Profile } from '../types';
 
 /* ─── Shared Styles ─── */
@@ -154,14 +155,81 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
 export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile) => void }> = ({ onEnterGym }) => {
   const [allGyms, setAllGyms] = useState<GymTenant[]>([]);
   const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
+  const [deletingGymId, setDeletingGymId] = useState<string | null>(null);
+  const [confirmGym, setConfirmGym] = useState<GymTenant | null>(null);
+  const [deleteMsg, setDeleteMsg] = useState('');
 
   useEffect(() => {
     setAllGyms(dataService.getGyms());
     setAllProfiles(dataService.getProfiles());
   }, []);
 
+  const handleDeleteGym = async (gym: GymTenant) => {
+    if (gym.id === 'gym-titan-001') return; // Proteger master
+    setDeletingGymId(gym.id);
+    setDeleteMsg('Eliminando...');
+    try {
+      if (supabase) {
+        // 1. Obtener rutinas de este gym
+        const { data: profiles } = await supabase.from('gym_profiles').select('id').eq('gym_id', gym.id);
+        const profileIds = (profiles || []).map((p: any) => p.id);
+        const { data: routines } = await supabase.from('gym_routines').select('id').in('alumno_id', profileIds.length ? profileIds : ['none']);
+        const routineIds = (routines || []).map((r: any) => r.id);
+
+        // 2. Borrar en cascada
+        if (routineIds.length) await supabase.from('gym_routine_logs').delete().in('routine_id', routineIds);
+        if (routineIds.length) await supabase.from('gym_routines').delete().in('id', routineIds);
+        if (profileIds.length) await supabase.from('gym_profiles').delete().in('id', profileIds);
+        await supabase.from('gym_tenants').delete().eq('id', gym.id);
+      }
+      // Borrar en local
+      const updated = dataService.getGyms().filter(g => g.id !== gym.id);
+      setAllGyms(updated);
+      setAllProfiles(allProfiles.filter(p => p.gym_id !== gym.id));
+      setDeleteMsg(`✅ "${gym.name}" eliminado definitivamente.`);
+      setTimeout(() => setDeleteMsg(''), 3000);
+    } catch (e) {
+      setDeleteMsg('❌ Error al eliminar. Intenta de nuevo.');
+    } finally {
+      setDeletingGymId(null);
+      setConfirmGym(null);
+    }
+  };
+
   return (
     <div style={S.page}>
+      {/* Modal de confirmación */}
+      {confirmGym && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+          <div style={{ background: '#0f172a', border: '2px solid #dc2626', padding: '32px', maxWidth: '420px', width: '100%', boxShadow: '0 25px 50px rgba(220,38,38,0.3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <AlertTriangle size={28} color="#dc2626" />
+              <h3 style={{ color: '#fff', fontSize: '18px', fontWeight: 900, margin: 0 }}>¿Eliminar definitivamente?</h3>
+            </div>
+            <p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '8px' }}>
+              Estás por eliminar el gym:
+            </p>
+            <p style={{ color: '#f59e0b', fontWeight: 800, fontSize: '16px', margin: '0 0 8px' }}>📍 {confirmGym.name}</p>
+            <p style={{ color: '#ef4444', fontSize: '13px', marginBottom: '24px', lineHeight: 1.5 }}>
+              ⚠️ Se eliminarán <strong>todos los perfiles, rutinas, ejercicios y logs</strong> de este gym de Supabase de forma permanente. Esta acción <strong>no se puede deshacer</strong>.
+            </p>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={() => setConfirmGym(null)}
+                style={{ flex: 1, padding: '12px', background: '#1e293b', color: '#fff', border: '1px solid #334155', fontWeight: 700, cursor: 'pointer', fontSize: '14px' }}
+              >Cancelar</button>
+              <button
+                onClick={() => handleDeleteGym(confirmGym)}
+                disabled={!!deletingGymId}
+                style={{ flex: 1, padding: '12px', background: '#dc2626', color: '#fff', border: 'none', fontWeight: 900, cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              >
+                <Trash2 size={16} /> {deletingGymId ? 'Eliminando...' : 'SÍ, ELIMINAR TODO'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
         <div style={{ background: '#D4FF00', padding: '12px', borderRadius: '0', color: '#000', display: 'flex' }}>
           <Building2 size={24} />
@@ -171,24 +239,42 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>Total aislados por Row Level Security: {allGyms.length}</p>
         </div>
       </div>
+      {deleteMsg && (
+        <div style={{ padding: '12px 16px', background: deleteMsg.startsWith('✅') ? 'rgba(34,197,94,0.1)' : 'rgba(220,38,38,0.1)', border: `1px solid ${deleteMsg.startsWith('✅') ? '#22c55e' : '#dc2626'}`, color: deleteMsg.startsWith('✅') ? '#22c55e' : '#ef4444', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>{deleteMsg}</div>
+      )}
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
         {allGyms.map((gym) => {
           const gymProfiles = allProfiles.filter(p => p.gym_id === gym.id);
           const coach = gymProfiles.find(p => p.role === 'coach') || gymProfiles[0];
+          const isMaster = gym.id === 'gym-titan-001';
 
           return (
             <div key={gym.id} style={S.gymCard}
               onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(245,158,11,0.3)'}
               onMouseLeave={e => e.currentTarget.style.borderColor = '#1e293b'}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                <div style={{ background: '#1e293b', padding: '12px', borderRadius: '0', border: '1px solid #334155', color: '#D4FF00', display: 'flex' }}>
+                <div style={{ background: '#1e293b', padding: '12px', borderRadius: '0', border: '1px solid #334155', color: isMaster ? '#f59e0b' : '#D4FF00', display: 'flex' }}>
                   <Building2 size={20} />
                 </div>
-                <div>
-                  <h4 style={S.gymTitle}>
-                    {gym.name} <span style={S.planBadge}>{gym.plan}</span>
-                  </h4>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                    <h4 style={S.gymTitle}>
+                      {gym.name} <span style={S.planBadge}>{gym.plan}</span>
+                      {isMaster && <span style={{ ...S.planBadge, background: 'rgba(245,158,11,0.2)', color: '#f59e0b', marginLeft: '4px' }}>MASTER</span>}
+                    </h4>
+                    {!isMaster && (
+                      <button
+                        onClick={() => setConfirmGym(gym)}
+                        title="Eliminar gym definitivamente"
+                        style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.4)', color: '#ef4444', padding: '6px 8px', cursor: 'pointer', borderRadius: '0', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, transition: 'all 0.2s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#dc2626'; e.currentTarget.style.color = '#fff'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(220,38,38,0.15)'; e.currentTarget.style.color = '#ef4444'; }}
+                      >
+                        <Trash2 size={13} /> Eliminar
+                      </button>
+                    )}
+                  </div>
                   <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', margin: '4px 0 0' }}>ID: {gym.id}</p>
                   
                   {coach && (
