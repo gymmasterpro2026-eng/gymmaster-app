@@ -158,6 +158,8 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
   const [deletingGymId, setDeletingGymId] = useState<string | null>(null);
   const [confirmGym, setConfirmGym] = useState<GymTenant | null>(null);
   const [deleteMsg, setDeleteMsg] = useState('');
+  const [drafts, setDrafts] = useState<Record<string, { email?: string; password?: string; valid_until?: string }>>({});
+  const [saveSuccessId, setSaveSuccessId] = useState<string | null>(null);
 
   useEffect(() => {
     setAllGyms(dataService.getGyms());
@@ -248,6 +250,24 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
           const gymProfiles = allProfiles.filter(p => p.gym_id === gym.id);
           const coach = gymProfiles.find(p => p.role === 'coach') || gymProfiles[0];
           const isMaster = gym.id === 'gym-titan-001';
+          const draft = drafts[gym.id] || { email: coach?.email || '', password: coach?.password || '', valid_until: gym.valid_until || '' };
+
+          const handleSave = () => {
+            if (coach) {
+              dataService.updateAlumnoCredentials(coach.id, draft.email || coach.email, draft.password || '');
+            }
+            if (draft.valid_until) {
+              const iso = new Date(draft.valid_until).toISOString();
+              dataService.updateGymValidUntil(gym.id, iso);
+            }
+            
+            // Refrescar listados
+            setAllGyms(dataService.getGyms());
+            setAllProfiles(dataService.getProfiles());
+
+            setSaveSuccessId(gym.id);
+            setTimeout(() => setSaveSuccessId(null), 2000);
+          };
 
           return (
             <div key={gym.id} style={S.gymCard}
@@ -286,14 +306,8 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                           <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>USUARIO (CORREO)</label>
                           <input 
                             type="text" 
-                            value={coach.email} 
-                            onChange={e => {
-                              dataService.updateAlumnoCredentials(coach.id, e.target.value, coach.password);
-                              const updated = [...allProfiles];
-                              const idx = updated.findIndex(p => p.id === coach.id);
-                              if (idx > -1) updated[idx].email = e.target.value;
-                              setAllProfiles(updated);
-                            }}
+                            value={draft.email} 
+                            onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, email: e.target.value } }))}
                             style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
                           />
                         </div>
@@ -301,14 +315,8 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                           <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>CONTRASEÑA</label>
                           <input 
                             type="text" 
-                            value={coach.password || ''} 
-                            onChange={e => {
-                              dataService.updateAlumnoCredentials(coach.id, coach.email, e.target.value);
-                              const updated = [...allProfiles];
-                              const idx = updated.findIndex(p => p.id === coach.id);
-                              if (idx > -1) updated[idx].password = e.target.value;
-                              setAllProfiles(updated);
-                            }}
+                            value={draft.password} 
+                            onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, password: e.target.value } }))}
                             style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
                           />
                         </div>
@@ -321,22 +329,19 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                       <label style={{ display: 'block', fontSize: '11px', color: '#f59e0b', fontWeight: 700, marginBottom: '4px' }}>VENCIMIENTO DE LA SUCURSAL:</label>
                       <input 
                         type="date"
-                        value={gym.valid_until ? gym.valid_until.split('T')[0] : ''}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (val) {
-                            const iso = new Date(val).toISOString();
-                            dataService.updateGymValidUntil(gym.id, iso);
-                            const updated = [...allGyms];
-                            const idx = updated.findIndex(g => g.id === gym.id);
-                            if (idx > -1) updated[idx].valid_until = iso;
-                            setAllGyms(updated);
-                          }
-                        }}
+                        value={draft.valid_until ? draft.valid_until.split('T')[0] : ''}
+                        onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, valid_until: e.target.value } }))}
                         style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
                       />
                     </div>
                   )}
+
+                  <button
+                    onClick={handleSave}
+                    style={{ marginTop: '12px', width: '100%', background: saveSuccessId === gym.id ? '#22c55e' : '#f59e0b', color: saveSuccessId === gym.id ? '#fff' : '#000', border: 'none', padding: '8px', fontWeight: 900, fontSize: '12px', cursor: 'pointer', transition: 'all 0.2s' }}
+                  >
+                    {saveSuccessId === gym.id ? '¡GUARDADO CON ÉXITO!' : 'GUARDAR CAMBIOS DEL PERFIL'}
+                  </button>
                 </div>
               </div>
 
