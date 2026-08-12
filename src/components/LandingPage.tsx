@@ -351,7 +351,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 type="text"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
-                placeholder="gym"
+                placeholder="Ingresa tu correo o usuario"
                 style={S.input}
                 onFocus={e => {
                   e.target.style.borderColor = '#f59e0b';
@@ -380,7 +380,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="123456"
+                placeholder="••••••••"
                 style={S.inputPr}
                 onFocus={e => {
                   e.target.style.borderColor = '#f59e0b';
@@ -443,52 +443,6 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
             )}
           </button>
         </form>
-
-        <div style={S.divider}>
-          <div style={S.divLine} />
-          <span style={S.divText}>Acceso rápido</span>
-          <div style={S.divLine} />
-        </div>
-
-        <div style={S.quickGrid}>
-          <button
-            type="button"
-            style={S.qBtn}
-            onClick={() => quickLogin('gym', '123456')}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'rgba(245,158,11,0.05)';
-              e.currentTarget.style.borderColor = 'rgba(245,158,11,0.2)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-              e.currentTarget.style.transform = 'none';
-            }}
-          >
-            <span style={S.qLabel}>⚡ Coach Principal</span>
-            <span style={S.qSub}>gym / 123456</span>
-          </button>
-
-          <button
-            type="button"
-            style={S.qBtn}
-            onClick={() => quickLogin('santiago.gomez@alumno.gymmaster.io', 'santi123')}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-              e.currentTarget.style.transform = 'none';
-            }}
-          >
-            <span style={{ ...S.qLabel, color: 'rgba(255,255,255,0.65)' }}>🏋️ Santiago Gómez</span>
-            <span style={S.qSub}>Alumno demo</span>
-          </button>
-        </div>
 
         <p style={S.footer}>
           © 2026 GymMaster Pro
