@@ -309,6 +309,20 @@ class DataService {
     return this.gyms.find((g) => g.id === id);
   }
 
+  updateGymValidUntil(id: string, validUntil: string) {
+    const gym = this.getGymById(id);
+    if (gym) {
+      gym.valid_until = validUntil;
+      this.persist();
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase.from('gym_tenants').update({ valid_until: validUntil }).eq('id', id);
+        });
+      }
+      this.notify();
+    }
+  }
+
   createGym(
     name: string,
     plan: 'free' | 'pro' | 'enterprise',

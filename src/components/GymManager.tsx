@@ -284,18 +284,46 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                       <div style={S.coachEmail}>{coach.email}</div>
                     </div>
                   )}
+                  
+                  {!isMaster && (
+                    <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.2)', padding: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                      <label style={{ display: 'block', fontSize: '11px', color: '#f59e0b', fontWeight: 700, marginBottom: '4px' }}>VENCIMIENTO DE LA SUCURSAL:</label>
+                      <input 
+                        type="date"
+                        value={gym.valid_until ? gym.valid_until.split('T')[0] : ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val) {
+                            const iso = new Date(val).toISOString();
+                            dataService.updateGymValidUntil(gym.id, iso);
+                            const updated = [...allGyms];
+                            const idx = updated.findIndex(g => g.id === gym.id);
+                            if (idx > -1) updated[idx].valid_until = iso;
+                            setAllGyms(updated);
+                          }
+                        }}
+                        style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
               {coach && (
-                <button
-                  style={S.enterBtn}
-                  onClick={() => onEnterGym(gym, coach)}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#f59e0b'; e.currentTarget.style.color = '#000'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = '#1e293b'; e.currentTarget.style.color = '#fff'; }}
-                >
-                  Entrar al Gym <ArrowRight size={16} />
-                </button>
+                (() => {
+                  const isExpired = !isMaster && gym.valid_until && new Date(gym.valid_until) < new Date();
+                  return (
+                    <button
+                      style={{ ...S.enterBtn, background: isExpired ? '#334155' : '#1e293b', color: isExpired ? '#94a3b8' : '#fff', cursor: isExpired ? 'not-allowed' : 'pointer', border: isExpired ? '1px solid #1e293b' : S.enterBtn.border }}
+                      onClick={() => !isExpired && onEnterGym(gym, coach)}
+                      onMouseEnter={e => { if (!isExpired) { e.currentTarget.style.background = '#f59e0b'; e.currentTarget.style.color = '#000'; } }}
+                      onMouseLeave={e => { if (!isExpired) { e.currentTarget.style.background = '#1e293b'; e.currentTarget.style.color = '#fff'; } }}
+                      disabled={isExpired}
+                    >
+                      {isExpired ? 'ACCESO BLOQUEADO (VENCIDO)' : <>Entrar al Gym <ArrowRight size={16} /></>}
+                    </button>
+                  );
+                })()
               )}
             </div>
           );
