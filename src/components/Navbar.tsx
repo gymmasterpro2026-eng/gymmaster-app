@@ -245,15 +245,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       zIndex: 1,
     }),
     alumnoSelect: {
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.06)',
+      background: '#0f172a',
+      border: '1px solid #334155',
       borderRadius: '0',
       padding: '10px 12px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
     },
     selectLabel: {
       fontSize: '10px',
-      fontWeight: 700,
-      color: 'rgba(255,255,255,0.3)',
+      fontWeight: 900,
+      color: '#f59e0b',
       textTransform: 'uppercase',
       letterSpacing: '0.08em',
       marginBottom: '6px',
@@ -263,36 +264,38 @@ export const Navbar: React.FC<NavbarProps> = ({
     select: {
       background: 'transparent',
       border: 'none',
-      color: '#0f172a',
+      color: '#ffffff',
       fontSize: '13px',
-      fontWeight: 600,
+      fontWeight: 800,
       fontFamily: 'inherit',
       outline: 'none',
       cursor: 'pointer',
       flex: 1,
     },
     statusDot: (expired: boolean): React.CSSProperties => ({
-      width: '7px',
-      height: '7px',
-      borderRadius: '0',
+      width: '8px',
+      height: '8px',
+      borderRadius: '50%',
       background: expired ? '#ef4444' : '#22c55e',
+      boxShadow: expired ? '0 0 6px #ef4444' : '0 0 6px #22c55e',
       flexShrink: 0,
     }),
     userCard: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      background: 'rgba(255,255,255,0.02)',
-      border: '1px solid rgba(255,255,255,0.06)',
+      background: '#0f172a',
+      border: '1px solid #334155',
       borderRadius: '0',
       padding: '10px 12px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
     },
     avatar: {
       width: '32px',
       height: '32px',
       borderRadius: '0',
-      background: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05))',
-      border: '1px solid rgba(245,158,11,0.2)',
+      background: 'linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.1))',
+      border: '1px solid #f59e0b',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -300,8 +303,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
     userName: {
       fontSize: '13px',
-      fontWeight: 700,
-      color: '#0f172a',
+      fontWeight: 900,
+      color: '#ffffff',
       margin: 0,
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -445,35 +448,35 @@ export const Navbar: React.FC<NavbarProps> = ({
           title="Toca para sincronizar en tiempo real con Supabase (APK, Web y Local)"
           style={{
             width: '100%',
-            padding: '9px 12px',
+            padding: '10px 12px',
             background: syncState.isSyncing
-              ? 'rgba(245, 158, 11, 0.15)'
-              : 'rgba(15, 23, 42, 0.6)',
+              ? 'linear-gradient(135deg, #f59e0b, #d97706)'
+              : '#0f172a',
             border: syncState.isSyncing
-              ? '1px solid #f59e0b'
-              : '1px solid rgba(255, 255, 255, 0.15)',
+              ? '2px solid #b45309'
+              : '2px solid #10b981',
             borderRadius: '0',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             transition: 'all 0.2s ease',
-            boxShadow: syncState.isSyncing ? '0 0 15px rgba(245,158,11,0.2)' : 'none',
+            boxShadow: syncState.isSyncing ? '0 0 20px rgba(245,158,11,0.4)' : '0 4px 12px rgba(0,0,0,0.2)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <RefreshCw
-              size={14}
+              size={15}
               style={{
-                color: syncState.isSyncing ? '#f59e0b' : '#22c55e',
-                animation: syncState.isSyncing ? 'spin 1s linear infinite' : 'none',
+                color: syncState.isSyncing ? '#000000' : '#10b981',
+                animation: syncState.isSyncing ? 'spin 0.8s linear infinite' : 'none',
               }}
             />
             <span
               style={{
                 fontSize: '11px',
                 fontWeight: 900,
-                color: syncState.isSyncing ? '#f59e0b' : '#0f172a',
+                color: syncState.isSyncing ? '#000000' : '#10b981',
                 letterSpacing: '0.05em',
                 textTransform: 'uppercase',
               }}
@@ -484,9 +487,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
               style={{
-                fontSize: '9px',
-                fontWeight: 700,
-                color: syncState.isSyncing ? '#f59e0b' : '#475569',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: syncState.isSyncing ? '#000000' : '#94a3b8',
                 fontFamily: 'monospace',
               }}
             >
@@ -495,39 +498,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div
               className={syncState.isSyncing ? 'nav-glow-dot' : ''}
               style={{
-                width: '7px',
-                height: '7px',
+                width: '8px',
+                height: '8px',
                 borderRadius: '50%',
-                background: syncState.isSyncing ? '#f59e0b' : '#22c55e',
-                boxShadow: syncState.isSyncing ? '0 0 8px #f59e0b' : '0 0 6px #22c55e',
+                background: syncState.isSyncing ? '#000000' : '#10b981',
+                boxShadow: syncState.isSyncing ? '0 0 6px #000' : '0 0 8px #10b981',
               }}
             />
           </div>
         </button>
 
-        {/* Alumno selector */}
-        {currentRole === 'alumno' && safeAlumnos.length > 0 && (
-          <div style={S.alumnoSelect}>
-            <span style={S.selectLabel}>Seleccionar Alumno</span>
-            <div style={S.selectRow}>
-              <select
-                value={selectedAlumnoId}
-                onChange={e => setSelectedAlumnoId(e.target.value)}
-                style={S.select}
-              >
-                {safeAlumnos.map(al => {
-                  const isExp = new Date(al.plan_active_until) < new Date();
-                  return (
-                    <option key={al.id} value={al.id} style={{ background: '#0F0F0F', color: '#fff' }}>
-                      {al.full_name}{isExp ? ' ❌' : ''}
-                    </option>
-                  );
-                })}
-              </select>
-              <div style={S.statusDot(isPlanExpired)} />
-            </div>
-          </div>
-        )}
+
 
         {/* User card */}
         <div style={S.userCard}>
