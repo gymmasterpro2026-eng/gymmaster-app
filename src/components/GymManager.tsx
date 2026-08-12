@@ -281,7 +281,38 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                     <div style={S.coachBox}>
                       <div style={S.coachLabel}>Admin / Coach:</div>
                       <div style={S.coachName}>{coach.full_name}</div>
-                      <div style={S.coachEmail}>{coach.email}</div>
+                      <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>USUARIO (CORREO)</label>
+                          <input 
+                            type="text" 
+                            value={coach.email} 
+                            onChange={e => {
+                              dataService.updateAlumnoCredentials(coach.id, e.target.value, coach.password);
+                              const updated = [...allProfiles];
+                              const idx = updated.findIndex(p => p.id === coach.id);
+                              if (idx > -1) updated[idx].email = e.target.value;
+                              setAllProfiles(updated);
+                            }}
+                            style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
+                          />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>CONTRASEÑA</label>
+                          <input 
+                            type="text" 
+                            value={coach.password || ''} 
+                            onChange={e => {
+                              dataService.updateAlumnoCredentials(coach.id, coach.email, e.target.value);
+                              const updated = [...allProfiles];
+                              const idx = updated.findIndex(p => p.id === coach.id);
+                              if (idx > -1) updated[idx].password = e.target.value;
+                              setAllProfiles(updated);
+                            }}
+                            style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   )}
                   
