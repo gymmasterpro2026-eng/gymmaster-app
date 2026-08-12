@@ -322,7 +322,7 @@ class DataService {
     const cleanId = identifier.trim().toLowerCase();
     const cleanPass = (password || '').trim();
 
-    if (cleanId === 'gym' && (cleanPass === '12345' || !cleanPass)) {
+    if (cleanId === 'gym' && (cleanPass === '123456' || !cleanPass)) {
       const coach = this.profiles.find((p) => p.role === 'coach') || this.profiles[0];
       const gym = this.gyms.find((g) => g.id === coach.gym_id) || this.gyms[0];
       return { profile: coach, gym };

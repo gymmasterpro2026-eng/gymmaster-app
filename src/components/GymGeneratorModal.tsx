@@ -86,7 +86,7 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
                   Credenciales por defecto:
                 </span>
                 <span className="font-mono bg-[#1e293b] px-2.5 py-1 rounded-none border border-[#334155] text-[#f59e0b]">
-                  Usuario: <strong className="text-white">gym</strong> | Clave: <strong className="text-white">12345</strong>
+                  Usuario: <strong className="text-white">gym</strong> | Clave: <strong className="text-white">123456</strong>
                 </span>
               </div>
 
@@ -113,7 +113,7 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
                 <input
                   type="password"
                   required
-                  placeholder="12345"
+                  placeholder="123456"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   className="w-full bg-[#121212] border border-[#334155] rounded-none px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#f59e0b]"
@@ -137,14 +137,14 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => handleQuickLoginDemo('gym', '12345')}
+                  onClick={() => handleQuickLoginDemo('gym', '123456')}
                   className="p-2.5 bg-[#121212] hover:bg-[#1e293b] border border-[#f59e0b]/40 rounded-none text-left transition-all flex items-center justify-between group"
                 >
                   <div>
                     <div className="text-xs font-bold text-[#f59e0b]">
-                      Coach Principal (gym / 12345)
+                      Coach Principal (gym / 123456)
                     </div>
-                    <div className="text-[11px] text-zinc-400">Usuario: gym • Clave: 12345</div>
+                    <div className="text-[11px] text-zinc-400">Usuario: gym • Clave: 123456</div>
                   </div>
                   <ArrowRight className="w-4 h-4 text-[#f59e0b]" />
                 </button>

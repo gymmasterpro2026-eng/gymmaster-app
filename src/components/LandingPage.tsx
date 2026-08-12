@@ -380,7 +380,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="12345"
+                placeholder="123456"
                 style={S.inputPr}
                 onFocus={e => {
                   e.target.style.borderColor = '#f59e0b';
@@ -454,7 +454,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
           <button
             type="button"
             style={S.qBtn}
-            onClick={() => quickLogin('gym', '12345')}
+            onClick={() => quickLogin('gym', '123456')}
             onMouseEnter={e => {
               e.currentTarget.style.background = 'rgba(245,158,11,0.05)';
               e.currentTarget.style.borderColor = 'rgba(245,158,11,0.2)';
@@ -467,7 +467,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
             }}
           >
             <span style={S.qLabel}>⚡ Coach Principal</span>
-            <span style={S.qSub}>gym / 12345</span>
+            <span style={S.qSub}>gym / 123456</span>
           </button>
 
           <button
