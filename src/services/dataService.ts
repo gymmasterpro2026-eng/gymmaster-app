@@ -14,6 +14,7 @@ class DataService {
   private listeners: Array<() => void> = [];
   private isSyncing: boolean = false;
   private lastSyncTime: Date | null = new Date();
+  private realtimeSubscribed: boolean = false;
 
   constructor() {
     this.loadFromLocalStorage();
@@ -168,16 +169,26 @@ class DataService {
   }
 
   private subscribeRealtime() {
-    if (!supabase) return;
+    if (!supabase || this.realtimeSubscribed) return;
+    this.realtimeSubscribed = true;
     try {
       supabase
         .channel('gymmaster-realtime-all')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routines' }, () => this.syncNow())
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routine_logs' }, () => this.syncNow())
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_profiles' }, () => this.syncNow())
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_exercises' }, () => this.syncNow())
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routines' }, () => {
+          if (!this.isSyncing) this.syncNow();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routine_logs' }, () => {
+          if (!this.isSyncing) this.syncNow();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_profiles' }, () => {
+          if (!this.isSyncing) this.syncNow();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_exercises' }, () => {
+          if (!this.isSyncing) this.syncNow();
+        })
         .subscribe();
     } catch (e) {
+      this.realtimeSubscribed = false;
       console.warn('Realtime subscription warning:', e);
     }
   }

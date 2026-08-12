@@ -52,7 +52,6 @@ function NavButton({ active, onClick, icon: Icon, label, iconColor = 'rgba(255,2
         transition: 'all 0.2s ease',
         background: active ? '#0f172a' : hovered ? '#94a3b8' : 'transparent',
         color: active ? '#fff' : '#0f172a',
-        borderLeft: 'none',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

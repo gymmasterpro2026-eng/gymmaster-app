@@ -111,7 +111,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const S: Record<string, React.CSSProperties> = {
     root: {
       minHeight: '100vh',
-      background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(/gymmaster-app/gym_environment.png) center/cover no-repeat fixed, url(/gym_environment.png) center/cover no-repeat fixed',
+      background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(${(import.meta as any).env?.BASE_URL || '/gymmaster-app/'}gym_environment.png) center/cover no-repeat fixed`,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
