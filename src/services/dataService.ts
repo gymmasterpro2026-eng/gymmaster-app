@@ -75,39 +75,82 @@ class DataService {
   private async initCloudSync() {
     if (!supabase) return;
     try {
-      // 1. Gym Tenants
+      // 1. Gym Tenants — cloud wins, always pull
       const { data: remoteGyms } = await supabase.from('gym_tenants').select('*');
       if (remoteGyms && remoteGyms.length > 0) {
         this.gyms = remoteGyms as GymTenant[];
       } else {
-        await supabase.from('gym_tenants').upsert(this.gyms);
+        await supabase.from('gym_tenants').upsert(this.gyms, { onConflict: 'id' });
       }
 
-      // 2. Profiles
+      // 2. Profiles — bidirectional merge (local + cloud)
       const { data: remoteProfiles } = await supabase.from('gym_profiles').select('*');
       if (remoteProfiles && remoteProfiles.length > 0) {
-        this.profiles = remoteProfiles as Profile[];
+        const remoteIds = new Set(remoteProfiles.map((p: any) => p.id));
+        // Push local profiles not in cloud
+        const localOnly = this.profiles.filter((p) => !remoteIds.has(p.id));
+        if (localOnly.length > 0) {
+          await supabase.from('gym_profiles').upsert(localOnly, { onConflict: 'id' });
+        }
+        // Merge: cloud records + local-only records
+        const localIds = new Set(this.profiles.map((p) => p.id));
+        const remoteOnly = (remoteProfiles as Profile[]).filter((p) => !localIds.has(p.id));
+        this.profiles = [...this.profiles, ...remoteOnly];
+        // Update existing profiles with cloud data
+        this.profiles = this.profiles.map((local) => {
+          const remote = remoteProfiles.find((r: any) => r.id === local.id);
+          return remote ? { ...local, ...remote } : local;
+        });
       } else {
-        await supabase.from('gym_profiles').upsert(this.profiles);
+        await supabase.from('gym_profiles').upsert(this.profiles, { onConflict: 'id' });
       }
 
-      // 3. Routines
+      // 3. Routines — bidirectional merge (local is authoritative for new records)
       const { data: remoteRoutines } = await supabase.from('gym_routines').select('*');
-      if (remoteRoutines && remoteRoutines.length > 0) {
-        this.routines = remoteRoutines as Routine[];
+      if (remoteRoutines) {
+        const remoteIds = new Set(remoteRoutines.map((r: any) => r.id));
+        // Push all local routines that are NOT in cloud
+        const localOnly = this.routines.filter((r) => !remoteIds.has(r.id));
+        if (localOnly.length > 0) {
+          await supabase.from('gym_routines').upsert(localOnly, { onConflict: 'id' });
+        }
+        // Pull cloud routines not in local
+        const localIds = new Set(this.routines.map((r) => r.id));
+        const remoteOnly = (remoteRoutines as Routine[]).filter((r) => !localIds.has(r.id));
+        this.routines = [...this.routines, ...remoteOnly];
+        // Update existing routines with latest cloud data (cloud wins on conflicts)
+        this.routines = this.routines.map((local) => {
+          const remote = remoteRoutines.find((r: any) => r.id === local.id);
+          if (!remote) return local;
+          // Use whichever was updated more recently
+          const localDate = new Date(local.updated_at || 0).getTime();
+          const remoteDate = new Date((remote as any).updated_at || 0).getTime();
+          return remoteDate >= localDate ? { ...local, ...remote } : local;
+        });
       } else {
-        await supabase.from('gym_routines').upsert(this.routines);
+        await supabase.from('gym_routines').upsert(this.routines, { onConflict: 'id' });
       }
 
-      // 4. Routine Logs
+      // 4. Routine Logs — bidirectional merge
       const { data: remoteLogs } = await supabase.from('gym_routine_logs').select('*');
-      if (remoteLogs && remoteLogs.length > 0) {
-        this.logs = remoteLogs as RoutineLog[];
+      if (remoteLogs) {
+        const remoteIds = new Set(remoteLogs.map((l: any) => l.id));
+        // Push local logs not in cloud
+        const localOnly = this.logs.filter((l) => !remoteIds.has(l.id));
+        if (localOnly.length > 0) {
+          const cleanLogs = localOnly.map(({ exercise, ...l }) => l);
+          await supabase.from('gym_routine_logs').upsert(cleanLogs, { onConflict: 'id' });
+        }
+        // Pull cloud logs not in local
+        const localIds = new Set(this.logs.map((l) => l.id));
+        const remoteOnly = (remoteLogs as RoutineLog[]).filter((l) => !localIds.has(l.id));
+        this.logs = [...this.logs, ...remoteOnly];
       } else {
-        await supabase.from('gym_routine_logs').upsert(this.logs);
+        const cleanLogs = this.logs.map(({ exercise, ...l }) => l);
+        await supabase.from('gym_routine_logs').upsert(cleanLogs, { onConflict: 'id' });
       }
 
-      // 5. Custom Exercises
+      // 5. Custom Exercises — pull only new remote exercises
       const { data: remoteExercises } = await supabase.from('gym_exercises').select('*');
       if (remoteExercises && remoteExercises.length > 0) {
         const existingIds = new Set(this.exercises.map((e) => e.id));
