@@ -127,11 +127,14 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   const getSearchNumber = (q: string): number | null => {
     const trimmed = q.trim().toLowerCase();
     if (!trimmed) return null;
-    const part = trimmed.split('/')[0];
-    const digitsOnly = part.replace(/[^0-9]/g, '');
-    if (digitsOnly.length > 0) {
-      const num = parseInt(digitsOnly, 10);
-      if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+    const isNumberQueryPattern = /^(?:#|n[º°.]\s*|ej(?:ercicio)?\s*)?\d+(?:\/\d+)?$/i.test(trimmed);
+    if (isNumberQueryPattern) {
+      const part = trimmed.split('/')[0];
+      const digitsOnly = part.replace(/[^0-9]/g, '');
+      if (digitsOnly.length > 0) {
+        const num = parseInt(digitsOnly, 10);
+        if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+      }
     }
     return null;
   };

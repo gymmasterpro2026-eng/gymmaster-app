@@ -66,11 +66,14 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
   const getSearchNumber = (q: string): number | null => {
     const trimmed = q.trim().toLowerCase();
     if (!trimmed) return null;
-    const part = trimmed.split('/')[0];
-    const digitsOnly = part.replace(/[^0-9]/g, '');
-    if (digitsOnly.length > 0) {
-      const num = parseInt(digitsOnly, 10);
-      if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+    const isNumberQueryPattern = /^(?:#|n[º°.]\s*|ej(?:ercicio)?\s*)?\d+(?:\/\d+)?$/i.test(trimmed);
+    if (isNumberQueryPattern) {
+      const part = trimmed.split('/')[0];
+      const digitsOnly = part.replace(/[^0-9]/g, '');
+      if (digitsOnly.length > 0) {
+        const num = parseInt(digitsOnly, 10);
+        if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+      }
     }
     return null;
   };
@@ -89,7 +92,10 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
       if (query) {
         matchesSearch =
           ex.name.toLowerCase().includes(query) ||
-          ex.primary_muscles.some((m) => m.toLowerCase().includes(query));
+          catalogIndex.toString() === query ||
+          ex.primary_muscles.some((m) => m.toLowerCase().includes(query)) ||
+          (ex.equipment && ex.equipment.toLowerCase().includes(query)) ||
+          (ex.level && ex.level.toLowerCase().includes(query));
       }
 
       const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
@@ -105,8 +111,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
         if (b.catalogIndex === targetNum) return 1;
       }
       return 0;
-    })
-    .map(({ ex }) => ex);
+    });
 
   const handleAddExerciseToRoutine = (exercise: Exercise) => {
     setRoutineItems((prev) => [
@@ -493,7 +498,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
                 <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Buscar por nombre..."
+                  placeholder="Buscar por nombre, músculo o Nº (ej: 15, #15)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-white text-xs text-slate-900 border border-slate-300 rounded-none pl-9 pr-3 py-2.5 focus:outline-none focus:border-amber-500 transition-colors"
@@ -533,24 +538,32 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2">
-            {filteredCatalog.map((ex) => (
+            {filteredCatalog.map(({ ex, catalogIndex }) => (
               <div
                 key={ex.id}
                 onClick={() => handleAddExerciseToRoutine(ex)}
                 className="bg-white border border-slate-200 hover:border-amber-400 p-3.5 rounded-none flex items-center justify-between cursor-pointer group transition-all shadow-sm"
               >
                 <div className="flex items-center space-x-4">
-                  <img
-                    src={fixImageUrl(ex.image_urls[0])}
-                    alt={ex.name}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
-                    }}
-                    className="w-24 h-24 object-contain p-1.5 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm"
-                  />
+                  <div className="relative shrink-0">
+                    <img
+                      src={fixImageUrl(ex.image_urls[0])}
+                      alt={ex.name}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
+                      }}
+                      className="w-20 h-20 object-contain p-1 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm"
+                    />
+                    <span className="absolute top-0 left-0 bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-none shadow font-mono">
+                      Nº {catalogIndex}
+                    </span>
+                  </div>
                   <div>
-                    <h5 className="text-base font-bold text-slate-900 group-hover:text-amber-600 transition-colors leading-snug mb-1">
-                      {ex.name}
+                    <h5 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors leading-snug mb-1 flex items-center gap-2 flex-wrap">
+                      <span>{ex.name}</span>
+                      <span className="text-[10px] font-black text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 font-mono">
+                        Nº {catalogIndex}
+                      </span>
                     </h5>
                     <span className="text-xs text-slate-500 uppercase font-medium block">{ex.equipment}</span>
                   </div>

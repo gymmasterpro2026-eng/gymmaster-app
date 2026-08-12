@@ -96,11 +96,14 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
   const getSearchNumber = (q: string): number | null => {
     const trimmed = q.trim().toLowerCase();
     if (!trimmed) return null;
-    const part = trimmed.split('/')[0];
-    const digitsOnly = part.replace(/[^0-9]/g, '');
-    if (digitsOnly.length > 0) {
-      const num = parseInt(digitsOnly, 10);
-      if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+    const isNumberQueryPattern = /^(?:#|n[º°.]\s*|ej(?:ercicio)?\s*)?\d+(?:\/\d+)?$/i.test(trimmed);
+    if (isNumberQueryPattern) {
+      const part = trimmed.split('/')[0];
+      const digitsOnly = part.replace(/[^0-9]/g, '');
+      if (digitsOnly.length > 0) {
+        const num = parseInt(digitsOnly, 10);
+        if (!isNaN(num) && num > 0 && num <= exercises.length) return num;
+      }
     }
     return null;
   };
@@ -119,7 +122,10 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
       if (query) {
         matchesSearch =
           ex.name.toLowerCase().includes(query) ||
-          ex.primary_muscles.some((m) => m.toLowerCase().includes(query));
+          catalogIndex.toString() === query ||
+          ex.primary_muscles.some((m) => m.toLowerCase().includes(query)) ||
+          (ex.equipment && ex.equipment.toLowerCase().includes(query)) ||
+          (ex.level && ex.level.toLowerCase().includes(query));
       }
 
       const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
@@ -135,8 +141,7 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
         if (b.catalogIndex === targetNum) return 1;
       }
       return 0;
-    })
-    .map(({ ex }) => ex);
+    });
 
   const handleCreateCustom = (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,7 +199,7 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
 
       {/* GRID */}
       <div style={S.grid}>
-        {filtered.map(ex => (
+        {filtered.map(({ ex, catalogIndex }) => (
           <div key={ex.id} style={S.card}
             onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(245,158,11,0.4)'; const img = e.currentTarget.querySelector('img'); if(img) img.style.transform = 'scale(1.05)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e293b'; const img = e.currentTarget.querySelector('img'); if(img) img.style.transform = 'scale(1)'; }}>
@@ -202,9 +207,15 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
               <div style={S.imgWrap}>
                 <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={S.img} onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'; }} />
                 <div style={S.equipBadge}>{ex.equipment || 'General'}</div>
+                <div style={{ position: 'absolute', top: '8px', left: '8px', background: '#f59e0b', color: '#000', fontSize: '10px', fontWeight: 900, padding: '2px 6px', fontFamily: 'monospace' }}>
+                  Nº {catalogIndex}
+                </div>
               </div>
               <div style={S.cardBody}>
                 <div style={S.tagWrap}>
+                  <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', fontSize: '10px', fontWeight: 900, padding: '2px 6px', fontFamily: 'monospace' }}>
+                    Nº {catalogIndex}
+                  </span>
                   {ex.primary_muscles.map(m => <span key={m} style={S.muscleTag}>{m}</span>)}
                   <span style={S.levelTag}>{ex.level}</span>
                 </div>
