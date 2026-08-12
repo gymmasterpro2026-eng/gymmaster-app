@@ -162,6 +162,25 @@ class DataService {
         });
       }
 
+      // BLINDAJE FINAL: Deduplicar rutinas activas post-merge
+      // Si quedaron 2 activas para el mismo alumno, dejar solo la que tiene más logs
+      const alumnoIds = [...new Set(this.routines.map((r) => r.alumno_id))];
+      alumnoIds.forEach((aid) => {
+        const activas = this.routines.filter((r) => r.alumno_id === aid && r.activa);
+        if (activas.length > 1) {
+          const countLogs = (r: Routine) => this.logs.filter((l) => l.routine_id === r.id).length;
+          const winner = activas.reduce((best, r) => (countLogs(r) >= countLogs(best) ? r : best));
+          activas.forEach((r) => {
+            if (r.id !== winner.id) {
+              r.activa = false;
+              if (supabase) {
+                supabase.from('gym_routines').update({ activa: false }).eq('id', r.id).then(() => {});
+              }
+            }
+          });
+        }
+      });
+
       this.persist();
     } catch (e) {
       console.warn('Error during Supabase sync, staying on local state:', e);
@@ -506,8 +525,30 @@ class DataService {
   }
 
   getActiveRoutineForAlumno(alumnoId: string): RoutineWithLogs | null {
-    const activeRoutine = this.routines.find((r) => r.alumno_id === alumnoId && r.activa);
-    if (!activeRoutine) return null;
+    // BLINDAJE: Si hay múltiples rutinas activas para el mismo alumno,
+    // elegir SIEMPRE la que tenga más logs (la más completa)
+    const activeRoutines = this.routines.filter((r) => r.alumno_id === alumnoId && r.activa);
+    if (activeRoutines.length === 0) return null;
+
+    let activeRoutine = activeRoutines[0];
+    if (activeRoutines.length > 1) {
+      // Desactivar las rutinas con menos logs, dejar activa solo la más completa
+      const countLogs = (r: Routine) => this.logs.filter((l) => l.routine_id === r.id).length;
+      activeRoutine = activeRoutines.reduce((best, r) =>
+        countLogs(r) >= countLogs(best) ? r : best
+      );
+      // Desactivar localmente todas las duplicadas
+      activeRoutines.forEach((r) => {
+        if (r.id !== activeRoutine.id) {
+          r.activa = false;
+          // Desactivar también en Supabase
+          if (supabase) {
+            supabase.from('gym_routines').update({ activa: false }).eq('id', r.id).then(() => {});
+          }
+        }
+      });
+      this.persist();
+    }
 
     const routineLogs = this.logs
       .filter((l) => l.routine_id === activeRoutine.id)
@@ -527,12 +568,23 @@ class DataService {
     routineData: Omit<Routine, 'id' | 'created_at' | 'updated_at'>,
     exerciseLogs: Omit<RoutineLog, 'id' | 'routine_id' | 'fecha_ultimo_cambio'>[]
   ): RoutineWithLogs {
+    // BLINDAJE: Al crear una nueva rutina activa, desactivar TODAS las anteriores
+    // tanto en local como en Supabase
     if (routineData.activa) {
+      const toDeactivate: string[] = [];
       this.routines.forEach((r) => {
-        if (r.alumno_id === routineData.alumno_id) {
+        if (r.alumno_id === routineData.alumno_id && r.activa) {
           r.activa = false;
+          toDeactivate.push(r.id);
         }
       });
+      // Desactivar en Supabase también
+      if (supabase && toDeactivate.length > 0) {
+        supabase.from('gym_routines')
+          .update({ activa: false })
+          .in('id', toDeactivate)
+          .then(() => {});
+      }
     }
 
     const routineId = `routine-${Date.now()}`;
