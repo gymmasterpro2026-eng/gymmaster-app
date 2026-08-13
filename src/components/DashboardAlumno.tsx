@@ -134,8 +134,20 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
   const availableWorkouts = React.useMemo(() => {
     if (!activeRoutine) return [];
-    const unique = new Map<string, { semana: number, dia: string }>();
-    activeRoutine.logs.forEach(l => { const sem = l.semana || 1; unique.set(`${sem}-${l.dia}`, { semana: sem, dia: l.dia }); });
+    const unique = new Map<string, { semana: number, dia: string, muscles: string[] }>();
+    activeRoutine.logs.forEach(l => { 
+      const sem = l.semana || 1; 
+      const key = `${sem}-${l.dia}`;
+      if (!unique.has(key)) {
+        unique.set(key, { semana: sem, dia: l.dia, muscles: [] });
+      }
+      const item = unique.get(key)!;
+      if (l.exercise?.primary_muscles) {
+        l.exercise.primary_muscles.forEach(m => {
+          if (!item.muscles.includes(m)) item.muscles.push(m);
+        });
+      }
+    });
     const order = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     return Array.from(unique.values()).sort((a,b) => a.semana !== b.semana ? a.semana - b.semana : order.indexOf(a.dia) - order.indexOf(b.dia));
   }, [activeRoutine]);
@@ -325,12 +337,46 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
       {/* Días Selector */}
       {availableWorkouts.length > 0 && (
-        <div style={S.dayTabs}>
-          {availableWorkouts.map(c => (
-            <button key={`${c.semana}-${c.dia}`} style={S.tabBtn(activeCombo?.semana === c.semana && activeCombo?.dia === c.dia)} onClick={() => setActiveCombo(c)}>
-              <span style={{ opacity: 0.6, marginRight: '4px' }}>Sem {c.semana}</span> {c.dia}
-            </button>
-          ))}
+        <div style={{ marginBottom: '20px' }}>
+          <div style={S.dayTabs}>
+            {availableWorkouts.map(c => (
+              <button key={`${c.semana}-${c.dia}`} style={S.tabBtn(activeCombo?.semana === c.semana && activeCombo?.dia === c.dia)} onClick={() => setActiveCombo(c)}>
+                <span style={{ opacity: 0.6, marginRight: '4px' }}>Sem {c.semana}</span> {c.dia}
+              </button>
+            ))}
+          </div>
+          
+          {(() => {
+            const currentWorkout = availableWorkouts.find(w => w.semana === activeCombo?.semana && w.dia === activeCombo?.dia);
+            if (currentWorkout?.muscles && currentWorkout.muscles.length > 0) {
+              const dayColor = DAY_COLOR_MAP[currentWorkout.dia] || DAY_COLOR_MAP['Lunes'];
+              return (
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  gap: '12px', 
+                  background: '#000000', 
+                  border: `1px solid ${dayColor.border}`, 
+                  borderLeft: `4px solid ${dayColor.main}`,
+                  padding: '10px 16px', 
+                  borderRadius: '0',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+                }}>
+                  <Zap size={14} color={dayColor.main} style={{ flexShrink: 0 }} />
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '10px', color: '#fff', opacity: 0.8, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Enfoque:
+                    </span>
+                    <span style={{ fontSize: '12px', color: '#fff', fontWeight: 900, textTransform: 'uppercase', textAlign: 'center' }}>
+                      {currentWorkout.muscles.join(' • ')}
+                    </span>
+                  </div>
+                </div>
+              );
+            }
+            return null;
+          })()}
         </div>
       )}
 

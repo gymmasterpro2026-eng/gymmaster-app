@@ -10,7 +10,7 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "deploy": "gh-pages -d dist -a",
-    "sync": "powershell -ExecutionPolicy Bypass -File ./sync.ps1"
+    "sync": "git add . && git commit -m \"sync: auto update\" && git push origin main"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",
