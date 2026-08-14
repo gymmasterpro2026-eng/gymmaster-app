@@ -6,7 +6,7 @@ import { fixImageUrl } from '../utils/imageUrl';
 interface AnatomyExplorerProps {
   exercises: Exercise[];
   onAddExercise: (ex: Exercise) => void;
-  onPreviewExercise: (ex: Exercise) => void;
+  onPreviewExercise: (ex: Exercise, contextList?: Exercise[]) => void;
   selectedWeek: number;
   selectedDay: string;
 }
@@ -101,28 +101,17 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
   return (
     <div style={{ display: 'flex', gap: '20px', minHeight: '450px', maxHeight: '450px', width: '100%', background: '#020617', padding: '16px', boxSizing: 'border-box' }}>
       
-      {/* Left Pane - Interactive Body */}
-      <div style={{ 
-        flex: '0 0 240px', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        background: '#0f172a', 
-        border: '1px solid #1e293b', 
-        borderRadius: '8px',
-        padding: '16px',
-        boxSizing: 'border-box',
-        overflow: 'hidden'
-      }}>
+      {/* Left Pane - Anatomy Model */}
+      <div style={{ flex: '0 0 240px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '16px', display: 'flex', flexDirection: 'column', maxHeight: '450px', flexShrink: 0, overflow: 'hidden' }}>
         
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '16px' }}>
           <button 
             type="button"
             onClick={() => setModelType('anterior')}
             style={{
               background: modelType === 'anterior' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
               color: modelType === 'anterior' ? '#f59e0b' : '#64748b',
-              border: modelType === 'anterior' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #334155',
+              border: modelType === 'anterior' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
               padding: '6px 12px',
               fontSize: '12px',
               fontWeight: 800,
@@ -139,7 +128,7 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
             style={{
               background: modelType === 'posterior' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
               color: modelType === 'posterior' ? '#f59e0b' : '#64748b',
-              border: modelType === 'posterior' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #334155',
+              border: modelType === 'posterior' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
               padding: '6px 12px',
               fontSize: '12px',
               fontWeight: 800,
@@ -158,8 +147,8 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
             style={{ width: '180px', height: '100%' }}
             onClick={handleMuscleClick as any}
             type={modelType}
-            bodyColor="#0f172a"
-            highlightedColors={['#334155', '#f59e0b']}
+            bodyColor="#e2e8f0"
+            highlightedColors={['#000000', '#dc2626']}
           />
         </div>
         
@@ -184,7 +173,7 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
           {filteredExercises.map((ex) => (
             <div
               key={ex.id}
-              onClick={() => onPreviewExercise(ex)}
+              onClick={() => onPreviewExercise(ex, filteredExercises)}
               title="Toca para ver vista previa y detalles"
               style={{
                 padding: '10px 12px',

@@ -44,6 +44,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   const [selectedLevel, setSelectedLevel] = useState('all');
   const [pickerViewMode, setPickerViewMode] = useState<'list' | 'anatomy'>('list');
   const [previewExercise, setPreviewExercise] = useState<Exercise | null>(null);
+  const [previewContextList, setPreviewContextList] = useState<Exercise[] | null>(null);
   
   // Generator State
   const [genMuscles, setGenMuscles] = useState<string[]>([]);
@@ -112,7 +113,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
       if (
         (selLower.includes('dorsal') || selLower.includes('espalda') || selLower.includes('lat') || selLower.includes('back')) &&
-        (mLower.includes('dorsal') || mLower.includes('espalda') || mLower.includes('lat') || mLower.includes('back'))
+        (mLower.includes('dorsal') || selLower.includes('espalda') || selLower.includes('lat') || selLower.includes('back'))
       ) return true;
 
       if (
@@ -184,24 +185,30 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
     .map(({ ex }) => ex);
 
   const catalogList = filteredExercises;
+  const activePreviewList = previewContextList || catalogList;
+
+  const openPreview = (ex: Exercise, contextList?: Exercise[]) => {
+    setPreviewExercise(ex);
+    setPreviewContextList(contextList || null);
+  };
 
   const handlePrevExercise = () => {
     if (!previewExercise) return;
-    const idx = catalogList.findIndex((ex) => ex.id === previewExercise.id);
+    const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
     if (idx > 0) {
-      setPreviewExercise(catalogList[idx - 1]);
+      setPreviewExercise(activePreviewList[idx - 1]);
     } else {
-      setPreviewExercise(catalogList[catalogList.length - 1]);
+      setPreviewExercise(activePreviewList[activePreviewList.length - 1]);
     }
   };
 
   const handleNextExercise = () => {
     if (!previewExercise) return;
-    const idx = catalogList.findIndex((ex) => ex.id === previewExercise.id);
-    if (idx >= 0 && idx < catalogList.length - 1) {
-      setPreviewExercise(catalogList[idx + 1]);
+    const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
+    if (idx >= 0 && idx < activePreviewList.length - 1) {
+      setPreviewExercise(activePreviewList[idx + 1]);
     } else {
-      setPreviewExercise(catalogList[0]);
+      setPreviewExercise(activePreviewList[0]);
     }
   };
 
@@ -214,11 +221,12 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
         handleNextExercise();
       } else if (e.key === 'Escape') {
         setPreviewExercise(null);
+        setPreviewContextList(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [previewExercise, catalogList]);
+  }, [previewExercise, activePreviewList]);
 
   const handleAddExercise = (exercise: Exercise) => {
     setLogsItems((prev) => [
@@ -245,7 +253,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
       return;
     }
 
-    const absMuscles = ['abs', 'obliques']; // Palabras clave para abdomen
     const hasAbs = genMuscles.some(m => m.toLowerCase().includes('abdomin') || m.toLowerCase() === 'abs' || m.toLowerCase() === 'core');
     const mainMuscles = genMuscles.filter(m => !(m.toLowerCase().includes('abdomin') || m.toLowerCase() === 'abs' || m.toLowerCase() === 'core'));
     
@@ -254,32 +261,26 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
     let selectedExercisesForGeneration: Exercise[] = [];
 
-    // Función auxiliar para obtener ejercicios aleatorios e inteligentes
     const getRandomExercises = (muscles: string[], level: string, count: number) => {
       let pool = exercises.filter(ex => 
         (level === 'all' || ex.level === level) &&
         muscles.some(m => matchMuscle(ex.primary_muscles, m))
       );
 
-      // BLINDAJE: Si la base de datos no tiene ejercicios para el nivel específico (ej. Avanzado),
-      // buscar simplemente por músculo ignorando el nivel para asegurar que se genere la rutina.
       if (pool.length === 0) {
         pool = exercises.filter(ex => muscles.some(m => matchMuscle(ex.primary_muscles, m)));
       }
 
-      // Algoritmo de Fisher-Yates para mezcla real (Math.random() - 0.5 no es 100% aleatorio en JS)
       for (let i = pool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
       }
 
-      // Priorizar ejercicios que NO estén ya en la rutina actual para dar variedad
       const currentExerciseIds = new Set(logsItems.map(log => log.exercise_id));
       
       const freshExercises = pool.filter(ex => !currentExerciseIds.has(ex.id));
       const usedExercises = pool.filter(ex => currentExerciseIds.has(ex.id));
       
-      // Si tenemos suficientes ejercicios nuevos, usamos esos. Si no, rellenamos con los repetidos.
       const smartPool = [...freshExercises, ...usedExercises];
 
       return smartPool.slice(0, count);
@@ -300,7 +301,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
       return;
     }
 
-    // Añadir a la rutina
     const newItems = selectedExercisesForGeneration.map((ex, idx) => ({
       id: `log-temp-${Date.now()}-${idx}`,
       exercise_id: ex.id,
@@ -346,7 +346,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   };
 
   const handleReorderDirect = (index: number, newDayNumber: number) => {
-    // Find all items with matching semana & dia
     const currentItem = logsItems[index];
     const sameDayIndices = logsItems
       .map((item, i) => ({ item, i }))
@@ -420,7 +419,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
           boxSizing: 'border-box',
           overflow: 'hidden'
         }}>
-        {/* Header */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -469,7 +467,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', flex: 1, paddingRight: '4px' }}>
-          {/* Routine Name Input */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
               Nombre de la Rutina:
@@ -494,7 +491,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             />
           </div>
 
-          {/* Catalog Add Section */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
             <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>
               Ejercicios Asignados ({logsItems.length})
@@ -521,7 +517,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             </button>
           </div>
 
-          {/* Exercise Add Picker */}
           {showAddExercisePicker && (
             <div style={{
               background: '#020617',
@@ -538,7 +533,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   Buscar en el Catálogo ({filteredExercises.length} de {exercises.length} GIFs)
                 </span>
 
-                {/* Target Week & Day Selectors in Top Bar */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -605,7 +599,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 </button>
               </div>
 
-              {/* Generador Automático */}
               <div style={{
                 background: 'rgba(16, 185, 129, 0.05)',
                 border: '1px solid rgba(16, 185, 129, 0.3)',
@@ -672,7 +665,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 </button>
               </div>
 
-              {/* View Mode Toggle */}
               <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }}>
                 <button
                   type="button"
@@ -714,7 +706,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 <AnatomyExplorer
                   exercises={exercises}
                   onAddExercise={handleAddExercise}
-                  onPreviewExercise={setPreviewExercise}
+                  onPreviewExercise={openPreview}
                   selectedWeek={selectedWeek}
                   selectedDay={selectedDay}
                 />
@@ -737,7 +729,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 }}
               />
 
-              {/* Persianas / Dropdown Filters */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
                 <select
                   value={selectedMuscle}
@@ -809,7 +800,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   return (
                     <div
                       key={ex.id}
-                      onClick={() => setPreviewExercise(ex)}
+                      onClick={() => openPreview(ex, catalogList)}
                       title="Toca para ver vista previa y detalles"
                       style={{
                         padding: '8px 12px',
@@ -864,7 +855,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             </div>
           )}
 
-          {/* List of Exercises in Routine */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {logsItems.map((item, idx) => {
               const dayColor = DAY_COLOR_MAP[item.dia] || DAY_COLOR_MAP['Lunes'];
@@ -883,7 +873,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${dayColor.border}`, paddingBottom: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      {/* Reorder Buttons (Up & Down) + Badge */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <button
                           type="button"
@@ -1032,7 +1021,6 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
           })}
           </div>
 
-          {/* Action Buttons */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -1080,11 +1068,11 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
           </div>
         </form>
       </div>
-      {/* Preview Modal for Selected Exercise */}
+
       {previewExercise && (() => {
-        const idx = catalogList.findIndex((ex) => ex.id === previewExercise.id);
+        const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
         const currentNum = idx >= 0 ? idx + 1 : 1;
-        const totalNum = catalogList.length;
+        const totalNum = activePreviewList.length;
 
         return (
           <div style={{
@@ -1098,9 +1086,8 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             justifyContent: 'center',
             padding: '16px',
             boxSizing: 'border-box'
-          }} onClick={() => setPreviewExercise(null)}>
+          }} onClick={() => { setPreviewExercise(null); setPreviewContextList(null); }}>
 
-            {/* Left Navigation Arrow Button */}
             <button
               type="button"
               onClick={(e) => {
