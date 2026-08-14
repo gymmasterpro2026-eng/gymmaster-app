@@ -3,6 +3,8 @@ import { Dumbbell, Save, X, Plus, Trash2, Search, ChevronLeft, ChevronRight, Che
 import { Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
+import { AnatomyExplorer } from './AnatomyExplorer';
+import { MultiSelect } from './MultiSelect';
 
 interface EditRoutineModalProps {
   routine: RoutineWithLogs;
@@ -40,7 +42,13 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   const [selectedMuscle, setSelectedMuscle] = useState('all');
   const [selectedEquipment, setSelectedEquipment] = useState('all');
   const [selectedLevel, setSelectedLevel] = useState('all');
+  const [pickerViewMode, setPickerViewMode] = useState<'list' | 'anatomy'>('list');
   const [previewExercise, setPreviewExercise] = useState<Exercise | null>(null);
+  
+  // Generator State
+  const [genMuscles, setGenMuscles] = useState<string[]>([]);
+  const [genLevel, setGenLevel] = useState<string>('Intermedio');
+
   const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   const WEEKS = [1, 2, 3, 4, 5];
 
@@ -229,6 +237,86 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
       },
     ]);
     setShowAddExercisePicker(false);
+  };
+
+  const handleGenerateRoutine = () => {
+    if (genMuscles.length === 0) {
+      alert("Selecciona al menos 1 músculo");
+      return;
+    }
+
+    const absMuscles = ['abs', 'obliques']; // Palabras clave para abdomen
+    const hasAbs = genMuscles.some(m => m.toLowerCase().includes('abdomin') || m.toLowerCase() === 'abs' || m.toLowerCase() === 'core');
+    const mainMuscles = genMuscles.filter(m => !(m.toLowerCase().includes('abdomin') || m.toLowerCase() === 'abs' || m.toLowerCase() === 'core'));
+    
+    const countPerMuscle = mainMuscles.length === 1 ? 5 : mainMuscles.length === 2 ? 3 : mainMuscles.length >= 3 ? 2 : 0;
+    const absCount = hasAbs ? 3 : 0;
+
+    let selectedExercisesForGeneration: Exercise[] = [];
+
+    // Función auxiliar para obtener ejercicios aleatorios e inteligentes
+    const getRandomExercises = (muscles: string[], level: string, count: number) => {
+      let pool = exercises.filter(ex => 
+        (level === 'all' || ex.level === level) &&
+        muscles.some(m => matchMuscle(ex.primary_muscles, m))
+      );
+
+      // BLINDAJE: Si la base de datos no tiene ejercicios para el nivel específico (ej. Avanzado),
+      // buscar simplemente por músculo ignorando el nivel para asegurar que se genere la rutina.
+      if (pool.length === 0) {
+        pool = exercises.filter(ex => muscles.some(m => matchMuscle(ex.primary_muscles, m)));
+      }
+
+      // Algoritmo de Fisher-Yates para mezcla real (Math.random() - 0.5 no es 100% aleatorio en JS)
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      // Priorizar ejercicios que NO estén ya en la rutina actual para dar variedad
+      const currentExerciseIds = new Set(logsItems.map(log => log.exercise_id));
+      
+      const freshExercises = pool.filter(ex => !currentExerciseIds.has(ex.id));
+      const usedExercises = pool.filter(ex => currentExerciseIds.has(ex.id));
+      
+      // Si tenemos suficientes ejercicios nuevos, usamos esos. Si no, rellenamos con los repetidos.
+      const smartPool = [...freshExercises, ...usedExercises];
+
+      return smartPool.slice(0, count);
+    };
+
+    mainMuscles.forEach(muscle => {
+      const selected = getRandomExercises([muscle], genLevel, countPerMuscle);
+      selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...selected];
+    });
+
+    if (hasAbs) {
+      const absSelected = getRandomExercises(['abdomin', 'abs', 'core'], genLevel, absCount);
+      selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...absSelected];
+    }
+
+    if (selectedExercisesForGeneration.length === 0) {
+      alert("No se encontraron suficientes ejercicios para el nivel seleccionado.");
+      return;
+    }
+
+    // Añadir a la rutina
+    const newItems = selectedExercisesForGeneration.map((ex, idx) => ({
+      id: `log-temp-${Date.now()}-${idx}`,
+      exercise_id: ex.id,
+      semana: selectedWeek,
+      dia: selectedDay,
+      series: 4,
+      repeticiones: 10,
+      peso_objetivo: 40,
+      peso_real: 0,
+      notas: '',
+      exercise: ex,
+    }));
+
+    setLogsItems(prev => [...prev, ...newItems]);
+    setShowAddExercisePicker(false);
+    setGenMuscles([]);
   };
 
   const handleRemoveExercise = (idx: number) => {
@@ -517,7 +605,122 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 </button>
               </div>
 
-              <input
+              {/* Generador Automático */}
+              <div style={{
+                background: 'rgba(16, 185, 129, 0.05)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                padding: '12px',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '12px'
+              }}>
+                <span style={{ fontSize: '11px', fontWeight: 900, color: '#10b981', textTransform: 'uppercase' }}>
+                  🤖 Auto-Generador:
+                </span>
+                
+                <MultiSelect
+                  options={musclesList}
+                  selected={genMuscles}
+                  onChange={setGenMuscles}
+                  placeholder="MÚSCULOS..."
+                />
+
+                <select
+                  value={genLevel}
+                  onChange={(e) => setGenLevel(e.target.value)}
+                  style={{
+                    background: '#0f172a',
+                    color: '#10b981',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    padding: '8px 10px',
+                    border: '1px solid rgba(16, 185, 129, 0.4)',
+                    outline: 'none',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    borderRadius: '4px'
+                  }}
+                >
+                  <option value="Principiante">NIVEL: LIVIANA (Principiante)</option>
+                  <option value="Intermedio">NIVEL: MEDIA (Intermedio)</option>
+                  <option value="Avanzado">NIVEL: DIFÍCIL (Avanzado)</option>
+                </select>
+
+                <button
+                  type="button"
+                  onClick={handleGenerateRoutine}
+                  style={{
+                    background: '#10b981',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '8px 16px',
+                    fontSize: '11px',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    textTransform: 'uppercase',
+                    borderRadius: '4px',
+                    marginLeft: 'auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 4px 10px -2px rgba(16, 185, 129, 0.4)'
+                  }}
+                >
+                  ⚡ Generar Rutina
+                </button>
+              </div>
+
+              {/* View Mode Toggle */}
+              <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => setPickerViewMode('list')}
+                  style={{
+                    background: pickerViewMode === 'list' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                    color: pickerViewMode === 'list' ? '#f59e0b' : '#64748b',
+                    border: pickerViewMode === 'list' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
+                    padding: '6px 12px',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    textTransform: 'uppercase',
+                    borderRadius: '4px'
+                  }}
+                >
+                  Vista Lista
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPickerViewMode('anatomy')}
+                  style={{
+                    background: pickerViewMode === 'anatomy' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                    color: pickerViewMode === 'anatomy' ? '#f59e0b' : '#64748b',
+                    border: pickerViewMode === 'anatomy' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
+                    padding: '6px 12px',
+                    fontSize: '11px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    textTransform: 'uppercase',
+                    borderRadius: '4px'
+                  }}
+                >
+                  Vista Anatómica
+                </button>
+              </div>
+
+              {pickerViewMode === 'anatomy' ? (
+                <AnatomyExplorer
+                  exercises={exercises}
+                  onAddExercise={handleAddExercise}
+                  onPreviewExercise={setPreviewExercise}
+                  selectedWeek={selectedWeek}
+                  selectedDay={selectedDay}
+                />
+              ) : (
+                <>
+                  <input
                 type="text"
                 placeholder="Buscar por Nº de ejercicio (ej. 2, 81), nombre o músculo..."
                 value={searchQuery}
@@ -656,6 +859,8 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 );
               })}
               </div>
+                </>
+              )}
             </div>
           )}
 
