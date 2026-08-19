@@ -40,11 +40,25 @@ const S = {
   btnSecondary: { background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.4)', padding: '10px 18px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase' as const, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' },
   
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '20px' },
-  card: (selected: boolean): React.CSSProperties => ({
-    background: selected ? '#1e293b' : '#0f172a',
-    border: `1px solid ${selected ? '#f59e0b' : '#1e293b'}`,
-    padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
-  }),
+  card: (selected: boolean, urgency: 'normal' | 'warning' | 'critical'): React.CSSProperties => {
+    if (urgency === 'critical') return {
+      background: '#7f1d1d',
+      border: '2px solid #ef4444',
+      boxShadow: '0 0 18px rgba(239,68,68,0.25)',
+      padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
+    };
+    if (urgency === 'warning') return {
+      background: '#92400e',
+      border: '2px solid #f59e0b',
+      boxShadow: '0 0 18px rgba(245,158,11,0.20)',
+      padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
+    };
+    return {
+      background: selected ? '#1e293b' : '#0f172a',
+      border: `1px solid ${selected ? '#f59e0b' : '#1e293b'}`,
+      padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
+    };
+  },
   alumnoAvatar: { width: '60px', height: '60px', minWidth: '60px', minHeight: '60px', objectFit: 'cover' as const, border: '2px solid #f59e0b', flexShrink: 0 },
   
   inputBox: { background: '#020617', border: '1px solid #1e293b', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' },
@@ -360,9 +374,13 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             const isPlanActive = new Date(alumno.plan_active_until) >= new Date();
             const activeRoutine = dataService.getActiveRoutineForAlumno(alumno.id);
             const isSelected = selectedAlumnoForDetails === alumno.id;
+            const daysLeft = Math.ceil((new Date(alumno.plan_active_until).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+            const urgency: 'normal' | 'warning' | 'critical' =
+              !isPlanActive || daysLeft <= 1 ? 'critical' :
+              daysLeft <= 4 ? 'warning' : 'normal';
 
             return (
-              <div key={alumno.id} style={S.card(isSelected)}>
+              <div key={alumno.id} style={S.card(isSelected, urgency)}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{ position: 'relative' }}>
@@ -395,6 +413,13 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', padding: '6px 12px', borderRadius: '4px', border: `1px solid ${urgency === 'critical' ? 'rgba(239,68,68,0.4)' : urgency === 'warning' ? 'rgba(245,158,11,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '80px', marginRight: '8px' }}>
+                      <span style={{ fontSize: '8px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#64748b', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.05em', marginBottom: '4px' }}>Vencimiento</span>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 900, color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#f8fafc', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
+                        <span style={{ fontSize: '9px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#64748b', fontWeight: 800 }}>días</span>
+                      </div>
+                    </div>
                     <div style={{
                       width: '32px', height: '32px',
                       background: isPlanActive ? 'rgba(16,185,129,0.15)' : 'rgba(248,113,113,0.15)',
