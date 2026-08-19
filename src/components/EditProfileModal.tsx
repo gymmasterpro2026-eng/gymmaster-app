@@ -43,8 +43,26 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
     }
   };
 
+  const [saveError, setSaveError] = useState<string>('');
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setSaveError('');
+
+    // ── PARCHE SEGURIDAD: usuario duplicado ──────────────────────────────
+    const emailNorm = email.trim().toLowerCase();
+    const allProfiles = dataService.getProfiles();
+    const duplicate = allProfiles.find(
+      (p) => p.id !== profile.id && p.email.trim().toLowerCase() === emailNorm
+    );
+    if (duplicate) {
+      setSaveError(
+        `⚠️ El usuario "${email}" ya está en uso por "${duplicate.full_name}". Elegí un nombre de usuario diferente.`
+      );
+      return;
+    }
+    // ─────────────────────────────────────────────────────────────────────
+
     setIsSaving(true);
 
     dataService.updateProfile(profile.id, {
@@ -401,13 +419,26 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
           </div>
 
           {/* Action buttons */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
+            {saveError && (
+              <div style={{
+                background: 'rgba(239,68,68,0.15)',
+                border: '1px solid rgba(239,68,68,0.4)',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                color: '#f87171',
+                fontSize: '12px',
+                fontWeight: 600,
+                textAlign: 'center',
+              }}>
+                {saveError}
+              </div>
+            )}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
             gap: '12px',
-            paddingTop: '12px',
-            borderTop: '1px solid #1e293b'
           }}>
             <button
               type="button"
@@ -445,6 +476,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
               <Save size={16} />
               <span>{isSaving ? 'Guardando...' : 'Guardar Cambios'}</span>
             </button>
+          </div>
           </div>
         </form>
       </div>

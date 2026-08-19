@@ -80,6 +80,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [editingCredsAlumnoId, setEditingCredsAlumnoId] = useState<string | null>(null);
   const [editCredsEmail, setEditCredsEmail] = useState('');
   const [editCredsPassword, setEditCredsPassword] = useState('');
+  const [createAlumnoError, setCreateAlumnoError] = useState<string>('');
 
   const [newNombre, setNewNombre] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -112,7 +113,22 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
   const handleCreateAlumno = (e: React.FormEvent) => {
     e.preventDefault();
+    setCreateAlumnoError('');
     if (!newNombre || !newEmail || !coach.id) return;
+
+    // ── PARCHE SEGURIDAD: usuario duplicado ──────────────────────────────
+    const emailNorm = newEmail.trim().toLowerCase();
+    const allProfiles = dataService.getProfiles();
+    const duplicate = allProfiles.find(
+      (p) => p.email.trim().toLowerCase() === emailNorm
+    );
+    if (duplicate) {
+      setCreateAlumnoError(
+        `⚠️ El usuario "${newEmail}" ya existe (${duplicate.full_name}). Elegí un nombre de usuario diferente.`
+      );
+      return;
+    }
+    // ─────────────────────────────────────────────────────────────────────
 
     dataService.createAlumno({
       gym_id: coach.gym_id,
@@ -135,6 +151,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
     setNewPlanStart(new Date().toISOString());
     setNewPlanExpiry(new Date(Date.now() + 30 * 86400000).toISOString());
     setNewAvatarUrl(AVATAR_PRESETS[0]);
+    setCreateAlumnoError('');
     setShowAddAlumnoModal(false);
     onRefreshData();
   };
@@ -309,13 +326,20 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
-                <button type="button" onClick={() => setShowAddAlumnoModal(false)} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>
-                  Cancelar
-                </button>
-                <button type="submit" style={S.btnPrimary}>
-                  Guardar Alumno
-                </button>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '12px', borderTop: '1px solid #1e293b', flexDirection: 'column' }}>
+                {createAlumnoError && (
+                  <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', borderRadius: '8px', padding: '10px 14px', color: '#f87171', fontSize: '12px', fontWeight: 600, textAlign: 'center' }}>
+                    {createAlumnoError}
+                  </div>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                  <button type="button" onClick={() => { setShowAddAlumnoModal(false); setCreateAlumnoError(''); }} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>
+                    Cancelar
+                  </button>
+                  <button type="submit" style={S.btnPrimary}>
+                    Guardar Alumno
+                  </button>
+                </div>
               </div>
             </form>
           </div>
