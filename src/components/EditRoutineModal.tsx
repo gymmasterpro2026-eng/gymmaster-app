@@ -186,33 +186,50 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
     })
     .map(({ ex }) => ex);
 
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+
   const catalogList = filteredExercises;
   const activePreviewList = previewContextList || catalogList;
 
-  const openPreview = (ex: Exercise, contextList?: Exercise[]) => {
+  const openPreview = (ex: Exercise, contextList?: Exercise[], index?: number, readOnly: boolean = false) => {
     setPreviewExercise(ex);
     setPreviewContextList(contextList || null);
-    setPreviewReadOnly(false); // desde catálogo → sí puede añadir
+    if (index !== undefined && index >= 0) {
+      setPreviewIndex(index);
+    } else if (contextList && contextList.length > 0) {
+      const foundIdx = contextList.findIndex((e) => e.id === ex.id);
+      setPreviewIndex(foundIdx >= 0 ? foundIdx : 0);
+    } else {
+      const foundIdx = catalogList.findIndex((e) => e.id === ex.id);
+      setPreviewIndex(foundIdx >= 0 ? foundIdx : 0);
+    }
+    setPreviewReadOnly(readOnly);
   };
 
   const handlePrevExercise = () => {
-    if (!previewExercise) return;
-    const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
-    if (idx > 0) {
-      setPreviewExercise(activePreviewList[idx - 1]);
-    } else {
-      setPreviewExercise(activePreviewList[activePreviewList.length - 1]);
+    if (!activePreviewList || activePreviewList.length === 0) return;
+    let newIdx = 0;
+    if (previewIndex !== null && previewIndex >= 0) {
+      newIdx = previewIndex > 0 ? previewIndex - 1 : activePreviewList.length - 1;
+    } else if (previewExercise) {
+      const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
+      newIdx = idx > 0 ? idx - 1 : activePreviewList.length - 1;
     }
+    setPreviewIndex(newIdx);
+    setPreviewExercise(activePreviewList[newIdx]);
   };
 
   const handleNextExercise = () => {
-    if (!previewExercise) return;
-    const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
-    if (idx >= 0 && idx < activePreviewList.length - 1) {
-      setPreviewExercise(activePreviewList[idx + 1]);
-    } else {
-      setPreviewExercise(activePreviewList[0]);
+    if (!activePreviewList || activePreviewList.length === 0) return;
+    let newIdx = 0;
+    if (previewIndex !== null && previewIndex >= 0) {
+      newIdx = previewIndex < activePreviewList.length - 1 ? previewIndex + 1 : 0;
+    } else if (previewExercise) {
+      const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
+      newIdx = idx >= 0 && idx < activePreviewList.length - 1 ? idx + 1 : 0;
     }
+    setPreviewIndex(newIdx);
+    setPreviewExercise(activePreviewList[newIdx]);
   };
 
   useEffect(() => {
@@ -945,11 +962,12 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                             background: '#0f172a',
                           }}
                           onClick={() => {
-                            const ex = item.exercise;
+                            const ex = item.exercise || exercises.find((e) => e.id === item.exercise_id);
                             if (ex) {
-                              setPreviewExercise(ex);
-                              setPreviewContextList(null);
-                              setPreviewReadOnly(true); // solo ver, no añadir
+                              const routineExercises = logsItems
+                                .map((l) => l.exercise || exercises.find((e) => e.id === l.exercise_id))
+                                .filter(Boolean) as Exercise[];
+                              openPreview(ex, routineExercises, idx, true); // solo ver, navegar por la rutina
                             }
                           }}
                         />
@@ -1104,7 +1122,9 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
       </div>
 
       {previewExercise && (() => {
-        const idx = activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
+        const idx = previewIndex !== null && previewIndex >= 0 
+          ? previewIndex 
+          : activePreviewList.findIndex((ex) => ex.id === previewExercise.id);
         const currentNum = idx >= 0 ? idx + 1 : 1;
         const totalNum = activePreviewList.length;
 
@@ -1120,7 +1140,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             justifyContent: 'center',
             padding: '16px',
             boxSizing: 'border-box'
-          }} onClick={() => { setPreviewExercise(null); setPreviewContextList(null); }}>
+          }} onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }}>
 
             <button
               type="button"
@@ -1182,7 +1202,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     {currentNum} / {totalNum}
                   </span>
                 </div>
-                <button onClick={() => setPreviewExercise(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <button onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
                   <X size={20} />
                 </button>
               </div>
@@ -1233,7 +1253,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
                 <button
                   type="button"
-                  onClick={() => setPreviewExercise(null)}
+                  onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }}
                   style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: 800, cursor: 'pointer', padding: '8px 12px', textTransform: 'uppercase' }}
                 >
                   Cerrar
@@ -1244,6 +1264,8 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   onClick={() => {
                     handleAddExercise(previewExercise);
                     setPreviewExercise(null);
+                    setPreviewContextList(null);
+                    setPreviewIndex(null);
                   }}
                   style={{ background: '#f59e0b', color: '#000000', border: 'none', padding: '10px 20px', fontSize: '12px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'uppercase' }}
                 >

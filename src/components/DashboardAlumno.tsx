@@ -118,6 +118,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showEditRoutineModal, setShowEditRoutineModal] = useState(false);
   const [saveStatus, setSaveStatus] = useState<{ id: string; type: 'success' | 'error'; msg: string } | null>(null);
+  const [draftWeights, setDraftWeights] = useState<Record<string, number>>({});
   
   // Timer State
   const [timerMode, setTimerMode] = useState<'timer' | 'stopwatch'>('timer');
@@ -210,12 +211,25 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
     }
   };
 
+  const handleDraftWeightChange = (logId: string, val: number) => {
+    const safeVal = Math.max(0, isNaN(val) ? 0 : val);
+    setDraftWeights((prev) => ({ ...prev, [logId]: safeVal }));
+  };
+
   const handlePesoRealChange = (logId: string, w: number) => {
     if (isNaN(w) || w < 0) return;
     const r = dataService.updatePesoReal(logId, w, alumno.id);
     setSaveStatus({ id: logId, type: r.success ? 'success' : 'error', msg: r.success ? `✨ Peso guardado (${w}KG)` : r.message });
     if (r.success) { setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }
     setTimeout(() => setSaveStatus(null), 4000);
+  };
+
+  const handleSaveAndCollapse = (logId: string) => {
+    const log = activeRoutine?.logs.find((l) => l.id === logId);
+    const weightToSave = draftWeights[logId] !== undefined ? draftWeights[logId] : (log?.peso_real || 0);
+    handlePesoRealChange(logId, weightToSave);
+    // Cierra automáticamente la pestaña / acordeón del ejercicio
+    setExpandedExerciseId(null);
   };
 
   const handleToggleSeries = (logId: string, sIdx: number) => {
@@ -536,21 +550,28 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                   )}
 
                   <div style={S.weightInputBox}>
-                    <div style={S.wiHeader}>
-                      <div><div style={S.wiTitle}>Registro de Peso (KG)</div><div style={S.wiSubtitle}>Actualización en vivo RLS</div></div>
-                      <div style={S.wiCurrent}>Actual: {log.peso_real} KG</div>
-                    </div>
-                    <div style={S.wiControls} className="gm-wi-controls">
-                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, Math.max(0, log.peso_real-5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-5</button>
-                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, Math.max(0, log.peso_real-2.5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-2.5</button>
-                      <div style={S.wiInputWrap}>
-                        <input style={S.wiInput} type="number" step="0.5" value={log.peso_real} onChange={e=>handlePesoRealChange(log.id, parseFloat(e.target.value)||0)} />
-                        <span style={S.wiInputLbl}>KG</span>
-                      </div>
-                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, log.peso_real+2.5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+2.5</button>
-                      <button style={S.wiBtnMod} onClick={()=>handlePesoRealChange(log.id, log.peso_real+5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+5</button>
-                      <button style={S.wiSaveBtn} onClick={()=>handlePesoRealChange(log.id, log.peso_real)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.98)'} onMouseUp={e=>e.currentTarget.style.transform='none'}><Save size={18} /> Guardar</button>
-                    </div>
+                    {(() => {
+                      const currentWeight = draftWeights[log.id] !== undefined ? draftWeights[log.id] : (log.peso_real || 0);
+                      return (
+                        <>
+                          <div style={S.wiHeader}>
+                            <div><div style={S.wiTitle}>Registro de Peso (KG)</div><div style={S.wiSubtitle}>Presiona Guardar para confirmar y cerrar</div></div>
+                            <div style={S.wiCurrent}>Actual: {log.peso_real} KG</div>
+                          </div>
+                          <div style={S.wiControls} className="gm-wi-controls">
+                            <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, Math.max(0, currentWeight - 5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-5</button>
+                            <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, Math.max(0, currentWeight - 2.5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-2.5</button>
+                            <div style={S.wiInputWrap}>
+                              <input style={S.wiInput} type="number" step="0.5" value={currentWeight} onChange={e => handleDraftWeightChange(log.id, parseFloat(e.target.value) || 0)} />
+                              <span style={S.wiInputLbl}>KG</span>
+                            </div>
+                            <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, currentWeight + 2.5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+2.5</button>
+                            <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, currentWeight + 5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+5</button>
+                            <button style={S.wiSaveBtn} onClick={() => handleSaveAndCollapse(log.id)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.98)'} onMouseUp={e=>e.currentTarget.style.transform='none'}><Save size={18} /> Guardar</button>
+                          </div>
+                        </>
+                      );
+                    })()}
                   </div>
 
 
