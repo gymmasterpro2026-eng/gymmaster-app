@@ -367,12 +367,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div style={S.header} onClick={() => handleNavClick('home')}>
         <div style={S.headerGlow} />
         <div style={S.logoRow}>
-          <div style={S.logoIcon}>
-            <Dumbbell size={20} color="#000" strokeWidth={2.5} />
+          <div style={{ ...S.logoIcon, overflow: 'hidden', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <img
+              src="/gymmaster-app/fitness_logo.jpg"
+              alt="Logo"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'invert(1) brightness(2)' }}
+            />
           </div>
           <div>
             <h1 style={S.logoTitle}>
-              GymMaster <span style={S.logoAccent}>PRO</span>
+              TU MEJOR VERSIÓN <span style={S.logoAccent}>TE ESPERA</span>
             </h1>
             <div style={S.logoSub}>
               <div className="nav-glow-dot" style={S.logoDot} />

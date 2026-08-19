@@ -320,12 +320,28 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
         <div style={S.shine} />
 
         <div style={S.logoWrap}>
-          <div style={S.logoBox}>
-            <div style={S.logoShine} />
-            <Activity size={32} color="#000" />
+          <div style={{
+            width: 130,
+            height: 130,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+            backdropFilter: 'blur(8px)',
+            border: '2px solid rgba(255,255,255,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 40px rgba(255,200,0,0.25), 0 0 80px rgba(255,200,0,0.1)',
+            overflow: 'hidden',
+            marginBottom: 8,
+          }}>
+            <img
+              src="/gymmaster-app/fitness_logo.jpg"
+              alt="Logo"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'invert(1) brightness(2)' }}
+            />
           </div>
           <h1 style={S.title}>
-            GymMaster <span style={S.accent}>PRO</span>
+            TU MEJOR VERSIÓN <span style={{ ...S.accent, color: '#ffffff' }}>TE ESPERA</span>
           </h1>
           <p style={S.subtitle}>Gestión inteligente de entrenamientos</p>
         </div>
@@ -445,7 +461,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
         </form>
 
         <p style={S.footer}>
-          © 2026 GymMaster Pro
+          © 2026 Tu Mejor Versión Te Espera
           <span style={S.dot}>•</span>
           Arquitectura RLS Estricta
           <span style={S.dot}>•</span>

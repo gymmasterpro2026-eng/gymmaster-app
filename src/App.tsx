@@ -164,7 +164,7 @@ export default function App() {
                 <p style={{ color: '#cbd5e1', fontSize: '14px', lineHeight: '1.6' }}>
                   Tu plan de entrenamiento ha vencido el <strong>{new Date(activeAlumnoProfile!.plan_active_until).toLocaleDateString()}</strong>.
                   <br /><br />
-                  Por favor, comunícate con tu entrenador para renovar tu suscripción y recuperar el acceso a GymMaster PRO.
+                  Por favor, comunícate con tu entrenador para renovar tu suscripción y recuperar el acceso a Tu Mejor Versión Te Espera.
                 </p>
               </div>
             </div>
