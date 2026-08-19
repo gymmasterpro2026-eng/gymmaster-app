@@ -211,9 +211,19 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
     }
   };
 
-  const handleDraftWeightChange = (logId: string, val: number) => {
-    const safeVal = Math.max(0, isNaN(val) ? 0 : val);
-    setDraftWeights((prev) => ({ ...prev, [logId]: safeVal }));
+  const handleDraftWeightChange = (logId: string, val: string | number) => {
+    if (typeof val === 'string') {
+      const clean = val.replace(/^0+(?=\d)/, ''); // Elimina ceros a la izquierda (ej. "01" -> "1")
+      if (clean === '') {
+        setDraftWeights((prev) => ({ ...prev, [logId]: 0 }));
+        return;
+      }
+      const num = parseFloat(clean);
+      setDraftWeights((prev) => ({ ...prev, [logId]: isNaN(num) ? 0 : Math.max(0, num) }));
+    } else {
+      const safeVal = Math.max(0, isNaN(val) ? 0 : val);
+      setDraftWeights((prev) => ({ ...prev, [logId]: safeVal }));
+    }
   };
 
   const handlePesoRealChange = (logId: string, w: number) => {
@@ -562,7 +572,16 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                             <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, Math.max(0, currentWeight - 5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-5</button>
                             <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, Math.max(0, currentWeight - 2.5))} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>-2.5</button>
                             <div style={S.wiInputWrap}>
-                              <input style={S.wiInput} type="number" step="0.5" value={currentWeight} onChange={e => handleDraftWeightChange(log.id, parseFloat(e.target.value) || 0)} />
+                              <input 
+                                style={S.wiInput} 
+                                type="number" 
+                                step="0.5" 
+                                min="0"
+                                placeholder="0"
+                                value={currentWeight === 0 ? '' : currentWeight} 
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => handleDraftWeightChange(log.id, e.target.value)} 
+                              />
                               <span style={S.wiInputLbl}>KG</span>
                             </div>
                             <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, currentWeight + 2.5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+2.5</button>
