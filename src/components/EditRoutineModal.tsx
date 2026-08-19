@@ -46,6 +46,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   const [pickerViewMode, setPickerViewMode] = useState<'list' | 'anatomy'>('list');
   const [previewExercise, setPreviewExercise] = useState<Exercise | null>(null);
   const [previewContextList, setPreviewContextList] = useState<Exercise[] | null>(null);
+  const [previewReadOnly, setPreviewReadOnly] = useState(false); // true = abierto desde GIF rutina, sin botón añadir
   
   // Generator State
   const [genMuscles, setGenMuscles] = useState<string[]>([]);
@@ -191,6 +192,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   const openPreview = (ex: Exercise, contextList?: Exercise[]) => {
     setPreviewExercise(ex);
     setPreviewContextList(contextList || null);
+    setPreviewReadOnly(false); // desde catálogo → sí puede añadir
   };
 
   const handlePrevExercise = () => {
@@ -944,7 +946,11 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                           }}
                           onClick={() => {
                             const ex = item.exercise;
-                            if (ex) { setPreviewExercise(ex); setPreviewContextList(null); }
+                            if (ex) {
+                              setPreviewExercise(ex);
+                              setPreviewContextList(null);
+                              setPreviewReadOnly(true); // solo ver, no añadir
+                            }
                           }}
                         />
                       )}
@@ -1232,6 +1238,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 >
                   Cerrar
                 </button>
+                {!previewReadOnly && (
                 <button
                   type="button"
                   onClick={() => {
@@ -1243,6 +1250,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   <Plus size={16} />
                   <span>Añadir a Sem {selectedWeek} ({selectedDay})</span>
                 </button>
+                )}
               </div>
             </div>
 
