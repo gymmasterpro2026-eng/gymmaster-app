@@ -8,9 +8,11 @@ export interface Profile {
   full_name: string;
   email: string;
   password?: string;
+  plan_active_from?: string; // ISO timestamp
   plan_active_until: string; // ISO timestamp
   avatar_url?: string;
   phone?: string;
+  gender?: 'male' | 'female';
 }
 
 export interface Exercise {

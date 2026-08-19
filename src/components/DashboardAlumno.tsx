@@ -245,6 +245,9 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const completedCount = dayLogs.filter(l => l.completed_series?.every(s=>s)).length;
   const progressPercent = dayLogs.length > 0 ? Math.round((completedCount / dayLogs.length) * 100) : 0;
 
+  const daysLeft = Math.ceil((new Date(alumno.plan_active_until).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+  const isExpiringSoon = daysLeft <= 4;
+
   return (
     <div style={S.page} className="gm-dashboard-page">
       <style>{`
@@ -292,11 +295,20 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
               </div>
             </div>
           </div>
-          
-          <div style={S.progressBox}>
-            <div style={S.progressLblRow}><span>Progreso Hoy</span><span style={{ color: '#f59e0b' }}>{progressPercent}%</span></div>
-            <div style={S.progressBar}><div style={{ ...S.progressFill, width: `${progressPercent}%` }} /></div>
-            <span style={S.progressText}>{completedCount} de {dayLogs.length} completados</span>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 24px', borderRadius: '4px', border: `1px solid ${isExpiringSoon ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '120px' }}>
+              <span style={{ fontSize: '9px', color: isExpiringSoon ? '#ef4444' : '#64748b', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.05em', marginBottom: '8px' }}>Vencimiento</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '36px', fontWeight: 900, color: isExpiringSoon ? '#ef4444' : '#f8fafc', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
+                <span style={{ fontSize: '11px', color: isExpiringSoon ? '#ef4444' : '#64748b', fontWeight: 800 }}>días</span>
+              </div>
+            </div>
+
+            <div style={S.progressBox}>
+              <div style={S.progressLblRow}><span>Progreso Hoy</span><span style={{ color: '#f59e0b' }}>{progressPercent}%</span></div>
+              <div style={S.progressBar}><div style={{ ...S.progressFill, width: `${progressPercent}%` }} /></div>
+              <span style={S.progressText}>{completedCount} de {dayLogs.length} completados</span>
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import Model, { IExerciseData, IMuscleStats, Muscle } from 'react-body-highlighter';
+import React, { useState, useMemo, useEffect } from 'react';
+import Body, { ExtendedBodyPart, Slug } from '@mjcdev/react-body-highlighter';
 import { Exercise } from '../types';
 import { fixImageUrl } from '../utils/imageUrl';
 
@@ -9,6 +9,7 @@ interface AnatomyExplorerProps {
   onPreviewExercise: (ex: Exercise, contextList?: Exercise[]) => void;
   selectedWeek: number;
   selectedDay: string;
+  initialGender?: 'male' | 'female';
 }
 
 export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
@@ -16,24 +17,34 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
   onAddExercise,
   onPreviewExercise,
   selectedWeek,
-  selectedDay
+  selectedDay,
+  initialGender = 'male'
 }) => {
-  const [modelType, setModelType] = useState<'anterior' | 'posterior'>('anterior');
+  const [modelType, setModelType] = useState<'front' | 'back'>('front');
+  const [gender, setGender] = useState<'male' | 'female'>(initialGender);
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
 
-  // Mapeo rudimentario de los músculos de GymMaster PRO a los esperados por react-body-highlighter
-  const mapExerciseMusclesToModel = (primary_muscles: string[]): Muscle[] => {
-    const mapped: Muscle[] = [];
+  // Sync with initialGender if it changes from parent
+  useEffect(() => {
+    setGender(initialGender);
+  }, [initialGender]);
+
+  // Mapeo a los slugs esperados por @mjcdev/react-body-highlighter
+  const mapExerciseMusclesToModel = (primary_muscles: string[]): Slug[] => {
+    const mapped: Slug[] = [];
     const lowerMuscles = primary_muscles.map(m => m.toLowerCase());
     
     lowerMuscles.forEach(m => {
       if (m.includes('pecho') || m.includes('chest') || m.includes('pectoral')) mapped.push('chest');
-      if (m.includes('bicep') || m.includes('bícep')) mapped.push('biceps');
-      if (m.includes('tricep') || m.includes('trícep')) mapped.push('triceps');
-      if (m.includes('hombro') || m.includes('deltoid') || m.includes('delt') || m.includes('shoulder')) {
-        mapped.push('front-deltoids');
-        mapped.push('back-deltoids');
+      if (m.includes('bicep') || m.includes('bícep')) {
+        mapped.push('biceps');
+        mapped.push('triceps');
       }
+      if (m.includes('tricep') || m.includes('trícep')) {
+        mapped.push('triceps');
+        mapped.push('biceps'); // Vinculamos para área grande frontal
+      }
+      if (m.includes('hombro') || m.includes('deltoid') || m.includes('delt') || m.includes('shoulder')) mapped.push('deltoids');
       if (m.includes('espalda') || m.includes('back') || m.includes('dorsal') || m.includes('lat')) {
         mapped.push('upper-back');
         mapped.push('lower-back');
@@ -46,46 +57,49 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
       if (m.includes('cuadric') || m.includes('cuádric') || m.includes('quad')) mapped.push('quadriceps');
       if (m.includes('isquio') || m.includes('femoral') || m.includes('hamstring')) mapped.push('hamstring');
       if (m.includes('glute') || m.includes('glúte')) mapped.push('gluteal');
-      if (m.includes('gemelo') || m.includes('pantorrilla') || m.includes('calv') || m.includes('soleus')) {
-        mapped.push('calves');
-        mapped.push('left-soleus');
-        mapped.push('right-soleus');
-      }
+      if (m.includes('gemelo') || m.includes('pantorrilla') || m.includes('calv') || m.includes('soleus')) mapped.push('calves');
       if (m.includes('antebrazo') || m.includes('forearm')) mapped.push('forearm');
-      if (m.includes('abductor')) mapped.push('abductors');
-      if (m.includes('adductor')) mapped.push('adductor');
+      if (m.includes('abductor')) mapped.push('adductors');
+      if (m.includes('adductor')) mapped.push('adductors');
+      if (m.includes('cuello') || m.includes('neck') || m.includes('cervical')) mapped.push('neck');
     });
 
     return Array.from(new Set(mapped)); // Remove duplicates
   };
 
-  const bodyData: IExerciseData[] = useMemo(() => {
-    const allMuscles = new Set<Muscle>();
+  const bodyData: ExtendedBodyPart[] = useMemo(() => {
+    const allMuscles = new Set<Slug>();
     exercises.forEach(ex => {
       mapExerciseMusclesToModel(ex.primary_muscles).forEach(m => allMuscles.add(m));
     });
 
-    const data: IExerciseData[] = [
-      {
-        name: 'Available',
-        muscles: Array.from(allMuscles)
-      }
-    ];
+    const data: ExtendedBodyPart[] = Array.from(allMuscles).map(slug => ({
+      slug,
+      intensity: 1, // Represents available
+    }));
 
     if (selectedMuscle) {
-      data.push({
-        name: 'Selected',
-        muscles: [selectedMuscle as Muscle]
+      // Si selecciona tríceps o bíceps, iluminamos ambos para que se vea un área gigante (todo el brazo)
+      const musclesToHighlight = (selectedMuscle === 'biceps' || selectedMuscle === 'triceps') 
+        ? ['biceps', 'triceps'] 
+        : [selectedMuscle];
+
+      musclesToHighlight.forEach(muscleToHighlight => {
+        const idx = data.findIndex(d => d.slug === muscleToHighlight);
+        if (idx !== -1) {
+          data[idx].intensity = 2;
+        } else {
+          data.push({ slug: muscleToHighlight as Slug, intensity: 2 });
+        }
       });
     }
 
     return data;
   }, [exercises, selectedMuscle]);
 
-  const handleMuscleClick = (stats: IMuscleStats | any) => {
-    // some versions return the object, some call it directly with no args if background clicked.
-    if (stats && stats.muscle) {
-      setSelectedMuscle(stats.muscle);
+  const handleMuscleClick = (part: ExtendedBodyPart | any) => {
+    if (part && part.slug) {
+      setSelectedMuscle(part.slug);
     }
   };
 
@@ -94,61 +108,102 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
     
     return exercises.filter(ex => {
       const mappedMuscles = mapExerciseMusclesToModel(ex.primary_muscles);
-      return mappedMuscles.includes(selectedMuscle as Muscle);
+      if (selectedMuscle === 'biceps' || selectedMuscle === 'triceps') {
+        return mappedMuscles.includes('biceps') || mappedMuscles.includes('triceps');
+      }
+      return mappedMuscles.includes(selectedMuscle as Slug);
     });
   }, [exercises, selectedMuscle]);
 
   return (
-    <div style={{ display: 'flex', gap: '20px', minHeight: '450px', maxHeight: '450px', width: '100%', background: '#020617', padding: '16px', boxSizing: 'border-box' }}>
+    <div style={{ display: 'flex', gap: '20px', minHeight: '540px', maxHeight: '540px', width: '100%', background: '#020617', padding: '16px', boxSizing: 'border-box' }}>
       
       {/* Left Pane - Anatomy Model */}
-      <div style={{ flex: '0 0 240px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '16px', display: 'flex', flexDirection: 'column', maxHeight: '450px', flexShrink: 0, overflow: 'hidden' }}>
+      <div style={{ flex: '0 0 240px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '16px', display: 'flex', flexDirection: 'column', maxHeight: '540px', flexShrink: 0, overflow: 'hidden' }}>
         
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '16px' }}>
-          <button 
-            type="button"
-            onClick={() => setModelType('anterior')}
-            style={{
-              background: modelType === 'anterior' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
-              color: modelType === 'anterior' ? '#f59e0b' : '#64748b',
-              border: modelType === 'anterior' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
-              padding: '6px 12px',
-              fontSize: '12px',
-              fontWeight: 800,
-              cursor: 'pointer',
-              textTransform: 'uppercase',
-              borderRadius: '4px'
-            }}
-          >
-            Frente
-          </button>
-          <button 
-            type="button"
-            onClick={() => setModelType('posterior')}
-            style={{
-              background: modelType === 'posterior' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
-              color: modelType === 'posterior' ? '#f59e0b' : '#64748b',
-              border: modelType === 'posterior' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
-              padding: '6px 12px',
-              fontSize: '12px',
-              fontWeight: 800,
-              cursor: 'pointer',
-              textTransform: 'uppercase',
-              borderRadius: '4px'
-            }}
-          >
-            Espalda
-          </button>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button 
+              type="button"
+              onClick={() => setModelType('front')}
+              style={{
+                background: modelType === 'front' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                color: modelType === 'front' ? '#f59e0b' : '#64748b',
+                border: modelType === 'front' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
+                padding: '4px 8px',
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                borderRadius: '4px'
+              }}
+            >
+              Frente
+            </button>
+            <button 
+              type="button"
+              onClick={() => setModelType('back')}
+              style={{
+                background: modelType === 'back' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                color: modelType === 'back' ? '#f59e0b' : '#64748b',
+                border: modelType === 'back' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
+                padding: '4px 8px',
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                borderRadius: '4px'
+              }}
+            >
+              Espalda
+            </button>
+          </div>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button 
+              type="button"
+              onClick={() => setGender('male')}
+              style={{
+                background: gender === 'male' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+                color: gender === 'male' ? '#10b981' : '#64748b',
+                border: gender === 'male' ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid #cbd5e1',
+                padding: '4px 8px',
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                borderRadius: '4px'
+              }}
+            >
+              Hombre
+            </button>
+            <button 
+              type="button"
+              onClick={() => setGender('female')}
+              style={{
+                background: gender === 'female' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+                color: gender === 'female' ? '#10b981' : '#64748b',
+                border: gender === 'female' ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid #cbd5e1',
+                padding: '4px 8px',
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                borderRadius: '4px'
+              }}
+            >
+              Mujer
+            </button>
+          </div>
         </div>
 
-        <div style={{ width: '100%', flex: '1', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', minHeight: '300px', overflow: 'hidden' }}>
-          <Model
+        <div style={{ width: '100%', flex: '1', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', minHeight: '450px', overflow: 'hidden' }}>
+          <Body
             data={bodyData}
-            style={{ width: '180px', height: '100%' }}
-            onClick={handleMuscleClick as any}
-            type={modelType}
-            bodyColor="#e2e8f0"
-            highlightedColors={['#000000', '#dc2626']}
+            onBodyPartClick={handleMuscleClick}
+            side={modelType}
+            gender={gender}
+            colors={['#475569', '#10b981', '#f59e0b']}
+            scale={1.2}
           />
         </div>
         

@@ -100,7 +100,7 @@ export default function App() {
     : profiles;
 
   const coachProfile =
-    (currentUser && currentUser.role === 'coach' ? currentUser : null) ||
+    (currentUser && currentUser.role === 'coach' ? profiles.find(p => p.id === currentUser.id) : null) ||
     currentGymProfiles.find((p) => p.role === 'coach') ||
     profiles.find((p) => p.role === 'coach') ||
     profiles[0];
@@ -108,11 +108,18 @@ export default function App() {
   const alumnosList = currentGymProfiles.filter((p) => p.role === 'alumno');
 
   const activeAlumnoProfile =
-    (currentUser && currentUser.role === 'alumno' ? currentUser : null) ||
+    (currentUser && currentUser.role === 'alumno' ? profiles.find(p => p.id === currentUser.id) : null) ||
     currentGymProfiles.find((p) => p.id === selectedAlumnoId) ||
     alumnosList[0] ||
     profiles.find((p) => p.id === selectedAlumnoId) ||
     profiles[0];
+
+  const checkIsPlanExpired = (profile: Profile | null) => {
+    if (!profile || profile.role !== 'alumno' || !profile.plan_active_until) return false;
+    return new Date() > new Date(profile.plan_active_until);
+  };
+
+  const isAlumnoBlocked = currentRole === 'alumno' && checkIsPlanExpired(activeAlumnoProfile);
 
   if (showLanding) {
     return (
@@ -150,7 +157,20 @@ export default function App() {
         <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '75%', height: '128px', background: '#f59e0b', borderRadius: '0', filter: 'blur(120px)', opacity: 0.02, pointerEvents: 'none' }} />
 
         <main id="main-content-area" style={{ flex: 1, padding: '32px 40px', maxWidth: '1600px', margin: '0 auto', width: '100%' }}>
-          {currentTab === 'home' && (
+          {isAlumnoBlocked ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
+              <div style={{ background: '#0f172a', border: '1px solid #ef4444', padding: '40px', borderRadius: '8px', maxWidth: '500px' }}>
+                <h2 style={{ color: '#ef4444', margin: '0 0 16px 0', fontSize: '24px', fontWeight: 900, textTransform: 'uppercase' }}>Acceso Denegado</h2>
+                <p style={{ color: '#cbd5e1', fontSize: '14px', lineHeight: '1.6' }}>
+                  Tu plan de entrenamiento ha vencido el <strong>{new Date(activeAlumnoProfile!.plan_active_until).toLocaleDateString()}</strong>.
+                  <br /><br />
+                  Por favor, comunícate con tu entrenador para renovar tu suscripción y recuperar el acceso a GymMaster PRO.
+                </p>
+              </div>
+            </div>
+          ) : (
+          <>
+            {currentTab === 'home' && (
           <>
             {currentRole === 'alumno' ? (
               activeAlumnoProfile ? (
@@ -195,6 +215,8 @@ export default function App() {
         {currentTab === 'import' && <ImportScriptViewer />}
 
         {currentTab === 'structure' && <FolderStructureViewer />}
+          </>
+          )}
       </main>
 
       {/* Gym Generator & Login Modal */}

@@ -85,6 +85,10 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newTelefono, setNewTelefono] = useState('');
+  const [newGender, setNewGender] = useState<'male' | 'female'>('male');
+  const [newPlanStart, setNewPlanStart] = useState<string>(
+    new Date().toISOString()
+  );
   const [newPlanExpiry, setNewPlanExpiry] = useState<string>(
     new Date(Date.now() + 30 * 86400000).toISOString()
   );
@@ -117,7 +121,9 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
       email: newEmail,
       password: newPassword,
       phone: newTelefono,
+      gender: newGender,
       avatar_url: newAvatarUrl,
+      plan_active_from: new Date(newPlanStart).toISOString(),
       plan_active_until: new Date(newPlanExpiry).toISOString(),
     });
 
@@ -125,6 +131,9 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
     setNewEmail('');
     setNewPassword('');
     setNewTelefono('');
+    setNewGender('male');
+    setNewPlanStart(new Date().toISOString());
+    setNewPlanExpiry(new Date(Date.now() + 30 * 86400000).toISOString());
     setNewAvatarUrl(AVATAR_PRESETS[0]);
     setShowAddAlumnoModal(false);
     onRefreshData();
@@ -286,8 +295,18 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 <input type="text" value={newTelefono} onChange={(e) => setNewTelefono(e.target.value)} placeholder="+54 9 11 0000-0000" style={S.input} />
               </div>
               <div>
-                <label style={S.inputLbl}>Vigencia del Plan:</label>
-                <input type="datetime-local" value={newPlanExpiry.slice(0, 16)} onChange={(e) => setNewPlanExpiry(new Date(e.target.value).toISOString())} required style={S.input} />
+                <label style={S.inputLbl}>Género:</label>
+                <select value={newGender} onChange={(e) => setNewGender(e.target.value as 'male' | 'female')} style={S.input}>
+                  <option value="male">Hombre</option>
+                  <option value="female">Mujer</option>
+                </select>
+              </div>
+              <div>
+                <label style={S.inputLbl}>Vigencia del Plan (Desde - Hasta):</label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input type="datetime-local" value={newPlanStart.slice(0, 16)} onChange={(e) => setNewPlanStart(new Date(e.target.value).toISOString())} required style={{ ...S.input, flex: 1 }} />
+                  <input type="datetime-local" value={newPlanExpiry.slice(0, 16)} onChange={(e) => setNewPlanExpiry(new Date(e.target.value).toISOString())} required style={{ ...S.input, flex: 1 }} />
+                </div>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>

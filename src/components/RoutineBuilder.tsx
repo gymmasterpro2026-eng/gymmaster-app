@@ -3,6 +3,9 @@ import { Plus, Trash2, Dumbbell, Save, Check, X, Search, Sparkles, Link2, Chevro
 import { Exercise, Profile } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
+import { inferGenderFromName } from '../utils/genderInference';
+import { AnatomyExplorer } from './AnatomyExplorer';
+import { MultiSelect } from './MultiSelect';
 
 interface RoutineBuilderProps {
   coachId: string;
@@ -49,12 +52,15 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
     { id: '2', semana: 1, dia: 'Martes', exercise_id: exercises[1]?.id || 'ex-002', series: 4, repeticiones: 12, peso_objetivo: 55, notas: 'Pausa isométrica de 1 seg abajo' },
   ]);
 
-  // Catalog picker search query
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedMuscle, setSelectedMuscle] = useState<string>('all');
   const [selectedEquipment, setSelectedEquipment] = useState<string>('all');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const [previewExercise, setPreviewExercise] = useState<Exercise | null>(null);
+
+  const [pickerViewMode, setPickerViewMode] = useState<'list' | 'anatomy'>('list');
+  const [genMuscles, setGenMuscles] = useState<string[]>([]);
+  const [genLevel, setGenLevel] = useState<string>('Intermedio');
 
   const musclesList = Array.from(
     new Set(exercises.flatMap((ex) => ex.primary_muscles))
@@ -63,6 +69,62 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
   const equipmentList = Array.from(
     new Set(exercises.map((ex) => ex.equipment).filter(Boolean))
   ).sort();
+
+  const matchMuscle = (primaryMuscles: string[], selected: string): boolean => {
+    if (selected === 'all') return true;
+    const selLower = selected.toLowerCase();
+
+    return primaryMuscles.some((m) => {
+      const mLower = m.toLowerCase();
+      if (mLower === selLower) return true;
+      if (mLower.includes(selLower) || selLower.includes(mLower)) return true;
+
+      if (
+        (selLower.includes('gemelo') || selLower.includes('pantorrilla') || selLower.includes('calv')) &&
+        (mLower.includes('gemelo') || mLower.includes('pantorrilla') || mLower.includes('calv') || mLower.includes('soleus'))
+      ) return true;
+
+      if (
+        (selLower.includes('abdomin') || selLower.includes('abs')) &&
+        (mLower.includes('abdomin') || mLower.includes('abs') || mLower.includes('oblique'))
+      ) return true;
+
+      if (
+        (selLower.includes('pecho') || selLower.includes('pectoral') || selLower.includes('chest')) &&
+        (mLower.includes('pecho') || mLower.includes('pectoral') || mLower.includes('chest'))
+      ) return true;
+
+      if (
+        (selLower.includes('isquio') || selLower.includes('femoral') || selLower.includes('hamstring')) &&
+        (mLower.includes('isquio') || mLower.includes('femoral') || mLower.includes('hamstring'))
+      ) return true;
+
+      if (
+        (selLower.includes('cuadric') || selLower.includes('cuádric') || selLower.includes('quad')) &&
+        (mLower.includes('cuadric') || mLower.includes('cuádric') || mLower.includes('quad'))
+      ) return true;
+
+      if (
+        (selLower.includes('dorsal') || selLower.includes('espalda') || selLower.includes('lat') || selLower.includes('back')) &&
+        (mLower.includes('dorsal') || selLower.includes('espalda') || selLower.includes('lat') || selLower.includes('back'))
+      ) return true;
+
+      if (
+        (selLower.includes('hombro') || selLower.includes('deltoid') || selLower.includes('shoulder')) &&
+        (mLower.includes('hombro') || mLower.includes('deltoid') || mLower.includes('shoulder'))
+      ) return true;
+
+      if (
+        (selLower.includes('glute') || selLower.includes('glúte')) &&
+        (mLower.includes('glute') || mLower.includes('glúte'))
+      ) return true;
+
+      if (selLower.includes('bicep') && mLower.includes('bicep')) return true;
+      if (selLower.includes('tricep') && mLower.includes('tricep')) return true;
+
+      return false;
+    });
+  };
 
   const getSearchNumber = (q: string): number | null => {
     const trimmed = q.trim().toLowerCase();
@@ -99,7 +161,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
           (ex.level && ex.level.toLowerCase().includes(query));
       }
 
-      const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
+      const matchesMuscle = matchMuscle(ex.primary_muscles, selectedMuscle);
       const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
       const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
 
@@ -165,6 +227,75 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
 
   const handleUpdateItem = (id: string, field: string, value: any) => {
     setRoutineItems((prev) => prev.map(item => item.id === id ? { ...item, [field]: value } : item));
+  };
+
+  const handleGenerateRoutine = () => {
+    if (genMuscles.length === 0) {
+      alert("Selecciona al menos 1 músculo");
+      return;
+    }
+
+    const hasAbs = genMuscles.some(m => m.toLowerCase().includes('abdomin') || m.toLowerCase() === 'abs' || m.toLowerCase() === 'core');
+    const mainMuscles = genMuscles.filter(m => !(m.toLowerCase().includes('abdomin') || m.toLowerCase() === 'abs' || m.toLowerCase() === 'core'));
+    
+    const countPerMuscle = mainMuscles.length === 1 ? 5 : mainMuscles.length === 2 ? 3 : mainMuscles.length >= 3 ? 2 : 0;
+    const absCount = hasAbs ? 3 : 0;
+
+    let selectedExercisesForGeneration: Exercise[] = [];
+
+    const getRandomExercises = (muscles: string[], level: string, count: number) => {
+      let pool = exercises.filter(ex => 
+        (level === 'all' || ex.level === level) &&
+        muscles.some(m => matchMuscle(ex.primary_muscles, m))
+      );
+
+      if (pool.length === 0) {
+        pool = exercises.filter(ex => muscles.some(m => matchMuscle(ex.primary_muscles, m)));
+      }
+
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      const currentExerciseIds = new Set(routineItems.map(log => log.exercise_id));
+      
+      const freshExercises = pool.filter(ex => !currentExerciseIds.has(ex.id));
+      const usedExercises = pool.filter(ex => currentExerciseIds.has(ex.id));
+      
+      const smartPool = [...freshExercises, ...usedExercises];
+
+      return smartPool.slice(0, count);
+    };
+
+    mainMuscles.forEach(muscle => {
+      const selected = getRandomExercises([muscle], genLevel, countPerMuscle);
+      selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...selected];
+    });
+
+    if (hasAbs) {
+      const absSelected = getRandomExercises(['abdomin', 'abs', 'core'], genLevel, absCount);
+      selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...absSelected];
+    }
+
+    if (selectedExercisesForGeneration.length === 0) {
+      alert("No se encontraron suficientes ejercicios para el nivel seleccionado.");
+      return;
+    }
+
+    const newItems = selectedExercisesForGeneration.map((ex, idx) => ({
+      id: `gen-${Date.now()}-${idx}`,
+      exercise_id: ex.id,
+      semana: selectedWeek,
+      dia: selectedDay,
+      series: 4,
+      repeticiones: 10,
+      peso_objetivo: 40,
+      notas: '',
+    }));
+
+    setRoutineItems(prev => [...prev, ...newItems]);
+    setGenMuscles([]);
   };
 
   const handleSaveRoutine = (e: React.FormEvent) => {
@@ -494,101 +625,216 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
               Añadir Ejercicio desde Catálogo
             </h3>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
-              <div className="relative">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Buscar por nombre, músculo o Nº (ej: 15, #15)..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white text-xs text-slate-900 border border-slate-300 rounded-none pl-9 pr-3 py-2.5 focus:outline-none focus:border-amber-500 transition-colors"
-                />
-              </div>
-              <select
-                value={selectedMuscle}
-                onChange={(e) => setSelectedMuscle(e.target.value)}
-                className="w-full bg-white text-slate-700 text-xs rounded-none p-2.5 border border-slate-300 focus:border-amber-500 focus:outline-none uppercase transition-colors"
-              >
-                <option value="all">Músculo: Todos</option>
-                {musclesList.map((m) => (
-                  <option key={m} value={m}>{m}</option>
-                ))}
-              </select>
-              <select
-                value={selectedEquipment}
-                onChange={(e) => setSelectedEquipment(e.target.value)}
-                className="w-full bg-white text-slate-700 text-xs rounded-none p-2.5 border border-slate-300 focus:border-amber-500 focus:outline-none uppercase transition-colors"
-              >
-                <option value="all">Equip: Todos</option>
-                {equipmentList.map((eq) => (
-                  <option key={eq} value={eq as string}>{eq}</option>
-                ))}
-              </select>
-              <select
-                value={selectedLevel}
-                onChange={(e) => setSelectedLevel(e.target.value)}
-                className="w-full bg-white text-slate-700 text-xs rounded-none p-2.5 border border-slate-300 focus:border-amber-500 focus:outline-none uppercase transition-colors"
-              >
-                <option value="all">Nivel: Todos</option>
-                <option value="beginner">Principiante</option>
-                <option value="intermediate">Intermedio</option>
-                <option value="expert">Experto</option>
-              </select>
-            </div>
-          </div>
+            <div style={{
+              background: 'rgba(16, 185, 129, 0.05)',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '12px'
+            }}>
+              <span style={{ fontSize: '11px', fontWeight: 900, color: '#10b981', textTransform: 'uppercase' }}>
+                🤖 Auto-Generador:
+              </span>
+              
+              <MultiSelect
+                options={musclesList}
+                selected={genMuscles}
+                onChange={setGenMuscles}
+                placeholder="MÚSCULOS..."
+              />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2">
-            {filteredCatalog.map(({ ex, catalogIndex }) => (
-              <div
-                key={ex.id}
-                className="bg-white border border-slate-200 hover:border-amber-400 p-3.5 rounded-none flex items-center justify-between transition-all shadow-sm group"
+              <select
+                value={genLevel}
+                onChange={(e) => setGenLevel(e.target.value)}
+                style={{
+                  background: '#0f172a',
+                  color: '#10b981',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  padding: '8px 10px',
+                  border: '1px solid rgba(16, 185, 129, 0.4)',
+                  outline: 'none',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  borderRadius: '4px'
+                }}
               >
-                <div
-                  onClick={() => setPreviewExercise(ex)}
-                  className="flex items-center space-x-4 cursor-pointer flex-1 mr-2"
-                  title="Toca para ver el GIF ampliado y detalles del ejercicio"
-                >
-                  <div className="relative shrink-0">
-                    <img
-                      src={fixImageUrl(ex.image_urls[0])}
-                      alt={ex.name}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
-                      }}
-                      className="w-20 h-20 object-contain p-1 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm group-hover:scale-105 transition-transform"
+                <option value="Principiante">NIVEL: LIVIANA (Principiante)</option>
+                <option value="Intermedio">NIVEL: MEDIA (Intermedio)</option>
+                <option value="Avanzado">NIVEL: DIFÍCIL (Avanzado)</option>
+              </select>
+
+              <button
+                type="button"
+                onClick={handleGenerateRoutine}
+                style={{
+                  background: '#10b981',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '8px 16px',
+                  fontSize: '11px',
+                  fontWeight: 900,
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                  borderRadius: '4px',
+                  marginLeft: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 10px -2px rgba(16, 185, 129, 0.4)'
+                }}
+              >
+                ⚡ Generar Rutina
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #334155', paddingBottom: '8px' }}>
+              <button
+                type="button"
+                onClick={() => setPickerViewMode('list')}
+                style={{
+                  background: pickerViewMode === 'list' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                  color: pickerViewMode === 'list' ? '#f59e0b' : '#94a3b8',
+                  border: pickerViewMode === 'list' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
+                  padding: '6px 12px',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                  borderRadius: '4px'
+                }}
+              >
+                Vista Lista
+              </button>
+              <button
+                type="button"
+                onClick={() => setPickerViewMode('anatomy')}
+                style={{
+                  background: pickerViewMode === 'anatomy' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
+                  color: pickerViewMode === 'anatomy' ? '#f59e0b' : '#94a3b8',
+                  border: pickerViewMode === 'anatomy' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
+                  padding: '6px 12px',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                  borderRadius: '4px'
+                }}
+              >
+                Vista Anatómica
+              </button>
+            </div>
+
+            {pickerViewMode === 'anatomy' ? (
+              <AnatomyExplorer
+                exercises={exercises}
+                onAddExercise={handleAddExerciseToRoutine}
+                onPreviewExercise={(ex) => setPreviewExercise(ex)}
+                selectedWeek={selectedWeek}
+                selectedDay={selectedDay}
+                initialGender={alumnos.find(a => a.id === selectedAlumnoId)?.gender || inferGenderFromName(alumnos.find(a => a.id === selectedAlumnoId)?.full_name || '')}
+              />
+            ) : (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+                  <div className="relative">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Buscar por nombre, músculo o Nº (ej: 15, #15)..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-white text-xs text-slate-900 border border-slate-300 rounded-none pl-9 pr-3 py-2.5 focus:outline-none focus:border-amber-500 transition-colors"
                     />
                   </div>
-                  <div>
-                    <h5 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors leading-snug mb-1 flex items-center gap-2 flex-wrap">
-                      <span>{ex.name}</span>
-                      <span className="text-[10px] font-black text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 font-mono">
-                        Nº {catalogIndex}
-                      </span>
-                    </h5>
-                    <span className="text-xs text-slate-500 uppercase font-medium block">{ex.equipment}</span>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2 shrink-0 ml-2">
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); handleAddCombined(ex); }}
-                    className="p-2.5 rounded-none bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200 transition-all shrink-0 cursor-pointer"
-                    title="Combinar con el último ejercicio (Biserie/Triserie)"
+                  <select
+                    value={selectedMuscle}
+                    onChange={(e) => setSelectedMuscle(e.target.value)}
+                    className="w-full bg-white text-slate-700 text-xs rounded-none p-2.5 border border-slate-300 focus:border-amber-500 focus:outline-none uppercase transition-colors"
                   >
-                    <Link2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); handleAddExerciseToRoutine(ex); }}
-                    className="p-2.5 rounded-none bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 transition-all shrink-0 cursor-pointer"
-                    title="Añadir a la rutina"
+                    <option value="all">Músculo: Todos</option>
+                    {musclesList.map((m) => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={selectedEquipment}
+                    onChange={(e) => setSelectedEquipment(e.target.value)}
+                    className="w-full bg-white text-slate-700 text-xs rounded-none p-2.5 border border-slate-300 focus:border-amber-500 focus:outline-none uppercase transition-colors"
                   >
-                    <Plus className="w-4 h-4" />
-                  </button>
+                    <option value="all">Equip: Todos</option>
+                    {equipmentList.map((eq) => (
+                      <option key={eq} value={eq as string}>{eq}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={selectedLevel}
+                    onChange={(e) => setSelectedLevel(e.target.value)}
+                    className="w-full bg-white text-slate-700 text-xs rounded-none p-2.5 border border-slate-300 focus:border-amber-500 focus:outline-none uppercase transition-colors"
+                  >
+                    <option value="all">Nivel: Todos</option>
+                    <option value="beginner">Principiante</option>
+                    <option value="intermediate">Intermedio</option>
+                    <option value="expert">Experto</option>
+                  </select>
                 </div>
-              </div>
-            ))}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2">
+                  {filteredCatalog.map(({ ex, catalogIndex }) => (
+                    <div
+                      key={ex.id}
+                      className="bg-white border border-slate-200 hover:border-amber-400 p-3.5 rounded-none flex items-center justify-between transition-all shadow-sm group"
+                    >
+                      <div
+                        onClick={() => setPreviewExercise(ex)}
+                        className="flex items-center space-x-4 cursor-pointer flex-1 mr-2"
+                        title="Toca para ver el GIF ampliado y detalles del ejercicio"
+                      >
+                        <div className="relative shrink-0">
+                          <img
+                            src={fixImageUrl(ex.image_urls[0])}
+                            alt={ex.name}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
+                            }}
+                            className="w-20 h-20 object-contain p-1 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm group-hover:scale-105 transition-transform"
+                          />
+                        </div>
+                        <div>
+                          <h5 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors leading-snug mb-1 flex items-center gap-2 flex-wrap">
+                            <span>{ex.name}</span>
+                            <span className="text-[10px] font-black text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 font-mono">
+                              Nº {catalogIndex}
+                            </span>
+                          </h5>
+                          <span className="text-xs text-slate-500 uppercase font-medium block">{ex.equipment}</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2 shrink-0 ml-2">
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); handleAddCombined(ex); }}
+                          className="p-2.5 rounded-none bg-indigo-50 text-indigo-600 hover:bg-indigo-100 border border-indigo-200 transition-all shrink-0 cursor-pointer"
+                          title="Combinar con el último ejercicio (Biserie/Triserie)"
+                        >
+                          <Link2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); handleAddExerciseToRoutine(ex); }}
+                          className="p-2.5 rounded-none bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200 transition-all shrink-0 cursor-pointer"
+                          title="Añadir a la rutina"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
 

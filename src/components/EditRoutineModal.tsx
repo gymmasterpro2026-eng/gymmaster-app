@@ -3,6 +3,7 @@ import { Dumbbell, Save, X, Plus, Trash2, Search, ChevronLeft, ChevronRight, Che
 import { Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
+import { inferGenderFromName } from '../utils/genderInference';
 import { AnatomyExplorer } from './AnatomyExplorer';
 import { MultiSelect } from './MultiSelect';
 
@@ -709,6 +710,10 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   onPreviewExercise={openPreview}
                   selectedWeek={selectedWeek}
                   selectedDay={selectedDay}
+                  initialGender={
+                    dataService.getProfileById(routine.alumno_id)?.gender || 
+                    inferGenderFromName(dataService.getProfileById(routine.alumno_id)?.full_name || '')
+                  }
                 />
               ) : (
                 <>

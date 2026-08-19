@@ -24,6 +24,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
   const [password, setPassword] = useState(profile.password || '');
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url || AVATAR_PRESETS[0]);
   const [phone, setPhone] = useState(profile.phone || '');
+  const [gender, setGender] = useState<'male' | 'female'>(profile.gender || 'male');
+  const [planStart, setPlanStart] = useState<string>(profile.plan_active_from || new Date().toISOString());
+  const [planExpiry, setPlanExpiry] = useState<string>(profile.plan_active_until || new Date(Date.now() + 30 * 86400000).toISOString());
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -50,6 +53,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
       password: password,
       avatar_url: avatarUrl,
       phone: phone,
+      gender: gender,
+      plan_active_from: new Date(planStart).toISOString(),
+      plan_active_until: new Date(planExpiry).toISOString(),
     });
 
     setIsSaving(false);
@@ -316,6 +322,76 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                   fontSize: '13px',
                   fontWeight: 700,
                   padding: '10px 12px 10px 38px',
+                  border: '1px solid #334155',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Gender Input */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Género:
+            </label>
+            <div style={{ position: 'relative' }}>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value as 'male' | 'female')}
+                style={{
+                  width: '100%',
+                  background: '#020617',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px',
+                  border: '1px solid #334155',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <option value="male">Hombre</option>
+                <option value="female">Mujer</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Vigencia Input */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              Vigencia del Plan (Desde - Hasta):
+            </label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input
+                type="datetime-local"
+                value={planStart.slice(0, 16)}
+                onChange={(e) => setPlanStart(new Date(e.target.value).toISOString())}
+                required
+                style={{
+                  flex: 1,
+                  background: '#020617',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px',
+                  border: '1px solid #334155',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+              <input
+                type="datetime-local"
+                value={planExpiry.slice(0, 16)}
+                onChange={(e) => setPlanExpiry(new Date(e.target.value).toISOString())}
+                required
+                style={{
+                  flex: 1,
+                  background: '#020617',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px',
                   border: '1px solid #334155',
                   outline: 'none',
                   boxSizing: 'border-box'
