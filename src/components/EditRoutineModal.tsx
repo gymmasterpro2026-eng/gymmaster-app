@@ -926,6 +926,29 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                         </button>
                       </div>
 
+                      {/* GIF del ejercicio */}
+                      {item.exercise?.image_urls?.[0] && (
+                        <img
+                          src={fixImageUrl(item.exercise.image_urls[0])}
+                          alt={item.exercise.name}
+                          title="Ver GIF del ejercicio"
+                          style={{
+                            width: '54px',
+                            height: '54px',
+                            objectFit: 'cover',
+                            borderRadius: '6px',
+                            border: `2px solid ${dayColor.border}`,
+                            flexShrink: 0,
+                            cursor: 'pointer',
+                            background: '#0f172a',
+                          }}
+                          onClick={() => {
+                            const ex = item.exercise;
+                            if (ex) { setPreviewExercise(ex); setPreviewContextList(null); }
+                          }}
+                        />
+                      )}
+
                       <span style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                         {item.exercise?.name || 'Ejercicio'}
                         {(() => {
