@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Dumbbell, Shield, User, Code2, FolderTree, Database,
   RefreshCw, Building2, LogOut, LogIn, Globe2, Activity, Menu, X, ChevronRight, Check
@@ -83,6 +83,62 @@ export const Navbar: React.FC<NavbarProps> = ({
   const activeAlumno = safeAlumnos.find(a => a && a.id === selectedAlumnoId);
   const isPlanExpired = activeAlumno ? new Date(activeAlumno.plan_active_until) < new Date() : false;
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  // ── MARCA POR COACH ──────────────────────────────────────────────────
+  // Determinar qué clave de marca usar según el usuario actual:
+  // - Admin Master (coach-001) → clave global 'gymmaster_brand_name'
+  // - Otro coach → clave propia 'gymmaster_brand_name_{id}'
+  // - Alumno → clave del coach al que pertenece 'gymmaster_brand_name_{managed_by}'
+  const getBrandKey = (suffix: 'name' | 'logo') => {
+    const base = suffix === 'name' ? 'gymmaster_brand_name' : 'gymmaster_brand_logo';
+    if (!currentUser) return base;
+    if (currentUser.id === 'coach-001') return base; // Admin Master = global
+    if (currentUser.role === 'coach') return `${base}_${currentUser.id}`;
+    if (currentUser.role === 'alumno' && currentUser.managed_by) return `${base}_${currentUser.managed_by}`;
+    return base;
+  };
+
+  const defaultName = 'TU MEJOR VERSIÓN TE ESPERA';
+  const defaultLogo = '/gymmaster-app/fitness_logo.jpg';
+
+  const [brandName, setBrandName] = useState<string>(
+    () => localStorage.getItem(getBrandKey('name')) || localStorage.getItem('gymmaster_brand_name') || defaultName
+  );
+  const [brandLogo, setBrandLogo] = useState<string>(
+    () => localStorage.getItem(getBrandKey('logo')) || localStorage.getItem('gymmaster_brand_logo') || defaultLogo
+  );
+  const [showBrandModal, setShowBrandModal] = useState(false);
+  const [editBrandName, setEditBrandName] = useState(brandName);
+  const [editBrandLogo, setEditBrandLogo] = useState(brandLogo);
+  const brandFileRef = useRef<HTMLInputElement>(null);
+
+  const handleBrandLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') setEditBrandLogo(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveBrand = () => {
+    setBrandName(editBrandName);
+    setBrandLogo(editBrandLogo);
+    // Guardar en la clave correcta según el coach
+    localStorage.setItem(getBrandKey('name'), editBrandName);
+    localStorage.setItem(getBrandKey('logo'), editBrandLogo);
+    setShowBrandModal(false);
+  };
+
+  const getBrandParts = (name: string) => {
+    const words = name.trim().split(' ');
+    const accent = words.slice(-2).join(' ');
+    const main = words.slice(0, -2).join(' ');
+    return { main, accent };
+  };
+  // ─────────────────────────────────────────────────────────────────────
 
   const [syncState, setSyncState] = useState(() => dataService.getSyncState());
   const [now, setNow] = useState(Date.now());
@@ -366,17 +422,17 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Header / Brand */}
       <div style={S.header} onClick={() => handleNavClick('home')}>
         <div style={S.headerGlow} />
-        <div style={S.logoRow}>
+        <div style={{ ...S.logoRow, position: 'relative' }}>
           <div style={{ ...S.logoIcon, overflow: 'hidden', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>
             <img
-              src="/gymmaster-app/fitness_logo.jpg"
+              src={brandLogo}
               alt="Logo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'invert(1) brightness(2)' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: brandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
             />
           </div>
-          <div>
+          <div style={{ flex: 1 }}>
             <h1 style={S.logoTitle}>
-              TU MEJOR VERSIÓN <span style={S.logoAccent}>TE ESPERA</span>
+              {getBrandParts(brandName).main} <span style={S.logoAccent}>{getBrandParts(brandName).accent}</span>
             </h1>
             <div style={S.logoSub}>
               <div className="nav-glow-dot" style={S.logoDot} />
@@ -385,8 +441,117 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </div>
           </div>
+          {/* Cada coach puede editar SU PROPIA marca */}
+          {currentRole === 'coach' && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setEditBrandName(brandName); setEditBrandLogo(brandLogo); setShowBrandModal(true); }}
+              title="Editar mi marca"
+              style={{
+                position: 'absolute', top: 4, right: 4,
+                background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)',
+                borderRadius: '6px', padding: '3px 6px', cursor: 'pointer',
+                color: '#f59e0b', fontSize: '10px', fontWeight: 800,
+                display: 'flex', alignItems: 'center', gap: '3px',
+              }}
+            >
+              ✏️ Editar
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Modal editar marca */}
+      {showBrandModal && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+        }}>
+          <div style={{
+            background: '#0f172a', border: '1px solid #1e293b', borderRadius: 16,
+            padding: 28, width: '100%', maxWidth: 420, boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+          }}>
+            <h2 style={{ color: '#fff', fontSize: 16, fontWeight: 900, margin: '0 0 20px', textTransform: 'uppercase', letterSpacing: 1 }}>
+              ✏️ Editar Marca del Gimnasio
+            </h2>
+
+            {/* Logo preview */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{
+                width: 100, height: 100, borderRadius: '50%',
+                overflow: 'hidden', border: '2px solid #f59e0b',
+                boxShadow: '0 0 20px rgba(245,158,11,0.3)',
+              }}>
+                <img
+                  src={editBrandLogo}
+                  alt="preview"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', filter: editBrandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
+                />
+              </div>
+              <button
+                onClick={() => brandFileRef.current?.click()}
+                style={{
+                  background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.4)',
+                  color: '#f59e0b', borderRadius: 8, padding: '8px 16px',
+                  fontSize: 12, fontWeight: 800, cursor: 'pointer', textTransform: 'uppercase',
+                }}
+              >
+                📷 Cambiar Foto del Logo
+              </button>
+              <input ref={brandFileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleBrandLogoUpload} />
+            </div>
+
+            {/* Brand name input */}
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ color: '#94a3b8', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, display: 'block', marginBottom: 8 }}>
+                Nombre de la Marca
+              </label>
+              <input
+                type="text"
+                value={editBrandName}
+                onChange={(e) => setEditBrandName(e.target.value)}
+                placeholder="TU MEJOR VERSIÓN TE ESPERA"
+                style={{
+                  width: '100%', background: '#1e293b', border: '1px solid #334155',
+                  borderRadius: 8, padding: '10px 14px', color: '#fff',
+                  fontSize: 14, fontWeight: 700, boxSizing: 'border-box',
+                }}
+              />
+              <p style={{ color: '#64748b', fontSize: 11, margin: '6px 0 0' }}>
+                💡 Las últimas 2 palabras se muestran en amarillo.
+              </p>
+            </div>
+
+            {/* Preview del nombre */}
+            <div style={{
+              background: '#1e293b', borderRadius: 8, padding: '10px 14px',
+              marginBottom: 20, textAlign: 'center',
+            }}>
+              <span style={{ color: '#fff', fontWeight: 900, fontSize: 14 }}>
+                {getBrandParts(editBrandName).main}{' '}
+              </span>
+              <span style={{ color: '#f59e0b', fontWeight: 900, fontSize: 14 }}>
+                {getBrandParts(editBrandName).accent}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowBrandModal(false)}
+                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: 12, fontWeight: 800, cursor: 'pointer', textTransform: 'uppercase' }}
+              >Cancelar</button>
+              <button
+                onClick={handleSaveBrand}
+                style={{
+                  background: '#f59e0b', color: '#000', border: 'none',
+                  borderRadius: 8, padding: '10px 20px', fontSize: 12,
+                  fontWeight: 900, cursor: 'pointer', textTransform: 'uppercase',
+                }}
+              >💾 Guardar</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Nav scroll area */}
       <div style={S.scrollArea}>

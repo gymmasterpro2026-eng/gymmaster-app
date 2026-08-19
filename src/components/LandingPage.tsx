@@ -16,6 +16,15 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Leer marca desde localStorage (guardada por el coach)
+  const brandName = localStorage.getItem('gymmaster_brand_name') || 'TU MEJOR VERSIÓN TE ESPERA';
+  const brandLogo = localStorage.getItem('gymmaster_brand_logo') || '/gymmaster-app/fitness_logo.jpg';
+  const getBrandParts = (name: string) => {
+    const words = name.trim().split(' ');
+    return { main: words.slice(0, -2).join(' '), accent: words.slice(-2).join(' ') };
+  };
+  const { main: brandMain, accent: brandAccent } = getBrandParts(brandName);
+
   useEffect(() => {
     setMounted(true);
     const canvas = canvasRef.current;
@@ -335,13 +344,13 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
             marginBottom: 8,
           }}>
             <img
-              src="/gymmaster-app/fitness_logo.jpg"
+              src={brandLogo}
               alt="Logo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'invert(1) brightness(2)' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: brandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
             />
           </div>
           <h1 style={S.title}>
-            TU MEJOR VERSIÓN <span style={{ ...S.accent, color: '#ffffff' }}>TE ESPERA</span>
+            {brandMain} <span style={{ ...S.accent, color: '#ffffff' }}>{brandAccent}</span>
           </h1>
           <p style={S.subtitle}>Gestión inteligente de entrenamientos</p>
         </div>
