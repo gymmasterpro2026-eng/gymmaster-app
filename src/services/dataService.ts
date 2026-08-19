@@ -244,7 +244,8 @@ class DataService {
     if (supabase) {
       this.saveToCloud(async () => {
         await supabase.from('gym_tenants').upsert(this.gyms);
-        await supabase.from('gym_profiles').upsert(this.profiles);
+        const profilesToSave = this.profiles.map(({ gender, plan_active_from, ...rest }) => rest);
+        await supabase.from('gym_profiles').upsert(profilesToSave);
         await supabase.from('gym_routines').upsert(this.routines);
         await supabase.from('gym_routine_logs').upsert(this.logs);
       });
@@ -375,7 +376,9 @@ class DataService {
 
     if (supabase) {
       this.saveToCloud(async () => {
-        await supabase.from('gym_profiles').insert(newAlumno);
+        // Remove fields not present in Supabase schema to prevent 400 Bad Request
+        const { gender, plan_active_from, ...profileToSave } = newAlumno;
+        await supabase.from('gym_profiles').insert(profileToSave);
       });
     }
 
@@ -419,7 +422,8 @@ class DataService {
 
       if (supabase) {
         this.saveToCloud(async () => {
-          await supabase.from('gym_profiles').update(updates).eq('id', profileId);
+          const { gender, plan_active_from, ...safeUpdates } = updates as any;
+          await supabase.from('gym_profiles').update(safeUpdates).eq('id', profileId);
         });
       }
       this.notify();
