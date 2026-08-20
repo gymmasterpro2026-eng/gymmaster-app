@@ -26,7 +26,7 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
     setLoginError('');
 
     if (!loginEmail.trim()) {
-      setLoginError('Ingresa tu usuario o correo electrónico.');
+      setLoginError('Ingresa tu usuario.');
       return;
     }
 

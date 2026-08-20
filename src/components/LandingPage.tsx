@@ -376,7 +376,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 type="text"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
-                placeholder="Ingresa tu correo o usuario"
+                placeholder="Ingresa tu usuario"
                 style={S.input}
                 onFocus={e => {
                   e.target.style.borderColor = '#f59e0b';

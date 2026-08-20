@@ -130,8 +130,8 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
                 <input style={S.input} type="text" value={adminName} onChange={e => setAdminName(e.target.value)} required placeholder="Ej. Carlos Mendoza" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
               </div>
               <div style={S.fieldGroup}>
-                <label style={S.label}>Correo Electrónico</label>
-                <input style={S.input} type="email" value={adminEmail} onChange={e => setAdminEmail(e.target.value)} required placeholder="admin@tu-gym.com" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+                <label style={S.label}>Usuario</label>
+                <input style={S.input} type="text" value={adminEmail} onChange={e => setAdminEmail(e.target.value)} required placeholder="Ej. gym" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
               </div>
               <div style={{ ...S.fieldGroup, gridColumn: 'span 2' }}>
                 <label style={S.label}>Contraseña Temporal</label>
@@ -303,7 +303,7 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                       <div style={S.coachName}>{coach.full_name}</div>
                       <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
                         <div style={{ flex: 1 }}>
-                          <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>USUARIO (CORREO)</label>
+                          <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>USUARIO</label>
                           <input 
                             type="text" 
                             value={draft.email} 
