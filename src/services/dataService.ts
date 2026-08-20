@@ -331,12 +331,18 @@ class DataService {
       return { profile: coach, gym };
     }
 
-    const matchingProfiles = this.profiles.filter(
+    // Primero buscar coincidencias exactas (ideal para usuarios como "f", "1", "lp")
+    let matchingProfiles = this.profiles.filter(
       (p) =>
         p.email.trim().toLowerCase() === cleanId ||
         p.email.trim().toLowerCase().split('@')[0] === cleanId ||
-        p.full_name.trim().toLowerCase().includes(cleanId)
+        p.full_name.trim().toLowerCase() === cleanId
     );
+
+    // Si no hay exactos, recurrir a búsqueda parcial por nombre (para encontrar "Daniel Lopez" escribiendo "Daniel")
+    if (matchingProfiles.length === 0) {
+      matchingProfiles = this.profiles.filter((p) => p.full_name.trim().toLowerCase().includes(cleanId));
+    }
 
     let profile = null;
     if (cleanPass) {
