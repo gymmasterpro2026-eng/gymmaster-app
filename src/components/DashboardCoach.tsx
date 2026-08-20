@@ -461,7 +461,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                         min="1"
                         value={renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id]}
                         onChange={(e) => setRenewDays(prev => ({ ...prev, [alumno.id]: parseInt(e.target.value) || 0 }))}
-                        style={{ width: '45px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '12px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
+                        style={{ width: '60px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '18px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
                         title="Días a sumar"
                       />
                       <button onClick={() => {
