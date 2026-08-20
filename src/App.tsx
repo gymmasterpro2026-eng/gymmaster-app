@@ -82,6 +82,7 @@ export default function App() {
     setActiveGym(gym);
     setCurrentUser(userProfile);
     setCurrentRole(userProfile.role);
+    setCurrentTab('home');
     refreshData();
 
     if (userProfile.role === 'alumno') {
