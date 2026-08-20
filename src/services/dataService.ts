@@ -333,9 +333,9 @@ class DataService {
 
     const profile = this.profiles.find(
       (p) =>
-        p.email.toLowerCase() === cleanId ||
-        p.email.toLowerCase().split('@')[0] === cleanId ||
-        p.full_name.toLowerCase().includes(cleanId)
+        p.email.trim().toLowerCase() === cleanId ||
+        p.email.trim().toLowerCase().split('@')[0] === cleanId ||
+        p.full_name.trim().toLowerCase().includes(cleanId)
     );
     if (!profile) return null;
 
@@ -368,6 +368,8 @@ class DataService {
   createAlumno(data: Omit<Profile, 'id' | 'role'>): Profile {
     const newAlumno: Profile = {
       ...data,
+      full_name: data.full_name.trim(),
+      email: data.email.trim(),
       id: `alumno-${Date.now()}`,
       role: 'alumno',
     };
@@ -402,8 +404,8 @@ class DataService {
   updateAlumnoCredentials(alumnoId: string, email: string, password?: string) {
     const alumno = this.profiles.find((p) => p.id === alumnoId);
     if (alumno) {
-      alumno.email = email;
-      alumno.password = password;
+      alumno.email = email.trim();
+      alumno.password = password?.trim();
       this.persist();
 
       if (supabase) {
