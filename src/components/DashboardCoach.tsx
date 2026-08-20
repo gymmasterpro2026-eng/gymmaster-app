@@ -95,6 +95,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [editCredsEmail, setEditCredsEmail] = useState('');
   const [editCredsPassword, setEditCredsPassword] = useState('');
   const [createAlumnoError, setCreateAlumnoError] = useState<string>('');
+  const [renewDays, setRenewDays] = useState<Record<string, number>>({});
 
   const [newNombre, setNewNombre] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -454,9 +455,22 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                         {new Date(alumno.plan_active_until).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
-                    <button onClick={() => handleRenewPlan(alumno.id, 30)} style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '6px 10px', fontSize: '10px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <RotateCcw size={12} /> +30 Días
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)' }}>
+                      <input
+                        type="number"
+                        min="1"
+                        value={renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id]}
+                        onChange={(e) => setRenewDays(prev => ({ ...prev, [alumno.id]: parseInt(e.target.value) || 0 }))}
+                        style={{ width: '45px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '12px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
+                        title="Días a sumar"
+                      />
+                      <button onClick={() => {
+                        const days = renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id];
+                        if (days > 0) handleRenewPlan(alumno.id, days);
+                      }} style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <RotateCcw size={12} /> Agregar
+                      </button>
+                    </div>
                   </div>
                 </div>
 
