@@ -331,17 +331,28 @@ class DataService {
       return { profile: coach, gym };
     }
 
-    const profile = this.profiles.find(
+    const matchingProfiles = this.profiles.filter(
       (p) =>
         p.email.trim().toLowerCase() === cleanId ||
         p.email.trim().toLowerCase().split('@')[0] === cleanId ||
         p.full_name.trim().toLowerCase().includes(cleanId)
     );
-    if (!profile) return null;
 
-    if (cleanPass && profile.password && profile.password !== cleanPass) {
-      return null;
+    let profile = null;
+    if (cleanPass) {
+      profile = matchingProfiles.find((p) => p.password === cleanPass);
     }
+    
+    // Fallback in case of passwordless login (if allowed by logic)
+    if (!profile && (!cleanPass || matchingProfiles.some(p => !p.password))) {
+       profile = matchingProfiles.find((p) => !p.password || p.password === cleanPass) || matchingProfiles[0];
+       // Strict check if cleanPass was provided but we only found a profile with a wrong password
+       if (profile && profile.password && cleanPass && profile.password !== cleanPass) {
+           profile = null;
+       }
+    }
+
+    if (!profile) return null;
 
     const gym = this.gyms.find((g) => g.id === profile.gym_id) || {
       id: profile.gym_id,
