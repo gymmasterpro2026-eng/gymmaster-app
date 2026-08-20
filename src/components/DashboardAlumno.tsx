@@ -271,6 +271,10 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
   const daysLeft = Math.ceil((new Date(alumno.plan_active_until).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
   const isExpiringSoon = daysLeft <= 4;
+  const isExpiringCritical = daysLeft <= 1;
+  const bannerBg = isExpiringCritical ? '#ef4444' : isExpiringSoon ? '#f59e0b' : 'linear-gradient(135deg, #0f172a, #121212)';
+  const contrastColor = isExpiringSoon ? '#ffffff' : '#f59e0b';
+  const contrastBorder = isExpiringSoon ? 'rgba(255,255,255,0.5)' : 'rgba(245,158,11,0.3)';
 
   return (
     <div style={S.page} className="gm-dashboard-page">
@@ -297,41 +301,46 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
         }
       `}</style>
       {/* Banner Superior */}
-      <div style={S.headerBanner} className="gm-header-banner">
-        <div style={S.glow} />
+      <div style={{ ...S.headerBanner, background: bannerBg, borderColor: isExpiringSoon ? 'transparent' : '#1e293b' }} className="gm-header-banner">
+        {!isExpiringSoon && <div style={S.glow} />}
         <div className="gm-header-content" style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
           <div className="gm-avatar-row" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={S.avatarWrap} onClick={() => setShowEditProfileModal(true)}
               onMouseEnter={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '1'; }}
               onMouseLeave={e => { const o = e.currentTarget.querySelector('.av-overlay') as HTMLElement; if(o) o.style.opacity = '0'; }}>
-              <img src={alumno.avatar_url || 'https://api.dicebear.com/7.x/big-smile/svg?seed=SimpsonsHomer&backgroundColor=fcd34d'} alt="Avatar" style={S.avatarImg} />
-              <div className="av-overlay" style={S.avatarIconOverlay}><Camera size={20} color="#f59e0b" /></div>
+              <img src={alumno.avatar_url || 'https://api.dicebear.com/7.x/big-smile/svg?seed=SimpsonsHomer&backgroundColor=fcd34d'} alt="Avatar" style={{ ...S.avatarImg, border: `2px solid ${contrastBorder}` }} />
+              <div className="av-overlay" style={S.avatarIconOverlay}><Camera size={20} color={contrastColor} /></div>
             </div>
             <div>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <span style={S.badgeGreen}>Plan Activo ✅</span>
-                <button style={S.editBtn} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
+                <button style={{ ...S.editBtn, background: isExpiringSoon ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)' }} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
               </div>
               <h1 style={S.name}>{alumno.full_name}</h1>
-              <div style={S.routinePill}>
+              <div style={{ ...S.routinePill, color: contrastColor }}>
                 <Dumbbell size={12} /> {activeRoutine.nombre_rutina}
-                <button style={S.editRoutineBtn} onClick={() => setShowEditRoutineModal(true)}><Edit3 size={10} /> Editar</button>
+                <button style={{ ...S.editRoutineBtn, color: contrastColor, background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : '#1e293b', borderColor: isExpiringSoon ? 'rgba(0,0,0,0.2)' : '#334155' }} onClick={() => setShowEditRoutineModal(true)}><Edit3 size={10} /> Editar</button>
               </div>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 24px', borderRadius: '4px', border: `1px solid ${isExpiringSoon ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '120px' }}>
-              <span style={{ fontSize: '9px', color: isExpiringSoon ? '#ef4444' : '#64748b', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.05em', marginBottom: '8px' }}>Vencimiento</span>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.02)', padding: '12px 24px', borderRadius: '4px', border: `1px solid ${isExpiringSoon ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.05)'}`, minWidth: '120px' }}>
+              <span style={{ fontSize: '9px', color: isExpiringSoon ? '#ffffff' : '#64748b', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.05em', marginBottom: '8px' }}>Vencimiento</span>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '36px', fontWeight: 900, color: isExpiringSoon ? '#ef4444' : '#f8fafc', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
-                <span style={{ fontSize: '11px', color: isExpiringSoon ? '#ef4444' : '#64748b', fontWeight: 800 }}>días</span>
+                <span style={{ fontSize: '36px', fontWeight: 900, color: isExpiringSoon ? '#ffffff' : '#f8fafc', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
+                <span style={{ fontSize: '11px', color: isExpiringSoon ? 'rgba(255,255,255,0.8)' : '#64748b', fontWeight: 800 }}>días</span>
               </div>
             </div>
 
-            <div style={S.progressBox}>
-              <div style={S.progressLblRow}><span>Progreso Hoy</span><span style={{ color: '#f59e0b' }}>{progressPercent}%</span></div>
-              <div style={S.progressBar}><div style={{ ...S.progressFill, width: `${progressPercent}%` }} /></div>
-              <span style={S.progressText}>{completedCount} de {dayLogs.length} completados</span>
+            <div style={{ ...S.progressBox, background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0.5)', borderColor: isExpiringSoon ? 'rgba(255,255,255,0.2)' : '#334155' }}>
+              <div style={{ ...S.progressLblRow, color: isExpiringSoon ? 'rgba(255,255,255,0.9)' : '#888' }}>
+                <span>Progreso Hoy</span>
+                <span style={{ color: contrastColor }}>{progressPercent}%</span>
+              </div>
+              <div style={{ ...S.progressBar, background: isExpiringSoon ? 'rgba(0,0,0,0.2)' : '#1e293b' }}>
+                <div style={{ ...S.progressFill, background: isExpiringSoon ? '#ffffff' : 'linear-gradient(90deg, #f59e0b, #a8cc00)', width: `${progressPercent}%` }} />
+              </div>
+              <span style={{ ...S.progressText, color: isExpiringSoon ? 'rgba(255,255,255,0.7)' : '#666' }}>{completedCount} de {dayLogs.length} completados</span>
             </div>
           </div>
         </div>
