@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Dumbbell, Shield, User, Code2, FolderTree, Database,
-  RefreshCw, Building2, LogOut, LogIn, Globe2, Activity, Menu, X, ChevronRight, Check
+  RefreshCw, Building2, LogOut, LogIn, Globe2, Activity, Menu, X, ChevronRight, Check, Apple
 } from 'lucide-react';
 import { Profile, UserRole, GymTenant } from '../types';
 import { dataService } from '../services/dataService';
@@ -565,6 +565,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             icon={currentRole === 'alumno' ? Dumbbell : User}
             label={currentRole === 'alumno' ? 'Mi Entrenamiento' : 'Coach & Alumnos'}
             iconColor="rgba(245,158,11,0.6)"
+          />
+          <NavButton
+            active={currentTab === 'diet'}
+            onClick={() => handleNavClick('diet')}
+            icon={Apple}
+            label="Dieta y Nutrición"
+            iconColor="rgba(34,197,94,0.7)"
           />
           {currentRole === 'alumno' && (
             <NavButton

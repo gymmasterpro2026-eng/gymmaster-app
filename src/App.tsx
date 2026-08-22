@@ -17,6 +17,7 @@ import { RunningTrainer } from './components/RunningTrainer';
 import { FolderStructureViewer } from './components/FolderStructureViewer';
 import { GymGeneratorModal } from './components/GymGeneratorModal';
 import { LandingPage } from './components/LandingPage';
+import { DietPlanner } from './components/DietPlanner';
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('alumno');
@@ -216,6 +217,8 @@ export default function App() {
         {currentTab === 'import' && <ImportScriptViewer />}
 
         {currentTab === 'structure' && <FolderStructureViewer />}
+
+        {currentTab === 'diet' && <DietPlanner />}
           </>
           )}
       </main>
