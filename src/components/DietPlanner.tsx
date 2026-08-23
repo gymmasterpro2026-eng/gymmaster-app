@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Apple, Activity, Scale, Ruler, Calendar, Check, Save, ChevronDown, ChevronUp } from 'lucide-react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import html2pdf from 'html2pdf.js';
 
 export const DietPlanner: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'calculator' | 'diet'>('calculator');
@@ -125,7 +124,13 @@ export const DietPlanner: React.FC = () => {
         { name: 'Piña / Ananá', cat: 'fruta', kcal: 50, p: 0.5, c: 13.1, f: 0.1, fib: 1.4, warnings: [] },
         { name: 'Sandía', cat: 'fruta', kcal: 30, p: 0.6, c: 7.6, f: 0.2, fib: 0.4, warnings: [] },
         { name: 'Melón', cat: 'fruta', kcal: 34, p: 0.8, c: 8.2, f: 0.2, fib: 0.9, warnings: [] },
-        { name: 'Uvas frescas', cat: 'fruta', kcal: 69, p: 0.7, c: 18.1, f: 0.2, fib: 0.9, warnings: [] }
+        { name: 'Uvas frescas', cat: 'fruta', kcal: 69, p: 0.7, c: 18.1, f: 0.2, fib: 0.9, warnings: [] },
+        { name: 'Mango', cat: 'fruta', kcal: 60, p: 0.8, c: 15, f: 0.4, fib: 1.6, warnings: [] },
+        { name: 'Guayaba', cat: 'fruta', kcal: 68, p: 2.6, c: 14.3, f: 1, fib: 5.4, warnings: [] },
+        { name: 'Maracuyá / Mburucuyá', cat: 'fruta', kcal: 97, p: 2.2, c: 23.4, f: 0.7, fib: 10.4, warnings: [] },
+        { name: 'Pera (con piel)', cat: 'fruta', kcal: 57, p: 0.4, c: 15.2, f: 0.1, fib: 3.1, warnings: [] },
+        { name: 'Durazno / Melocotón', cat: 'fruta', kcal: 39, p: 0.9, c: 9.5, f: 0.3, fib: 1.5, warnings: [] },
+        { name: 'Ciruela', cat: 'fruta', kcal: 46, p: 0.7, c: 11.4, f: 0.3, fib: 1.4, warnings: [] }
       ]
     },
     {
@@ -332,10 +337,20 @@ export const DietPlanner: React.FC = () => {
           
           let grams = Math.round((targetMacro / food[type]) * 100);
           
+          // Límite Calórico Dinámico: Evitar excesos absurdos por cuadrar un solo macro
+          let maxKcal = targetCalories * 0.35; // Máx 35% de las kcal diarias para un solo alimento
+          if (food.cat === 'snack') maxKcal = targetCalories * 0.12;
+          else if (food.cat === 'carbo') maxKcal = targetCalories * 0.20;
+          else if (food.cat === 'complejo') maxKcal = targetCalories * 0.25;
+          
+          if (food.kcal > 0 && (grams / 100) * food.kcal > maxKcal) {
+             grams = Math.round((maxKcal / food.kcal) * 100);
+          }
+          
           if (food.cat === 'snack') {
               const maxSnack = gender === 'female' ? 40 : 60;
               if (grams > maxSnack) grams = maxSnack;
-          } else if (grams > 350) {
+          } else if (grams > 350 && !isDrink) {
               grams = 350;
           }
 
@@ -372,7 +387,7 @@ export const DietPlanner: React.FC = () => {
         const dayPlan: any = { day: `Día ${i + 1}`, meals: [] };
         
         // --- DESAYUNO --- 
-        const d_p = getFoodCustom(f => f.cat === 'lacteo' || f.name.includes('Huevo') || f.name.includes('Queso'), i);
+        const d_p = getFoodCustom(f => f.cat === 'lacteo' || f.name.includes('Huevo') || (f.cat === 'proteina' && f.name.includes('Queso')), i);
         const d_c = getFoodCustom(f => f.cat === 'fruta' || f.name.includes('Pan') || f.name.includes('Avena') || f.name.includes('Gallet'), i);
         const d_b = getFoodCustom(f => f.cat === 'bebida', i);
         const res_d_p = calc(d_p, macros.protein * p_dist.break_p, 'p');
@@ -446,33 +461,17 @@ export const DietPlanner: React.FC = () => {
     if (!element) return;
     
     setIsExporting(true);
+    await new Promise(r => setTimeout(r, 150)); // Allow React to re-render textareas as divs
     try {
-      const canvas = await html2canvas(element, { 
-        backgroundColor: '#0f172a',
-        scale: 2,
-        logging: false
-      });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      
-      pdf.save('Plan_Nutricional_GymMaster.pdf');
+      const opt = {
+        margin:       10,
+        filename:     'Plan_Nutricional_GymMaster.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, backgroundColor: '#0f172a' },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak:    { mode: ['css', 'legacy'] }
+      };
+      await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error('Error exporting PDF:', error);
       alert('Hubo un error al generar el PDF.');
@@ -770,7 +769,7 @@ export const DietPlanner: React.FC = () => {
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
                 {generatedDiet.days.map((d: any, idx: number) => (
-                  <div key={idx} style={{ background: '#1e293b', borderTop: '4px solid #3b82f6', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div key={idx} style={{ background: '#1e293b', borderTop: '4px solid #3b82f6', borderRadius: '4px', overflow: 'hidden', pageBreakInside: 'avoid' }}>
                     <div style={{ background: '#0f172a', padding: '10px', textAlign: 'center', fontWeight: 900, color: '#3b82f6', textTransform: 'uppercase', fontSize: '12px', borderBottom: '1px solid #1e293b' }}>
                       {d.day}
                     </div>
@@ -778,34 +777,48 @@ export const DietPlanner: React.FC = () => {
                       {d.meals.map((m: any, mIdx: number) => (
                         <div key={mIdx}>
                           <p style={{ margin: 0, fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800 }}>{m.name}</p>
-                          <textarea
-                            value={m.foods}
-                            onChange={(e) => {
-                               const newDiet = { ...generatedDiet };
-                               newDiet.days[idx].meals[mIdx].foods = e.target.value;
-                               setGeneratedDiet(newDiet);
-                            }}
-                            style={{ 
+                          {isExporting ? (
+                            <div style={{
                                margin: '4px 0 0', 
                                fontSize: '12px', 
                                color: '#fff', 
                                lineHeight: '1.4',
-                               background: 'transparent',
-                               border: '1px dashed transparent',
-                               width: '100%',
-                               resize: 'none',
-                               overflow: 'hidden',
-                               fontFamily: 'inherit',
-                               outline: 'none',
                                padding: '2px',
-                               boxSizing: 'border-box'
-                            }}
-                            onFocus={(e) => e.target.style.border = '1px dashed rgba(255,255,255,0.3)'}
-                            onBlur={(e) => e.target.style.border = '1px dashed transparent'}
-                            onMouseEnter={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed rgba(255,255,255,0.1)'; }}
-                            onMouseLeave={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed transparent'; }}
-                            rows={Math.max(3, Math.ceil(m.foods.length / 32))}
-                          />
+                               whiteSpace: 'pre-wrap',
+                               wordBreak: 'break-word'
+                            }}>
+                              {m.foods}
+                            </div>
+                          ) : (
+                            <textarea
+                              value={m.foods}
+                              onChange={(e) => {
+                                 const newDiet = { ...generatedDiet };
+                                 newDiet.days[idx].meals[mIdx].foods = e.target.value;
+                                 setGeneratedDiet(newDiet);
+                              }}
+                              style={{ 
+                                 margin: '4px 0 0', 
+                                 fontSize: '12px', 
+                                 color: '#fff', 
+                                 lineHeight: '1.4',
+                                 background: 'transparent',
+                                 border: '1px dashed transparent',
+                                 width: '100%',
+                                 resize: 'none',
+                                 overflow: 'hidden',
+                                 fontFamily: 'inherit',
+                                 outline: 'none',
+                                 padding: '2px',
+                                 boxSizing: 'border-box'
+                              }}
+                              onFocus={(e) => e.target.style.border = '1px dashed rgba(255,255,255,0.3)'}
+                              onBlur={(e) => e.target.style.border = '1px dashed transparent'}
+                              onMouseEnter={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed rgba(255,255,255,0.1)'; }}
+                              onMouseLeave={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed transparent'; }}
+                              rows={Math.max(3, Math.ceil(m.foods.length / 22))}
+                            />
+                          )}
                         </div>
                       ))}
                     </div>
