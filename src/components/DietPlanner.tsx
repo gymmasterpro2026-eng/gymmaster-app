@@ -297,6 +297,9 @@ export const DietPlanner: React.FC = () => {
         const getSalad = (index: number, grams: number) => {
            let allVeggies = userDB.filter(f => f.cat === 'vegetal');
            if (allVeggies.length === 0) {
+               if (userDB.length > 0) {
+                   return `Vegetales verdes libres a elección (${grams}g)`;
+               }
                allVeggies = globalFoodDB.filter(f => f.cat === 'vegetal' && !isFoodDisabled(f.name));
            }
            if (allVeggies.length <= 1) {
@@ -325,7 +328,7 @@ export const DietPlanner: React.FC = () => {
            return `${saladStr} (${grams}g)`;
         };
 
-        const calc = (food: any, targetMacro: number, type: 'p'|'c'|'f', isDrink = false) => {
+        const calc = (food: any, targetMacro: number, type: 'p'|'c'|'f', isDrink = false, skipCheese = false) => {
           if (!food || food[type] < 2 || isDrink) {
              const snackSize = gender === 'female' ? 30 : 50;
              const mealSize = gender === 'female' ? 150 : 200;
@@ -387,7 +390,7 @@ export const DietPlanner: React.FC = () => {
           const unit = (food.cat === 'bebida' || (food.cat === 'lacteo' && food.name.includes('Leche'))) ? 'ml' : 'g';
           let finalStr = `${food.name} (${grams}${unit})${extraInfo}`;
 
-          if (food.name.includes('Pan ') || food.name.startsWith('Pan')) {
+          if (!skipCheese && (food.name.includes('Pan ') || food.name.startsWith('Pan'))) {
               finalKcal += 80;
               finalStr += ` + 1 feta de Queso/Jamón (30g)`;
           }
@@ -423,13 +426,13 @@ export const DietPlanner: React.FC = () => {
         const res_a_b = calc(a_b, 0, 'c', true);
 
         if (a_p.cat === 'complejo') {
-            const res = calc(a_p, macros.carbs * dist.lunch_c, 'c');
+            const res = calc(a_p, macros.carbs * dist.lunch_c, 'c', false, true);
             const kcal_a = res.kcal + res_a_b.kcal;
             dayPlan.meals.push({ name: 'Almuerzo' + (isIntense ? ' (Pre-Entreno)' : ''), foods: `${res.str} + ${res_a_b.str} | ${kcal_a} kcal` });
             dayPlan.totalDayKcal += kcal_a;
         } else {
-            const res_a_p = calc(a_p, macros.protein * p_dist.lunch_p, 'p');
-            const res_a_c = calc(a_c, macros.carbs * dist.lunch_c, 'c');
+            const res_a_p = calc(a_p, macros.protein * p_dist.lunch_p, 'p', false, true);
+            const res_a_c = calc(a_c, macros.carbs * dist.lunch_c, 'c', false, true);
             const res_a_f = calc(a_f, macros.fats * f_dist.lunch_f, 'f');
             const kcal_a = res_a_p.kcal + res_a_c.kcal + res_a_f.kcal + 30 + res_a_b.kcal;
             dayPlan.meals.push({ name: 'Almuerzo' + (isIntense ? ' (Pre-Entreno)' : ''), foods: `${res_a_p.str} + ${res_a_c.str} + ${res_a_f.str} + ${getSalad(i, gender === 'female' ? 100 : 150)} + ${res_a_b.str} | ${kcal_a} kcal` });
@@ -456,13 +459,13 @@ export const DietPlanner: React.FC = () => {
         const res_c_b = calc(c_b, 0, 'c', true);
         
         if (c_p.cat === 'complejo') {
-            const res = calc(c_p, macros.protein * p_dist.dinner_p, 'p');
+            const res = calc(c_p, macros.protein * p_dist.dinner_p, 'p', false, true);
             const kcal_c = res.kcal + res_c_b.kcal;
             dayPlan.meals.push({ name: 'Cena', foods: `${res.str} + ${res_c_b.str} | ${kcal_c} kcal` });
             dayPlan.totalDayKcal += kcal_c;
         } else {
-            const res_c_p = calc(c_p, macros.protein * p_dist.dinner_p, 'p');
-            const res_c_c = calc(c_c, macros.carbs * dist.dinner_c, 'c');
+            const res_c_p = calc(c_p, macros.protein * p_dist.dinner_p, 'p', false, true);
+            const res_c_c = calc(c_c, macros.carbs * dist.dinner_c, 'c', false, true);
             const res_c_f = calc(c_f, macros.fats * f_dist.dinner_f, 'f');
             const kcal_c = res_c_p.kcal + res_c_c.kcal + res_c_f.kcal + 40 + res_c_b.kcal;
             dayPlan.meals.push({ name: 'Cena', foods: `${res_c_p.str} + ${res_c_c.str} + ${res_c_f.str} + ${getSalad(i + 1, gender === 'female' ? 150 : 200)} + ${res_c_b.str} | ${kcal_c} kcal` });
