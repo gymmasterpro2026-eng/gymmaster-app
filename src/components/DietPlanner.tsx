@@ -383,11 +383,18 @@ export const DietPlanner: React.FC = () => {
               extraInfo += ' (⚠️ Evitar añadir sal extra, el queso ya contiene sodio)';
           }
           
-          const kcal = Math.round((grams / 100) * food.kcal);
-          currentDayKcal += kcal;
-          dailyFiber += (grams / 100) * (food.fib || 0);
+          let finalKcal = Math.round((grams / 100) * food.kcal);
           const unit = (food.cat === 'bebida' || (food.cat === 'lacteo' && food.name.includes('Leche'))) ? 'ml' : 'g';
-          return { g: grams, kcal, str: `${food.name} (${grams}${unit})${extraInfo}` };
+          let finalStr = `${food.name} (${grams}${unit})${extraInfo}`;
+
+          if (food.name.includes('Pan ') || food.name.startsWith('Pan')) {
+              finalKcal += 80;
+              finalStr += ` + 1 feta de Queso/Jamón (30g)`;
+          }
+
+          currentDayKcal += finalKcal;
+          dailyFiber += (grams / 100) * (food.fib || 0);
+          return { g: grams, kcal: finalKcal, str: finalStr };
         };
 
         const dayPlan: any = { day: `Día ${i + 1}`, meals: [], totalDayKcal: 0 };
