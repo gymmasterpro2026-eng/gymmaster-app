@@ -292,6 +292,7 @@ export const DietPlanner: React.FC = () => {
       lowFiberWarning: false,
       days: Array.from({ length: duration }).map((_, i) => {
         let dailyFiber = 0;
+        let currentDayKcal = 0;
 
         const getSalad = (index: number, grams: number) => {
            let allVeggies = userDB.filter(f => f.cat === 'vegetal');
@@ -337,11 +338,15 @@ export const DietPlanner: React.FC = () => {
           
           let grams = Math.round((targetMacro / food[type]) * 100);
           
-          // Límite Calórico Dinámico: Evitar excesos absurdos por cuadrar un solo macro
-          let maxKcal = targetCalories * 0.35; // Máx 35% de las kcal diarias para un solo alimento
-          if (food.cat === 'snack') maxKcal = targetCalories * 0.12;
-          else if (food.cat === 'carbo') maxKcal = targetCalories * 0.20;
+          // Límite Calórico Dinámico (PARCHE PARA NO SOBREPASAR)
+          let maxKcal = targetCalories * 0.25; 
+          if (food.cat === 'snack') maxKcal = targetCalories * 0.10;
+          else if (food.cat === 'carbo') maxKcal = targetCalories * 0.15;
           else if (food.cat === 'complejo') maxKcal = targetCalories * 0.25;
+          
+          let remaining = targetCalories - currentDayKcal;
+          if (remaining < 80) remaining = 80;
+          if (maxKcal > remaining * 0.8) maxKcal = remaining * 0.8;
           
           if (food.kcal > 0 && (grams / 100) * food.kcal > maxKcal) {
              grams = Math.round((maxKcal / food.kcal) * 100);
@@ -379,6 +384,7 @@ export const DietPlanner: React.FC = () => {
           }
           
           const kcal = Math.round((grams / 100) * food.kcal);
+          currentDayKcal += kcal;
           dailyFiber += (grams / 100) * (food.fib || 0);
           const unit = (food.cat === 'bebida' || (food.cat === 'lacteo' && food.name.includes('Leche'))) ? 'ml' : 'g';
           return { g: grams, kcal, str: `${food.name} (${grams}${unit})${extraInfo}` };
