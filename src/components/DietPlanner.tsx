@@ -384,7 +384,7 @@ export const DietPlanner: React.FC = () => {
           return { g: grams, kcal, str: `${food.name} (${grams}${unit})${extraInfo}` };
         };
 
-        const dayPlan: any = { day: `Día ${i + 1}`, meals: [] };
+        const dayPlan: any = { day: `Día ${i + 1}`, meals: [], totalDayKcal: 0 };
         
         // --- DESAYUNO --- 
         const d_p = getFoodCustom(f => f.cat === 'lacteo' || f.name.includes('Huevo') || (f.cat === 'proteina' && f.name.includes('Queso')), i);
@@ -394,10 +394,12 @@ export const DietPlanner: React.FC = () => {
         const res_d_c = calc(d_c, macros.carbs * dist.break_c, 'c');
         const res_d_b = calc(d_b, 0, 'c', true);
         
+        const kcal_d = res_d_p.kcal + res_d_c.kcal + res_d_b.kcal;
         dayPlan.meals.push({
           name: 'Desayuno',
-          foods: `${res_d_p.str} + ${res_d_c.str} + ${res_d_b.str} | ${res_d_p.kcal + res_d_c.kcal + res_d_b.kcal} kcal`
+          foods: `${res_d_p.str} + ${res_d_c.str} + ${res_d_b.str} | ${kcal_d} kcal`
         });
+        dayPlan.totalDayKcal += kcal_d;
 
         // --- ALMUERZO (Harvard Plate) --- 
         const a_p = getFoodCustom(f => (f.cat === 'proteina' && !f.name.includes('Huevo')) || f.cat === 'complejo', i + 1);
@@ -409,12 +411,16 @@ export const DietPlanner: React.FC = () => {
 
         if (a_p.cat === 'complejo') {
             const res = calc(a_p, macros.carbs * dist.lunch_c, 'c');
-            dayPlan.meals.push({ name: 'Almuerzo' + (isIntense ? ' (Pre-Entreno)' : ''), foods: `${res.str} + ${res_a_b.str} | ${res.kcal + res_a_b.kcal} kcal` });
+            const kcal_a = res.kcal + res_a_b.kcal;
+            dayPlan.meals.push({ name: 'Almuerzo' + (isIntense ? ' (Pre-Entreno)' : ''), foods: `${res.str} + ${res_a_b.str} | ${kcal_a} kcal` });
+            dayPlan.totalDayKcal += kcal_a;
         } else {
             const res_a_p = calc(a_p, macros.protein * p_dist.lunch_p, 'p');
             const res_a_c = calc(a_c, macros.carbs * dist.lunch_c, 'c');
             const res_a_f = calc(a_f, macros.fats * f_dist.lunch_f, 'f');
-            dayPlan.meals.push({ name: 'Almuerzo' + (isIntense ? ' (Pre-Entreno)' : ''), foods: `${res_a_p.str} + ${res_a_c.str} + ${res_a_f.str} + ${getSalad(i, gender === 'female' ? 100 : 150)} + ${res_a_b.str} | ${res_a_p.kcal + res_a_c.kcal + res_a_f.kcal + 30 + res_a_b.kcal} kcal` });
+            const kcal_a = res_a_p.kcal + res_a_c.kcal + res_a_f.kcal + 30 + res_a_b.kcal;
+            dayPlan.meals.push({ name: 'Almuerzo' + (isIntense ? ' (Pre-Entreno)' : ''), foods: `${res_a_p.str} + ${res_a_c.str} + ${res_a_f.str} + ${getSalad(i, gender === 'female' ? 100 : 150)} + ${res_a_b.str} | ${kcal_a} kcal` });
+            dayPlan.totalDayKcal += kcal_a;
         }
 
         // --- MERIENDA --- 
@@ -422,10 +428,12 @@ export const DietPlanner: React.FC = () => {
         const sn2 = getFoodCustom(f => f.cat === 'snack' || f.name.includes('Pan'), i + 1, [sn1.name]);
         const r_sn1 = calc(sn1, macros.carbs * dist.snack_c, 'c');
         const r_sn2 = calc(sn2, macros.protein * p_dist.snack_p, 'p');
+        const kcal_s = r_sn1.kcal + r_sn2.kcal;
         dayPlan.meals.push({
           name: 'Merienda' + (isIntense ? ' (Post-Entreno)' : ''),
-          foods: `${r_sn1.str} + ${r_sn2.str} | ${r_sn1.kcal + r_sn2.kcal} kcal`
+          foods: `${r_sn1.str} + ${r_sn2.str} | ${kcal_s} kcal`
         });
+        dayPlan.totalDayKcal += kcal_s;
 
         // --- CENA (Harvard Plate) ---
         const c_p = getFoodCustom(f => (f.cat === 'proteina' && !f.name.includes('Huevo')) || f.cat === 'complejo', i + 2);
@@ -436,12 +444,16 @@ export const DietPlanner: React.FC = () => {
         
         if (c_p.cat === 'complejo') {
             const res = calc(c_p, macros.protein * p_dist.dinner_p, 'p');
-            dayPlan.meals.push({ name: 'Cena', foods: `${res.str} + ${res_c_b.str} | ${res.kcal + res_c_b.kcal} kcal` });
+            const kcal_c = res.kcal + res_c_b.kcal;
+            dayPlan.meals.push({ name: 'Cena', foods: `${res.str} + ${res_c_b.str} | ${kcal_c} kcal` });
+            dayPlan.totalDayKcal += kcal_c;
         } else {
             const res_c_p = calc(c_p, macros.protein * p_dist.dinner_p, 'p');
             const res_c_c = calc(c_c, macros.carbs * dist.dinner_c, 'c');
             const res_c_f = calc(c_f, macros.fats * f_dist.dinner_f, 'f');
-            dayPlan.meals.push({ name: 'Cena', foods: `${res_c_p.str} + ${res_c_c.str} + ${res_c_f.str} + ${getSalad(i + 1, gender === 'female' ? 150 : 200)} + ${res_c_b.str} | ${res_c_p.kcal + res_c_c.kcal + res_c_f.kcal + 40 + res_c_b.kcal} kcal` });
+            const kcal_c = res_c_p.kcal + res_c_c.kcal + res_c_f.kcal + 40 + res_c_b.kcal;
+            dayPlan.meals.push({ name: 'Cena', foods: `${res_c_p.str} + ${res_c_c.str} + ${res_c_f.str} + ${getSalad(i + 1, gender === 'female' ? 150 : 200)} + ${res_c_b.str} | ${kcal_c} kcal` });
+            dayPlan.totalDayKcal += kcal_c;
         }
 
         totalDietFiber += dailyFiber;
@@ -821,6 +833,20 @@ export const DietPlanner: React.FC = () => {
                           )}
                         </div>
                       ))}
+                      {d.totalDayKcal && (
+                        <div style={{ 
+                           marginTop: '8px', 
+                           paddingTop: '12px', 
+                           borderTop: '1px solid #334155', 
+                           textAlign: 'center', 
+                           color: '#f59e0b', 
+                           fontWeight: 900,
+                           fontSize: '11px',
+                           textTransform: 'uppercase'
+                        }}>
+                           Total Día: {d.totalDayKcal} kcal
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
