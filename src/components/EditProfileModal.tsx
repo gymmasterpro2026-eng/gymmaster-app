@@ -7,6 +7,7 @@ interface EditProfileModalProps {
   profile: Profile;
   onClose: () => void;
   onProfileUpdated: () => void;
+  readOnlyPlan?: boolean;
 }
 
 const AVATAR_PRESETS = [
@@ -18,7 +19,7 @@ const AVATAR_PRESETS = [
   'https://api.dicebear.com/7.x/pixel-art/svg?seed=AnimeHero2&backgroundColor=c084fc',
 ];
 
-export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, onProfileUpdated }) => {
+export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onClose, onProfileUpdated, readOnlyPlan = false }) => {
   const [fullName, setFullName] = useState(profile.full_name || '');
   const [email, setEmail] = useState(profile.email || '');
   const [password, setPassword] = useState(profile.password || '');
@@ -386,16 +387,18 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                 value={planStart.slice(0, 16)}
                 onChange={(e) => setPlanStart(new Date(e.target.value).toISOString())}
                 required
+                disabled={readOnlyPlan}
                 style={{
                   flex: 1,
-                  background: '#020617',
-                  color: '#ffffff',
+                  background: readOnlyPlan ? '#1e293b' : '#020617',
+                  color: readOnlyPlan ? '#94a3b8' : '#ffffff',
                   fontSize: '13px',
                   fontWeight: 700,
                   padding: '10px 12px',
                   border: '1px solid #334155',
                   outline: 'none',
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  cursor: readOnlyPlan ? 'not-allowed' : 'text'
                 }}
               />
               <input
@@ -403,16 +406,18 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                 value={planExpiry.slice(0, 16)}
                 onChange={(e) => setPlanExpiry(new Date(e.target.value).toISOString())}
                 required
+                disabled={readOnlyPlan}
                 style={{
                   flex: 1,
-                  background: '#020617',
-                  color: '#ffffff',
+                  background: readOnlyPlan ? '#1e293b' : '#020617',
+                  color: readOnlyPlan ? '#94a3b8' : '#ffffff',
                   fontSize: '13px',
                   fontWeight: 700,
                   padding: '10px 12px',
                   border: '1px solid #334155',
                   outline: 'none',
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  cursor: readOnlyPlan ? 'not-allowed' : 'text'
                 }}
               />
             </div>

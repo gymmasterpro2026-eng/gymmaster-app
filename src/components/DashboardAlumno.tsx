@@ -623,7 +623,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
         </div>
       )}
 
-      {showEditProfileModal && <EditProfileModal profile={alumno} onClose={() => setShowEditProfileModal(false)} onProfileUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} />}
+      {showEditProfileModal && <EditProfileModal profile={alumno} onClose={() => setShowEditProfileModal(false)} onProfileUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} readOnlyPlan={true} />}
       {showEditRoutineModal && activeRoutine && <EditRoutineModal routine={activeRoutine} exercises={dataService.getExercises()} onClose={() => setShowEditRoutineModal(false)} onRoutineUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} />}
     </div>
   );
