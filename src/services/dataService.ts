@@ -730,7 +730,7 @@ class DataService {
     return { success: true, message: 'Peso cargado en tiempo real correctamente' };
   }
 
-  toggleSetCompleted(logId: string, setIndex: number) {
+    toggleSetCompleted(logId: string, setIndex: number) {
     const log = this.logs.find((l) => l.id === logId);
     if (log) {
       if (!log.completed_series) {
@@ -747,6 +747,20 @@ class DataService {
             .eq('id', logId);
         });
       }
+    }
+  }
+
+  deleteRoutineLog(logId: string) {
+    const index = this.logs.findIndex((l) => l.id === logId);
+    if (index !== -1) {
+      this.logs.splice(index, 1);
+      this.persist();
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase.from('gym_routine_logs').delete().eq('id', logId);
+        });
+      }
+      this.notify();
     }
   }
 }

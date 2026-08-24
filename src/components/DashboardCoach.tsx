@@ -7,6 +7,7 @@ import { Profile, Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { RoutineBuilder } from './RoutineBuilder';
 import { EditProfileModal } from './EditProfileModal';
+import { fixImageUrl } from '../utils/imageUrl';
 
 interface DashboardCoachProps {
   coach: Profile;
@@ -22,6 +23,26 @@ const AVATAR_PRESETS = [
   'https://api.dicebear.com/7.x/big-smile/svg?seed=SimpsonCoach&backgroundColor=f59e0b',
   'https://api.dicebear.com/7.x/pixel-art/svg?seed=AnimeHero2&backgroundColor=c084fc',
 ];
+
+const getWeekDayColor = (semana: number, dia: string) => {
+  const distinctHues = [
+    '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', // Reds to Limes
+    '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', // Greens to Sky Blues
+    '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', // Blues to Fuchsias
+    '#ec4899', '#f43f5e', '#fb7185', '#34d399', '#2dd4bf', // Pinks to Emeralds/Teals
+    '#38bdf8', '#818cf8', '#c084fc', '#e879f9', '#f472b6', // Light Blues to Light Pinks
+    '#fbbf24', '#a3e635', '#4ade80', '#60a5fa', '#f87171'  // Light Ambers to Light Reds
+  ];
+  
+  const dayOffsets: Record<string, number> = {
+    Lunes: 0, Martes: 1, Miercoles: 2, Miércoles: 2,
+    Jueves: 3, Viernes: 4, Sabado: 5, Sábado: 5, Domingo: 6
+  };
+  
+  // Avanzamos 7 colores por cada semana para no repetir la paleta hasta la 5ta semana
+  const index = ((semana - 1) * 7) + (dayOffsets[dia] || 0);
+  return distinctHues[index % distinctHues.length];
+};
 
 const S = {
   container: { padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif" },
@@ -83,6 +104,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [showAddAlumnoModal, setShowAddAlumnoModal] = useState<boolean>(false);
   const [selectedAlumnoForDetails, setSelectedAlumnoForDetails] = useState<string | null>(null);
   const [editingProfileTarget, setEditingProfileTarget] = useState<Profile | null>(null);
+  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
   const handleDeleteAlumno = async (alumno: Profile) => {
     if (window.confirm(`⚠️ ADVERTENCIA: ¿Estás seguro de eliminar a "${alumno.full_name}"?\n\nEsta acción es IRREVERSIBLE. Se borrarán todas sus rutinas, su historial de ejercicios y su acceso de Supabase para siempre.`)) {
@@ -189,6 +211,14 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
   return (
     <div style={S.container}>
+      {/* Fullscreen Image Overlay */}
+      {fullscreenImage && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }} onClick={() => setFullscreenImage(null)}>
+          <button style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '0', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>Cerrar ✕</button>
+          <img src={fullscreenImage} alt="Fullscreen" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#fff', padding: '16px', borderRadius: '0' }} />
+        </div>
+      )}
+
       {/* Coach Header Banner */}
       <div style={S.headerBanner}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -600,22 +630,68 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                           <th style={{ padding: '12px 16px', textAlign: 'center' }}>Meta (KG)</th>
                           <th style={{ padding: '12px 16px', textAlign: 'center' }}>Logro (KG)</th>
                           <th style={{ padding: '12px 16px', textAlign: 'right' }}>Actualizado</th>
+                          <th style={{ padding: '12px 16px', textAlign: 'center' }}>Acciones</th>
                         </tr>
                       </thead>
                       <tbody>
                         {routine.logs.map((log) => (
                           <tr key={log.id} style={{ borderBottom: '1px solid #1e293b' }}>
-                            <td style={{ padding: '12px 16px', fontWeight: 900, color: '#f59e0b' }}>#{log.orden}</td>
-                            <td style={{ padding: '12px 16px', fontWeight: 800, color: '#ffffff' }}>{log.exercise?.name}</td>
+                            <td style={{ padding: '12px 16px' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                <span style={{ fontWeight: 900, color: '#ffffff', fontSize: '14px' }}>#{log.orden}</span>
+                                <div style={{ display: 'flex', gap: '4px', alignItems: 'baseline' }}>
+                                  <span style={{ fontSize: '13px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 900, textTransform: 'uppercase' }}>S{log.semana}</span>
+                                  <span style={{ fontSize: '10px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 800, textTransform: 'uppercase' }}>{log.dia}</span>
+                                </div>
+                              </div>
+                            </td>
+                            <td style={{ padding: '12px 16px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              {log.exercise?.image_urls?.[0] && (
+                                <img
+                                  src={fixImageUrl(log.exercise.image_urls[0])}
+                                  alt="ejercicio"
+                                  onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))}
+                                  style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#fff', borderRadius: '4px', padding: '2px', flexShrink: 0, cursor: 'pointer' }}
+                                />
+                              )}
+                              <span>{log.exercise?.name}</span>
+                            </td>
                             <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: 'monospace' }}>{log.series} × {log.repeticiones}</td>
                             <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: 'monospace', color: '#64748b' }}>{log.peso_objetivo} KG</td>
                             <td style={{ padding: '12px 16px', textAlign: 'center' }}>
-                              <span style={{ fontFamily: 'monospace', fontWeight: 900, fontSize: '12px', padding: '2px 8px', background: log.peso_real >= log.peso_objetivo ? 'rgba(16,185,129,0.15)' : '#1e293b', color: log.peso_real >= log.peso_objetivo ? '#34d399' : '#cbd5e1', border: `1px solid ${log.peso_real >= log.peso_objetivo ? '#34d399' : '#334155'}` }}>
+                              <span
+                                onClick={() => {
+                                  const newVal = window.prompt(`Actualizar peso logrado para ${log.exercise?.name} (KG):`, log.peso_real.toString());
+                                  if (newVal !== null) {
+                                    const parsed = parseFloat(newVal);
+                                    if (!isNaN(parsed)) {
+                                      dataService.updatePesoReal(log.id, parsed, routine.alumno_id);
+                                      onRefreshData();
+                                    }
+                                  }
+                                }}
+                                title="Hacer clic para editar el peso"
+                                style={{ cursor: 'pointer', fontFamily: 'monospace', fontWeight: 900, fontSize: '12px', padding: '2px 8px', background: log.peso_real >= log.peso_objetivo ? 'rgba(16,185,129,0.15)' : '#1e293b', color: log.peso_real >= log.peso_objetivo ? '#34d399' : '#cbd5e1', border: `1px solid ${log.peso_real >= log.peso_objetivo ? '#34d399' : '#334155'}` }}
+                              >
                                 {log.peso_real} KG
                               </span>
                             </td>
                             <td style={{ padding: '12px 16px', textAlign: 'right', fontFamily: 'monospace', fontSize: '10px', color: '#64748b' }}>
                               {new Date(log.fecha_ultimo_cambio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </td>
+                            <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+                              <button
+                                onClick={() => {
+                                  if (window.confirm(`¿Estás seguro de eliminar "${log.exercise?.name}" de esta rutina?`)) {
+                                    dataService.deleteRoutineLog(log.id);
+                                    onRefreshData();
+                                  }
+                                }}
+                                style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', padding: '6px', borderRadius: '4px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                                title="Eliminar ejercicio de la rutina"
+                              >
+                                <Trash2 size={14} />
+                              </button>
                             </td>
                           </tr>
                         ))}
