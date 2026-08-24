@@ -29,8 +29,9 @@ interface NavButtonProps {
   iconColor?: string;
 }
 
-function NavButton({ active, onClick, icon: Icon, label, iconColor = 'rgba(255,255,255,0.5)' }: NavButtonProps) {
+function NavButton({ active, onClick, icon: Icon, label, iconColor = '#64748b' }: NavButtonProps) {
   const [hovered, setHovered] = useState(false);
+  const isActiveOrHovered = active || hovered;
 
   return (
     <button
@@ -43,29 +44,30 @@ function NavButton({ active, onClick, icon: Icon, label, iconColor = 'rgba(255,2
         justifyContent: 'space-between',
         width: '100%',
         padding: '10px 12px',
-        borderRadius: '0',
+        borderRadius: '8px',
         border: 'none',
         cursor: 'pointer',
         fontSize: '13px',
-        fontWeight: 600,
+        fontWeight: 700,
         fontFamily: 'inherit',
         transition: 'all 0.2s ease',
-        background: active ? '#0f172a' : hovered ? '#94a3b8' : 'transparent',
-        color: active ? '#fff' : '#0f172a',
+        background: isActiveOrHovered ? '#475569' : '#f1f5f9',
+        color: isActiveOrHovered ? '#ffffff' : '#0f172a',
+        marginBottom: '4px',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <Icon
           size={15}
-          style={{ color: active ? '#fff' : iconColor, flexShrink: 0 }}
+          style={{ color: isActiveOrHovered ? '#ffffff' : iconColor, flexShrink: 0 }}
         />
         <span>{label}</span>
       </div>
       <ChevronRight
         size={12}
         style={{
-          color: active ? '#fff' : '#0f172a',
-          opacity: active || hovered ? 1 : 0,
+          color: isActiveOrHovered ? '#ffffff' : '#0f172a',
+          opacity: isActiveOrHovered ? 1 : 0.4,
           transform: active ? 'translateX(2px)' : 'none',
           transition: 'all 0.2s',
         }}
@@ -180,8 +182,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
-      background: '#cbd5e1',
-      borderRight: '1px solid #94a3b8',
+      background: 'rgba(15, 23, 42, 0.95)',
+      backdropFilter: 'blur(10px)',
+      borderRight: '1px solid rgba(255,255,255,0.1)',
       position: 'relative',
       zIndex: 50,
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
@@ -221,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     logoTitle: {
       fontSize: '18px',
       fontWeight: 900,
-      color: '#0f172a',
+      color: '#ffffff',
       margin: 0,
       letterSpacing: '-0.5px',
       lineHeight: 1.1,
@@ -585,6 +588,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {currentRole === 'coach' && (
             <>
               <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" iconColor="rgba(96,165,250,0.7)" />
+              <NavButton active={currentTab === 'alumnos-cuotas'} onClick={() => handleNavClick('alumnos-cuotas')} icon={User} label="Alumnos Cuotas" iconColor="rgba(239,68,68,0.7)" />
               {activeGym?.id === 'gym-titan-001' && (
                 <>
                   <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" iconColor="rgba(251,191,36,0.7)" />

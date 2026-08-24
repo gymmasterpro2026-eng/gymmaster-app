@@ -18,6 +18,7 @@ import { FolderStructureViewer } from './components/FolderStructureViewer';
 import { GymGeneratorModal } from './components/GymGeneratorModal';
 import { LandingPage } from './components/LandingPage';
 import { DietPlanner } from './components/DietPlanner';
+import { AlumnosCuotas } from './components/AlumnosCuotas';
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('alumno');
@@ -135,7 +136,18 @@ export default function App() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', width: '100%', overflow: 'hidden', background: '#cbd5e1', position: 'relative', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'row', 
+      height: '100vh', 
+      width: '100%', 
+      overflow: 'hidden', 
+      background: `linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)), url('/gymmaster-app/gym_bg.jpg')`, 
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      position: 'relative', 
+      fontFamily: "'Inter', system-ui, -apple-system, sans-serif" 
+    }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'); * { box-sizing: border-box; margin: 0; }`}</style>
       
       <Navbar
@@ -208,6 +220,10 @@ export default function App() {
 
         {currentTab === 'catalog' && (
           <ExerciseCatalog exercises={exercises} onRefreshData={refreshData} initialSearchQuery={initialCatalogSearch} />
+        )}
+
+        {currentTab === 'alumnos-cuotas' && (
+          <AlumnosCuotas alumnos={alumnosList} />
         )}
 
         {currentTab === 'running' && <RunningTrainer />}
