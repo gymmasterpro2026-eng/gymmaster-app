@@ -421,7 +421,7 @@ export const DietPlanner: React.FC = () => {
         const a_p = getFoodCustom(f => (f.cat === 'proteina' && !f.name.toLowerCase().includes('huevo')) || f.cat === 'complejo', i + 1);
         const a_c = getFoodCustom(f => f.cat === 'carbo' && !f.name.includes('Pan') && !f.name.includes('Gallet'), i + 1);
         const a_f = getFoodCustom(f => f.cat === 'grasa' || f.cat === 'snack', i);
-        const a_b = getFoodCustom(f => f.cat === 'bebida', i + 1);
+        const a_b = getFoodCustom(f => f.cat === 'bebida' && f.name !== 'Agua mineral' && !f.name.includes('Licuado'), i + 1);
         
         const res_a_b = calc(a_b, 0, 'c', true);
 
@@ -455,7 +455,7 @@ export const DietPlanner: React.FC = () => {
         const c_p = getFoodCustom(f => (f.cat === 'proteina' && !f.name.toLowerCase().includes('huevo')) || f.cat === 'complejo', i + 2);
         const c_c = getFoodCustom(f => f.cat === 'carbo', i + 2);
         const c_f = getFoodCustom(f => f.cat === 'grasa' || f.cat === 'snack', i + 1);
-        const c_b = getFoodCustom(f => f.cat === 'bebida', i + 2);
+        const c_b = getFoodCustom(f => f.cat === 'bebida' && f.name !== 'Agua mineral' && !f.name.includes('Licuado'), i + 2);
         const res_c_b = calc(c_b, 0, 'c', true);
         
         if (c_p.cat === 'complejo') {
