@@ -75,15 +75,15 @@ const S = {
       padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
     };
     return {
-      background: selected ? '#1e293b' : '#0f172a',
-      border: `1px solid ${selected ? '#f59e0b' : '#1e293b'}`,
+      background: selected ? '#64748b' : '#475569',
+      border: `1px solid ${selected ? '#f59e0b' : '#64748b'}`,
       padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
     };
   },
   alumnoAvatar: { width: '60px', height: '60px', minWidth: '60px', minHeight: '60px', objectFit: 'cover' as const, border: '2px solid #f59e0b', flexShrink: 0 },
   
   inputBox: { background: '#020617', border: '1px solid #1e293b', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' },
-  inputLbl: { fontSize: '10px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' as const },
+  inputLbl: { fontSize: '10px', fontWeight: 800, color: '#ffffff', textTransform: 'uppercase' as const },
   input: { width: '100%', background: '#0f172a', color: '#ffffff', fontSize: '12px', fontWeight: 700, padding: '8px 12px', border: '1px solid #334155', outline: 'none', boxSizing: 'border-box' as const },
   
   modalOverlay: { position: 'fixed' as const, inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' },
@@ -440,15 +440,15 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                           <Edit2 size={12} />
                         </button>
                       </div>
-                      <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#94a3b8' }}>{alumno.email}</p>
+                      <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#ffffff' }}>{alumno.email}</p>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', padding: '6px 12px', borderRadius: '4px', border: `1px solid ${urgency === 'critical' ? 'rgba(239,68,68,0.4)' : urgency === 'warning' ? 'rgba(245,158,11,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '80px', marginRight: '8px' }}>
-                      <span style={{ fontSize: '8px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#64748b', textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.05em', marginBottom: '4px' }}>Vencimiento</span>
+                      <span style={{ fontSize: '8px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', fontWeight: 800, letterSpacing: '0.5px' }}>VENCIMIENTO</span>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
-                        <span style={{ fontSize: '20px', fontWeight: 900, color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#f8fafc', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
-                        <span style={{ fontSize: '9px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#64748b', fontWeight: 800 }}>días</span>
+                        <span style={{ fontSize: '20px', fontWeight: 900, color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
+                        <span style={{ fontSize: '9px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', fontWeight: 800 }}>días</span>
                       </div>
                     </div>
                     <div style={{
@@ -537,13 +537,13 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     </div>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px' }}>
-                        <span style={{ color: '#64748b' }}>Usuario:</span>
-                        <span style={{ color: '#ffffff', fontWeight: 800, fontFamily: 'monospace' }}>{alumno.email}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700 }}>
+                        <span style={{ color: '#ffffff' }}>Usuario:</span>
+                        <span style={{ color: '#ffffff' }}>{alumno.email}</span>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px' }}>
-                        <span style={{ color: '#64748b' }}>Clave:</span>
-                        <span style={{ color: '#f59e0b', fontWeight: 800, fontFamily: 'monospace' }}>{alumno.password ? '••••••••' : 'Sin asignar'}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700 }}>
+                        <span style={{ color: '#ffffff' }}>Clave:</span>
+                        <span style={{ color: '#f59e0b' }}>{alumno.password ? '••••••••' : 'Sin asignar'}</span>
                       </div>
                     </div>
                   )}
@@ -553,15 +553,17 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 <div>
                   <span style={S.inputLbl}>Rutina Activa</span>
                   {activeRoutine ? (
-                    <div style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', padding: '10px 12px', marginTop: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '12px', fontWeight: 900, color: '#f59e0b' }}>{activeRoutine.nombre_rutina}</span>
-                        <span style={{ fontSize: '10px', color: '#94a3b8' }}>{activeRoutine.logs.length} ejercicios asignados</span>
+                    <div style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', padding: '10px 12px', marginTop: '4px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div>
+                          <h5 style={{ margin: '0 0 6px', fontSize: '13px', color: '#f59e0b', fontWeight: 800 }}>{activeRoutine.nombre_rutina}</h5>
+                          <span style={{ fontSize: '10px', color: '#ffffff' }}>{activeRoutine.logs.length} ejercicios asignados</span>
+                        </div>
+                        <span style={{ fontSize: '9px', fontWeight: 900, color: '#34d399', background: 'rgba(16,185,129,0.15)', padding: '2px 6px' }}>EN SALA</span>
                       </div>
-                      <span style={{ fontSize: '9px', fontWeight: 900, color: '#34d399', background: 'rgba(16,185,129,0.15)', padding: '2px 6px' }}>EN SALA</span>
                     </div>
                   ) : (
-                    <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '10px', marginTop: '4px', textAlign: 'center', fontSize: '11px', color: '#64748b' }}>
+                    <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '10px', marginTop: '4px', textAlign: 'center', fontSize: '12px', color: '#ffffff' }}>
                       Sin rutina activa asignada
                     </div>
                   )}
