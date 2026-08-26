@@ -471,7 +471,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', padding: '6px 12px', borderRadius: '4px', border: `1px solid ${urgency === 'critical' ? 'rgba(239,68,68,0.4)' : urgency === 'warning' ? 'rgba(245,158,11,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '80px', marginRight: '8px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#020617', padding: '6px 12px', borderRadius: '4px', border: `1px solid ${urgency === 'critical' ? 'rgba(239,68,68,0.4)' : urgency === 'warning' ? 'rgba(245,158,11,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '80px', marginRight: '8px' }}>
                       <span style={{ fontSize: '8px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', fontWeight: 800, letterSpacing: '0.5px' }}>VENCIMIENTO</span>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
                         <span style={{ fontSize: '20px', fontWeight: 900, color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
