@@ -472,17 +472,25 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             type="button" 
             onClick={onClose} 
             style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#94a3b8',
+              background: 'rgba(245,158,11,0.12)',
+              border: '1px solid rgba(245,158,11,0.4)',
+              color: '#f59e0b',
               cursor: 'pointer',
-              padding: '6px',
+              padding: '6px 10px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              borderRadius: '4px',
+              fontSize: '22px',
+              fontWeight: 700,
+              lineHeight: 1,
+              transition: 'background 0.2s'
             }}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.28)')}
+            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.12)')}
+            title="Volver"
           >
-            <X size={20} />
+            ‹
           </button>
         </div>
 
