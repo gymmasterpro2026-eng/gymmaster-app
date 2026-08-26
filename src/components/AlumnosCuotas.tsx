@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Profile } from '../types';
+import { RotateCcw } from 'lucide-react';
+import { dataService } from '../services/dataService';
 
 interface AlumnosCuotasProps {
   alumnos: Profile[];
+  onRefreshData?: () => void;
 }
 
-export const AlumnosCuotas: React.FC<AlumnosCuotasProps> = ({ alumnos }) => {
+export const AlumnosCuotas: React.FC<AlumnosCuotasProps> = ({ alumnos, onRefreshData }) => {
+  const [renewDays, setRenewDays] = useState<Record<string, number>>({});
+  
+  const handleRenewPlan = (alumnoId: string, daysToAdd: number) => {
+    const newDate = new Date(Date.now() + daysToAdd * 86400000).toISOString();
+    dataService.updatePlanValidity(alumnoId, newDate);
+    if (onRefreshData) onRefreshData();
+  };
   const now = new Date();
   
   // Calculate days remaining
@@ -63,9 +73,34 @@ export const AlumnosCuotas: React.FC<AlumnosCuotasProps> = ({ alumnos }) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '14px', color: textColor }}>
           <span><strong style={{ opacity: 0.8 }}>Email:</strong> {alumno.email}</span>
           <span><strong style={{ opacity: 0.8 }}>Teléfono:</strong> {alumno.phone || 'N/A'}</span>
-          <span style={{ fontWeight: 800, marginTop: '4px' }}>
-            Vencimiento: {new Date(alumno.plan_active_until).toLocaleDateString()}
-          </span>
+        </div>
+
+        {/* Plan Validity Box */}
+        <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px', borderRadius: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <span style={{ fontSize: '10px', fontWeight: 800, color: '#ffffff', textTransform: 'uppercase' }}>Vencimiento Plan</span>
+              <span style={{ display: 'block', fontSize: '13px', fontWeight: 900, color: !isExpired ? '#34d399' : '#f87171', fontFamily: 'monospace' }}>
+                {new Date(alumno.plan_active_until).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)' }}>
+              <input
+                type="number"
+                min="1"
+                value={renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id]}
+                onChange={(e) => setRenewDays(prev => ({ ...prev, [alumno.id]: parseInt(e.target.value) || 0 }))}
+                style={{ width: '60px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '18px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
+                title="Días a sumar"
+              />
+              <button onClick={() => {
+                const addDays = renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id];
+                if (addDays > 0) handleRenewPlan(alumno.id, addDays);
+              }} style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <RotateCcw size={12} /> Agregar
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );

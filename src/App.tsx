@@ -223,7 +223,7 @@ export default function App() {
         )}
 
         {currentTab === 'alumnos-cuotas' && (
-          <AlumnosCuotas alumnos={alumnosList} />
+          <AlumnosCuotas alumnos={alumnosList} onRefreshData={refreshData} />
         )}
 
         {currentTab === 'running' && <RunningTrainer />}

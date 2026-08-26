@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
-  Users, UserPlus, Dumbbell, Shield, Plus, CheckCircle2, AlertCircle, ChevronRight, RotateCcw, Edit2, Save, X, Upload, Trash2
+  Users, UserPlus, Dumbbell, Shield, Plus, CheckCircle2, AlertCircle, ChevronRight, RotateCcw, Edit2, Save, X, Upload, Trash2, Search
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Profile, Exercise, RoutineWithLogs } from '../types';
@@ -132,8 +132,13 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   );
   const [newAvatarUrl, setNewAvatarUrl] = useState<string>(AVATAR_PRESETS[0]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const alumnos = coach.id ? dataService.getAlumnosByCoach(coach.id) : [];
+  const filteredAlumnos = alumnos.filter(a => 
+    a.full_name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    a.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -398,10 +403,32 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             <Users size={20} color="#f59e0b" />
             Alumnos Asignados <span style={{ color: '#64748b', fontSize: '14px' }}>({alumnos.length})</span>
           </h2>
+          <div style={{ position: 'relative', width: '300px' }}>
+            <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', pointerEvents: 'none' }}>
+              <Search size={16} />
+            </div>
+            <input 
+              type="text" 
+              placeholder="Buscar por nombre o email..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                background: '#0f172a',
+                border: '1px solid #1e293b',
+                color: '#ffffff',
+                padding: '10px 10px 10px 36px',
+                borderRadius: '4px',
+                fontSize: '13px',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+            />
+          </div>
         </div>
 
         <div style={S.grid}>
-          {alumnos.map((alumno) => {
+          {filteredAlumnos.length > 0 ? filteredAlumnos.map((alumno) => {
             const isPlanActive = new Date(alumno.plan_active_until) >= new Date();
             const activeRoutine = dataService.getActiveRoutineForAlumno(alumno.id);
             const isSelected = selectedAlumnoForDetails === alumno.id;
@@ -587,7 +614,11 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 </div>
               </div>
             );
-          })}
+          }) : (
+            <div style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', background: '#020617', border: '1px solid #1e293b', borderRadius: '4px', color: '#94a3b8' }}>
+              No se encontraron alumnos que coincidan con "{searchQuery}"
+            </div>
+          )}
         </div>
       </div>
 
