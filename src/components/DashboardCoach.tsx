@@ -165,9 +165,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
       (p) => p.email.trim().toLowerCase() === emailNorm
     );
     if (duplicate) {
-      setCreateAlumnoError(
-        `⚠️ El usuario "${newEmail}" ya existe (${duplicate.full_name}). Elegí un nombre de usuario diferente.`
-      );
+      setCreateAlumnoError(`⚠️ Usuario no disponible, ya en uso`);
       return;
     }
     // ─────────────────────────────────────────────────────────────────────

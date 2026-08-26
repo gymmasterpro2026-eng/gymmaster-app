@@ -406,7 +406,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                   border: '1px solid #334155',
                   outline: 'none',
                   boxSizing: 'border-box',
-                  cursor: readOnlyPlan ? 'not-allowed' : 'text'
+                  cursor: readOnlyPlan ? 'not-allowed' : 'text',
+                  colorScheme: 'dark'
                 }}
               />
               <input
@@ -425,7 +426,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                   border: '1px solid #334155',
                   outline: 'none',
                   boxSizing: 'border-box',
-                  cursor: readOnlyPlan ? 'not-allowed' : 'text'
+                  cursor: readOnlyPlan ? 'not-allowed' : 'text',
+                  colorScheme: 'dark'
                 }}
               />
             </div>

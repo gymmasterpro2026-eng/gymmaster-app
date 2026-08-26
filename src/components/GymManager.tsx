@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Sparkles, ArrowRight, Shield, Globe2, Trash2, AlertTriangle } from 'lucide-react';
+import { Building2, Sparkles, ArrowRight, Shield, Globe2, Trash2, AlertTriangle, Eye, EyeOff, RotateCcw } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { supabase } from '../services/supabaseClient';
 import { GymTenant, Profile } from '../types';
@@ -71,6 +71,7 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
   const [adminPassword, setAdminPassword] = useState('');
   const [createError, setCreateError] = useState('');
   const [createSuccess, setCreateSuccess] = useState('');
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
 
   const handleCreateGym = (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,7 +136,12 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
               </div>
               <div style={{ ...S.fieldGroup, gridColumn: 'span 2' }}>
                 <label style={S.label}>Contraseña Temporal</label>
-                <input style={S.input} type="password" value={adminPassword} onChange={e => setAdminPassword(e.target.value)} required placeholder="Mínimo 4 caracteres" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+                <div style={{ position: 'relative' }}>
+                  <input style={{ ...S.input, paddingRight: '40px' }} type={showAdminPassword ? "text" : "password"} value={adminPassword} onChange={e => setAdminPassword(e.target.value)} required placeholder="Mínimo 4 caracteres" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+                  <button type="button" onClick={() => setShowAdminPassword(!showAdminPassword)} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0 }}>
+                    {showAdminPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -160,6 +166,8 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
   const [deleteMsg, setDeleteMsg] = useState('');
   const [drafts, setDrafts] = useState<Record<string, { email?: string; password?: string; valid_until?: string }>>({});
   const [saveSuccessId, setSaveSuccessId] = useState<string | null>(null);
+  const [renewDays, setRenewDays] = useState<Record<string, number>>({});
+
 
   useEffect(() => {
     setAllGyms(dataService.getGyms());
@@ -326,13 +334,40 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                   
                   {!isMaster && (
                     <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.2)', padding: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                      <label style={{ display: 'block', fontSize: '11px', color: '#f59e0b', fontWeight: 700, marginBottom: '4px' }}>VENCIMIENTO DE LA SUCURSAL:</label>
-                      <input 
-                        type="date"
-                        value={draft.valid_until ? draft.valid_until.split('T')[0] : ''}
-                        onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, valid_until: e.target.value } }))}
-                        style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
-                      />
+                      <label style={{ display: 'block', fontSize: '11px', color: '#f59e0b', fontWeight: 700, marginBottom: '6px' }}>VENCIMIENTO DE LA SUCURSAL:</label>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input 
+                          type="date"
+                          value={draft.valid_until ? draft.valid_until.split('T')[0] : ''}
+                          onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, valid_until: e.target.value } }))}
+                          style={{ flex: 1, background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', outline: 'none', colorScheme: 'dark' }}
+                        />
+                        <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)' }}>
+                          <input
+                            type="number"
+                            min="1"
+                            value={renewDays[gym.id] === undefined ? 20 : renewDays[gym.id]}
+                            onChange={(e) => setRenewDays(prev => ({ ...prev, [gym.id]: parseInt(e.target.value) || 0 }))}
+                            style={{ width: '45px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 4px', fontSize: '14px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
+                            title="Días a sumar"
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              const days = renewDays[gym.id] === undefined ? 20 : renewDays[gym.id];
+                              if (days > 0) {
+                                const current = draft.valid_until ? new Date(draft.valid_until) : new Date();
+                                const baseDate = current > new Date() ? current : new Date();
+                                const next = new Date(baseDate.getTime() + days * 86400000);
+                                setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, valid_until: next.toISOString() } }));
+                              }
+                            }} 
+                            style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '0 8px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                          >
+                            <RotateCcw size={12} />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   )}
 

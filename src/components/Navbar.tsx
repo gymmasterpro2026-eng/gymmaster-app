@@ -509,15 +509,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <label style={{ color: '#94a3b8', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, display: 'block', marginBottom: 8 }}>
                 Nombre de la Marca
               </label>
-              <input
-                type="text"
+              <textarea
                 value={editBrandName}
                 onChange={(e) => setEditBrandName(e.target.value)}
                 placeholder="TU MEJOR VERSIÓN TE ESPERA"
+                rows={3}
                 style={{
                   width: '100%', background: '#1e293b', border: '1px solid #334155',
                   borderRadius: 8, padding: '10px 14px', color: '#fff',
                   fontSize: 14, fontWeight: 700, boxSizing: 'border-box',
+                  resize: 'vertical',
                 }}
               />
               <p style={{ color: '#64748b', fontSize: 11, margin: '6px 0 0' }}>
