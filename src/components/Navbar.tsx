@@ -612,15 +612,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Footer */}
       <div style={S.footer}>
-        {/* Role switcher */}
-        {(!currentUser || currentUser.role !== 'alumno') && (
+        {/* Role indicator */}
+        {currentUser && (
           <div style={S.roleSwitcher}>
-            <button style={S.roleBtn(currentRole === 'coach')} onClick={() => handleNavClick('home', 'coach')}>
-              <Shield size={11} /> Coach
-            </button>
-            <button style={S.roleBtn(currentRole === 'alumno')} onClick={() => handleNavClick('home', 'alumno')}>
-              <User size={11} /> Alumno
-            </button>
+            {currentUser.role === 'coach' ? (
+              <button style={S.roleBtn(true)} onClick={() => handleNavClick('home', 'coach')}>
+                <Shield size={11} /> Coach
+              </button>
+            ) : (
+              <button style={S.roleBtn(true)} onClick={() => handleNavClick('home', 'alumno')}>
+                <User size={11} /> Alumno
+              </button>
+            )}
           </div>
         )}
 
