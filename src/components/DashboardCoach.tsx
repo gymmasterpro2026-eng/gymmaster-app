@@ -118,7 +118,9 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const [editCredsPassword, setEditCredsPassword] = useState('');
   const [createAlumnoError, setCreateAlumnoError] = useState<string>('');
   const [renewDays, setRenewDays] = useState<Record<string, number>>({});
-
+  const [paymentAmounts, setPaymentAmounts] = useState<Record<string, number>>({});
+  const [paymentDates, setPaymentDates] = useState<Record<string, string>>({});
+  const [paymentFrequencies, setPaymentFrequencies] = useState<Record<string, 'mensual' | 'semanal' | 'diario'>>({});
   const [newNombre, setNewNombre] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -199,6 +201,28 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   const handleRenewPlan = (alumnoId: string, daysToAdd: number) => {
     const newDate = new Date(Date.now() + daysToAdd * 86400000).toISOString();
     dataService.updatePlanValidity(alumnoId, newDate);
+    onRefreshData();
+  };
+
+  const handleRegisterPayment = (alumnoId: string) => {
+    const amount = paymentAmounts[alumnoId] || 150000;
+    const freq = paymentFrequencies[alumnoId] || 'mensual';
+    const daysToAdd = freq === 'mensual' ? 30 : freq === 'semanal' ? 7 : 1;
+    const dateStr = paymentDates[alumnoId] || new Date(Date.now() + daysToAdd * 86400000).toISOString();
+    
+    dataService.registerCobro(
+      alumnoId,
+      coach.id,
+      coach.gym_id,
+      amount,
+      new Date(dateStr).toISOString(),
+      new Date().toISOString(),
+      freq
+    );
+    
+    setPaymentAmounts(prev => ({ ...prev, [alumnoId]: 0 }));
+    setPaymentDates(prev => ({ ...prev, [alumnoId]: '' }));
+    setPaymentFrequencies(prev => ({ ...prev, [alumnoId]: 'mensual' }));
     onRefreshData();
   };
 
@@ -435,6 +459,11 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
               !isPlanActive || daysLeft <= 1 ? 'critical' :
               daysLeft <= 4 ? 'warning' : 'normal';
 
+            const allCobros = dataService.getCobros();
+            const hasPaidBefore = allCobros.some(c => c.alumno_id === alumno.id);
+            const lastGrace = alumno.last_grace_date ? new Date(alumno.last_grace_date).getTime() : 0;
+            const canAddGrace = hasPaidBefore && (Date.now() - lastGrace > 30 * 86400000);
+
             return (
               <div key={alumno.id} style={S.card(isSelected, urgency)}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -503,27 +532,86 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
                 {/* Plan Validity Box */}
                 <div style={S.inputBox}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                     <div>
                       <span style={S.inputLbl}>Vencimiento Plan</span>
                       <span style={{ display: 'block', fontSize: '13px', fontWeight: 900, color: isPlanActive ? '#34d399' : '#f87171', fontFamily: 'monospace' }}>
                         {new Date(alumno.plan_active_until).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)' }}>
+                    <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)', opacity: canAddGrace ? 1 : 0.5 }}>
                       <input
                         type="number"
                         min="1"
-                        value={renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id]}
-                        onChange={(e) => setRenewDays(prev => ({ ...prev, [alumno.id]: parseInt(e.target.value) || 0 }))}
-                        style={{ width: '60px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '18px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
-                        title="Días a sumar"
+                        max="1"
+                        disabled={!canAddGrace}
+                        value={renewDays[alumno.id] === undefined ? 1 : renewDays[alumno.id]}
+                        onChange={(e) => {
+                          let val = parseInt(e.target.value) || 0;
+                          if (val > 1) val = 1;
+                          if (val < 1) val = 1;
+                          setRenewDays(prev => ({ ...prev, [alumno.id]: val }));
+                        }}
+                        style={{ width: '60px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '18px', fontWeight: 900, textAlign: 'center', outline: 'none', cursor: canAddGrace ? 'text' : 'not-allowed' }}
+                        title={!hasPaidBefore ? "El alumno debe tener al menos un pago registrado" : !canAddGrace ? "Solo se puede usar 1 vez cada 30 días" : "Días a sumar (sin registrar pago)"}
                       />
-                      <button onClick={() => {
-                        const days = renewDays[alumno.id] === undefined ? 30 : renewDays[alumno.id];
-                        if (days > 0) handleRenewPlan(alumno.id, days);
-                      }} style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <button 
+                        disabled={!canAddGrace}
+                        onClick={() => {
+                          if (!canAddGrace) return;
+                          const days = renewDays[alumno.id] === undefined ? 1 : renewDays[alumno.id];
+                          if (days === 1) {
+                            dataService.addGraceDays(alumno.id, days);
+                            onRefreshData();
+                          }
+                        }} 
+                        style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: canAddGrace ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        title={!hasPaidBefore ? "El alumno debe tener al menos un pago registrado" : !canAddGrace ? "Solo se puede usar 1 vez cada 30 días" : "Agregar días de gracia"}
+                      >
                         <RotateCcw size={12} /> Agregar
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '8px' }}>
+                    <div>
+                      <span style={{...S.inputLbl, color: '#34d399'}}>Cobrar Cuota</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                        <select
+                          value={paymentFrequencies[alumno.id] || 'mensual'}
+                          onChange={(e) => {
+                            const freq = e.target.value as 'mensual' | 'semanal' | 'diario';
+                            setPaymentFrequencies(prev => ({ ...prev, [alumno.id]: freq }));
+                            const daysToAdd = freq === 'mensual' ? 30 : freq === 'semanal' ? 7 : 1;
+                            setPaymentDates(prev => ({ ...prev, [alumno.id]: new Date(Date.now() + daysToAdd * 86400000).toISOString().split('T')[0] }));
+                          }}
+                          style={{ background: '#0f172a', border: '1px solid rgba(16,185,129,0.3)', color: '#34d399', fontSize: '10px', outline: 'none', borderRadius: '4px', padding: '2px 4px' }}
+                        >
+                          <option value="mensual">Mensual</option>
+                          <option value="semanal">Semanal</option>
+                          <option value="diario">Por día</option>
+                        </select>
+                        <input 
+                          type="date"
+                          value={paymentDates[alumno.id] || new Date(Date.now() + ((paymentFrequencies[alumno.id] || 'mensual') === 'semanal' ? 7 : (paymentFrequencies[alumno.id] || 'mensual') === 'diario' ? 1 : 30) * 86400000).toISOString().split('T')[0]}
+                          onChange={(e) => setPaymentDates(prev => ({ ...prev, [alumno.id]: e.target.value }))}
+                          style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '11px', outline: 'none', cursor: 'pointer' }}
+                          title="Nuevo Vencimiento"
+                        />
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(16,185,129,0.4)' }}>
+                      <span style={{ background: 'rgba(0,0,0,0.5)', color: '#10b981', display: 'flex', alignItems: 'center', padding: '0 8px', fontSize: '12px', fontWeight: 900 }}>Gs.</span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={paymentAmounts[alumno.id] === undefined ? 150000 : paymentAmounts[alumno.id]}
+                        onChange={(e) => setPaymentAmounts(prev => ({ ...prev, [alumno.id]: parseInt(e.target.value) || 0 }))}
+                        style={{ width: '80px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 4px', fontSize: '14px', fontWeight: 900, textAlign: 'right', outline: 'none' }}
+                        title="Monto a cobrar"
+                      />
+                      <button onClick={() => handleRegisterPayment(alumno.id)} style={{ background: '#10b981', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <CheckCircle2 size={12} /> Pagar
                       </button>
                     </div>
                   </div>

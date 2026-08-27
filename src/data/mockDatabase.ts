@@ -1,4 +1,4 @@
-import { Profile, Routine, RoutineLog, GymTenant } from '../types';
+import { Profile, Routine, RoutineLog, GymTenant, Cobro } from '../types';
 import { INITIAL_EXERCISES } from './exerciseDatasetMock';
 
 export const GYM_ID = 'gym-titan-001';
@@ -182,5 +182,26 @@ export const MOCK_ROUTINE_LOGS: RoutineLog[] = [
     fecha_ultimo_cambio: new Date().toISOString(),
     completed_series: [true, true, false, false],
     exercise: INITIAL_EXERCISES[7]
+  }
+];
+
+export const MOCK_COBROS: Cobro[] = [
+  {
+    id: 'cobro-001',
+    alumno_id: 'alumno-101',
+    coach_id: 'coach-001',
+    gym_id: GYM_ID,
+    monto: 150000,
+    fecha_pago: new Date(Date.now() - 86400000 * 5).toISOString(),
+    notas: 'Mensualidad Septiembre'
+  },
+  {
+    id: 'cobro-002',
+    alumno_id: 'alumno-102',
+    coach_id: 'coach-001',
+    gym_id: GYM_ID,
+    monto: 130000,
+    fecha_pago: new Date(Date.now() - 86400000 * 15).toISOString(),
+    notas: 'Promo estudiante'
   }
 ];

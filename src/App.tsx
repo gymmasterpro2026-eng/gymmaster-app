@@ -19,6 +19,7 @@ import { GymGeneratorModal } from './components/GymGeneratorModal';
 import { LandingPage } from './components/LandingPage';
 import { DietPlanner } from './components/DietPlanner';
 import { AlumnosCuotas } from './components/AlumnosCuotas';
+import { CobrosMes } from './components/CobrosMes';
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('alumno');
@@ -224,6 +225,10 @@ export default function App() {
 
         {currentTab === 'alumnos-cuotas' && (
           <AlumnosCuotas alumnos={alumnosList} onRefreshData={refreshData} />
+        )}
+
+        {currentTab === 'cobros' && (
+          <CobrosMes onRefreshData={refreshData} coachId={currentUser?.id} />
         )}
 
         {currentTab === 'running' && <RunningTrainer />}

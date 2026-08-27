@@ -13,6 +13,7 @@ export interface Profile {
   avatar_url?: string;
   phone?: string;
   gender?: 'male' | 'female';
+  last_grace_date?: string; // ISO timestamp
 }
 
 export interface Exercise {
@@ -61,6 +62,17 @@ export interface RoutineLog {
 
 export interface RoutineWithLogs extends Routine {
   logs: RoutineLog[];
+}
+
+export interface Cobro {
+  id: string;
+  alumno_id: string;
+  coach_id: string;
+  gym_id: string;
+  monto: number;
+  fecha_pago: string; // ISO timestamp
+  notas?: string;
+  frecuencia?: 'mensual' | 'semanal' | 'diario';
 }
 
 export interface GymTenant {

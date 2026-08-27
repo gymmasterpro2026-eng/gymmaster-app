@@ -590,6 +590,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <>
               <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" iconColor="rgba(96,165,250,0.7)" />
               <NavButton active={currentTab === 'alumnos-cuotas'} onClick={() => handleNavClick('alumnos-cuotas')} icon={User} label="Alumnos Cuotas" iconColor="rgba(239,68,68,0.7)" />
+              <NavButton active={currentTab === 'cobros'} onClick={() => handleNavClick('cobros')} icon={Database} label="Cobros" iconColor="rgba(16,185,129,0.7)" />
               {activeGym?.id === 'gym-titan-001' && (
                 <>
                   <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" iconColor="rgba(251,191,36,0.7)" />

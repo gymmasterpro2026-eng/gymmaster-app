@@ -1,6 +1,6 @@
-import { Exercise, Profile, Routine, RoutineLog, RoutineWithLogs, GymTenant } from '../types';
+import { Exercise, Profile, Routine, RoutineLog, RoutineWithLogs, GymTenant, Cobro } from '../types';
 import { INITIAL_EXERCISES } from '../data/exerciseDatasetMock';
-import { MOCK_PROFILES, MOCK_ROUTINES, MOCK_ROUTINE_LOGS, INITIAL_GYMS } from '../data/mockDatabase';
+import { MOCK_PROFILES, MOCK_ROUTINES, MOCK_ROUTINE_LOGS, INITIAL_GYMS, MOCK_COBROS } from '../data/mockDatabase';
 import { translateExercise, translateExerciseList } from './translationService';
 import { supabase, isSupabaseConfigured } from './supabaseClient';
 
@@ -10,6 +10,7 @@ class DataService {
   private routines: Routine[] = [...MOCK_ROUTINES];
   private logs: RoutineLog[] = [...MOCK_ROUTINE_LOGS];
   private gyms: GymTenant[] = [...INITIAL_GYMS];
+  private cobros: Cobro[] = [...MOCK_COBROS];
   private language: 'es' | 'en' = 'es';
   private listeners: Array<() => void> = [];
   private isSyncing: boolean = false;
@@ -416,6 +417,57 @@ class DataService {
         });
       }
     }
+  }
+
+  addGraceDays(alumnoId: string, days: number) {
+    const alumno = this.profiles.find((p) => p.id === alumnoId);
+    if (alumno) {
+      const currentDate = new Date(Math.max(Date.now(), new Date(alumno.plan_active_until).getTime()));
+      alumno.plan_active_until = new Date(currentDate.getTime() + days * 86400000).toISOString();
+      alumno.last_grace_date = new Date().toISOString();
+      this.persist();
+
+      if (supabase) {
+        this.saveToCloud(async () => {
+          await supabase.from('gym_profiles').update({ plan_active_until: alumno.plan_active_until, last_grace_date: alumno.last_grace_date }).eq('id', alumnoId);
+        });
+      }
+    }
+  }
+
+  getCobros(month?: number | number[], year?: number): Cobro[] {
+    if (month !== undefined && year !== undefined) {
+      return this.cobros.filter(c => {
+        const d = new Date(c.fecha_pago);
+        let matchMonth = true;
+        if (Array.isArray(month)) {
+          matchMonth = month.length === 0 ? true : month.includes(d.getMonth());
+        } else {
+          matchMonth = month === -1 ? true : d.getMonth() === month;
+        }
+        const matchYear = year === -1 ? true : d.getFullYear() === year;
+        return matchMonth && matchYear;
+      }).sort((a, b) => new Date(b.fecha_pago).getTime() - new Date(a.fecha_pago).getTime());
+    }
+    return this.cobros.sort((a, b) => new Date(b.fecha_pago).getTime() - new Date(a.fecha_pago).getTime());
+  }
+
+  registerCobro(alumnoId: string, coachId: string, gymId: string, monto: number, newDateIso: string, fechaPago: string, frecuencia?: 'mensual' | 'semanal' | 'diario') {
+    const newCobro: Cobro = {
+      id: `cobro-${Date.now()}`,
+      alumno_id: alumnoId,
+      coach_id: coachId,
+      gym_id: gymId,
+      monto,
+      fecha_pago: fechaPago,
+      frecuencia
+    };
+    this.cobros.push(newCobro);
+    
+    // Al registrar un cobro, automáticamente se renueva el plan a la fecha deseada
+    this.updatePlanValidity(alumnoId, newDateIso);
+    
+    // TODO: Guardar cobro en Supabase cuando se cree la tabla 'gym_cobros'
   }
 
   updateAlumnoCredentials(alumnoId: string, email: string, password?: string) {
