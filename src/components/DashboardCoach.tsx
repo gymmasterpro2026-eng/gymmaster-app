@@ -301,20 +301,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
         </div>
       </div>
 
-      {/* Routine Builder Drawer */}
-      {showRoutineBuilder && (
-        <div style={{ marginBottom: '28px' }}>
-          <RoutineBuilder
-            coachId={coach.id}
-            gymId={coach.gym_id}
-            alumnos={alumnos}
-            exercises={exercises}
-            initialAlumnoId={routineBuilderAlumnoId}
-            onRoutineCreated={() => { setShowRoutineBuilder(false); onRefreshData(); }}
-            onCancel={() => setShowRoutineBuilder(false)}
-          />
-        </div>
-      )}
+
 
       {/* Add Alumno Modal */}
       {showAddAlumnoModal && (
@@ -466,7 +453,8 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             const canAddGrace = hasPaidBefore && (Date.now() - lastGrace > 30 * 86400000);
 
             return (
-              <div key={alumno.id} style={S.card(isSelected, urgency)}>
+              <React.Fragment key={alumno.id}>
+              <div style={S.card(isSelected, urgency)}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{ position: 'relative' }}>
@@ -702,13 +690,82 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     </button>
                   )}
                   <button
-                    onClick={() => { setRoutineBuilderAlumnoId(alumno.id); setShowRoutineBuilder(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    onClick={() => { setRoutineBuilderAlumnoId(alumno.id); setShowRoutineBuilder(!(showRoutineBuilder && routineBuilderAlumnoId === alumno.id)); }}
                     style={S.btnPrimary}
                   >
                     + Rutina
                   </button>
                 </div>
               </div>
+
+              {/* Panel Registros - aparece justo debajo de este card */}
+              {isSelected && (
+                <div style={{ gridColumn: '1 / -1', background: '#0f172a', border: '1px solid #334155', padding: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b', paddingBottom: '12px', marginBottom: '16px' }}>
+                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff' }}>Historial de <span style={{ color: '#f59e0b' }}>{alumno.full_name}</span></h3>
+                    <button onClick={() => setSelectedAlumnoForDetails(null)} style={{ background: '#1e293b', color: '#94a3b8', border: 'none', padding: '6px 14px', fontSize: '11px', fontWeight: 800, cursor: 'pointer' }}>Cerrar</button>
+                  </div>
+                  {selectedAlumnoRoutines.length === 0 ? (
+                    <div style={{ padding: '24px', textAlign: 'center', color: '#64748b' }}>Sin rutinas en historial.</div>
+                  ) : selectedAlumnoRoutines.map((routine) => (
+                    <div key={routine.id} style={{ background: '#020617', border: '1px solid #1e293b', marginBottom: '16px' }}>
+                      <div style={{ padding: '12px 16px', background: '#0f172a', borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 900, color: '#fff' }}>{routine.nombre_rutina}</h4>
+                        <span style={{ fontSize: '9px', fontWeight: 900, padding: '2px 8px', background: routine.activa ? 'rgba(16,185,129,0.15)' : '#1e293b', color: routine.activa ? '#34d399' : '#64748b', border: `1px solid ${routine.activa ? '#34d399' : '#334155'}` }}>{routine.activa ? 'EN USO' : 'ARCHIVADA'}</span>
+                      </div>
+                      <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '12px', color: '#cbd5e1' }}>
+                          <thead><tr style={{ background: '#090d16', color: '#64748b', fontSize: '10px', textTransform: 'uppercase' }}>
+                            <th style={{ padding: '10px 14px' }}>#</th>
+                            <th style={{ padding: '10px 14px' }}>Ejercicio</th>
+                            <th style={{ padding: '10px 14px', textAlign: 'center' }}>Vol</th>
+                            <th style={{ padding: '10px 14px', textAlign: 'center' }}>Meta KG</th>
+                            <th style={{ padding: '10px 14px', textAlign: 'center' }}>Logro KG</th>
+                            <th style={{ padding: '10px 14px', textAlign: 'right' }}>Hora</th>
+                            <th style={{ padding: '10px 14px', textAlign: 'center' }}>Acc</th>
+                          </tr></thead>
+                          <tbody>{routine.logs.map((log) => (
+                            <tr key={log.id} style={{ borderBottom: '1px solid #1e293b' }}>
+                              <td style={{ padding: '10px 14px' }}><span style={{ fontWeight: 900, color: '#fff', fontSize: '13px' }}>#{log.orden}</span><br/><span style={{ fontSize: '9px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 800 }}>S{log.semana} {log.dia}</span></td>
+                              <td style={{ padding: '10px 14px', fontWeight: 800, color: '#fff' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                  {log.exercise?.image_urls?.[0] && <img src={fixImageUrl(log.exercise.image_urls[0])} alt="" onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))} style={{ width: '32px', height: '32px', objectFit: 'contain', background: '#fff', borderRadius: '3px', padding: '2px', cursor: 'pointer' }} />}
+                                  <span>{log.exercise?.name}</span>
+                                </div>
+                              </td>
+                              <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace' }}>{log.series}x{log.repeticiones}</td>
+                              <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: '#64748b' }}>{log.peso_objetivo}</td>
+                              <td style={{ padding: '10px 14px', textAlign: 'center' }}>
+                                <span onClick={() => { const v = window.prompt('Peso (KG):', log.peso_real.toString()); if (v !== null) { const n = parseFloat(v); if (!isNaN(n)) { dataService.updatePesoReal(log.id, n, routine.alumno_id); onRefreshData(); } } }} title="Clic para editar" style={{ cursor: 'pointer', fontFamily: 'monospace', fontWeight: 900, fontSize: '11px', padding: '2px 6px', background: log.peso_real >= log.peso_objetivo ? 'rgba(16,185,129,0.15)' : '#1e293b', color: log.peso_real >= log.peso_objetivo ? '#34d399' : '#cbd5e1', border: `1px solid ${log.peso_real >= log.peso_objetivo ? '#34d399' : '#334155'}` }}>{log.peso_real} KG</span>
+                              </td>
+                              <td style={{ padding: '10px 14px', textAlign: 'right', fontFamily: 'monospace', fontSize: '10px', color: '#64748b' }}>{new Date(log.fecha_ultimo_cambio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                              <td style={{ padding: '10px 14px', textAlign: 'center' }}>
+                                <button onClick={() => { if (window.confirm(`¿Eliminar "${log.exercise?.name}"?`)) { dataService.deleteRoutineLog(log.id); onRefreshData(); } }} style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', padding: '5px', borderRadius: '3px', cursor: 'pointer', display: 'inline-flex' }}><Trash2 size={13} /></button>
+                              </td>
+                            </tr>
+                          ))}</tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Panel Rutina Builder - aparece justo debajo de este card */}
+              {showRoutineBuilder && routineBuilderAlumnoId === alumno.id && (
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <RoutineBuilder
+                    coachId={coach.id}
+                    gymId={coach.gym_id}
+                    alumnos={alumnos}
+                    exercises={exercises}
+                    initialAlumnoId={alumno.id}
+                    onRoutineCreated={() => { setShowRoutineBuilder(false); onRefreshData(); }}
+                    onCancel={() => setShowRoutineBuilder(false)}
+                  />
+                </div>
+              )}
+              </React.Fragment>
             );
           }) : (
             <div style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', background: '#020617', border: '1px solid #1e293b', borderRadius: '4px', color: '#94a3b8' }}>
@@ -718,121 +775,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
         </div>
       </div>
 
-      {/* Selected Alumno Logs Detail */}
-      {selectedAlumnoForDetails && (
-        <div style={{ background: '#0f172a', border: '1px solid #334155', padding: '24px', marginTop: '28px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b', paddingBottom: '16px', marginBottom: '20px' }}>
-            <div>
-              <span style={S.badgeGold}>MONITOREO DE CARGAS</span>
-              <h3 style={{ margin: '6px 0 0', fontSize: '20px', fontWeight: 900, color: '#ffffff' }}>
-                Historial de <span style={{ color: '#f59e0b' }}>{alumnos.find((a) => a.id === selectedAlumnoForDetails)?.full_name}</span>
-              </h3>
-            </div>
-            <button onClick={() => setSelectedAlumnoForDetails(null)} style={{ background: '#1e293b', color: '#94a3b8', border: 'none', padding: '8px 16px', fontSize: '11px', fontWeight: 800, cursor: 'pointer' }}>
-              Cerrar Detalle
-            </button>
-          </div>
 
-          {selectedAlumnoRoutines.length === 0 ? (
-            <div style={{ padding: '32px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>Este alumno no tiene rutinas en su historial.</div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {selectedAlumnoRoutines.map((routine) => (
-                <div key={routine.id} style={{ background: '#020617', border: '1px solid #1e293b' }}>
-                  <div style={{ padding: '16px 20px', background: '#0f172a', borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 900, color: '#ffffff' }}>{routine.nombre_rutina}</h4>
-                      <span style={{ fontSize: '11px', color: '#64748b' }}>Creada el {new Date(routine.created_at).toLocaleDateString()}</span>
-                    </div>
-                    <span style={{ fontSize: '10px', fontWeight: 900, padding: '4px 10px', background: routine.activa ? 'rgba(16,185,129,0.15)' : '#1e293b', color: routine.activa ? '#34d399' : '#64748b', border: `1px solid ${routine.activa ? '#34d399' : '#334155'}` }}>
-                      {routine.activa ? 'EN USO ACTUALMENTE' : 'ARCHIVADA'}
-                    </span>
-                  </div>
-
-                  <div style={{ overflowX: 'auto' }}>
-                    <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '12px', color: '#cbd5e1' }}>
-                      <thead>
-                        <tr style={{ background: '#090d16', color: '#64748b', fontSize: '10px', textTransform: 'uppercase' }}>
-                          <th style={{ padding: '12px 16px' }}>#</th>
-                          <th style={{ padding: '12px 16px' }}>Ejercicio</th>
-                          <th style={{ padding: '12px 16px', textAlign: 'center' }}>Volumen</th>
-                          <th style={{ padding: '12px 16px', textAlign: 'center' }}>Meta (KG)</th>
-                          <th style={{ padding: '12px 16px', textAlign: 'center' }}>Logro (KG)</th>
-                          <th style={{ padding: '12px 16px', textAlign: 'right' }}>Actualizado</th>
-                          <th style={{ padding: '12px 16px', textAlign: 'center' }}>Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {routine.logs.map((log) => (
-                          <tr key={log.id} style={{ borderBottom: '1px solid #1e293b' }}>
-                            <td style={{ padding: '12px 16px' }}>
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                <span style={{ fontWeight: 900, color: '#ffffff', fontSize: '14px' }}>#{log.orden}</span>
-                                <div style={{ display: 'flex', gap: '4px', alignItems: 'baseline' }}>
-                                  <span style={{ fontSize: '13px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 900, textTransform: 'uppercase' }}>S{log.semana}</span>
-                                  <span style={{ fontSize: '10px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 800, textTransform: 'uppercase' }}>{log.dia}</span>
-                                </div>
-                              </div>
-                            </td>
-                            <td style={{ padding: '12px 16px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                              {log.exercise?.image_urls?.[0] && (
-                                <img
-                                  src={fixImageUrl(log.exercise.image_urls[0])}
-                                  alt="ejercicio"
-                                  onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))}
-                                  style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#fff', borderRadius: '4px', padding: '2px', flexShrink: 0, cursor: 'pointer' }}
-                                />
-                              )}
-                              <span>{log.exercise?.name}</span>
-                            </td>
-                            <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: 'monospace' }}>{log.series} × {log.repeticiones}</td>
-                            <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: 'monospace', color: '#64748b' }}>{log.peso_objetivo} KG</td>
-                            <td style={{ padding: '12px 16px', textAlign: 'center' }}>
-                              <span
-                                onClick={() => {
-                                  const newVal = window.prompt(`Actualizar peso logrado para ${log.exercise?.name} (KG):`, log.peso_real.toString());
-                                  if (newVal !== null) {
-                                    const parsed = parseFloat(newVal);
-                                    if (!isNaN(parsed)) {
-                                      dataService.updatePesoReal(log.id, parsed, routine.alumno_id);
-                                      onRefreshData();
-                                    }
-                                  }
-                                }}
-                                title="Hacer clic para editar el peso"
-                                style={{ cursor: 'pointer', fontFamily: 'monospace', fontWeight: 900, fontSize: '12px', padding: '2px 8px', background: log.peso_real >= log.peso_objetivo ? 'rgba(16,185,129,0.15)' : '#1e293b', color: log.peso_real >= log.peso_objetivo ? '#34d399' : '#cbd5e1', border: `1px solid ${log.peso_real >= log.peso_objetivo ? '#34d399' : '#334155'}` }}
-                              >
-                                {log.peso_real} KG
-                              </span>
-                            </td>
-                            <td style={{ padding: '12px 16px', textAlign: 'right', fontFamily: 'monospace', fontSize: '10px', color: '#64748b' }}>
-                              {new Date(log.fecha_ultimo_cambio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </td>
-                            <td style={{ padding: '12px 16px', textAlign: 'center' }}>
-                              <button
-                                onClick={() => {
-                                  if (window.confirm(`¿Estás seguro de eliminar "${log.exercise?.name}" de esta rutina?`)) {
-                                    dataService.deleteRoutineLog(log.id);
-                                    onRefreshData();
-                                  }
-                                }}
-                                style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', padding: '6px', borderRadius: '4px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                                title="Eliminar ejercicio de la rutina"
-                              >
-                                <Trash2 size={14} />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Edit Profile Modal (Photo, Name, Phone for any Profile) */}
       {editingProfileTarget && (
