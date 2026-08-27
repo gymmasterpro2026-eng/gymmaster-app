@@ -570,6 +570,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             label={currentRole === 'alumno' ? 'Mi Entrenamiento' : 'Coach & Alumnos'}
             iconColor="rgba(245,158,11,0.6)"
           />
+          {currentRole === 'coach' && (
           <NavButton
             active={currentTab === 'diet'}
             onClick={() => handleNavClick('diet')}
@@ -577,6 +578,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             label="Dieta y Nutrición"
             iconColor="rgba(34,197,94,0.7)"
           />
+          )}
           {currentRole === 'alumno' && (
             <NavButton
               active={currentTab === 'running'}
