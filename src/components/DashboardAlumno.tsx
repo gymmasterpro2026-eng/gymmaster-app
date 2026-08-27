@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Dumbbell, AlertTriangle, RotateCcw, ChevronDown, Check, Save,
+  Dumbbell, AlertTriangle, TimerReset, ChevronDown, Check, Save,
   Timer, Maximize2, Camera, Edit3, Pencil, Info, ShieldCheck, Zap, Play, Pause, Square
 } from 'lucide-react';
 import { Profile, RoutineWithLogs } from '../types';
@@ -397,7 +397,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
         </div>
         <div style={S.timerBtns}>
           <button style={S.tBtn} onClick={handlePiP}><Maximize2 size={16} /></button>
-          <button style={S.tBtn} onClick={() => { resetTimer(); setTimerMode(timerMode==='timer'?'stopwatch':'timer'); setTimerTargetMs(90000); }}><RotateCcw size={16} /></button>
+          <button style={S.tBtn} onClick={() => { resetTimer(); setTimerMode(timerMode==='timer'?'stopwatch':'timer'); setTimerTargetMs(90000); }}><TimerReset size={16} /></button>
           <button style={{ ...S.tBtn, background: '#f59e0b', color: '#000' }} onClick={toggleTimer}>{timerStatus === 'running' ? <Pause size={16} /> : <Play size={16} style={{ marginLeft: '2px' }} />}</button>
         </div>
       </div>
