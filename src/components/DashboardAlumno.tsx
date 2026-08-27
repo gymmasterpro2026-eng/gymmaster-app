@@ -7,6 +7,7 @@ import { Profile, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { EditProfileModal } from './EditProfileModal';
 import { EditRoutineModal } from './EditRoutineModal';
+import { RoutineBuilder } from './RoutineBuilder';
 import { fixImageUrl } from '../utils/imageUrl';
 
 const DAY_COLOR_MAP: Record<string, { main: string; border: string; bg: string; text: string }> = {
@@ -117,8 +118,13 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [showEditRoutineModal, setShowEditRoutineModal] = useState(false);
+  const [showRoutineBuilder, setShowRoutineBuilder] = useState(false);
   const [saveStatus, setSaveStatus] = useState<{ id: string; type: 'success' | 'error'; msg: string } | null>(null);
   const [draftWeights, setDraftWeights] = useState<Record<string, number>>({});
+  
+  const coach = dataService.getProfiles().find(p => p.role === 'coach');
+  const alumnosList = dataService.getProfiles().filter(p => p.role === 'alumno');
+  const exercisesList = dataService.getExercises();
   
   // Timer State
   const [timerMode, setTimerMode] = useState<'timer' | 'stopwatch'>('timer');
@@ -327,6 +333,9 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                 {activeRoutine && (
                   <button style={{ ...S.editRoutineBtn, color: contrastColor, background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : '#1e293b', borderColor: isExpiringSoon ? 'rgba(0,0,0,0.2)' : '#334155' }} onClick={() => setShowEditRoutineModal(true)}><Edit3 size={10} /> Editar</button>
                 )}
+                {!activeRoutine && onBackToCoach && (
+                  <button style={{ ...S.editRoutineBtn, color: contrastColor, background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : '#1e293b', borderColor: isExpiringSoon ? 'rgba(0,0,0,0.2)' : '#334155' }} onClick={() => setShowRoutineBuilder(!showRoutineBuilder)}>+ Crear Rutina</button>
+                )}
               </div>
             </div>
           </div>
@@ -352,6 +361,20 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
           </div>
         </div>
       </div>
+
+      {showRoutineBuilder && coach && (
+        <div style={{ marginBottom: '28px' }}>
+          <RoutineBuilder
+            coachId={coach.id}
+            gymId={coach.gym_id}
+            alumnos={alumnosList}
+            exercises={exercisesList}
+            initialAlumnoId={alumno.id}
+            onRoutineCreated={() => { setShowRoutineBuilder(false); onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }}
+            onCancel={() => setShowRoutineBuilder(false)}
+          />
+        </div>
+      )}
 
       <canvas ref={canvasRef} width="300" height="150" style={{ display: 'none' }} />
       <video ref={videoRef} autoPlay playsInline muted style={{ display: 'none' }} />
