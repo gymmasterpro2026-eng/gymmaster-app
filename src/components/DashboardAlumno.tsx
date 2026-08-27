@@ -111,8 +111,7 @@ const S = {
 };
 
 export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefreshData, onBackToCoach }) => {
-  if (!alumno) return <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>Sin información del perfil.</div>;
-
+  // NOTE: No early return before hooks (React rules of hooks)
   const [activeRoutine, setActiveRoutine] = useState<RoutineWithLogs | null>(null);
   const [expandedExerciseId, setExpandedExerciseId] = useState<string | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
@@ -132,7 +131,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const isPlanActive = alumno.plan_active_until ? new Date(alumno.plan_active_until) >= new Date() : false;
+  const isPlanActive = alumno?.plan_active_until ? new Date(alumno.plan_active_until) >= new Date() : false;
 
   const availableWorkouts = React.useMemo(() => {
     if (!activeRoutine) return [];
@@ -248,6 +247,10 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
     setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id));
     setTimerMode('timer'); setTimerElapsedMs(0); setTimerStartAt(Date.now()); setTimerStatus('running');
   };
+
+  if (!alumno) {
+    return <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>Sin información del perfil.</div>;
+  }
 
   if (!isPlanActive) {
     return (

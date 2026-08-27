@@ -7,7 +7,11 @@ import './index.css';
 // Wrapper que oculta el Splash Screen DESPUÉS de que React pintó el DOM.
 function Root() {
   useEffect(() => {
-    SplashScreen.hide({ fadeOutDuration: 300 });
+    try {
+      SplashScreen.hide({ fadeOutDuration: 300 });
+    } catch (_) {
+      // En navegador web Capacitor no tiene SplashScreen nativo; se ignora.
+    }
   }, []);
   return <App />;
 }
