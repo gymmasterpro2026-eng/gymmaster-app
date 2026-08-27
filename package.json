@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",
+    "@capacitor/splash-screen": "^8.0.2",
     "@google/genai": "^2.4.0",
     "@mjcdev/react-body-highlighter": "^0.0.4",
     "@phelian/react-body-highlighter": "^2.0.7",
