@@ -37,8 +37,8 @@ const S = {
   avatarWrap: { position: 'relative' as const, width: '72px', height: '72px', flexShrink: 0, cursor: 'pointer' },
   avatarImg: { width: '100%', height: '100%', borderRadius: '0', objectFit: 'cover' as const, border: '2px solid rgba(245,158,11,0.3)', transition: 'all 0.2s' },
   avatarIconOverlay: { position: 'absolute' as const, inset: 0, background: 'rgba(0,0,0,0.5)', borderRadius: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.2s' },
-  badgeGreen: { background: 'rgba(16,185,129,0.1)', color: '#34d399', border: '1px solid rgba(16,185,129,0.2)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
-  editBtn: { background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' },
+  badgeGreen: { background: '#065f46', color: '#34d399', border: '1px solid #059669', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' as const, letterSpacing: '0.05em' },
+  editBtn: { background: '#1e293b', color: '#ffffff', border: '1px solid #334155', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' },
   name: { fontSize: '24px', fontWeight: 900, color: '#fff', margin: '4px 0', letterSpacing: '-0.5px' },
   routinePill: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#f59e0b', fontWeight: 700 },
   editRoutineBtn: { background: '#1e293b', color: '#f59e0b', border: '1px solid #334155', padding: '4px 10px', borderRadius: '0', fontSize: '10px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' },
@@ -316,11 +316,11 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
               <div className="av-overlay" style={S.avatarIconOverlay}><Camera size={20} color={contrastColor} /></div>
             </div>
             <div>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 <span style={S.badgeGreen}>Plan Activo ✅</span>
-                <button style={{ ...S.editBtn, background: isExpiringSoon ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)' }} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
+                <button style={{ ...S.editBtn }} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
                 {onBackToCoach && (
-                  <button onClick={onBackToCoach} style={{ ...S.editBtn, background: 'rgba(59,130,246,0.2)', color: '#93c5fd', borderColor: '#3b82f6' }}>
+                  <button onClick={onBackToCoach} style={{ ...S.editBtn, background: '#1d4ed8', color: '#ffffff', borderColor: '#2563eb' }}>
                     ← Volver al Coach
                   </button>
                 )}
