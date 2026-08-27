@@ -22,6 +22,7 @@ const DAY_COLOR_MAP: Record<string, { main: string; border: string; bg: string; 
 interface DashboardAlumnoProps {
   alumno: Profile;
   onRefreshData: () => void;
+  onBackToCoach?: () => void;
 }
 
 const S = {
@@ -109,7 +110,7 @@ const S = {
   expiredCard: { background: '#1A0505', border: '1px solid #ff4444', borderRadius: '0', padding: '40px 24px', textAlign: 'center' as const, boxShadow: '0 20px 40px rgba(255,0,0,0.1)' },
 };
 
-export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefreshData }) => {
+export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefreshData, onBackToCoach }) => {
   if (!alumno) return <div style={{ textAlign: 'center', padding: '40px', color: '#888' }}>Sin información del perfil.</div>;
 
   const [activeRoutine, setActiveRoutine] = useState<RoutineWithLogs | null>(null);
@@ -315,6 +316,11 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
               <div style={{ display: 'flex', gap: '8px' }}>
                 <span style={S.badgeGreen}>Plan Activo ✅</span>
                 <button style={{ ...S.editBtn, background: isExpiringSoon ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)' }} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
+                {onBackToCoach && (
+                  <button onClick={onBackToCoach} style={{ ...S.editBtn, background: 'rgba(59,130,246,0.2)', color: '#93c5fd', borderColor: '#3b82f6' }}>
+                    ← Volver al Coach
+                  </button>
+                )}
               </div>
               <h1 style={S.name}>{alumno.full_name}</h1>
               <div style={{ ...S.routinePill, color: contrastColor }}>

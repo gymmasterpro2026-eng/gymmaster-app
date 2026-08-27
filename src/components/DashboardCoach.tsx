@@ -13,6 +13,7 @@ interface DashboardCoachProps {
   coach: Profile;
   exercises: Exercise[];
   onRefreshData: () => void;
+  onViewStudentProfile?: (alumnoId: string) => void;
 }
 
 const AVATAR_PRESETS = [
@@ -691,6 +692,15 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     <span>{isSelected ? 'Ocultar' : 'Ver Registros'}</span>
                     <ChevronRight size={14} style={{ transform: isSelected ? 'rotate(90deg)' : 'none' }} />
                   </button>
+                  {onViewStudentProfile && (
+                    <button
+                      onClick={() => onViewStudentProfile(alumno.id)}
+                      style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', borderColor: '#3b82f6', color: '#3b82f6', background: 'rgba(59,130,246,0.1)' }}
+                      title="Ver perfil del alumno como si fueras él"
+                    >
+                      Perfil Alumno
+                    </button>
+                  )}
                   <button
                     onClick={() => { setRoutineBuilderAlumnoId(alumno.id); setShowRoutineBuilder(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     style={S.btnPrimary}

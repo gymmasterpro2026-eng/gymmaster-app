@@ -189,14 +189,26 @@ export default function App() {
           <>
             {currentRole === 'alumno' ? (
               activeAlumnoProfile ? (
-                <DashboardAlumno alumno={activeAlumnoProfile} onRefreshData={refreshData} />
+                <DashboardAlumno 
+                  alumno={activeAlumnoProfile} 
+                  onRefreshData={refreshData}
+                  onBackToCoach={currentUser?.role === 'coach' ? () => setCurrentRole('coach') : undefined}
+                />
               ) : (
                 <div className="p-12 text-center text-zinc-500 font-mono text-sm">
                   Cargando información del alumno...
                 </div>
               )
             ) : coachProfile ? (
-              <DashboardCoach coach={coachProfile} exercises={exercises} onRefreshData={refreshData} />
+              <DashboardCoach 
+                coach={coachProfile} 
+                exercises={exercises} 
+                onRefreshData={refreshData} 
+                onViewStudentProfile={(alumnoId) => {
+                  setSelectedAlumnoId(alumnoId);
+                  setCurrentRole('alumno');
+                }}
+              />
             ) : (
               <div className="p-12 text-center text-zinc-500 font-mono text-sm">
                 Cargando información del entrenador...
