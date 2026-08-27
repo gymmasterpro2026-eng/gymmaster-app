@@ -59,7 +59,7 @@ const S = {
   subtitle: { fontSize: '12px', color: '#94a3b8', margin: '2px 0 0' },
   
   btnPrimary: { background: '#f59e0b', color: '#000000', border: 'none', padding: '10px 18px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase' as const, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' },
-  btnSecondary: { background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.4)', padding: '10px 18px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase' as const, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' },
+  btnSecondary: { background: '#92400e', color: '#ffffff', border: '1px solid #b45309', padding: '10px 18px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase' as const, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' },
   
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '20px' },
   card: (selected: boolean, urgency: 'normal' | 'warning' | 'critical'): React.CSSProperties => {
@@ -683,7 +683,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                   {onViewStudentProfile && (
                     <button
                       onClick={() => onViewStudentProfile(alumno.id)}
-                      style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', borderColor: '#3b82f6', color: '#3b82f6', background: 'rgba(59,130,246,0.1)' }}
+                      style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', borderColor: '#2563eb', color: '#ffffff', background: '#1e3a8a' }}
                       title="Ver perfil del alumno como si fueras él"
                     >
                       Perfil Alumno
