@@ -91,7 +91,7 @@ const S = {
   modal: { background: '#0f172a', border: '1px solid #334155', width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto' as const, padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', boxSizing: 'border-box' as const }
 };
 
-export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises, onRefreshData }) => {
+export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises, onRefreshData, onViewStudentProfile }) => {
   if (!coach) {
     return (
       <div style={{ padding: '48px', textAlign: 'center', color: '#94a3b8', fontFamily: 'monospace' }}>
