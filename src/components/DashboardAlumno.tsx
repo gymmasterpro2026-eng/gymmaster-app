@@ -265,11 +265,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
     );
   }
 
-  if (!activeRoutine) {
-    return <div style={S.page}><div style={S.emptyState}><Dumbbell size={40} style={{ margin:'0 auto 16px', opacity: 0.2 }} />Sin rutina activa asignada.</div></div>;
-  }
-
-  const dayLogs = activeRoutine.logs.filter(l => (l.semana||1) === activeCombo?.semana && l.dia === activeCombo?.dia);
+  const dayLogs = activeRoutine ? activeRoutine.logs.filter(l => (l.semana||1) === activeCombo?.semana && l.dia === activeCombo?.dia) : [];
   const completedCount = dayLogs.filter(l => l.completed_series?.every(s=>s)).length;
   const progressPercent = dayLogs.length > 0 ? Math.round((completedCount / dayLogs.length) * 100) : 0;
 
@@ -327,8 +323,10 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
               </div>
               <h1 style={S.name}>{alumno.full_name}</h1>
               <div style={{ ...S.routinePill, color: contrastColor }}>
-                <Dumbbell size={12} /> {activeRoutine.nombre_rutina}
-                <button style={{ ...S.editRoutineBtn, color: contrastColor, background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : '#1e293b', borderColor: isExpiringSoon ? 'rgba(0,0,0,0.2)' : '#334155' }} onClick={() => setShowEditRoutineModal(true)}><Edit3 size={10} /> Editar</button>
+                <Dumbbell size={12} /> {activeRoutine?.nombre_rutina || 'Sin rutina asignada'}
+                {activeRoutine && (
+                  <button style={{ ...S.editRoutineBtn, color: contrastColor, background: isExpiringSoon ? 'rgba(0,0,0,0.15)' : '#1e293b', borderColor: isExpiringSoon ? 'rgba(0,0,0,0.2)' : '#334155' }} onClick={() => setShowEditRoutineModal(true)}><Edit3 size={10} /> Editar</button>
+                )}
               </div>
             </div>
           </div>
@@ -435,7 +433,9 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
       )}
 
       {/* Lista de Ejercicios */}
-      {dayLogs.length === 0 ? (
+      {!activeRoutine ? (
+        <div style={S.emptyState}><Dumbbell size={40} style={{ margin:'0 auto 16px', opacity: 0.2 }} />Sin rutina activa asignada.</div>
+      ) : dayLogs.length === 0 ? (
         <div style={S.emptyState}>¡Día libre! No hay ejercicios asignados.</div>
       ) : (
         dayLogs.map((log, idx) => {
