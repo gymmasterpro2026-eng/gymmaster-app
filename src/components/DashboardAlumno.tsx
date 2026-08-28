@@ -397,7 +397,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
         </div>
         <div style={S.timerBtns}>
           <button style={S.tBtn} onClick={handlePiP}><Maximize2 size={16} /></button>
-          <button style={S.tBtn} onClick={() => { resetTimer(); setTimerMode(timerMode==='timer'?'stopwatch':'timer'); setTimerTargetMs(90000); }}><TimerReset size={16} /></button>
+          <button style={S.tBtn} onClick={() => { resetTimer(); setTimerMode(timerMode==='timer'?'stopwatch':'timer'); setTimerTargetMs(90000); }}><TimerReset size={24} /></button>
           <button style={{ ...S.tBtn, background: '#f59e0b', color: '#000' }} onClick={toggleTimer}>{timerStatus === 'running' ? <Pause size={16} /> : <Play size={16} style={{ marginLeft: '2px' }} />}</button>
         </div>
       </div>
