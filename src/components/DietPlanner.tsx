@@ -248,11 +248,24 @@ export const DietPlanner: React.FC = () => {
 
     const targetCalories = tdee + deficit;
 
-    // Macros distribution by gender
+    // Reducir calorías efectivas para acomodar extras (ensaladas, agregados fijos, macros mixtos)
+    const effectiveCalories = targetCalories * 0.85;
+    
+    // Macros basados en peso corporal (más realista y evita porciones gigantes)
+    let p_g = weight * (gender === 'female' ? 1.8 : 2.2);
+    let f_g = weight * (gender === 'female' ? 0.8 : 1.0);
+    
+    if ((p_g * 4 + f_g * 9) > effectiveCalories * 0.75) {
+       p_g = (effectiveCalories * 0.30) / 4;
+       f_g = (effectiveCalories * 0.25) / 9;
+    }
+    
+    const c_g = Math.max(0, (effectiveCalories - (p_g * 4) - (f_g * 9)) / 4);
+
     const macros = {
-      protein: (targetCalories * (gender === 'female' ? 0.35 : 0.40)) / 4,
-      carbs: (targetCalories * (gender === 'female' ? 0.35 : 0.40)) / 4,
-      fats: (targetCalories * (gender === 'female' ? 0.30 : 0.20)) / 9
+      protein: p_g,
+      carbs: c_g,
+      fats: f_g
     };
 
     // ISSN Timing: if activity is intense, shift carbs to pre/post workout (simulated in Lunch and Snack)
@@ -341,15 +354,19 @@ export const DietPlanner: React.FC = () => {
           
           let grams = Math.round((targetMacro / food[type]) * 100);
           
-          // Límite Calórico Dinámico (PARCHE PARA NO SOBREPASAR)
-          let maxKcal = targetCalories * 0.25; 
+          // Límite Calórico Estricto
+          let maxKcal = targetCalories * 0.20; 
           if (food.cat === 'snack') maxKcal = targetCalories * 0.10;
           else if (food.cat === 'carbo') maxKcal = targetCalories * 0.15;
           else if (food.cat === 'complejo') maxKcal = targetCalories * 0.25;
+          else if (food.cat === 'grasa') maxKcal = targetCalories * 0.10;
+          else if (food.cat === 'proteina') maxKcal = targetCalories * 0.20;
           
           let remaining = targetCalories - currentDayKcal;
-          if (remaining < 80) remaining = 80;
-          if (maxKcal > remaining * 0.8) maxKcal = remaining * 0.8;
+          if (remaining < 50) remaining = 50; 
+          
+          // No permitir que un ingrediente consuma más del 70% de lo que queda del presupuesto diario
+          maxKcal = Math.min(maxKcal, remaining * 0.7);
           
           if (food.kcal > 0 && (grams / 100) * food.kcal > maxKcal) {
              grams = Math.round((maxKcal / food.kcal) * 100);
