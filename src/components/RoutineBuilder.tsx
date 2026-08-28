@@ -799,7 +799,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80';
                             }}
-                            className="w-20 h-20 object-contain p-1 rounded-none border border-slate-200 bg-white shrink-0 shadow-sm group-hover:scale-105 transition-transform"
+                            className="w-20 h-20 object-contain p-1 rounded-none border border-slate-700 bg-black shrink-0 shadow-sm group-hover:scale-105 transition-transform gm-exercise-gif"
                           />
                         </div>
                         <div>
@@ -897,11 +897,11 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
 
                 {/* Modal Body */}
                 <div className="p-5 overflow-y-auto space-y-4 text-slate-200">
-                  <div className="flex justify-center bg-white border border-slate-700 p-3">
+                  <div className="flex justify-center bg-black border border-slate-700 p-3 gm-gif-wrap">
                     <img
                       src={fixImageUrl(previewExercise.image_urls[0])}
                       alt={previewExercise.name}
-                      className="max-h-[300px] w-auto object-contain"
+                      className="max-h-[300px] w-auto object-contain gm-exercise-gif"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80';
                       }}

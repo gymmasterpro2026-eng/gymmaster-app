@@ -244,7 +244,7 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 {ex.image_urls?.[0] && (
-                  <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#fff', padding: '2px', borderRadius: '4px' }} />
+                  <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="gm-exercise-gif" style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#000', padding: '2px', borderRadius: '4px' }} />
                 )}
                 <div>
                   <p style={{ margin: 0, fontSize: '12px', fontWeight: 800, color: '#ffffff' }}>

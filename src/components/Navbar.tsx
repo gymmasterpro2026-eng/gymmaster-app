@@ -588,6 +588,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               iconColor="rgba(251,191,36,0.7)"
             />
           )}
+          {currentRole === 'alumno' && (
+            <NavButton
+              active={currentTab === 'stats'}
+              onClick={() => handleNavClick('stats')}
+              icon={Activity}
+              label="📊 Mi Progreso"
+              iconColor="rgba(6,182,212,0.7)"
+            />
+          )}
           {currentRole === 'coach' && (
             <>
               <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" iconColor="rgba(96,165,250,0.7)" />

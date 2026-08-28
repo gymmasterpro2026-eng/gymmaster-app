@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Dumbbell, AlertTriangle, TimerReset, ChevronDown, Check, Save,
-  Timer, Maximize2, Camera, Edit3, Pencil, Info, ShieldCheck, Zap, Play, Pause, Square
+  Timer, Maximize2, Camera, Edit3, Pencil, Info, ShieldCheck, Zap, Play, Pause, Square, Flag, BarChart2
 } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { Profile, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { EditProfileModal } from './EditProfileModal';
 import { EditRoutineModal } from './EditRoutineModal';
 import { fixImageUrl } from '../utils/imageUrl';
+import { WorkoutStats, saveSession, WorkoutSession } from './WorkoutStats';
+import trophyImg from '../assets/trophy.png';
 
 const DAY_COLOR_MAP: Record<string, { main: string; border: string; bg: string; text: string }> = {
   'Lunes':     { main: '#f59e0b', border: 'rgba(245, 158, 11, 0.45)', bg: 'rgba(245, 158, 11, 0.08)', text: '#fbbf24' },
@@ -70,7 +73,7 @@ const S = {
   }),
   cHeader: { padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: '12px', cursor: 'pointer', userSelect: 'none' as const },
   cImgWrap: { position: 'relative' as const, flexShrink: 0 },
-  cImg: { width: '105px', height: '105px', minWidth: '105px', minHeight: '105px', borderRadius: '0', objectFit: 'contain' as const, background: '#fff', padding: '6px', flexShrink: 0 },
+  cImg: { width: '105px', height: '105px', minWidth: '105px', minHeight: '105px', borderRadius: '0', objectFit: 'contain' as const, background: '#000', padding: '6px', flexShrink: 0 },
   cNumBadge: { position: 'absolute' as const, top: '-8px', left: '-8px', background: '#000', color: '#f59e0b', width: '24px', height: '24px', borderRadius: '0', border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 900 },
   cEquipBadge: { background: 'rgba(245,158,11,0.1)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' as const },
   cMuscleBadge: { background: '#1e293b', color: '#888', padding: '2px 8px', borderRadius: '0', fontSize: '9px', fontWeight: 700, textTransform: 'uppercase' as const },
@@ -119,6 +122,39 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const [showEditRoutineModal, setShowEditRoutineModal] = useState(false);
   const [saveStatus, setSaveStatus] = useState<{ id: string; type: 'success' | 'error'; msg: string } | null>(null);
   const [draftWeights, setDraftWeights] = useState<Record<string, number>>({});
+  const [showStats, setShowStats] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const workoutStartRef = useRef<number>(Date.now());
+
+  // Confetti effect when celebration starts
+  useEffect(() => {
+    if (showCelebration) {
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#10b981', '#f59e0b', '#3b82f6']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#10b981', '#f59e0b', '#3b82f6']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+    }
+  }, [showCelebration]);
   
   const coach = dataService.getProfiles().find(p => p.role === 'coach');
   const alumnosList = dataService.getProfiles().filter(p => p.role === 'alumno');
@@ -399,6 +435,57 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
           <button style={S.tBtn} onClick={handlePiP}><Maximize2 size={16} /></button>
           <button style={S.tBtn} onClick={() => { resetTimer(); setTimerMode(timerMode==='timer'?'stopwatch':'timer'); setTimerTargetMs(90000); }}><TimerReset size={24} /></button>
           <button style={{ ...S.tBtn, background: '#f59e0b', color: '#000' }} onClick={toggleTimer}>{timerStatus === 'running' ? <Pause size={16} /> : <Play size={16} style={{ marginLeft: '2px' }} />}</button>
+          <button
+            title="Terminar Entrenamiento y guardar sesión"
+            style={{ 
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'linear-gradient(to right, #4ade80, #14b8a6)', 
+              color: '#fff', 
+              padding: '8px 20px', 
+              gap: '6px', 
+              fontSize: '14px', 
+              fontWeight: 500,
+              borderRadius: '24px',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(20, 184, 166, 0.3)',
+              transition: 'transform 0.2s, box-shadow 0.2s'
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            onClick={() => {
+              if (!activeRoutine || !activeCombo) return;
+              const durMin = Math.round((Date.now() - workoutStartRef.current) / 60000);
+              const ejercicios = dayLogs
+                .filter(l => l.exercise)
+                .map(l => ({
+                  exercise_id: l.exercise_id,
+                  nombre: l.exercise?.name || '',
+                  primary_muscles: l.exercise?.primary_muscles || [],
+                  peso_real: l.peso_real || 0,
+                  series: l.series,
+                  repeticiones: l.repeticiones,
+                  series_completadas: (l.completed_series || []).filter(Boolean).length,
+                  volumen_kg: Math.round((l.peso_real || 0) * (l.completed_series || []).filter(Boolean).length * l.repeticiones),
+                }));
+              const session: WorkoutSession = {
+                id: `${alumno.id}_${Date.now()}`,
+                alumno_id: alumno.id,
+                fecha: new Date().toISOString().slice(0, 10),
+                semana: activeCombo.semana,
+                dia: activeCombo.dia,
+                duracion_min: Math.max(1, durMin),
+                ejercicios,
+                total_volumen_kg: ejercicios.reduce((acc, e) => acc + e.volumen_kg, 0),
+              };
+              saveSession(session);
+              workoutStartRef.current = Date.now();
+              setShowCelebration(true);
+              setTimeout(() => setShowCelebration(false), 4000);
+            }}
+          >
+            <Flag size={14} /> Terminar
+          </button>
         </div>
       </div>
 
@@ -473,7 +560,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
               <div style={S.cHeader} className="gm-c-header" onClick={() => setExpandedExerciseId(exp ? null : log.id)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={S.cImgWrap}>
-                    <img src={fixImageUrl(ex?.image_urls[0])} alt={ex?.name} style={S.cImg} className="gm-c-img" onClick={e=>{e.stopPropagation(); if(ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));}} />
+                    <img src={fixImageUrl(ex?.image_urls[0])} alt={ex?.name} style={S.cImg} className="gm-c-img gm-exercise-gif" onClick={e=>{e.stopPropagation(); if(ex?.image_urls[0]) setFullscreenImage(fixImageUrl(ex.image_urls[0]));}} />
                     <div style={{ ...S.cNumBadge, background: dayColor.main, color: '#090d16', fontWeight: 900 }}>#{idx+1}</div>
                   </div>
                   <div>
@@ -550,11 +637,12 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                   {/* Cuadro de GIF Principal en Grande */}
                   {ex?.image_urls?.[0] && (
                     <div 
+                      className="gm-gif-wrap"
                       style={{
                         position: 'relative',
                         width: '100%',
                         height: '240px',
-                        background: '#ffffff',
+                        background: '#000',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -585,6 +673,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                       <img 
                         src={fixImageUrl(ex.image_urls[0])} 
                         alt={ex?.name} 
+                        className="gm-exercise-gif"
                         style={{
                           maxWidth: '100%',
                           maxHeight: '100%',
@@ -649,12 +738,88 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
       {fullscreenImage && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }} onClick={() => setFullscreenImage(null)}>
           <button style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '0', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>Cerrar ✕</button>
-          <img src={fullscreenImage} alt="" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#fff', padding: '16px', borderRadius: '0' }} />
+          <img src={fullscreenImage} alt="" className="gm-exercise-gif gm-exercise-gif-lg" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#000', padding: '16px', borderRadius: '0' }} />
         </div>
       )}
 
       {showEditProfileModal && <EditProfileModal profile={alumno} onClose={() => setShowEditProfileModal(false)} onProfileUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} readOnlyPlan={true} />}
       {showEditRoutineModal && activeRoutine && <EditRoutineModal routine={activeRoutine} exercises={dataService.getExercises()} onClose={() => setShowEditRoutineModal(false)} onRoutineUpdated={() => { onRefreshData(); setActiveRoutine(dataService.getActiveRoutineForAlumno(alumno.id)); }} />}
+
+      {/* 🎉 Celebración al terminar entrenamiento */}
+      {showCelebration && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: 'radial-gradient(circle at center, rgba(16,185,129,0.15) 0%, rgba(0,0,0,0.9) 100%)', backdropFilter: 'blur(8px)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          padding: '24px',
+        }} onClick={() => setShowCelebration(false)}>
+          
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(52,211,153,0.2)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1)',
+            borderRadius: '32px',
+            padding: '48px 32px',
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            maxWidth: '400px', width: '100%'
+          }} onClick={e => e.stopPropagation()}>
+            
+            <img 
+              src={trophyImg} 
+              alt="Trofeo" 
+              style={{ 
+                width: '180px', 
+                height: '180px', 
+                objectFit: 'contain',
+                marginBottom: '16px', 
+                animation: 'bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                mixBlendMode: 'screen',
+                filter: 'drop-shadow(0 10px 20px rgba(245,158,11,0.3))'
+              }} 
+            />
+            
+            <h2 style={{ fontSize: '28px', fontWeight: 900, color: '#34d399', margin: '0 0 16px', textAlign: 'center', letterSpacing: '-0.5px', textShadow: '0 2px 10px rgba(52,211,153,0.2)' }}>
+              ¡Entrenamiento Completado!
+            </h2>
+            
+            <p style={{ fontSize: '15px', color: '#cbd5e1', margin: '0 0 32px', textAlign: 'center', lineHeight: 1.5 }}>
+              Sesión guardada correctamente. Podés ver tu progreso en la pestaña 📊 <strong style={{ color: '#f59e0b' }}>Mi Progreso</strong>.
+            </p>
+            
+            <button
+              onClick={() => { setShowCelebration(false); setShowStats(true); }}
+              style={{ background: 'linear-gradient(135deg, #fbbf24, #d97706)', color: '#451a03', border: 'none', padding: '16px 32px', fontSize: '15px', fontWeight: 900, cursor: 'pointer', borderRadius: '30px', boxShadow: '0 10px 25px rgba(245,158,11,0.3)', width: '100%', transition: 'transform 0.2s' }}>
+              Ver mis estadísticas →
+            </button>
+            
+            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '24px' }}>Toca fuera de la tarjeta para cerrar</span>
+          </div>
+
+        </div>
+      )}
+
+      {/* 📊 Panel de Estadísticas overlay */}
+      {showStats && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 150,
+          background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(12px)',
+          overflowY: 'auto', padding: '24px',
+        }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 900, color: '#fff', margin: 0 }}>
+                📊 Mi Progreso — {alumno.full_name}
+              </h2>
+              <button onClick={() => setShowStats(false)}
+                style={{ background: '#1e293b', color: '#fff', border: '1px solid #334155', padding: '10px 18px', fontSize: '12px', fontWeight: 800, cursor: 'pointer', borderRadius: '0' }}>
+                ✕ Cerrar
+              </button>
+            </div>
+            <WorkoutStats alumno={alumno} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

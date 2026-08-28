@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
-  Users, UserPlus, Dumbbell, Shield, Plus, CheckCircle2, AlertCircle, ChevronRight, RotateCcw, Edit2, Save, X, Upload, Trash2, Search
+  Users, UserPlus, Dumbbell, Shield, Plus, CheckCircle2, AlertCircle, ChevronRight, RotateCcw, Edit2, Save, X, Upload, Trash2, Search, BarChart2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Profile, Exercise, RoutineWithLogs } from '../types';
@@ -8,6 +8,7 @@ import { dataService } from '../services/dataService';
 import { RoutineBuilder } from './RoutineBuilder';
 import { EditProfileModal } from './EditProfileModal';
 import { fixImageUrl } from '../utils/imageUrl';
+import { WorkoutStatsCompact, WorkoutStats } from './WorkoutStats';
 
 interface DashboardCoachProps {
   coach: Profile;
@@ -115,6 +116,8 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
   };
 
   const [editingCredsAlumnoId, setEditingCredsAlumnoId] = useState<string | null>(null);
+  const [showStatsForAlumno, setShowStatsForAlumno] = useState<string | null>(null);
+  const [fullStatsAlumno, setFullStatsAlumno] = useState<Profile | null>(null);
   const [editCredsEmail, setEditCredsEmail] = useState('');
   const [editCredsPassword, setEditCredsPassword] = useState('');
   const [createAlumnoError, setCreateAlumnoError] = useState<string>('');
@@ -243,7 +246,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
       {fullscreenImage && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }} onClick={() => setFullscreenImage(null)}>
           <button style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '0', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>Cerrar ✕</button>
-          <img src={fullscreenImage} alt="Fullscreen" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#fff', padding: '16px', borderRadius: '0' }} />
+          <img src={fullscreenImage} alt="Fullscreen" className="gm-exercise-gif gm-exercise-gif-lg" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#000', padding: '16px', borderRadius: '0' }} />
         </div>
       )}
 
@@ -672,10 +675,10 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
                   <button
                     onClick={() => setSelectedAlumnoForDetails(isSelected ? null : alumno.id)}
-                    style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center' }}
+                    style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', minWidth: '120px' }}
                   >
                     <span>{isSelected ? 'Ocultar' : 'Ver Registros'}</span>
                     <ChevronRight size={14} style={{ transform: isSelected ? 'rotate(90deg)' : 'none' }} />
@@ -683,12 +686,19 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                   {onViewStudentProfile && (
                     <button
                       onClick={() => onViewStudentProfile(alumno.id)}
-                      style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', borderColor: '#2563eb', color: '#ffffff', background: '#1e3a8a' }}
+                      style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', borderColor: '#2563eb', color: '#ffffff', background: '#1e3a8a', minWidth: '120px' }}
                       title="Ver perfil del alumno como si fueras él"
                     >
                       Perfil Alumno
                     </button>
                   )}
+                  <button
+                    onClick={() => setShowStatsForAlumno(showStatsForAlumno === alumno.id ? null : alumno.id)}
+                    style={{ ...S.btnSecondary, justifyContent: 'center', borderColor: showStatsForAlumno === alumno.id ? '#06b6d4' : '#334155', color: showStatsForAlumno === alumno.id ? '#06b6d4' : '#94a3b8', background: showStatsForAlumno === alumno.id ? 'rgba(6,182,212,0.1)' : '#92400e' }}
+                    title="Ver estadísticas del alumno"
+                  >
+                    <BarChart2 size={14} />
+                  </button>
                   <button
                     onClick={() => { setRoutineBuilderAlumnoId(alumno.id); setShowRoutineBuilder(!(showRoutineBuilder && routineBuilderAlumnoId === alumno.id)); }}
                     style={S.btnPrimary}
@@ -696,6 +706,13 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     + Rutina
                   </button>
                 </div>
+                {/* Stats compacto del alumno */}
+                {showStatsForAlumno === alumno.id && (
+                  <WorkoutStatsCompact
+                    alumno={alumno}
+                    onExpand={() => setFullStatsAlumno(alumno)}
+                  />
+                )}
               </div>
 
               {/* Panel Registros - aparece justo debajo de este card */}
@@ -729,7 +746,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                               <td style={{ padding: '10px 14px' }}><span style={{ fontWeight: 900, color: '#fff', fontSize: '13px' }}>#{log.orden}</span><br/><span style={{ fontSize: '9px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 800 }}>S{log.semana} {log.dia}</span></td>
                               <td style={{ padding: '10px 14px', fontWeight: 800, color: '#fff' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                  {log.exercise?.image_urls?.[0] && <img src={fixImageUrl(log.exercise.image_urls[0])} alt="" onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))} style={{ width: '32px', height: '32px', objectFit: 'contain', background: '#fff', borderRadius: '3px', padding: '2px', cursor: 'pointer' }} />}
+                                  {log.exercise?.image_urls?.[0] && <img src={fixImageUrl(log.exercise.image_urls[0])} alt="" onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))} className="gm-exercise-gif" style={{ width: '32px', height: '32px', objectFit: 'contain', background: '#000', borderRadius: '3px', padding: '2px', cursor: 'pointer' }} />}
                                   <span>{log.exercise?.name}</span>
                                 </div>
                               </td>
@@ -777,7 +794,6 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
 
 
-      {/* Edit Profile Modal (Photo, Name, Phone for any Profile) */}
       {editingProfileTarget && (
         <EditProfileModal
           profile={editingProfileTarget}
@@ -787,6 +803,30 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             onRefreshData();
           }}
         />
+      )}
+
+      {/* 📊 Full stats modal for coach viewing an alumno */}
+      {fullStatsAlumno && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9000,
+          background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(12px)',
+          overflowY: 'auto', padding: '24px',
+        }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 900, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src={fullStatsAlumno.avatar_url || 'https://api.dicebear.com/7.x/big-smile/svg?seed=default'} alt=""
+                  style={{ width: '36px', height: '36px', objectFit: 'cover', border: '2px solid #f59e0b' }} />
+                📊 Progreso de {fullStatsAlumno.full_name}
+              </h2>
+              <button onClick={() => setFullStatsAlumno(null)}
+                style={{ background: '#1e293b', color: '#fff', border: '1px solid #334155', padding: '10px 18px', fontSize: '12px', fontWeight: 800, cursor: 'pointer', borderRadius: '0' }}>
+                ✕ Cerrar
+              </button>
+            </div>
+            <WorkoutStats alumno={fullStatsAlumno} />
+          </div>
+        </div>
       )}
     </div>
   );

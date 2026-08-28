@@ -53,7 +53,7 @@ const S = {
     background: '#0f172a', border: '1px solid #1e293b', borderRadius: '0', overflow: 'hidden' as const,
     display: 'flex', flexDirection: 'column' as const, justifyContent: 'space-between', transition: 'all 0.2s'
   },
-  imgWrap: { position: 'relative' as const, height: '220px', background: '#fff' },
+  imgWrap: { position: 'relative' as const, height: '220px', background: '#000' },
   img: { width: '100%', height: '100%', objectFit: 'contain' as const, padding: '10px', transition: 'transform 0.4s' },
   equipBadge: {
     position: 'absolute' as const, top: '12px', right: '12px', background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)',
@@ -204,8 +204,8 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
             onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(245,158,11,0.4)'; const img = e.currentTarget.querySelector('img'); if(img) img.style.transform = 'scale(1.05)'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e293b'; const img = e.currentTarget.querySelector('img'); if(img) img.style.transform = 'scale(1)'; }}>
             <div>
-              <div style={S.imgWrap}>
-                <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={S.img} onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'; }} />
+              <div style={S.imgWrap} className="gm-gif-wrap">
+                <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={S.img} className="gm-exercise-gif" onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'; }} />
                 <div style={S.equipBadge}>{ex.equipment || 'General'}</div>
               </div>
               <div style={S.cardBody}>

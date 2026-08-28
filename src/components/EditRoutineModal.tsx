@@ -847,7 +847,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         {ex.image_urls?.[0] && (
-                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#fff', padding: '2px' }} />
+                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="gm-exercise-gif" style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#000', padding: '2px' }} />
                         )}
                         <div>
                           <p style={{ margin: 0, fontSize: '12px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -967,8 +967,9 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                             border: `2px solid ${dayColor.border}`,
                             flexShrink: 0,
                             cursor: 'pointer',
-                            background: '#0f172a',
+                            background: '#000',
                           }}
+                          className="gm-exercise-gif"
                           onClick={() => {
                             const ex = item.exercise || exercises.find((e) => e.id === item.exercise_id);
                             if (ex) {
@@ -1217,11 +1218,11 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
               {/* GIF Large Container */}
               {previewExercise.image_urls?.[0] && (
-                <div style={{
+                <div className="gm-gif-wrap" style={{
                   position: 'relative',
                   width: '100%',
                   height: '240px',
-                  background: '#ffffff',
+                  background: '#000',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1229,7 +1230,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   border: '1px solid #334155',
                   boxSizing: 'border-box'
                 }}>
-                  <img src={fixImageUrl(previewExercise.image_urls[0])} alt={previewExercise.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  <img src={fixImageUrl(previewExercise.image_urls[0])} alt={previewExercise.name} className="gm-exercise-gif" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                 </div>
               )}
 

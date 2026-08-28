@@ -61,3 +61,47 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
+
+/* ====================================================
+   GIF de Ejercicios - Efecto Dark Mode Invertido
+   + Suavizado anti-pixelado (blur+contrast trick)
+   Blanco → Negro | Negro/Gris → Blanco | Rojo → Turquesa
+   ==================================================== */
+.gm-exercise-gif {
+  /* Invert colors + suavizado anti-pixelado:
+     blur(0.6px)     → suaviza bordes dentados/pixelados
+     contrast(1.12)  → recupera la nitidez perdida por el blur
+     brightness(1.05)→ compensa el leve oscurecimiento del contrast  */
+  filter: invert(1) blur(0.6px) contrast(1.12) brightness(1.05);
+
+  /* GPU acceleration: fuerza compositing en capa propia → subpixel rendering suave */
+  transform: translateZ(0);
+  will-change: filter, transform;
+  backface-visibility: hidden;
+
+  /* Interpolación bilineal/suave para upscaling */
+  image-rendering: auto;
+  -ms-interpolation-mode: bicubic;
+
+  transition: filter 0.3s ease, transform 0.4s ease;
+}
+
+.gm-exercise-gif:hover {
+  filter: invert(1) blur(0.4px) contrast(1.15) brightness(1.1);
+  transform: translateZ(0) scale(1.02);
+}
+
+/* Fondo de contenedor de GIF en modo oscuro */
+.gm-gif-wrap {
+  background: #000 !important;
+  /* Antialiasing del contenedor */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tamaños grandes (fullscreen/preview) — menos blur porque se ve mejor a tamaño completo */
+.gm-exercise-gif-lg {
+  filter: invert(1) blur(0.3px) contrast(1.08) brightness(1.03);
+  transform: translateZ(0);
+  image-rendering: auto;
+  -ms-interpolation-mode: bicubic;
+}
