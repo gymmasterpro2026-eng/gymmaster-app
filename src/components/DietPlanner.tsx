@@ -22,7 +22,7 @@ export const DietPlanner: React.FC = () => {
   const [calculated, setCalculated] = useState<boolean>(false);
 
   // Estado de la Dieta
-  const [deficit, setDeficit] = useState<number>(500); 
+  const [deficit, setDeficit] = useState<number>(2000); 
   const [duration, setDuration] = useState<number>(7);
   const [constipation, setConstipation] = useState<boolean>(false);
   const [gutFlora, setGutFlora] = useState<boolean>(false);
@@ -246,7 +246,7 @@ export const DietPlanner: React.FC = () => {
   const generateDiet = () => {
     if (tdee === 0) return alert('Por favor, calcula primero tus requerimientos antropométricos.');
 
-    const targetCalories = tdee + deficit;
+    const targetCalories = deficit;
 
     // Reducir calorías efectivas para acomodar extras (ensaladas, agregados fijos, macros mixtos)
     const effectiveCalories = targetCalories * 0.85;
@@ -712,13 +712,14 @@ export const DietPlanner: React.FC = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               <div>
-                <label style={labelStyle}>Déficit Calórico</label>
+                <label style={labelStyle}>Objetivo Calórico Fijo</label>
                 <select style={inputStyle} value={deficit} onChange={e => setDeficit(Number(e.target.value))}>
-                  <option value={300}>Leve (-300 kcal)</option>
-                  <option value={500}>Moderado (-500 kcal)</option>
-                  <option value={750}>Agresivo (-750 kcal)</option>
-                  <option value={0}>Mantenimiento (0 kcal)</option>
-                  <option value={-300}>Volumen Leve (+300 kcal)</option>
+                  <option value={1500}>1500 kcal</option>
+                  <option value={1700}>1700 kcal</option>
+                  <option value={2000}>2000 kcal</option>
+                  <option value={2500}>2500 kcal</option>
+                  <option value={3000}>3000 kcal</option>
+                  <option value={3500}>3500 kcal</option>
                 </select>
               </div>
               <div>
