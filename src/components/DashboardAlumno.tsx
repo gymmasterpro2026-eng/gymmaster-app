@@ -334,7 +334,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                 <span style={S.badgeGreen}>Plan Activo ✅</span>
                 <button style={{ ...S.editBtn }} onClick={() => setShowEditProfileModal(true)}><Pencil size={10} /> Editar</button>
                 {onBackToCoach && (
-                  <button onClick={onBackToCoach} style={{ ...S.editBtn, background: '#1d4ed8', color: '#ffffff', borderColor: '#2563eb' }}>
+                  <button onClick={onBackToCoach} style={{ ...S.editBtn, background: '#1d4ed8', color: '#ffffff', borderColor: '#2563eb', padding: '6px 14px', fontSize: '12px' }}>
                     ← Volver al Coach
                   </button>
                 )}
