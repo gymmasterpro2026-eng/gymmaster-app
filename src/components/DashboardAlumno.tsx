@@ -820,7 +820,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
         <div style={{
           position: 'fixed', inset: 0, zIndex: 150,
           background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(12px)',
-          overflowY: 'auto', padding: '24px',
+          overflowY: 'auto', padding: '6px',
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>

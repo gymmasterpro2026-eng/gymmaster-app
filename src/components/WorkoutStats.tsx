@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { TrendingUp, TrendingDown, Minus, Trophy, BarChart2, Activity, Calendar, CheckCircle2, Flame } from 'lucide-react';
 import { Profile } from '../types';
 
@@ -67,6 +67,9 @@ const getMuscleColor = (m: string) => MUSCLE_COLORS[m.toLowerCase()] || '#64748b
 
 // ── Radar Chart (SVG pure) ─────────────────────────────────────────────
 const RadarChart = ({ data }: { data: { label: string; value: number; color: string }[] }) => {
+  const [rotation, setRotation] = useState(0);
+  const svgRef = useRef<SVGSVGElement>(null);
+
   if (data.length < 3) return (
     <div style={{ textAlign: 'center', color: '#64748b', padding: '40px', fontSize: '13px' }}>
       Necesitás al menos 3 grupos musculares para el radar. Completá más sesiones. 💪
@@ -76,6 +79,42 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
   const cx = 280, cy = 220, r = 130;
   const n = data.length;
   const max = Math.max(...data.map(d => d.value), 1);
+
+  // Drag logic
+  const getPointerAngle = (e: React.PointerEvent) => {
+    if (!svgRef.current) return 0;
+    const rect = svgRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return Math.atan2(e.clientY - centerY, e.clientX - centerX) * (180 / Math.PI);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    (e.target as Element).setPointerCapture(e.pointerId);
+    if (!svgRef.current) return;
+    svgRef.current.setAttribute('data-dragging', 'true');
+    svgRef.current.setAttribute('data-start-angle', getPointerAngle(e).toString());
+    svgRef.current.setAttribute('data-start-rotation', rotation.toString());
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (svgRef.current?.getAttribute('data-dragging') === 'true') {
+      const startAngle = parseFloat(svgRef.current.getAttribute('data-start-angle') || '0');
+      const startRotation = parseFloat(svgRef.current.getAttribute('data-start-rotation') || '0');
+      const currentAngle = getPointerAngle(e);
+      
+      let delta = currentAngle - startAngle;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+
+      setRotation(startRotation + delta);
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    (e.target as Element).releasePointerCapture(e.pointerId);
+    svgRef.current?.setAttribute('data-dragging', 'false');
+  };
 
   const getPoint = (i: number, val: number) => {
     const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
@@ -98,28 +137,55 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
     return pts.join(' ');
   });
 
-  // Puntos individuales para los marcadores (círculos)
-  const dataPoints = data.map((d, i) => getPoint(i, d.value));
-
-  // Data polygon (solo conectamos los puntos con valor > 0 para que no bajen al centro)
+  // Puntos individuales para los marcadores (círculos) - solo activos
   const activeData = data.filter(d => d.value > 0);
   
-  // Si no hay suficientes datos activos para formar un polígono, usamos todos (aunque vayan al centro)
-  // pero idealmente, si dibujaron la línea naranja, quieren que solo los activos se conecten.
-  const polygonPointsToUse = activeData.length >= 3 ? activeData : data;
-  
-  const polygon = polygonPointsToUse.map(d => {
-    // Necesitamos encontrar el índice original para calcular el ángulo correcto
+  const activeDataPoints = activeData.map(d => {
     const originalIndex = data.indexOf(d);
-    const p = getPoint(originalIndex, d.value);
-    return `${p.x},${p.y}`;
-  }).join(' ');
+    return getPoint(originalIndex, d.value);
+  });
+
+  let polygon = activeDataPoints.map(p => `${p.x},${p.y}`).join(' ');
+
+  // Si hay 1 o 2 grupos musculares trabajados, agregamos el centro al polígono y a los marcadores 
+  // para que se forme un área cerrada (triángulo) hacia el origen.
+  if (activeData.length > 0 && activeData.length < 3) {
+    polygon += ` ${cx},${cy}`;
+    activeDataPoints.push({ x: cx, y: cy });
+  }
 
   // Color principal para el gráfico analítico
   const themeColor = '#14b8a6'; // Teal-500
 
   return (
-    <svg width="100%" height="auto" viewBox="0 0 560 440" style={{ display: 'block', margin: '0 auto', maxWidth: '460px' }}>
+    <svg 
+      ref={svgRef}
+      width="100%" height="auto" viewBox="20 20 520 400" 
+      style={{ display: 'block', margin: '0 auto', maxWidth: '100%', cursor: 'grab', touchAction: 'none' }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+    >
+      <style>{`
+        .muscle-label {
+          transition: font-size 0.2s cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s ease;
+          cursor: pointer;
+        }
+        .muscle-label:active {
+          font-size: 24px !important;
+          fill: #14b8a6 !important; /* Verde agua brillante */
+        }
+        @media (hover: hover) {
+          .muscle-label:hover {
+            font-size: 11px !important;
+            fill: #14b8a6 !important;
+          }
+        }
+      `}</style>
+      
+      {/* Grupo principal giratorio manual */}
+      <g style={{ transform: `rotate(${rotation}deg)`, transformOrigin: `${cx}px ${cy}px` }}>
       {/* Grid rings (Líneas concéntricas de la telaraña) */}
       {ringPaths.map((pts, i) => (
         <polygon 
@@ -132,18 +198,29 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
       ))}
       
       {/* Radial lines (Ejes desde el centro) */}
-      {data.map((_, i) => {
+      {data.map((d, i) => {
         const outer = getPoint(i, max);
+        const dataPt = getPoint(i, d.value);
         return (
-          <line 
-            key={`spoke-${i}`} 
-            x1={cx} 
-            y1={cy} 
-            x2={outer.x} 
-            y2={outer.y} 
-            stroke="#334155" // slate-700
-            strokeWidth="1" 
-          />
+          <React.Fragment key={`spoke-${i}`}>
+            {/* Eje base completo */}
+            <line 
+              x1={cx} y1={cy} 
+              x2={outer.x} y2={outer.y} 
+              stroke="#334155" // slate-700
+              strokeWidth="1" 
+            />
+            {/* Resalte verde agua solo para la parte de afuera de la telaraña (si fue entrenado) */}
+            {d.value > 0 && (
+              <line 
+                x1={dataPt.x} y1={dataPt.y} 
+                x2={outer.x} y2={outer.y} 
+                stroke={themeColor} 
+                strokeWidth="2" 
+                strokeOpacity="0.8"
+              />
+            )}
+          </React.Fragment>
         );
       })}
       
@@ -156,7 +233,7 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
       />
       
       {/* Puntos de Datos (Marcadores en los vértices) */}
-      {dataPoints.map((p, i) => (
+      {activeDataPoints.map((p, i) => (
         <circle 
           key={`dot-${i}`} 
           cx={p.x} 
@@ -180,14 +257,20 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
             y={lp.y} 
             textAnchor={anchor} 
             dominantBaseline="middle"
-            className={`uppercase tracking-wider ${d.value === 0 ? 'fill-red-500' : 'fill-slate-400'}`}
+            className={`muscle-label uppercase tracking-wider ${d.value === 0 ? 'fill-red-500' : 'fill-slate-400'}`}
             fontSize="9" 
             fontWeight="800"
-            style={{ fontFamily: "'Inter', sans-serif", letterSpacing: '0.05em' }}>
+            style={{ 
+              fontFamily: "'Inter', sans-serif", 
+              letterSpacing: '0.05em',
+              transformOrigin: `${lp.x}px ${lp.y}px`,
+              transform: `rotate(${-rotation}deg)`
+            }}>
             {d.label.length > 22 ? d.label.slice(0, 21) + '.' : d.label}
           </text>
         );
       })}
+      </g>
     </svg>
   );
 };
@@ -280,18 +363,44 @@ interface WorkoutStatsProps {
 }
 
 export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
-  const [period, setPeriod] = useState<'15days' | 'month' | 'all'>('15days');
+  const [period, setPeriod] = useState<'7days' | '14days' | 'month' | 'all'>('7days');
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'radar' | 'progress' | 'history'>('radar');
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const sessions = useMemo(() => getSessions(alumno.id), [alumno.id]);
+
+  const currentWeekDays = useMemo(() => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 (Sun) to 6 (Sat)
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - dayOfWeek);
+    
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(startOfWeek);
+      d.setDate(startOfWeek.getDate() + i);
+      days.push(d);
+    }
+    return days;
+  }, []);
 
   const filteredSessions = useMemo(() => {
     const now = new Date();
     return sessions.filter(s => {
       const d = new Date(s.fecha);
-      if (period === '15days') {
-        const daysAgo = new Date(now); daysAgo.setDate(now.getDate() - 15);
+      
+      // Si estamos en la pestaña radar y hay un día seleccionado, filtramos estrictamente por ese día
+      if (activeSection === 'radar' && selectedDate) {
+        return d.toDateString() === new Date(selectedDate).toDateString();
+      }
+
+      if (period === '7days') {
+        const daysAgo = new Date(now); daysAgo.setDate(now.getDate() - 7);
+        return d >= daysAgo;
+      }
+      if (period === '14days') {
+        const daysAgo = new Date(now); daysAgo.setDate(now.getDate() - 14);
         return d >= daysAgo;
       }
       if (period === 'month') {
@@ -300,7 +409,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
       }
       return true;
     });
-  }, [sessions, period]);
+  }, [sessions, period, activeSection, selectedDate]);
 
   // Aggregate EXERCISE COUNT (Ejercicios completados con >= 3 series) by muscle group
   const muscleVolume = useMemo(() => {
@@ -370,30 +479,35 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
         return Math.max(...exs.map(e => e.peso_real), 0);
       };
 
-      const history = mSessions.map((s, idx, arr) => {
+      // 1. Extraer pesos y deduplicar valores consecutivos idénticos
+      const uniqueRecords = mSessions.reduce<{ s: WorkoutSession; peso: number }[]>((acc, s) => {
         const peso = getPeso(s);
+        const lastRecord = acc[acc.length - 1];
+        
+        // Si no hay registro previo, o si el peso es distinto al anterior, lo agregamos
+        if (!lastRecord || lastRecord.peso !== peso) {
+          acc.push({ s, peso });
+        }
+        return acc;
+      }, []);
+
+      // 2. Retener solo los últimos 5 registros de variación
+      const recentRecords = uniqueRecords.slice(-5);
+
+      // 3. Calcular deltas basándose en este nuevo array filtrado
+      const history = recentRecords.map((record, idx, arr) => {
+        const { s, peso } = record;
         let delta = 0;
         let timeLabel = '';
 
         if (idx > 0) {
           const prev = arr[idx - 1];
-          const prevPeso = getPeso(prev);
-          delta = peso - prevPeso;
+          delta = peso - prev.peso;
 
-          // Attempt to extract timestamp from ID
-          const t1 = parseInt(prev.id.split('_').pop() || '0');
           const t2 = parseInt(s.id.split('_').pop() || '0');
-          const d1 = new Date(t1 || prev.fecha);
           const d2 = new Date(t2 || s.fecha);
-
-          // If same day, show time vs time. Else, date vs date.
-          if (d1.toDateString() === d2.toDateString()) {
-            const formatTime = (d: Date) => `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
-            timeLabel = `${formatTime(d1)} vs ${formatTime(d2)}`;
-          } else {
-            const formatShortDate = (d: Date) => `${d.getDate()} ${d.toLocaleString('es-ES', { month: 'short' })}`;
-            timeLabel = `${formatShortDate(d1)} vs ${formatShortDate(d2)}`;
-          }
+          const formatShortDate = (d: Date) => `${d.getDate()} ${d.toLocaleString('es-ES', { month: 'short' })}`;
+          timeLabel = formatShortDate(d2);
         } else {
           const t1 = parseInt(s.id.split('_').pop() || '0');
           const d1 = new Date(t1 || s.fecha);
@@ -404,13 +518,18 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
         return { id: s.id, peso, delta, timeLabel };
       });
 
+      // Validar si el músculo original proviene del mapeo
+      const originalName = ALL_MUSCLES.find(x => x.toLowerCase() === m) || (m.charAt(0).toUpperCase() + m.slice(1));
+
       return {
-        muscle: m,
+        muscle: originalName,
         color: getMuscleColor(m),
-        history, 
+        history,
         lastPeso: history.length > 0 ? history[history.length - 1].peso : 0
       };
-    }).sort((a, b) => b.lastPeso - a.lastPeso);
+    })
+    .filter(item => item.history.length > 0) // No mostrar si nunca se levantó peso
+    .sort((a, b) => b.lastPeso - a.lastPeso);
   }, [sessions, allMuscles]);
 
   // Stats summary
@@ -439,13 +558,13 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
     }),
     periodBar: { display: 'flex', gap: '6px', marginBottom: '20px' },
     periodBtn: (active: boolean): React.CSSProperties => ({
-      background: active ? 'rgba(6,182,212,0.15)' : 'transparent',
-      color: active ? '#06b6d4' : '#64748b',
-      border: `1px solid ${active ? '#06b6d4' : '#1e293b'}`,
+      background: active ? '#10b981' : 'transparent',
+      color: active ? '#fff' : '#64748b',
+      border: `1px solid ${active ? '#10b981' : '#1e293b'}`,
       padding: '6px 14px', fontSize: '11px', fontWeight: 800,
       cursor: 'pointer', borderRadius: '0',
     }),
-    section: { background: '#0f172a', border: '1px solid #1e293b', padding: '20px', marginBottom: '16px' },
+    section: { background: '#0f172a', border: '1px solid #1e293b', padding: '6px', marginBottom: '16px' },
     sectionTitle: { fontSize: '13px', fontWeight: 900, color: '#fff', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' },
     emptyState: { textAlign: 'center' as const, color: '#64748b', padding: '40px', fontSize: '13px' },
   };
@@ -497,9 +616,16 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
       {/* Period selector */}
       <div style={S.periodBar}>
-        {(['15days', 'month', 'all'] as const).map(p => (
-          <button key={p} style={S.periodBtn(period === p)} onClick={() => setPeriod(p)}>
-            {p === '15days' ? 'Últimos 15 días' : p === 'month' ? 'Este mes' : 'Todo'}
+        {(['7days', '14days', 'month', 'all'] as const).map(p => (
+          <button 
+            key={p} 
+            style={S.periodBtn(period === p)} 
+            onClick={() => {
+              setPeriod(p);
+              setSelectedDate(null); // Limpiamos el día específico si cambian el período general
+            }}
+          >
+            {p === '7days' ? 'Últimos 7 días' : p === '14days' ? 'Últimos 14 días' : p === 'month' ? 'Este mes' : 'Todo'}
           </button>
         ))}
       </div>
@@ -520,8 +646,34 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
       {/* RADAR section */}
       {activeSection === 'radar' && (
         <>
+          {/* Day Sub-tabs */}
+          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '16px', borderBottom: '1px solid #1e293b' }}>
+            <button 
+              onClick={() => setSelectedDate(null)}
+              style={{ ...S.periodBtn(!selectedDate), flexShrink: 0 }}
+            >
+              General
+            </button>
+            {currentWeekDays.map(d => {
+              const dateStr = d.toISOString();
+              const isSelected = selectedDate ? new Date(selectedDate).toDateString() === d.toDateString() : false;
+              const isFuture = d > new Date() && d.toDateString() !== new Date().toDateString();
+              const dayName = d.toLocaleString('es-ES', { weekday: 'short' });
+              
+              return (
+                <button 
+                  key={dateStr}
+                  onClick={() => setSelectedDate(dateStr)}
+                  style={{ ...S.periodBtn(isSelected), flexShrink: 0, opacity: isFuture ? 0.5 : 1 }}
+                >
+                  {dayName.charAt(0).toUpperCase() + dayName.slice(1)} {d.getDate()}/{d.getMonth() + 1}
+                </button>
+              );
+            })}
+          </div>
+
           <div style={S.section}>
-            <p style={S.sectionTitle}><Activity size={16} color="#06b6d4" /> Distribución por Volumen</p>
+            <p style={S.sectionTitle}><Activity size={16} color="#06b6d4" /> Distribución por Volumen {selectedDate && `(${new Date(selectedDate).toLocaleDateString('es-ES')})`}</p>
             {radarData.length < 3 ? (
               <div style={S.emptyState}>Completá más sesiones con distintos grupos musculares.</div>
             ) : (
