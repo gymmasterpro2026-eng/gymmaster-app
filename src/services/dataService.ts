@@ -3,6 +3,36 @@ import { INITIAL_EXERCISES } from '../data/exerciseDatasetMock';
 import { MOCK_PROFILES, MOCK_ROUTINES, MOCK_ROUTINE_LOGS, INITIAL_GYMS, MOCK_COBROS } from '../data/mockDatabase';
 import { translateExercise, translateExerciseList } from './translationService';
 import { supabase, isSupabaseConfigured } from './supabaseClient';
+import type { WorkoutSession } from '../components/WorkoutStats';
+
+export const STANDARD_MUSCLES = [
+  'Pectorals', 'Abdominales', 'Abductores', 'Aductores', 'Antebrazos', 'Bíceps',
+  'Cardiovascular system', 'Cuádriceps', 'Delts', 'Dorsales (espalda)',
+  'Espalda alta', 'Gemelos (pantorrillas)', 'Glúteos', 'Isquiotibiales (femorales)',
+  'Levator scapulae', 'Serrato mayor', 'Spine', 'Trapecios', 'Tríceps'
+];
+
+export const MUSCLE_MAPPING: Record<string, string> = {
+  'chest': 'Pectorals', 'pectorales': 'Pectorals', 'pecho': 'Pectorals', 'pectorals': 'Pectorals',
+  'back': 'Dorsales (espalda)', 'espalda': 'Dorsales (espalda)', 'lats': 'Dorsales (espalda)', 'dorsales': 'Dorsales (espalda)', 'dorsales (espalda)': 'Dorsales (espalda)',
+  'espalda alta': 'Espalda alta', 'upper back': 'Espalda alta',
+  'shoulders': 'Delts', 'hombros': 'Delts', 'deltoides': 'Delts', 'delts': 'Delts',
+  'biceps': 'Bíceps', 'bíceps': 'Bíceps', 'bicep': 'Bíceps',
+  'triceps': 'Tríceps', 'tríceps': 'Tríceps', 'tricep': 'Tríceps',
+  'legs': 'Cuádriceps', 'piernas': 'Cuádriceps', 'quadriceps': 'Cuádriceps', 'cuádriceps': 'Cuádriceps', 'quads': 'Cuádriceps',
+  'hamstrings': 'Isquiotibiales (femorales)', 'isquiotibiales': 'Isquiotibiales (femorales)', 'isquiotibiales (femorales)': 'Isquiotibiales (femorales)', 'femorales': 'Isquiotibiales (femorales)',
+  'glutes': 'Glúteos', 'glúteos': 'Glúteos', 'gluteus': 'Glúteos',
+  'core': 'Abdominales', 'abdominales': 'Abdominales', 'abs': 'Abdominales',
+  'calves': 'Gemelos (pantorrillas)', 'gemelos': 'Gemelos (pantorrillas)', 'pantorrillas': 'Gemelos (pantorrillas)', 'gemelos (pantorrillas)': 'Gemelos (pantorrillas)',
+  'forearms': 'Antebrazos', 'antebrazos': 'Antebrazos',
+  'abductores': 'Abductores', 'abductors': 'Abductores',
+  'aductores': 'Aductores', 'adductors': 'Aductores',
+  'cardiovascular system': 'Cardiovascular system', 'cardio': 'Cardiovascular system',
+  'levator scapulae': 'Levator scapulae', 
+  'serrato mayor': 'Serrato mayor', 'serratus': 'Serrato mayor',
+  'spine': 'Spine', 'columna': 'Spine',
+  'trapecios': 'Trapecios', 'traps': 'Trapecios'
+};
 
 class DataService {
   private profiles: Profile[] = [...MOCK_PROFILES];
@@ -802,6 +832,34 @@ class DataService {
     }
   }
 
+  clearCompletedSeriesForDay(alumnoId: string, semana: number, dia: string) {
+    const routine = this.routines.find((r) => r.alumno_id === alumnoId && r.activa);
+    if (!routine) return;
+    
+    let changed = false;
+    this.logs.forEach(log => {
+      if (log.routine_id === routine.id && (log.semana || 1) === semana && log.dia === dia && log.completed_series) {
+        log.completed_series = new Array(log.series).fill(false);
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      this.persist();
+      if (supabase) {
+        this.saveToCloud(async () => {
+          const logsToUpdate = this.logs.filter(l => l.routine_id === routine.id && (l.semana || 1) === semana && l.dia === dia);
+          for (const log of logsToUpdate) {
+            await supabase
+              .from('gym_routine_logs')
+              .update({ completed_series: log.completed_series })
+              .eq('id', log.id);
+          }
+        });
+      }
+    }
+  }
+
   deleteRoutineLog(logId: string) {
     const index = this.logs.findIndex((l) => l.id === logId);
     if (index !== -1) {
@@ -814,6 +872,42 @@ class DataService {
       }
       this.notify();
     }
+  }
+
+  saveWorkoutSession(session: WorkoutSession) {
+    // 1. Mapear y sanear los músculos primarios al estándar de 19 músculos
+    session.ejercicios.forEach(ej => {
+      const standardMuscles = new Set<string>();
+      (ej.primary_muscles || []).forEach(pm => {
+        if (!pm) return;
+        const normalized = pm.toLowerCase().trim();
+        const mapped = MUSCLE_MAPPING[normalized];
+        if (mapped) {
+          standardMuscles.add(mapped);
+        } else {
+          // Si no está mapeado, buscamos si por coincidencia exacta es uno de los 19
+          const isStandard = STANDARD_MUSCLES.find(m => m.toLowerCase() === normalized);
+          if (isStandard) standardMuscles.add(isStandard);
+        }
+      });
+      ej.primary_muscles = Array.from(standardMuscles);
+    });
+
+    // 2. Guardar en Storage / Persistencia (o base de datos si aplica)
+    const key = `gymmaster_sessions_${session.alumno_id}`;
+    const existing: WorkoutSession[] = JSON.parse(localStorage.getItem(key) || '[]');
+    
+    // Reemplazar si es la misma sesión (mismo día y semana)
+    const idx = existing.findIndex(s => s.fecha === session.fecha && s.dia === session.dia && s.semana === session.semana);
+    if (idx >= 0) {
+      existing[idx] = session;
+    } else {
+      existing.unshift(session);
+    }
+    
+    // Limitar historial a las últimas 120 sesiones
+    localStorage.setItem(key, JSON.stringify(existing.slice(0, 120)));
+    this.notify();
   }
 }
 

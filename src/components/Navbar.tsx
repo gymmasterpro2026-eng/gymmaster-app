@@ -411,8 +411,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           }
           .gm-mobile-toggle {
             display: none; position: fixed; top: 16px; left: 16px; z-index: 60;
-            background: #0f172a; border: none; padding: 10px; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-radius: 0;
+            background: #f59e0b; border: none; padding: 10px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); border-radius: 8px;
           }
           @media (max-width: 768px) {
             .gm-sidebar { position: fixed !important; left: -260px; height: 100vh; z-index: 50; }

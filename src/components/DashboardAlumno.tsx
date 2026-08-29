@@ -455,6 +455,8 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
             onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
             onClick={() => {
               if (!activeRoutine || !activeCombo) return;
+              
+              const { semana: currentSemana, dia: currentDia } = activeCombo;
               const durMin = Math.round((Date.now() - workoutStartRef.current) / 60000);
               const ejercicios = dayLogs
                 .filter(l => l.exercise)
@@ -468,17 +470,31 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                   series_completadas: (l.completed_series || []).filter(Boolean).length,
                   volumen_kg: Math.round((l.peso_real || 0) * (l.completed_series || []).filter(Boolean).length * l.repeticiones),
                 }));
+              
               const session: WorkoutSession = {
                 id: `${alumno.id}_${Date.now()}`,
                 alumno_id: alumno.id,
                 fecha: new Date().toISOString().slice(0, 10),
-                semana: activeCombo.semana,
-                dia: activeCombo.dia,
+                semana: currentSemana,
+                dia: currentDia,
                 duracion_min: Math.max(1, durMin),
                 ejercicios,
                 total_volumen_kg: ejercicios.reduce((acc, e) => acc + e.volumen_kg, 0),
               };
-              saveSession(session);
+              
+              dataService.saveWorkoutSession(session);
+              
+              dayLogs.forEach(log => {
+                log.completed_series = new Array(log.series).fill(false);
+              });
+
+              dataService.clearCompletedSeriesForDay(alumno.id, currentSemana, currentDia);
+
+              const updated = dataService.getActiveRoutineForAlumno(alumno.id);
+              if (updated) {
+                setActiveRoutine({ ...updated, logs: [...updated.logs] });
+              }
+              
               workoutStartRef.current = Date.now();
               setShowCelebration(true);
               setTimeout(() => setShowCelebration(false), 4000);
