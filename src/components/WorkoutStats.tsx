@@ -68,6 +68,7 @@ const getMuscleColor = (m: string) => MUSCLE_COLORS[m.toLowerCase()] || '#64748b
 // ── Radar Chart (SVG pure) ─────────────────────────────────────────────
 const RadarChart = ({ data }: { data: { label: string; value: number; color: string }[] }) => {
   const [rotation, setRotation] = useState(0);
+  const [selectedLabelIndex, setSelectedLabelIndex] = useState<number | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   if (data.length < 3) return (
@@ -106,6 +107,9 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
       let delta = currentAngle - startAngle;
       if (delta > 180) delta -= 360;
       if (delta < -180) delta += 360;
+
+      // Si hay un giro significativo, limpiamos el label seleccionado para no confundir
+      if (Math.abs(delta) > 5) setSelectedLabelIndex(null);
 
       setRotation(startRotation + delta);
     }
@@ -169,12 +173,9 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
     >
       <style>{`
         .muscle-label {
-          transition: font-size 0.2s cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s ease;
+          transition: font-size 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.3s ease;
           cursor: pointer;
-        }
-        .muscle-label:active {
-          font-size: 24px !important;
-          fill: #14b8a6 !important; /* Verde agua brillante */
+          pointer-events: bounding-box;
         }
         @media (hover: hover) {
           .muscle-label:hover {
@@ -257,14 +258,19 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
             y={lp.y} 
             textAnchor={anchor} 
             dominantBaseline="middle"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedLabelIndex(selectedLabelIndex === i ? null : i);
+            }}
             className={`muscle-label uppercase tracking-wider ${d.value === 0 ? 'fill-red-500' : 'fill-slate-400'}`}
-            fontSize="9" 
+            fontSize={selectedLabelIndex === i ? "24" : "9"} 
             fontWeight="800"
             style={{ 
               fontFamily: "'Inter', sans-serif", 
               letterSpacing: '0.05em',
               transformOrigin: `${lp.x}px ${lp.y}px`,
-              transform: `rotate(${-rotation}deg)`
+              transform: `rotate(${-rotation}deg)`,
+              fill: selectedLabelIndex === i ? '#14b8a6' : undefined
             }}>
             {d.label.length > 22 ? d.label.slice(0, 21) + '.' : d.label}
           </text>
@@ -592,6 +598,23 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
   return (
     <div style={S.page}>
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(30, 41, 59, 0.5); /* slate-800 translúcido */
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #f59e0b; /* Amarillo-Naranja */
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #d97706;
+        }
+      `}</style>
+      
       {/* Header */}
       <div style={S.header}>
         <h2 style={S.title}>📊 Mi Progreso</h2>
@@ -647,7 +670,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
       {activeSection === 'radar' && (
         <>
           {/* Day Sub-tabs */}
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '16px', borderBottom: '1px solid #1e293b' }}>
+          <div className="custom-scrollbar" style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '16px', borderBottom: '1px solid #1e293b' }}>
             <button 
               onClick={() => setSelectedDate(null)}
               style={{ ...S.periodBtn(!selectedDate), flexShrink: 0 }}

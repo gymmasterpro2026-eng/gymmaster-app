@@ -172,7 +172,7 @@ export default function App() {
         {/* Glow */}
         <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '75%', height: '128px', background: '#f59e0b', borderRadius: '0', filter: 'blur(120px)', opacity: 0.02, pointerEvents: 'none' }} />
 
-        <main id="main-content-area" style={{ flex: 1, padding: '32px 40px', maxWidth: '1600px', margin: '0 auto', width: '100%' }}>
+        <main id="main-content-area" className="main-content-area">
           {isAlumnoBlocked ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
               <div style={{ background: '#0f172a', border: '1px solid #ef4444', padding: '40px', borderRadius: '8px', maxWidth: '500px' }}>
