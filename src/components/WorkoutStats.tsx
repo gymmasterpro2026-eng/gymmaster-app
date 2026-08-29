@@ -534,7 +534,6 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
         lastPeso: history.length > 0 ? history[history.length - 1].peso : 0
       };
     })
-    .filter(item => item.history.length > 0) // No mostrar si nunca se levantó peso
     .sort((a, b) => b.lastPeso - a.lastPeso);
   }, [sessions, allMuscles]);
 
