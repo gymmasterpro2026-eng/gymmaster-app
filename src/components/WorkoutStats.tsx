@@ -363,13 +363,102 @@ function BarChart({ data, label }: { data: { fecha: string; peso: number; vol: n
   );
 }
 
+// ── Muscle Progress Accordion ──────────────────────────────────────────
+function MuscleProgressAccordion({ item, index }: { item: any; index: number }) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', borderRadius: '6px' }}>
+      <div 
+        style={{ 
+          display: 'flex', alignItems: 'center', gap: '8px', 
+          marginBottom: isOpen ? '16px' : '0', 
+          cursor: 'pointer', userSelect: 'none',
+          background: '#334155', padding: '12px', borderRadius: '6px'
+        }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace' }}>#{index + 1}</span>
+        <span style={{ width: '10px', height: '10px', background: item.color, display: 'inline-block', borderRadius: '50%' }} />
+        <span style={{ fontSize: '14px', fontWeight: 900, color: '#fff', textTransform: 'capitalize', flex: 1 }}>
+          {item.muscle}
+        </span>
+        <span style={{ color: '#fff', fontSize: '10px', fontWeight: 700 }}>{isOpen ? 'Ocultar ▲' : 'Mostrar ▼'}</span>
+      </div>
+      
+      {isOpen && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {item.exercises.length === 0 ? (
+            <div style={{ fontSize: '11px', color: '#64748b', fontStyle: 'italic', paddingLeft: '16px' }}>
+              Aún no hay sesiones registradas para este grupo muscular.
+            </div>
+          ) : (
+            item.exercises.map((ex: any) => {
+              const maxPeso = Math.max(...ex.history.map((h: any) => h.peso), 1);
+              return (
+                <div key={ex.name} style={{ display: 'flex', flexDirection: 'column', gap: '12px', borderBottom: '1px solid #1e293b', paddingBottom: '16px' }}>
+                   {/* Exercise Header */}
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ color: '#fff', fontSize: '13px', fontWeight: 800 }}>{ex.name}</span>
+                      {ex.idStr && (
+                        <span style={{ border: '1px solid #d97706', color: '#d97706', fontSize: '9px', padding: '2px 4px', fontWeight: 700, borderRadius: '4px' }}>
+                          {ex.idStr}
+                        </span>
+                      )}
+                   </div>
+
+                   {/* Exercise History (Mini Bar Chart) */}
+                   <div className="custom-scrollbar" style={{ display: 'flex', gap: '12px', paddingLeft: '12px', borderLeft: `2px solid ${item.color}40`, overflowX: 'auto' }}>
+                     {ex.history.map((h: any, idx: number) => {
+                        const heightPct = Math.max(10, (h.peso / maxPeso) * 100);
+                        const isFirst = idx === 0;
+
+                        return (
+                          <div key={h.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '40px' }}>
+                            {/* Delta text */}
+                            <span style={{ 
+                              fontSize: '10px', fontWeight: 900, 
+                              color: h.delta > 0 ? '#10b981' : h.delta < 0 ? '#ef4444' : 'transparent',
+                              height: '14px' // keep space
+                            }}>
+                              {!isFirst && h.delta !== 0 ? (h.delta > 0 ? `+${h.delta}` : h.delta) : ''}
+                            </span>
+                            
+                            {/* Vertical Bar */}
+                            <div style={{ width: '12px', height: '35px', background: '#1e293b', borderRadius: '4px', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
+                              <div style={{ width: '100%', height: `${heightPct}%`, background: isFirst ? '#475569' : item.color, transition: 'height 0.5s' }} />
+                            </div>
+                            
+                            {/* Peso */}
+                            <span style={{ fontSize: '11px', fontWeight: 900, color: '#fff' }}>
+                              {h.peso}
+                            </span>
+                            
+                            {/* Fecha */}
+                            <span style={{ fontSize: '9px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                              {h.timeLabel.split(' ')[0]} {h.timeLabel.split(' ')[1]}
+                            </span>
+                          </div>
+                        );
+                     })}
+                   </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Component ─────────────────────────────────────────────────────
 interface WorkoutStatsProps {
   alumno: Profile;
 }
 
 export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
-  const [period, setPeriod] = useState<'7days' | '14days' | 'month' | 'all'>('7days');
+  const [period, setPeriod] = useState<'7days' | '14days' | 'month' | 'all' | 'custom'>('7days');
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'radar' | 'progress' | 'history'>('radar');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -394,28 +483,42 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
   const filteredSessions = useMemo(() => {
     const now = new Date();
     return sessions.filter(s => {
-      const d = new Date(s.fecha);
+      const ts = parseInt(s.id.split('_').pop() || '0');
+      const d = ts > 1000000000000 ? new Date(ts) : (s.fecha.length === 10 ? new Date(s.fecha.replace(/-/g, '/')) : new Date(s.fecha));
       
-      // Si estamos en la pestaña radar y hay un día seleccionado, filtramos estrictamente por ese día
-      if (activeSection === 'radar' && selectedDate) {
-        return d.toDateString() === new Date(selectedDate).toDateString();
+      // Si estamos en la pestaña radar
+      if (activeSection === 'radar') {
+        if (selectedDate) {
+          return d.toDateString() === new Date(selectedDate).toDateString();
+        } else if (period === 'custom') {
+          // General: limitar estrictamente a los 7 días que se muestran en la barra
+          const startOfWeek = new Date(currentWeekDays[0]);
+          startOfWeek.setHours(0, 0, 0, 0);
+          const endOfWeek = new Date(currentWeekDays[6]);
+          endOfWeek.setHours(23, 59, 59, 999);
+          return d >= startOfWeek && d <= endOfWeek;
+        }
       }
 
+      // Filtros globales para ver el pasado (excluyen el día de hoy)
+      const startOfToday = new Date(now);
+      startOfToday.setHours(0, 0, 0, 0);
+
       if (period === '7days') {
-        const daysAgo = new Date(now); daysAgo.setDate(now.getDate() - 7);
-        return d >= daysAgo;
+        const daysAgo = new Date(startOfToday); daysAgo.setDate(startOfToday.getDate() - 7);
+        return d >= daysAgo && d < startOfToday;
       }
       if (period === '14days') {
-        const daysAgo = new Date(now); daysAgo.setDate(now.getDate() - 14);
-        return d >= daysAgo;
+        const daysAgo = new Date(startOfToday); daysAgo.setDate(startOfToday.getDate() - 14);
+        return d >= daysAgo && d < startOfToday;
       }
       if (period === 'month') {
-        const monthAgo = new Date(now); monthAgo.setDate(now.getDate() - 30);
-        return d >= monthAgo;
+        const monthAgo = new Date(startOfToday); monthAgo.setDate(startOfToday.getDate() - 30);
+        return d >= monthAgo && d < startOfToday;
       }
       return true;
     });
-  }, [sessions, period, activeSection, selectedDate]);
+  }, [sessions, period, activeSection, selectedDate, currentWeekDays]);
 
   // Aggregate EXERCISE COUNT (Ejercicios completados con >= 3 series) by muscle group
   const muscleVolume = useMemo(() => {
@@ -480,61 +583,67 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
         s.ejercicios.some(e => e.primary_muscles.map(pm => pm.toLowerCase()).includes(m))
       );
 
-      const getPeso = (s: WorkoutSession) => {
-        const exs = s.ejercicios.filter(e => e.primary_muscles.map(pm => pm.toLowerCase()).includes(m));
-        return Math.max(...exs.map(e => e.peso_real), 0);
-      };
-
-      // 1. Extraer pesos y deduplicar valores consecutivos idénticos
-      const uniqueRecords = mSessions.reduce<{ s: WorkoutSession; peso: number }[]>((acc, s) => {
-        const peso = getPeso(s);
-        const lastRecord = acc[acc.length - 1];
-        
-        // Si no hay registro previo, o si el peso es distinto al anterior, lo agregamos
-        if (!lastRecord || lastRecord.peso !== peso) {
-          acc.push({ s, peso });
-        }
-        return acc;
-      }, []);
-
-      // 2. Retener solo los últimos 5 registros de variación
-      const recentRecords = uniqueRecords.slice(-5);
-
-      // 3. Calcular deltas basándose en este nuevo array filtrado
-      const history = recentRecords.map((record, idx, arr) => {
-        const { s, peso } = record;
-        let delta = 0;
-        let timeLabel = '';
-
-        if (idx > 0) {
-          const prev = arr[idx - 1];
-          delta = peso - prev.peso;
-
-          const t2 = parseInt(s.id.split('_').pop() || '0');
-          const d2 = new Date(t2 || s.fecha);
-          const formatShortDate = (d: Date) => `${d.getDate()} ${d.toLocaleString('es-ES', { month: 'short' })}`;
-          timeLabel = formatShortDate(d2);
-        } else {
-          const t1 = parseInt(s.id.split('_').pop() || '0');
-          const d1 = new Date(t1 || s.fecha);
-          const formatShortDate = (d: Date) => `${d.getDate()} ${d.toLocaleString('es-ES', { month: 'short' })}`;
-          timeLabel = formatShortDate(d1);
-        }
-
-        return { id: s.id, peso, delta, timeLabel };
+      // Find all unique exercises for THIS muscle
+      const uniqueExerciseNames = new Set<string>();
+      mSessions.forEach(s => {
+        s.ejercicios.filter(e => e.primary_muscles.map(pm => pm.toLowerCase()).includes(m))
+          .forEach(e => uniqueExerciseNames.add(e.nombre));
       });
 
-      // Validar si el músculo original proviene del mapeo
+      const exercises = Array.from(uniqueExerciseNames).map(exName => {
+        // Find sessions for this specific exercise
+        const exSessions = mSessions.filter(s => s.ejercicios.some(e => e.nombre === exName));
+
+        const getPeso = (s: WorkoutSession) => {
+          const exs = s.ejercicios.filter(e => e.nombre === exName);
+          return Math.max(...exs.map(e => e.peso_real), 0);
+        };
+
+        const uniqueRecords = exSessions.reduce<{ s: WorkoutSession; peso: number }[]>((acc, s) => {
+          const peso = getPeso(s);
+          const lastRecord = acc[acc.length - 1];
+          if (!lastRecord || lastRecord.peso !== peso) {
+            acc.push({ s, peso });
+          }
+          return acc;
+        }, []);
+
+        const recentRecords = uniqueRecords.slice(-5);
+
+        const history = recentRecords.map((record, idx, arr) => {
+          const { s, peso } = record;
+          let delta = 0;
+          let timeLabel = '';
+
+          if (idx > 0) {
+            const prev = arr[idx - 1];
+            delta = peso - prev.peso;
+          }
+          const t = parseInt(s.id.split('_').pop() || '0');
+          const d = new Date(t || s.fecha);
+          timeLabel = `${d.getDate()} ${d.toLocaleString('es-ES', { month: 'short' })}`;
+
+          return { id: s.id, peso, delta, timeLabel };
+        });
+
+        // Get the ID format from the most recent entry
+        const exRecord = exSessions.flatMap(s => s.ejercicios).reverse().find(e => e.nombre === exName);
+        const idStr = exRecord?.ejercicioId ? `Nº ${exRecord.ejercicioId}/1324` : '';
+        const lastPeso = history.length > 0 ? history[history.length - 1].peso : 0;
+
+        return { name: exName, idStr, history, lastPeso };
+      }).sort((a, b) => b.lastPeso - a.lastPeso); // Sort exercises within muscle
+
       const originalName = ALL_MUSCLES.find(x => x.toLowerCase() === m) || (m.charAt(0).toUpperCase() + m.slice(1));
 
       return {
         muscle: originalName,
         color: getMuscleColor(m),
-        history,
-        lastPeso: history.length > 0 ? history[history.length - 1].peso : 0
+        exercises,
+        lastPesoSum: exercises.reduce((sum, ex) => sum + ex.lastPeso, 0)
       };
     })
-    .sort((a, b) => b.lastPeso - a.lastPeso);
+    .sort((a, b) => b.lastPesoSum - a.lastPesoSum);
   }, [sessions, allMuscles]);
 
   // Stats summary
@@ -671,8 +780,8 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
           {/* Day Sub-tabs */}
           <div className="custom-scrollbar" style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '16px', borderBottom: '1px solid #1e293b' }}>
             <button 
-              onClick={() => setSelectedDate(null)}
-              style={{ ...S.periodBtn(!selectedDate), flexShrink: 0 }}
+              onClick={() => { setSelectedDate(null); setPeriod('custom'); }}
+              style={{ ...S.periodBtn(!selectedDate && period === 'custom'), flexShrink: 0 }}
             >
               General
             </button>
@@ -685,7 +794,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
               return (
                 <button 
                   key={dateStr}
-                  onClick={() => setSelectedDate(dateStr)}
+                  onClick={() => { setSelectedDate(dateStr); setPeriod('custom'); }}
                   style={{ ...S.periodBtn(isSelected), flexShrink: 0, opacity: isFuture ? 0.5 : 1 }}
                 >
                   {dayName.charAt(0).toUpperCase() + dayName.slice(1)} {d.getDate()}/{d.getMonth() + 1}
@@ -736,60 +845,9 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
           <p style={S.sectionTitle}><BarChart2 size={16} color="#f59e0b" /> Progreso por Músculo / Ejercicio</p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {muscleProgressList.map((item, i) => {
-              if (!item) return null;
-              const maxPeso = Math.max(...item.history.map(h => h.peso), 1);
-
-              return (
-                <div key={item.muscle} style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', borderRadius: '6px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '12px', color: '#64748b', fontFamily: 'monospace' }}>#{i + 1}</span>
-                    <span style={{ width: '10px', height: '10px', background: item.color, display: 'inline-block', borderRadius: '50%' }} />
-                    <span style={{ fontSize: '14px', fontWeight: 900, color: '#fff', textTransform: 'capitalize' }}>
-                      {item.muscle}
-                    </span>
-                  </div>
-                  
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {item.history.length === 0 ? (
-                      <div style={{ fontSize: '11px', color: '#64748b', fontStyle: 'italic', paddingLeft: '16px' }}>
-                        Aún no hay sesiones registradas para este grupo muscular.
-                      </div>
-                    ) : (
-                      item.history.map((h, idx) => {
-                        const widthPct = Math.max(5, (h.peso / maxPeso) * 100);
-                        const isFirst = idx === 0;
-
-                        return (
-                          <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <span style={{ fontSize: '10px', color: '#94a3b8', width: '85px', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                              {h.timeLabel}
-                            </span>
-                            
-                            <div style={{ flex: 1, height: '14px', background: '#1e293b', borderRadius: '3px', overflow: 'hidden' }}>
-                              <div style={{ width: `${widthPct}%`, height: '100%', background: isFirst ? '#475569' : item.color, transition: 'width 0.5s' }} />
-                            </div>
-                            
-                            <span style={{ fontSize: '12px', fontWeight: 800, color: '#fff', width: '45px' }}>
-                              {h.peso} kg
-                            </span>
-                            
-                            <span style={{ 
-                              fontSize: '11px', fontWeight: 900, width: '50px', textAlign: 'center',
-                              color: h.delta > 0 ? '#10b981' : h.delta < 0 ? '#ef4444' : '#64748b',
-                              background: isFirst ? 'transparent' : h.delta > 0 ? 'rgba(16,185,129,0.1)' : h.delta < 0 ? 'rgba(239,68,68,0.1)' : 'rgba(100,116,139,0.1)',
-                              padding: '4px 0', borderRadius: '4px'
-                            }}>
-                              {!isFirst ? (h.delta > 0 ? `+${h.delta}kg` : h.delta !== 0 ? `${h.delta}kg` : '-') : ''}
-                            </span>
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            {muscleProgressList.map((item, i) => (
+              <MuscleProgressAccordion key={item.muscle} item={item} index={i} />
+            ))}
           </div>
         </div>
       )}

@@ -268,7 +268,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       marginBottom: '6px',
     },
     footer: {
-      padding: '12px 12px 16px',
+      padding: '12px 12px 60px',
       borderTop: '1px solid #94a3b8',
       display: 'flex',
       flexDirection: 'column',
@@ -392,8 +392,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <button className="gm-mobile-toggle" onClick={() => setIsMobileOpen(true)}>
-        <Menu color="#fff" size={24} />
+      <button className="gm-mobile-toggle" onClick={() => setIsMobileOpen(prev => !prev)}>
+        {isMobileOpen ? <X color="#fff" size={24} /> : <Menu color="#fff" size={24} />}
       </button>
       <div className={`gm-mobile-overlay ${isMobileOpen ? 'open' : ''}`} onClick={() => setIsMobileOpen(false)} />
 

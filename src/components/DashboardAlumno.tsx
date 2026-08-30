@@ -122,6 +122,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
   const [showEditRoutineModal, setShowEditRoutineModal] = useState(false);
   const [saveStatus, setSaveStatus] = useState<{ id: string; type: 'success' | 'error'; msg: string } | null>(null);
   const [draftWeights, setDraftWeights] = useState<Record<string, number>>({});
+  const [sessionWeightHistory, setSessionWeightHistory] = useState<Record<string, { weight: number, time: number }[]>>({});
   const [showStats, setShowStats] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const workoutStartRef = useRef<number>(Date.now());
@@ -292,6 +293,13 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
     const log = activeRoutine?.logs.find((l) => l.id === logId);
     const weightToSave = draftWeights[logId] !== undefined ? draftWeights[logId] : (log?.peso_real || 0);
     handlePesoRealChange(logId, weightToSave);
+    
+    setSessionWeightHistory(prev => {
+      const hist = prev[logId] || [];
+      const updated = [...hist, { weight: weightToSave, time: Date.now() }].slice(-5);
+      return { ...prev, [logId]: updated };
+    });
+
     // Cierra automáticamente la pestaña / acordeón del ejercicio
     setExpandedExerciseId(null);
   };
@@ -459,7 +467,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
               const { semana: currentSemana, dia: currentDia } = activeCombo;
               const durMin = Math.round((Date.now() - workoutStartRef.current) / 60000);
               const ejercicios = dayLogs
-                .filter(l => l.exercise)
+                .filter(l => l.exercise && (l.completed_series || []).some(Boolean))
                 .map(l => ({
                   exercise_id: l.exercise_id,
                   nombre: l.exercise?.name || '',
@@ -471,10 +479,12 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                   volumen_kg: Math.round((l.peso_real || 0) * (l.completed_series || []).filter(Boolean).length * l.repeticiones),
                 }));
               
+              if (ejercicios.length === 0) return;
+
               const session: WorkoutSession = {
                 id: `${alumno.id}_${Date.now()}`,
                 alumno_id: alumno.id,
-                fecha: new Date().toISOString().slice(0, 10),
+                fecha: new Date().toISOString(),
                 semana: currentSemana,
                 dia: currentDia,
                 duracion_min: Math.max(1, durMin),
@@ -533,7 +543,9 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                   justifyContent: 'center',
                   gap: '12px', 
                   background: '#000000', 
-                  border: `1px solid ${dayColor.border}`, 
+                  borderTop: `1px solid ${dayColor.border}`, 
+                  borderRight: `1px solid ${dayColor.border}`, 
+                  borderBottom: `1px solid ${dayColor.border}`, 
                   borderLeft: `4px solid ${dayColor.main}`,
                   padding: '10px 16px', 
                   borderRadius: '0',
@@ -572,7 +584,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
           const dayColor = DAY_COLOR_MAP[log.dia] || DAY_COLOR_MAP['Lunes'];
 
           return (
-            <div key={log.id} style={{ ...S.card(exp, done), borderLeft: `5px solid ${dayColor.main}` }}>
+            <div key={log.id} style={{ ...S.card(exp, done), borderLeftColor: dayColor.main, borderLeftWidth: '5px', borderLeftStyle: 'solid' }}>
               <div style={S.cHeader} className="gm-c-header" onClick={() => setExpandedExerciseId(exp ? null : log.id)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={S.cImgWrap}>
@@ -732,6 +744,27 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                             <button style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, currentWeight + 5)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.95)'} onMouseUp={e=>e.currentTarget.style.transform='none'}>+5</button>
                             <button style={S.wiSaveBtn} onClick={() => handleSaveAndCollapse(log.id)} onMouseDown={e=>e.currentTarget.style.transform='scale(0.98)'} onMouseUp={e=>e.currentTarget.style.transform='none'}><Save size={18} /> Guardar</button>
                           </div>
+                          
+                          {sessionWeightHistory[log.id] && sessionWeightHistory[log.id].length > 0 && (
+                            <div style={{ marginTop: '16px', background: 'rgba(245, 158, 11, 0.05)', padding: '12px', borderLeft: '3px solid #f59e0b', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                              <span style={{ fontSize: '10px', color: '#f59e0b', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em' }}>PROGRESO:</span>
+                              {sessionWeightHistory[log.id].map((entry, idx) => {
+                                const w = typeof entry === 'number' ? entry : entry.weight;
+                                const t = typeof entry === 'number' ? Date.now() : entry.time;
+                                return (
+                                  <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#0f172a', border: '1px solid #1e293b', padding: '6px 10px', borderRadius: '6px' }}>
+                                    <div style={{ color: '#fff', fontWeight: 900, display: 'flex', alignItems: 'baseline' }}>
+                                      <span style={{ fontSize: '15px' }}>{w}</span>
+                                      <span style={{ fontSize: '9px', marginLeft: '3px', color: '#f59e0b' }}>kg</span>
+                                    </div>
+                                    <span style={{ color: '#34d399', fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>
+                                      {new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric' })}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
                         </>
                       );
                     })()}

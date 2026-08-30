@@ -173,6 +173,14 @@ class DataService {
     if (!supabase || this.realtimeSubscribed) return;
     this.realtimeSubscribed = true;
     try {
+      // 1. LIMPIEZA: Remover el canal existente si ya fue inicializado previamente (útil para HMR y evitar el error de ciclo de vida)
+      supabase.getChannels().forEach((channel) => {
+        if (channel.topic === 'realtime:gymmaster-realtime-all') {
+          supabase.removeChannel(channel);
+        }
+      });
+
+      // 2. CREACIÓN: Instanciar canal nuevo, agregar listeners y al final suscribir.
       supabase
         .channel('gymmaster-realtime-all')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routines' }, () => {
@@ -188,6 +196,7 @@ class DataService {
           if (!this.isSyncing) this.syncNow();
         })
         .subscribe();
+        
     } catch (e) {
       this.realtimeSubscribed = false;
       console.warn('Realtime subscription warning:', e);
@@ -897,10 +906,18 @@ class DataService {
     const key = `gymmaster_sessions_${session.alumno_id}`;
     const existing: WorkoutSession[] = JSON.parse(localStorage.getItem(key) || '[]');
     
-    // Reemplazar si es la misma sesión (mismo día y semana)
-    const idx = existing.findIndex(s => s.fecha === session.fecha && s.dia === session.dia && s.semana === session.semana);
+    // Convertimos la fecha de la sesión entrante a su string de calendario local (ej. "Sun Aug 30 2026")
+    const incomingDateLocal = new Date(session.fecha).toDateString();
+
+    // Buscar si ya existe una sesión guardada hoy, en esta misma semana y día de la rutina (ej. "Martes")
+    const idx = existing.findIndex(s => {
+      // Manejar sesiones antiguas "YYYY-MM-DD" que parsean a UTC vs nuevas sesiones ISOString
+      const sDate = s.fecha.length === 10 ? new Date(s.fecha.replace(/-/g, '/')) : new Date(s.fecha);
+      return sDate.toDateString() === incomingDateLocal && s.dia === session.dia && s.semana === session.semana;
+    });
+    
     if (idx >= 0) {
-      existing[idx] = session;
+      existing[idx] = session; // Sobrescribir (el alumno presionó "Terminar" de nuevo por corrección)
     } else {
       existing.unshift(session);
     }
