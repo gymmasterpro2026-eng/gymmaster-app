@@ -367,7 +367,7 @@ function BarChart({ data, label }: { data: { fecha: string; peso: number; vol: n
 
 // ── Muscle Progress Accordion ──────────────────────────────────────────
 function MuscleProgressAccordion({ item, index }: { item: any; index: number }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', borderRadius: '6px' }}>
