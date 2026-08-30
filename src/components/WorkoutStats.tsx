@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { TrendingUp, TrendingDown, Minus, Trophy, BarChart2, Activity, Calendar, CheckCircle2, Flame } from 'lucide-react';
 import { Profile } from '../types';
+import { dataService } from '../services/dataService';
+import { fixImageUrl } from '../utils/imageUrl';
 
 // ── Types ─────────────────────────────────────────────────────────────
 export interface WorkoutSession {
@@ -408,39 +410,53 @@ function MuscleProgressAccordion({ item, index }: { item: any; index: number }) 
                    </div>
 
                    {/* Exercise History (Mini Bar Chart) */}
-                   <div className="custom-scrollbar" style={{ display: 'flex', gap: '12px', paddingLeft: '12px', borderLeft: `2px solid ${item.color}40`, overflowX: 'auto' }}>
-                     {ex.history.map((h: any, idx: number) => {
-                        const heightPct = Math.max(10, (h.peso / maxPeso) * 100);
-                        const isFirst = idx === 0;
+                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                     <div className="custom-scrollbar" style={{ display: 'flex', gap: '12px', paddingLeft: '12px', borderLeft: `2px solid ${item.color}40`, overflowX: 'auto', flex: 1 }}>
+                       {ex.history.map((h: any, idx: number) => {
+                          const heightPct = Math.max(10, (h.peso / maxPeso) * 100);
+                          const isFirst = idx === 0;
 
-                        return (
-                          <div key={h.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '40px' }}>
-                            {/* Delta text */}
-                            <span style={{ 
-                              fontSize: '10px', fontWeight: 900, 
-                              color: h.delta > 0 ? '#10b981' : h.delta < 0 ? '#ef4444' : 'transparent',
-                              height: '14px' // keep space
-                            }}>
-                              {!isFirst && h.delta !== 0 ? (h.delta > 0 ? `+${h.delta}` : h.delta) : ''}
-                            </span>
-                            
-                            {/* Vertical Bar */}
-                            <div style={{ width: '12px', height: '35px', background: '#1e293b', borderRadius: '4px', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
-                              <div style={{ width: '100%', height: `${heightPct}%`, background: isFirst ? '#475569' : item.color, transition: 'height 0.5s' }} />
+                          return (
+                            <div key={h.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '40px' }}>
+                              {/* Delta text */}
+                              <span style={{ 
+                                fontSize: '10px', fontWeight: 900, 
+                                color: h.delta > 0 ? '#10b981' : h.delta < 0 ? '#ef4444' : 'transparent',
+                                height: '14px' // keep space
+                              }}>
+                                {!isFirst && h.delta !== 0 ? (h.delta > 0 ? `+${h.delta}` : h.delta) : ''}
+                              </span>
+                              
+                              {/* Vertical Bar */}
+                              <div style={{ width: '12px', height: '35px', background: '#1e293b', borderRadius: '4px', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
+                                <div style={{ width: '100%', height: `${heightPct}%`, background: isFirst ? '#475569' : item.color, transition: 'height 0.5s' }} />
+                              </div>
+                              
+                              {/* Peso */}
+                              <span style={{ fontSize: '11px', fontWeight: 900, color: '#fff' }}>
+                                {h.peso}
+                              </span>
+                              
+                              {/* Fecha */}
+                              <span style={{ fontSize: '9px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                                {h.timeLabel.split(' ')[0]} {h.timeLabel.split(' ')[1]}
+                              </span>
                             </div>
-                            
-                            {/* Peso */}
-                            <span style={{ fontSize: '11px', fontWeight: 900, color: '#fff' }}>
-                              {h.peso}
-                            </span>
-                            
-                            {/* Fecha */}
-                            <span style={{ fontSize: '9px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
-                              {h.timeLabel.split(' ')[0]} {h.timeLabel.split(' ')[1]}
-                            </span>
-                          </div>
-                        );
-                     })}
+                          );
+                       })}
+                     </div>
+                     {ex.imgUrl && (
+                       <img 
+                         src={fixImageUrl(ex.imgUrl)} 
+                         alt={ex.name} 
+                         className="gm-exercise-gif"
+                         style={{ 
+                           width: '70px', height: '70px', objectFit: 'contain', 
+                           background: '#000', borderRadius: '6px', 
+                           border: `1px solid ${item.color}40`
+                         }} 
+                       />
+                     )}
                    </div>
                 </div>
               );
@@ -628,10 +644,16 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
         // Get the ID format from the most recent entry
         const exRecord = exSessions.flatMap(s => s.ejercicios).reverse().find(e => e.nombre === exName);
-        const idStr = exRecord?.ejercicioId ? `Nº ${exRecord.ejercicioId}/1324` : '';
+        const idStr = exRecord?.exercise_id ? `Nº ${exRecord.exercise_id.replace('ex_', '')}/1324` : '';
         const lastPeso = history.length > 0 ? history[history.length - 1].peso : 0;
+        
+        let imgUrl = '';
+        if (exRecord?.exercise_id) {
+           const fullEx = dataService.getExerciseById(exRecord.exercise_id);
+           if (fullEx?.image_urls?.[0]) imgUrl = fullEx.image_urls[0];
+        }
 
-        return { name: exName, idStr, history, lastPeso };
+        return { name: exName, idStr, imgUrl, history, lastPeso };
       }).sort((a, b) => b.lastPeso - a.lastPeso); // Sort exercises within muscle
 
       const originalName = ALL_MUSCLES.find(x => x.toLowerCase() === m) || (m.charAt(0).toUpperCase() + m.slice(1));
@@ -730,14 +752,10 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
       </div>
 
       {/* Summary cards */}
-      <div style={S.statCards}>
+      <div style={{ ...S.statCards, gridTemplateColumns: 'repeat(2, 1fr)' }}>
         <div style={S.statCard}>
           <span style={S.statNum}>{totalSessions}</span>
           <span style={S.statLbl}>Sesiones</span>
-        </div>
-        <div style={S.statCard}>
-          <span style={{ ...S.statNum, color: '#06b6d4' }}>{totalVolume.toLocaleString()}</span>
-          <span style={S.statLbl}>kg totales</span>
         </div>
         <div style={S.statCard}>
           <span style={{ ...S.statNum, color: '#10b981' }}>{avgDuration}</span>
