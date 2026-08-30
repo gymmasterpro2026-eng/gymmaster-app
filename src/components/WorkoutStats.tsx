@@ -166,8 +166,8 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
   return (
     <svg 
       ref={svgRef}
-      width="100%" height="auto" viewBox="20 20 520 400" 
-      style={{ display: 'block', margin: '0 auto', maxWidth: '100%', cursor: 'grab', touchAction: 'none' }}
+      width="100%" viewBox="20 20 520 400" 
+      style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', cursor: 'grab', touchAction: 'none' }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
