@@ -479,7 +479,15 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
   const [activeSection, setActiveSection] = useState<'radar' | 'progress' | 'history'>('radar');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const sessions = useMemo(() => getSessions(alumno.id), [alumno.id]);
+  const [sessions, setSessions] = useState<WorkoutSession[]>(() => getSessions(alumno.id));
+
+  useEffect(() => {
+    setSessions(getSessions(alumno.id));
+    const unsub = dataService.subscribe(() => {
+      setSessions(getSessions(alumno.id));
+    });
+    return () => unsub();
+  }, [alumno.id]);
 
   const currentWeekDays = useMemo(() => {
     const today = new Date();
