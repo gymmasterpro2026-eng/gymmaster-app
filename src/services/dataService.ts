@@ -101,6 +101,7 @@ class DataService {
       await operation();
     } catch (e) {
       console.warn('Cloud operation error:', e);
+      console.error("Error de Sincronización Supabase:", e);
     }
   }
 
@@ -143,6 +144,53 @@ class DataService {
           }
         });
       }
+
+      // 6. Two-Way Sync for Workout Sessions
+      const allLocalSessions: WorkoutSession[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('gymmaster_sessions_')) {
+          try {
+            const parsed = JSON.parse(localStorage.getItem(k) || '[]');
+            allLocalSessions.push(...parsed);
+          } catch {}
+        }
+      }
+
+      const { data: remoteSessions } = await supabase.from('gym_workout_sessions').select('*');
+      const remote = (remoteSessions || []) as WorkoutSession[];
+      
+      const mergedMap = new Map<string, WorkoutSession>();
+      allLocalSessions.forEach(s => mergedMap.set(s.id, s));
+      remote.forEach(s => mergedMap.set(s.id, s));
+
+      const mergedList = Array.from(mergedMap.values());
+      
+      // Push any missing in remote (las 10 sesiones locales que no habían subido)
+      const remoteIds = new Set(remote.map(s => s.id));
+      const missingInRemote = mergedList.filter(s => !remoteIds.has(s.id));
+      if (missingInRemote.length > 0) {
+         await supabase.from('gym_workout_sessions').upsert(missingInRemote);
+      }
+
+      // Group back by alumno_id and update localStorage
+      const sessionsByAlumno: Record<string, WorkoutSession[]> = {};
+      mergedList.forEach((s) => {
+        if (!sessionsByAlumno[s.alumno_id]) sessionsByAlumno[s.alumno_id] = [];
+        sessionsByAlumno[s.alumno_id].push(s);
+      });
+
+      // Clear old keys first to avoid stale data for users with 0 sessions now
+      for (let i = 0; i < localStorage.length; i++) {
+         const k = localStorage.key(i);
+         if (k && k.startsWith('gymmaster_sessions_')) localStorage.removeItem(k);
+      }
+
+      Object.keys(sessionsByAlumno).forEach(aid => {
+        const key = `gymmaster_sessions_${aid}`;
+        const sorted = sessionsByAlumno[aid].sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+        localStorage.setItem(key, JSON.stringify(sorted.slice(0, 120)));
+      });
 
       // BLINDAJE FINAL: Deduplicar rutinas activas post-merge
       // Si quedaron 2 activas para el mismo alumno, dejar solo la que tiene más logs
@@ -925,6 +973,16 @@ class DataService {
     // Limitar historial a las últimas 120 sesiones
     localStorage.setItem(key, JSON.stringify(existing.slice(0, 120)));
     this.notify();
+
+    // Push a Supabase
+    if (supabase) {
+      this.saveToCloud(async () => {
+        const { error } = await supabase
+          .from('gym_workout_sessions')
+          .upsert(session);
+        if (error) throw error;
+      });
+    }
   }
 }
 
