@@ -652,7 +652,12 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
         // Get the ID format from the most recent entry
         const exRecord = exSessions.flatMap(s => s.ejercicios).reverse().find(e => e.nombre === exName);
-        const idStr = exRecord?.exercise_id ? `Nº ${exRecord.exercise_id.replace('ex_', '')}/1324` : '';
+        let idStr = '';
+        if (exRecord?.exercise_id) {
+          const allEx = dataService.getExercises();
+          const catIdx = allEx.findIndex(e => e.id === exRecord.exercise_id);
+          idStr = catIdx >= 0 ? `Nº ${catIdx + 1}/${allEx.length}` : `Nº ${exRecord.exercise_id}`;
+        }
         const lastPeso = history.length > 0 ? history[history.length - 1].peso : 0;
         
         let imgUrl = '';
