@@ -99,9 +99,13 @@ class DataService {
     if (!supabase) return;
     try {
       await operation();
-    } catch (e) {
-      console.warn('Cloud operation error:', e);
-      console.error("Error de Sincronización Supabase:", e);
+    } catch (e: any) {
+      console.group('❌ Error de Sincronización Supabase');
+      console.error('Mensaje completo:', e.message || e);
+      if (e.details) console.error('Detalles PostgREST:', e.details);
+      if (e.hint) console.error('Pista (Hint):', e.hint);
+      if (e.code) console.error('Código SQL State:', e.code);
+      console.groupEnd();
     }
   }
 
