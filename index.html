@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Titan Fitness Center — GymAmano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
+    <script type="module" crossorigin src="/gymmaster-app/assets/index-sbUMtb7O.js"></script>
+    <link rel="modulepreload" crossorigin href="/gymmaster-app/assets/vendor-icons-Ddqqwi1G.js">
+    <link rel="modulepreload" crossorigin href="/gymmaster-app/assets/dataset-exercises-DIAOdphz.js">
+    <link rel="modulepreload" crossorigin href="/gymmaster-app/assets/vendor-supabase-CK8f2pDy.js">
+    <link rel="modulepreload" crossorigin href="/gymmaster-app/assets/vendor-anatomy-BQbuD7Hp.js">
+    <link rel="stylesheet" crossorigin href="/gymmaster-app/assets/index-DNt5xzjQ.css">
+  </head>
+  <body>
+    <!-- Filtros GPU SVG de Super-Resolución UHD en tiempo real (32-bit float) para GIFs de ejercicios -->
+    <svg width="0" height="0" style="position:absolute;width:0;height:0;pointer-events:none;overflow:hidden" aria-hidden="true">
+      <defs>
+        <!-- Filtro UHD Estándar (Miniaturas, Tarjetas y Catálogo) -->
+        <filter id="gm-uhd-filter" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+          <!-- 1. Invertir RGB + eliminar ruido de compresión GIF (piso de negro puro #000000) -->
+          <feComponentTransfer in="SourceGraphic" result="inv">
+            <feFuncR type="table" tableValues="1 0.90 0.78 0.65 0.52 0.39 0.27 0.16 0.06 0 0"/>
+            <feFuncG type="table" tableValues="1 0.90 0.78 0.65 0.52 0.39 0.27 0.16 0.06 0 0"/>
+            <feFuncB type="table" tableValues="1 0.90 0.78 0.65 0.52 0.39 0.27 0.16 0.06 0 0"/>
+          </feComponentTransfer>
+          <!-- 2. Micro-suavizado sub-píxel para eliminar escalonamiento (aliasing) de 180p -->
+          <feGaussianBlur in="inv" stdDeviation="0.32" result="aa"/>
+          <!-- 3. Máscara de enfoque de alta frecuencia (Unsharp Mask UHD en resolución de pantalla) -->
+          <feGaussianBlur in="aa" stdDeviation="1.15" result="blur"/>
+          <feComposite in="aa" in2="blur" operator="arithmetic" k1="0" k2="1.78" k3="-0.78" k4="0" result="sharp"/>
+          <!-- 4. Fijación de negro absoluto y realce de brillo anatómico -->
+          <feComponentTransfer in="sharp" result="out">
+            <feFuncR type="linear" slope="1.06" intercept="-0.02"/>
+            <feFuncG type="linear" slope="1.06" intercept="-0.02"/>
+            <feFuncB type="linear" slope="1.06" intercept="-0.02"/>
+          </feComponentTransfer>
+        </filter>
+
+        <!-- Filtro UHD Ampliado (Vista Previa Grande y Pantalla Completa) -->
+        <filter id="gm-uhd-filter-lg" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+          <!-- 1. Invertir RGB + aplastar ruido gris de cuantización GIF a negro puro -->
+          <feComponentTransfer in="SourceGraphic" result="inv">
+            <feFuncR type="table" tableValues="1 0.91 0.80 0.67 0.54 0.41 0.28 0.17 0.06 0 0"/>
+            <feFuncG type="table" tableValues="1 0.91 0.80 0.67 0.54 0.41 0.28 0.17 0.06 0 0"/>
+            <feFuncB type="table" tableValues="1 0.91 0.80 0.67 0.54 0.41 0.28 0.17 0.06 0 0"/>
+          </feComponentTransfer>
+          <!-- 2. Suavizado de bordes dentados tras el escalado bicúbico -->
+          <feGaussianBlur in="inv" stdDeviation="0.45" result="aa"/>
+          <!-- 3. Reconstrucción de bordes de doble radio (Detalle Fino + Contorno Muscular) -->
+          <feGaussianBlur in="aa" stdDeviation="1.35" result="blurFine"/>
+          <feComposite in="aa" in2="blurFine" operator="arithmetic" k1="0" k2="1.95" k3="-0.95" k4="0" result="sharp1"/>
+          <feGaussianBlur in="sharp1" stdDeviation="2.4" result="blurLocal"/>
+          <feComposite in="sharp1" in2="blurLocal" operator="arithmetic" k1="0" k2="1.25" k3="-0.25" k4="0" result="sharp2"/>
+          <!-- 4. Clamp final de fondo #000000 y contraste UHD -->
+          <feComponentTransfer in="sharp2" result="out">
+            <feFuncR type="linear" slope="1.08" intercept="-0.03"/>
+            <feFuncG type="linear" slope="1.08" intercept="-0.03"/>
+            <feFuncB type="linear" slope="1.08" intercept="-0.03"/>
+          </feComponentTransfer>
+        </filter>
+      </defs>
+    </svg>
+    <div id="root"></div>
+  </body>
+</html>
+
