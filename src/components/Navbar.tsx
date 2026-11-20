@@ -848,82 +848,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           </span>
         </button>
 
-        {/* Barra discreta de usuario/rol en acero oscuro */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            background: '#0B0E13',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            padding: '7px 10px',
-            gap: '8px',
-          }}
-        >
-          {currentUser ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', flex: 1 }}>
-              <div
-                style={{
-                  width: '26px',
-                  height: '26px',
-                  background: '#161A22',
-                  border: '1px solid rgba(214, 123, 53, 0.45)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <User size={13} color="#D67B35" />
-              </div>
-              <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                <p style={{ ...S.userName, fontSize: '11px', fontWeight: 700 }}>{currentUser.full_name}</p>
-                <p style={{ ...S.userRole, fontSize: '9px', color: '#D67B35' }}>{currentRole === 'coach' ? 'COACH' : 'ALUMNO'}</p>
-              </div>
-            </div>
-          ) : (
+        {/* Barra discreta solo visible cuando no hay usuario logueado */}
+        {!currentUser && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: '#0B0E13',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              padding: '7px 10px',
+              gap: '8px',
+            }}
+          >
             <button
               onClick={onOpenGymGenerator}
               style={{ ...S.iconBtn, color: '#D67B35', fontSize: '12px', fontWeight: 700, gap: '6px', display: 'flex', alignItems: 'center' }}
             >
               <LogIn size={14} /> Iniciar Sesión
             </button>
-          )}
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-            {currentUser?.role === 'coach' && (
-              <button
-                type="button"
-                onClick={() => handleNavClick('home', currentRole === 'coach' ? 'alumno' : 'coach')}
-                className="titan-steel-btn"
-                title={currentRole === 'coach' ? 'Ver como Alumno' : 'Volver a Coach'}
-                style={{ padding: '4px 7px', fontSize: '9px', clipPath: 'none' }}
-              >
-                {currentRole === 'coach' ? 'Alumno' : 'Coach'}
-              </button>
-            )}
-            <button
-              onClick={onResetData}
-              title="Restablecer Datos"
-              style={S.iconBtn}
-              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-            >
-              <RefreshCw size={13} color="rgba(255,255,255,0.45)" />
-            </button>
-            {currentUser && (
-              <button
-                onClick={onLogout}
-                title="Cerrar Sesión"
-                style={S.iconBtn}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.15)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-              >
-                <LogOut size={13} color="#f87171" />
-              </button>
-            )}
           </div>
-        </div>
+        )}
       </div>
     </aside>
     </>
