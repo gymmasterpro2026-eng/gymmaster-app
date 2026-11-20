@@ -4,6 +4,7 @@ import { Exercise, RoutineWithLogs } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
 import { inferGenderFromName } from '../utils/genderInference';
+import { calculateRecommendedPrescription, matchesLevelFilter, selectExercisesForLevel } from '../utils/workoutIntelligence';
 import { AnatomyExplorer } from './AnatomyExplorer';
 import { MultiSelect } from './MultiSelect';
 
@@ -51,6 +52,8 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   // Generator State
   const [genMuscles, setGenMuscles] = useState<string[]>([]);
   const [genLevel, setGenLevel] = useState<string>('Intermedio');
+  const studentProfile = dataService.getProfileById(routine.alumno_id);
+  const studentGender: 'male' | 'female' = studentProfile?.gender || inferGenderFromName(studentProfile?.full_name || '');
 
   const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   const WEEKS = [1, 2, 3, 4, 5];
@@ -172,7 +175,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
       const matchesMuscle = matchMuscle(ex.primary_muscles, selectedMuscle);
       const matchesEquip = selectedEquipment === 'all' || (ex.equipment && ex.equipment.toLowerCase().includes(selectedEquipment.toLowerCase()));
-      const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+      const matchesLevel = matchesLevelFilter(ex.level, selectedLevel);
 
       return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
     })
@@ -249,6 +252,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
   }, [previewExercise, activePreviewList]);
 
   const handleAddExercise = (exercise: Exercise) => {
+    const rec = calculateRecommendedPrescription(exercise, genLevel, studentGender);
     setLogsItems((prev) => [
       ...prev,
       {
@@ -256,10 +260,10 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
         exercise_id: exercise.id,
         semana: selectedWeek,
         dia: selectedDay,
-        series: 4,
-        repeticiones: 10,
-        peso_objetivo: 40,
-        peso_real: 0,
+        series: rec.series,
+        repeticiones: rec.repeticiones,
+        peso_objetivo: rec.peso_objetivo,
+        peso_real: rec.peso_objetivo,
         notas: '',
         exercise: exercise,
       },
@@ -280,39 +284,31 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
     const absCount = hasAbs ? 3 : 0;
 
     let selectedExercisesForGeneration: Exercise[] = [];
-
-    const getRandomExercises = (muscles: string[], level: string, count: number) => {
-      let pool = exercises.filter(ex => 
-        (level === 'all' || ex.level === level) &&
-        muscles.some(m => matchMuscle(ex.primary_muscles, m))
-      );
-
-      if (pool.length === 0) {
-        pool = exercises.filter(ex => muscles.some(m => matchMuscle(ex.primary_muscles, m)));
-      }
-
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-
-      const currentExerciseIds = new Set(logsItems.map(log => log.exercise_id));
-      
-      const freshExercises = pool.filter(ex => !currentExerciseIds.has(ex.id));
-      const usedExercises = pool.filter(ex => currentExerciseIds.has(ex.id));
-      
-      const smartPool = [...freshExercises, ...usedExercises];
-
-      return smartPool.slice(0, count);
-    };
+    const workingExistingIds = new Set<string>(logsItems.map((log) => String(log.exercise_id)));
 
     mainMuscles.forEach(muscle => {
-      const selected = getRandomExercises([muscle], genLevel, countPerMuscle);
+      const selected = selectExercisesForLevel(
+        exercises,
+        [muscle],
+        genLevel,
+        countPerMuscle,
+        workingExistingIds,
+        matchMuscle
+      );
+      selected.forEach((ex) => workingExistingIds.add(ex.id));
       selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...selected];
     });
 
     if (hasAbs) {
-      const absSelected = getRandomExercises(['abdomin', 'abs', 'core'], genLevel, absCount);
+      const absSelected = selectExercisesForLevel(
+        exercises,
+        ['abdomin', 'abs', 'core'],
+        genLevel,
+        absCount,
+        workingExistingIds,
+        matchMuscle
+      );
+      absSelected.forEach((ex) => workingExistingIds.add(ex.id));
       selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...absSelected];
     }
 
@@ -321,18 +317,21 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
       return;
     }
 
-    const newItems = selectedExercisesForGeneration.map((ex, idx) => ({
-      id: `log-temp-${Date.now()}-${idx}`,
-      exercise_id: ex.id,
-      semana: selectedWeek,
-      dia: selectedDay,
-      series: 4,
-      repeticiones: 10,
-      peso_objetivo: 40,
-      peso_real: 0,
-      notas: '',
-      exercise: ex,
-    }));
+    const newItems = selectedExercisesForGeneration.map((ex, idx) => {
+      const rec = calculateRecommendedPrescription(ex, genLevel, studentGender);
+      return {
+        id: `log-temp-${Date.now()}-${idx}`,
+        exercise_id: ex.id,
+        semana: selectedWeek,
+        dia: selectedDay,
+        series: rec.series,
+        repeticiones: rec.repeticiones,
+        peso_objetivo: rec.peso_objetivo,
+        peso_real: rec.peso_objetivo,
+        notas: '',
+        exercise: ex,
+      };
+    });
 
     setLogsItems(prev => [...prev, ...newItems]);
     setShowAddExercisePicker(false);

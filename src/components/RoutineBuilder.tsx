@@ -4,6 +4,7 @@ import { Exercise, Profile } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
 import { inferGenderFromName } from '../utils/genderInference';
+import { calculateRecommendedPrescription, matchesLevelFilter, selectExercisesForLevel } from '../utils/workoutIntelligence';
 import { AnatomyExplorer } from './AnatomyExplorer';
 import { MultiSelect } from './MultiSelect';
 
@@ -34,6 +35,9 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
   const [selectedDay, setSelectedDay] = useState<string>('Lunes');
 
+  const initialAlumno = alumnos.find((a) => a.id === (initialAlumnoId || alumnos[0]?.id));
+  const initialGender: 'male' | 'female' = initialAlumno?.gender || inferGenderFromName(initialAlumno?.full_name || '');
+
   // Exercise items added to routine
   const [routineItems, setRoutineItems] = useState<
     {
@@ -47,10 +51,18 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
       notas: string;
       combinado_con?: string;
     }[]
-  >([
-    { id: '1', semana: 1, dia: 'Lunes', exercise_id: exercises[0]?.id || 'ex-001', series: 4, repeticiones: 10, peso_objetivo: 70, notas: 'Mantener codos en ángulo de 45°' },
-    { id: '2', semana: 1, dia: 'Martes', exercise_id: exercises[1]?.id || 'ex-002', series: 4, repeticiones: 12, peso_objetivo: 55, notas: 'Pausa isométrica de 1 seg abajo' },
-  ]);
+  >(() => {
+    const rec1 = exercises[0]
+      ? calculateRecommendedPrescription(exercises[0], 'Intermedio', initialGender)
+      : { series: 4, repeticiones: 10, peso_objetivo: 0 };
+    const rec2 = exercises[1]
+      ? calculateRecommendedPrescription(exercises[1], 'Intermedio', initialGender)
+      : { series: 4, repeticiones: 12, peso_objetivo: 0 };
+    return [
+      { id: '1', semana: 1, dia: 'Lunes', exercise_id: exercises[0]?.id || 'ex-001', series: rec1.series, repeticiones: rec1.repeticiones, peso_objetivo: rec1.peso_objetivo, notas: 'Controla el movimiento en todo el recorrido' },
+      { id: '2', semana: 1, dia: 'Martes', exercise_id: exercises[1]?.id || 'ex-002', series: rec2.series, repeticiones: rec2.repeticiones, peso_objetivo: rec2.peso_objetivo, notas: 'Pausa isométrica de 1 seg en la contracción' },
+    ];
+  });
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedMuscle, setSelectedMuscle] = useState<string>('all');
@@ -163,7 +175,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
 
       const matchesMuscle = matchMuscle(ex.primary_muscles, selectedMuscle);
       const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
-      const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+      const matchesLevel = matchesLevelFilter(ex.level, selectedLevel);
 
       return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
     })
@@ -176,7 +188,11 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
       return 0;
     });
 
+  const activeStudentProfile = alumnos.find((a) => a.id === selectedAlumnoId);
+  const studentGender: 'male' | 'female' = activeStudentProfile?.gender || inferGenderFromName(activeStudentProfile?.full_name || '');
+
   const handleAddExerciseToRoutine = (exercise: Exercise) => {
+    const rec = calculateRecommendedPrescription(exercise, genLevel, studentGender);
     setRoutineItems((prev) => [
       ...prev,
       {
@@ -184,15 +200,16 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
         semana: selectedWeek,
         dia: selectedDay,
         exercise_id: exercise.id,
-        series: 4,
-        repeticiones: 10,
-        peso_objetivo: 50,
+        series: rec.series,
+        repeticiones: rec.repeticiones,
+        peso_objetivo: rec.peso_objetivo,
         notas: '',
       },
     ]);
   };
 
   const handleAddCombined = (exercise: Exercise) => {
+    const rec = calculateRecommendedPrescription(exercise, genLevel, studentGender);
     setRoutineItems((prev) => {
       const itemsForDay = prev.filter(item => item.dia === selectedDay && item.semana === selectedWeek);
       if (itemsForDay.length === 0) {
@@ -213,7 +230,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
           exercise_id: exercise.id,
           series: lastItem.series,
           repeticiones: lastItem.repeticiones,
-          peso_objetivo: 50,
+          peso_objetivo: rec.peso_objetivo,
           notas: '',
           combinado_con: groupId,
         }
@@ -242,39 +259,31 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
     const absCount = hasAbs ? 3 : 0;
 
     let selectedExercisesForGeneration: Exercise[] = [];
-
-    const getRandomExercises = (muscles: string[], level: string, count: number) => {
-      let pool = exercises.filter(ex => 
-        (level === 'all' || ex.level === level) &&
-        muscles.some(m => matchMuscle(ex.primary_muscles, m))
-      );
-
-      if (pool.length === 0) {
-        pool = exercises.filter(ex => muscles.some(m => matchMuscle(ex.primary_muscles, m)));
-      }
-
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-
-      const currentExerciseIds = new Set(routineItems.map(log => log.exercise_id));
-      
-      const freshExercises = pool.filter(ex => !currentExerciseIds.has(ex.id));
-      const usedExercises = pool.filter(ex => currentExerciseIds.has(ex.id));
-      
-      const smartPool = [...freshExercises, ...usedExercises];
-
-      return smartPool.slice(0, count);
-    };
+    const workingExistingIds = new Set<string>(routineItems.map((log) => String(log.exercise_id)));
 
     mainMuscles.forEach(muscle => {
-      const selected = getRandomExercises([muscle], genLevel, countPerMuscle);
+      const selected = selectExercisesForLevel(
+        exercises,
+        [muscle],
+        genLevel,
+        countPerMuscle,
+        workingExistingIds,
+        matchMuscle
+      );
+      selected.forEach((ex) => workingExistingIds.add(ex.id));
       selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...selected];
     });
 
     if (hasAbs) {
-      const absSelected = getRandomExercises(['abdomin', 'abs', 'core'], genLevel, absCount);
+      const absSelected = selectExercisesForLevel(
+        exercises,
+        ['abdomin', 'abs', 'core'],
+        genLevel,
+        absCount,
+        workingExistingIds,
+        matchMuscle
+      );
+      absSelected.forEach((ex) => workingExistingIds.add(ex.id));
       selectedExercisesForGeneration = [...selectedExercisesForGeneration, ...absSelected];
     }
 
@@ -283,16 +292,19 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
       return;
     }
 
-    const newItems = selectedExercisesForGeneration.map((ex, idx) => ({
-      id: `gen-${Date.now()}-${idx}`,
-      exercise_id: ex.id,
-      semana: selectedWeek,
-      dia: selectedDay,
-      series: 4,
-      repeticiones: 10,
-      peso_objetivo: 40,
-      notas: '',
-    }));
+    const newItems = selectedExercisesForGeneration.map((ex, idx) => {
+      const rec = calculateRecommendedPrescription(ex, genLevel, studentGender);
+      return {
+        id: `gen-${Date.now()}-${idx}`,
+        exercise_id: ex.id,
+        semana: selectedWeek,
+        dia: selectedDay,
+        series: rec.series,
+        repeticiones: rec.repeticiones,
+        peso_objetivo: rec.peso_objetivo,
+        notas: '',
+      };
+    });
 
     setRoutineItems(prev => [...prev, ...newItems]);
     setGenMuscles([]);
@@ -324,7 +336,7 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({
         series: item.series,
         repeticiones: item.repeticiones,
         peso_objetivo: item.peso_objetivo,
-        peso_real: 0,
+        peso_real: item.peso_objetivo,
         orden: idx + 1,
         notas: item.notas,
       }))

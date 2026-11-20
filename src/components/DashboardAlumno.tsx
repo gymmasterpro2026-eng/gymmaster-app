@@ -293,7 +293,9 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
   const handleSaveAndCollapse = (logId: string) => {
     const log = activeRoutine?.logs.find((l) => l.id === logId);
-    const weightToSave = draftWeights[logId] !== undefined ? draftWeights[logId] : (log?.peso_real || 0);
+    const weightToSave = draftWeights[logId] !== undefined
+      ? draftWeights[logId]
+      : (log?.peso_real && log.peso_real > 0 ? log.peso_real : (log?.peso_objetivo || 0));
     handlePesoRealChange(logId, weightToSave);
     
     setSessionWeightHistory(prev => {
@@ -602,7 +604,19 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                         </span>
                       )}
                     </h3>
-                    <p style={S.cMeta}>{log.series} series × {log.repeticiones} reps @ <span style={{ color: '#FFBD4A', fontWeight: 800 }}>{log.peso_real} KG</span></p>
+                    <p style={S.cMeta}>
+                      {log.series} series × {log.repeticiones} reps @{' '}
+                      <span style={{ color: '#FFBD4A', fontWeight: 800 }}>
+                        {log.peso_real === 0 && log.peso_objetivo === 0
+                          ? 'Peso Corporal'
+                          : `${log.peso_real > 0 ? log.peso_real : log.peso_objetivo} KG`}
+                      </span>
+                      {log.peso_objetivo > 0 && log.peso_real > 0 && log.peso_real !== log.peso_objetivo && (
+                        <span style={{ color: '#94A3B8', fontWeight: 600, fontSize: '10px', marginLeft: '6px' }}>
+                          (Sugerido: {log.peso_objetivo} KG)
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -688,12 +702,23 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
 
                   <div className="titan-inset-well" style={S.weightInputBox}>
                     {(() => {
-                      const currentWeight = draftWeights[log.id] !== undefined ? draftWeights[log.id] : (log.peso_real || 0);
+                      const currentWeight = draftWeights[log.id] !== undefined
+                        ? draftWeights[log.id]
+                        : (log.peso_real > 0 ? log.peso_real : (log.peso_objetivo || 0));
                       return (
                         <>
                           <div style={S.wiHeader}>
                             <div><div style={S.wiTitle}>Registro de Peso (KG)</div><div style={S.wiSubtitle}>Presiona Guardar para confirmar y cerrar</div></div>
-                            <div className="titan-badge-emerald" style={S.wiCurrent}>Actual: {log.peso_real} KG</div>
+                            {log.peso_objetivo === 0 && log.peso_real === 0 ? (
+                              <div className="titan-badge-emerald" style={S.wiCurrent}>Peso Corporal</div>
+                            ) : (
+                              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                                {log.peso_objetivo > 0 && (
+                                  <div className="titan-badge-copper" style={S.wiCurrent}>Sugerido: {log.peso_objetivo} KG</div>
+                                )}
+                                <div className="titan-badge-emerald" style={S.wiCurrent}>Actual: {log.peso_real} KG</div>
+                              </div>
+                            )}
                           </div>
                           <div style={S.wiControls} className="gm-wi-controls">
                             <button className="titan-btn-armor-steel" style={S.wiBtnMod} onClick={() => handleDraftWeightChange(log.id, Math.max(0, currentWeight - 5))}>-5</button>

@@ -74,7 +74,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1512",
     "name": "all fours squad stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "quads"
@@ -98,7 +98,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0006",
     "name": "alternate heel touchers",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -122,7 +122,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0007",
     "name": "alternate lateral pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -145,7 +145,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1368",
     "name": "ankle circles",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -167,7 +167,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3293",
     "name": "archer pull up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -192,7 +192,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3294",
     "name": "archer push up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -241,7 +241,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2333",
     "name": "arm slingers hanging straight legs",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -313,8 +313,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0009",
     "name": "assisted chest dip (kneeling)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -337,8 +337,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0011",
     "name": "assisted hanging knee raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "abs"
     ],
@@ -360,8 +360,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0010",
     "name": "assisted hanging knee raise with throw down",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "abs"
     ],
@@ -383,8 +383,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1708",
     "name": "assisted lying calves stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "calves"
     ],
@@ -406,8 +406,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1709",
     "name": "assisted lying glutes stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "glutes"
     ],
@@ -429,8 +429,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1710",
     "name": "assisted lying gluteus and piriformis stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "glutes"
     ],
@@ -452,8 +452,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0012",
     "name": "assisted lying leg raise with lateral throw down",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "abs"
     ],
@@ -478,8 +478,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0013",
     "name": "assisted lying leg raise with throw down",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "abs"
     ],
@@ -505,8 +505,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0014",
     "name": "assisted motion russian twist",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "abs"
     ],
@@ -530,8 +530,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0015",
     "name": "assisted parallel close grip pull-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -556,8 +556,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0016",
     "name": "assisted prone hamstring",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -580,8 +580,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1713",
     "name": "assisted prone lying quads stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "quads"
     ],
@@ -604,8 +604,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1714",
     "name": "assisted prone rectus femoris stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "abs"
     ],
@@ -627,8 +627,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0017",
     "name": "assisted pull-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -653,8 +653,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1716",
     "name": "assisted seated pectoralis major stretch with stability ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "pectorals"
     ],
@@ -677,8 +677,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1712",
     "name": "assisted side lying adductor stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "adductors"
     ],
@@ -702,8 +702,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1758",
     "name": "assisted sit-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "abs"
     ],
@@ -726,8 +726,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1431",
     "name": "assisted standing chin-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -752,8 +752,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1432",
     "name": "assisted standing pull-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -778,8 +778,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0018",
     "name": "assisted standing triceps extension (with towel)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "triceps"
     ],
@@ -801,8 +801,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0019",
     "name": "assisted triceps dip (kneeling)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -825,8 +825,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2364",
     "name": "assisted wide-grip chest dip (kneeling)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -902,8 +902,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1314",
     "name": "back extension on exercise ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -926,7 +926,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3297",
     "name": "back lever",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "upper back"
@@ -952,7 +952,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1405",
     "name": "back pec stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -1027,8 +1027,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0968",
     "name": "band alternating biceps curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "biceps"
     ],
@@ -1049,8 +1049,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0969",
     "name": "band alternating v-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1072,8 +1072,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0970",
     "name": "band assisted pull-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "lats"
     ],
@@ -1097,8 +1097,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0971",
     "name": "band assisted wheel rollerout",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1120,8 +1120,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1254",
     "name": "band bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "pectorals"
     ],
@@ -1144,8 +1144,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0980",
     "name": "band bent-over hip extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -1170,8 +1170,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0972",
     "name": "band bicycle crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1194,8 +1194,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0974",
     "name": "band close-grip pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "lats"
     ],
@@ -1219,8 +1219,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0975",
     "name": "band close-grip push-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "triceps"
     ],
@@ -1243,8 +1243,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0976",
     "name": "band concentration curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "biceps"
     ],
@@ -1267,8 +1267,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3117",
     "name": "band fixed back close grip pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "lats"
     ],
@@ -1294,8 +1294,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3116",
     "name": "band fixed back underhand pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "lats"
     ],
@@ -1323,8 +1323,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0977",
     "name": "band front lateral raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -1346,8 +1346,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0978",
     "name": "band front raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -1369,8 +1369,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1408",
     "name": "band hip lift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -1394,8 +1394,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0979",
     "name": "band horizontal pallof press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1422,8 +1422,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0981",
     "name": "band jack knife sit-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1444,8 +1444,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0983",
     "name": "band kneeling one arm pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "lats"
     ],
@@ -1469,8 +1469,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0985",
     "name": "band kneeling twisting crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1493,8 +1493,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0984",
     "name": "band lying hip internal rotation",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -1517,8 +1517,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1002",
     "name": "band lying straight leg raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1540,8 +1540,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0986",
     "name": "band one arm overhead biceps curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "biceps"
     ],
@@ -1564,8 +1564,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0987",
     "name": "band one arm single leg split squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "quads"
     ],
@@ -1589,8 +1589,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0988",
     "name": "band one arm standing low row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "upper back"
     ],
@@ -1615,8 +1615,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0989",
     "name": "band one arm twisting chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "pectorals"
     ],
@@ -1642,8 +1642,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0990",
     "name": "band one arm twisting seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "upper back"
     ],
@@ -1667,8 +1667,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0991",
     "name": "band pull through",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -1693,8 +1693,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0992",
     "name": "band push sit-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1718,8 +1718,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0993",
     "name": "band reverse fly",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -1743,8 +1743,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0994",
     "name": "band reverse wrist curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "forearms"
     ],
@@ -1767,8 +1767,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0996",
     "name": "band seated hip internal rotation",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -1792,8 +1792,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1011",
     "name": "band seated twist",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -1816,8 +1816,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0997",
     "name": "band shoulder press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -1840,8 +1840,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1018",
     "name": "band shrug",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "traps"
     ],
@@ -1863,8 +1863,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0998",
     "name": "band side triceps extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "triceps"
     ],
@@ -1886,8 +1886,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0999",
     "name": "band single leg calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "calves"
     ],
@@ -1910,8 +1910,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1000",
     "name": "band single leg reverse calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "calves"
     ],
@@ -1934,8 +1934,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1001",
     "name": "band single leg split squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "quads"
     ],
@@ -1958,8 +1958,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1004",
     "name": "band squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -1983,8 +1983,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1003",
     "name": "band squat row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -2010,8 +2010,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1005",
     "name": "band standing crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -2034,8 +2034,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1022",
     "name": "band standing rear delt row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -2060,8 +2060,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1007",
     "name": "band standing twisting crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -2084,8 +2084,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1008",
     "name": "band step-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -2111,8 +2111,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1009",
     "name": "band stiff leg deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -2137,8 +2137,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1023",
     "name": "band straight back stiff leg deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "glutes"
     ],
@@ -2162,8 +2162,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1010",
     "name": "band straight leg deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "spine"
     ],
@@ -2188,8 +2188,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1012",
     "name": "band twisting overhead press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -2214,8 +2214,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1369",
     "name": "band two legs calf raise - (band under both legs) v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "calves"
     ],
@@ -2238,8 +2238,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1013",
     "name": "band underhand pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "lats"
     ],
@@ -2264,8 +2264,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1014",
     "name": "band v-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -2286,8 +2286,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1015",
     "name": "band vertical pallof press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "abs"
     ],
@@ -2312,8 +2312,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1016",
     "name": "band wrist curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "forearms"
     ],
@@ -2336,8 +2336,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1017",
     "name": "band y-raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "band",
     "primary_muscles": [
       "delts"
     ],
@@ -2361,7 +2361,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0023",
     "name": "barbell alternate biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -2384,8 +2384,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0024",
     "name": "barbell bench front squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -2409,8 +2409,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0025",
     "name": "barbell bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -2435,8 +2435,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0026",
     "name": "barbell bench squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -2464,7 +2464,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1316",
     "name": "barbell bent arm pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "lats"
     ],
@@ -2487,8 +2487,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0027",
     "name": "barbell bent over row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -2513,7 +2513,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2407",
     "name": "barbell biceps curl (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -2537,8 +2537,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0028",
     "name": "barbell clean and press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -2565,8 +2565,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0029",
     "name": "barbell clean-grip front squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -2592,8 +2592,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0030",
     "name": "barbell close-grip bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -2618,7 +2618,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0031",
     "name": "barbell curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -2641,8 +2641,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0032",
     "name": "barbell deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -2666,8 +2666,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0033",
     "name": "barbell decline bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -2690,8 +2690,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0034",
     "name": "barbell decline bent arm pullover",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "lats"
     ],
@@ -2714,8 +2714,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0035",
     "name": "barbell decline close grip to skull press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -2737,8 +2737,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1255",
     "name": "barbell decline pullover",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -2762,8 +2762,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0036",
     "name": "barbell decline wide-grip press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -2786,8 +2786,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0037",
     "name": "barbell decline wide-grip pullover",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "lats"
     ],
@@ -2811,7 +2811,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0038",
     "name": "barbell drag curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -2834,7 +2834,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1370",
     "name": "barbell floor calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "calves"
     ],
@@ -2857,8 +2857,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0039",
     "name": "barbell front chest squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -2885,7 +2885,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0041",
     "name": "barbell front raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -2908,7 +2908,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0040",
     "name": "barbell front raise and pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -2932,8 +2932,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0042",
     "name": "barbell front squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -2959,8 +2959,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0043",
     "name": "barbell full squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -2988,8 +2988,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1461",
     "name": "barbell full squat (back pov)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3017,8 +3017,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1462",
     "name": "barbell full squat (side pov)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3046,8 +3046,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1545",
     "name": "barbell full zercher squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3074,8 +3074,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1409",
     "name": "barbell glute bridge",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3099,8 +3099,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3562",
     "name": "barbell glute bridge two legs on bench (male)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3124,8 +3124,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0044",
     "name": "barbell good morning",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -3147,8 +3147,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0045",
     "name": "barbell guillotine bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -3172,8 +3172,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0046",
     "name": "barbell hack squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3198,8 +3198,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1436",
     "name": "barbell high bar squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3225,8 +3225,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0047",
     "name": "barbell incline bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -3250,8 +3250,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1719",
     "name": "barbell incline close grip bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3276,8 +3276,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0048",
     "name": "barbell incline reverse-grip press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3300,8 +3300,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0049",
     "name": "barbell incline row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -3326,8 +3326,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0050",
     "name": "barbell incline shoulder raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "serratus anterior"
     ],
@@ -3352,8 +3352,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0051",
     "name": "barbell jefferson squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3378,8 +3378,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0052",
     "name": "barbell jm bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3402,8 +3402,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0053",
     "name": "barbell jump squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3427,8 +3427,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1410",
     "name": "barbell lateral lunge",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3452,8 +3452,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1435",
     "name": "barbell low bar squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3477,8 +3477,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0054",
     "name": "barbell lunge",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3503,7 +3503,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1720",
     "name": "barbell lying back of the head tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3526,7 +3526,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0055",
     "name": "barbell lying close-grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3551,7 +3551,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0056",
     "name": "barbell lying close-grip triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3575,7 +3575,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0057",
     "name": "barbell lying extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3598,7 +3598,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0058",
     "name": "barbell lying lifting (on hip)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3622,7 +3622,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0059",
     "name": "barbell lying preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -3646,7 +3646,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0061",
     "name": "barbell lying triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3669,7 +3669,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0060",
     "name": "barbell lying triceps extension skull crusher",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3691,8 +3691,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0063",
     "name": "barbell narrow stance squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3717,8 +3717,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0064",
     "name": "barbell one arm bent over row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -3742,7 +3742,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0065",
     "name": "barbell one arm floor press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3765,8 +3765,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0066",
     "name": "barbell one arm side deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -3791,8 +3791,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0067",
     "name": "barbell one arm snatch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -3819,8 +3819,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0068",
     "name": "barbell one leg squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -3844,8 +3844,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0069",
     "name": "barbell overhead squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -3871,7 +3871,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1411",
     "name": "barbell palms down wrist curl over a bench",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -3895,7 +3895,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1412",
     "name": "barbell palms up wrist curl over a bench",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -3918,8 +3918,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3017",
     "name": "barbell pendlay row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -3944,7 +3944,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1751",
     "name": "barbell pin presses",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -3970,7 +3970,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0070",
     "name": "barbell preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -3994,7 +3994,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0071",
     "name": "barbell press sit-up",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4017,8 +4017,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0072",
     "name": "barbell prone incline curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -4045,7 +4045,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0073",
     "name": "barbell pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "lats"
     ],
@@ -4069,7 +4069,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0022",
     "name": "barbell pullover to press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "lats"
     ],
@@ -4094,7 +4094,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0074",
     "name": "barbell rack pull",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -4119,7 +4119,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0075",
     "name": "barbell rear delt raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -4143,7 +4143,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0076",
     "name": "barbell rear delt row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -4168,8 +4168,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0078",
     "name": "barbell rear lunge",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -4193,8 +4193,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0077",
     "name": "barbell rear lunge v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -4219,7 +4219,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0079",
     "name": "barbell revers wrist curl v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -4243,8 +4243,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2187",
     "name": "barbell reverse close-grip bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -4270,7 +4270,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0080",
     "name": "barbell reverse curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -4293,8 +4293,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0118",
     "name": "barbell reverse grip bent over row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -4318,8 +4318,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1256",
     "name": "barbell reverse grip decline bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -4342,8 +4342,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1257",
     "name": "barbell reverse grip incline bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -4368,8 +4368,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1317",
     "name": "barbell reverse grip incline bench row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -4396,7 +4396,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1721",
     "name": "barbell reverse grip skullcrusher",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -4420,7 +4420,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0081",
     "name": "barbell reverse preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -4444,7 +4444,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0082",
     "name": "barbell reverse wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -4467,8 +4467,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0084",
     "name": "barbell rollerout",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4490,8 +4490,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0083",
     "name": "barbell rollerout from bench",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4515,8 +4515,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0085",
     "name": "barbell romanian deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -4542,8 +4542,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0086",
     "name": "barbell seated behind head military press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -4568,7 +4568,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0087",
     "name": "barbell seated bradford rocky press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -4592,7 +4592,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0088",
     "name": "barbell seated calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "calves"
     ],
@@ -4617,7 +4617,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1371",
     "name": "barbell seated calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "calves"
     ],
@@ -4640,7 +4640,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1718",
     "name": "barbell seated close grip behind neck triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -4663,7 +4663,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0089",
     "name": "barbell seated close-grip concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -4685,8 +4685,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0090",
     "name": "barbell seated good morning",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -4709,8 +4709,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0091",
     "name": "barbell seated overhead press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -4735,7 +4735,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0092",
     "name": "barbell seated overhead triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -4758,7 +4758,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0094",
     "name": "barbell seated twist",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4783,7 +4783,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0095",
     "name": "barbell shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "traps"
     ],
@@ -4806,7 +4806,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0096",
     "name": "barbell side bent v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4830,8 +4830,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0098",
     "name": "barbell side split squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -4856,8 +4856,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0097",
     "name": "barbell side split squat v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -4883,8 +4883,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1756",
     "name": "barbell single leg deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -4908,8 +4908,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0099",
     "name": "barbell single leg split squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -4935,7 +4935,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2799",
     "name": "barbell sitted alternate leg raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4957,7 +4957,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2800",
     "name": "barbell sitted alternate leg raise (female)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -4981,7 +4981,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0100",
     "name": "barbell skier",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5004,8 +5004,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0101",
     "name": "barbell speed squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -5030,8 +5030,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2810",
     "name": "barbell split squat v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -5055,8 +5055,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0102",
     "name": "barbell squat (on knees)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -5081,8 +5081,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2798",
     "name": "barbell squat jump step rear lunge",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -5109,8 +5109,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0103",
     "name": "barbell standing ab rollerout",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -5134,7 +5134,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0104",
     "name": "barbell standing back wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -5158,7 +5158,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0105",
     "name": "barbell standing bradford press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5181,7 +5181,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1372",
     "name": "barbell standing calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "calves"
     ],
@@ -5204,7 +5204,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0106",
     "name": "barbell standing close grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -5227,8 +5227,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1456",
     "name": "barbell standing close grip military press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5252,7 +5252,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2414",
     "name": "barbell standing concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -5276,7 +5276,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0107",
     "name": "barbell standing front raise over head",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5301,7 +5301,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0108",
     "name": "barbell standing leg calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "calves"
     ],
@@ -5324,7 +5324,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0109",
     "name": "barbell standing overhead triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -5347,7 +5347,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0110",
     "name": "barbell standing reverse grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -5371,7 +5371,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0111",
     "name": "barbell standing rocking leg calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "calves"
     ],
@@ -5394,7 +5394,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0112",
     "name": "barbell standing twist",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -5419,7 +5419,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1629",
     "name": "barbell standing wide grip biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -5442,8 +5442,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1457",
     "name": "barbell standing wide military press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5466,7 +5466,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0113",
     "name": "barbell standing wide-grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -5492,7 +5492,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0114",
     "name": "barbell step-up",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -5517,8 +5517,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0115",
     "name": "barbell stiff leg good morning",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -5542,8 +5542,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0116",
     "name": "barbell straight leg deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -5567,8 +5567,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0117",
     "name": "barbell sumo deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -5594,8 +5594,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3305",
     "name": "barbell thruster",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5621,7 +5621,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0120",
     "name": "barbell upright row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5645,7 +5645,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0119",
     "name": "barbell upright row v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5669,7 +5669,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0121",
     "name": "barbell upright row v. 3",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5692,8 +5692,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0122",
     "name": "barbell wide bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -5717,8 +5717,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1258",
     "name": "barbell wide reverse grip bench press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -5742,8 +5742,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0124",
     "name": "barbell wide squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -5769,7 +5769,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0123",
     "name": "barbell wide-grip upright row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -5793,7 +5793,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0126",
     "name": "barbell wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -5817,7 +5817,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0125",
     "name": "barbell wrist curl v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -5841,8 +5841,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0127",
     "name": "barbell zercher squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -5893,7 +5893,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0128",
     "name": "battling ropes",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "rope",
     "primary_muscles": [
       "delts"
     ],
@@ -5942,8 +5942,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1259",
     "name": "behind head chest stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "assisted",
     "primary_muscles": [
       "pectorals"
     ],
@@ -6134,7 +6134,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0140",
     "name": "biceps pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "biceps"
@@ -6181,7 +6181,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3543",
     "name": "bodyweight drop jump squat",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -6231,7 +6231,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1771",
     "name": "bodyweight kneeling triceps extension",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -6523,7 +6523,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1374",
     "name": "box jump down with one leg stabilization",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -6578,7 +6578,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1160",
     "name": "burpee",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "cardiovascular system"
@@ -6659,7 +6659,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0148",
     "name": "cable alternate shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -6685,7 +6685,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0149",
     "name": "cable alternate triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -6708,8 +6708,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3235",
     "name": "cable assisted inverse leg curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -6735,7 +6735,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0150",
     "name": "cable bar lateral pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -6762,7 +6762,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0151",
     "name": "cable bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -6789,7 +6789,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1630",
     "name": "cable close grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -6815,7 +6815,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1631",
     "name": "cable concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -6838,7 +6838,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0152",
     "name": "cable concentration extension (on knee)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -6861,7 +6861,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0153",
     "name": "cable cross-over lateral pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -6888,7 +6888,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0154",
     "name": "cable cross-over revers fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -6913,7 +6913,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0155",
     "name": "cable cross-over variation",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -6939,7 +6939,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0868",
     "name": "cable curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -6964,7 +6964,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0157",
     "name": "cable deadlift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "glutes"
     ],
@@ -6990,7 +6990,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0158",
     "name": "cable decline fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7015,7 +7015,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1260",
     "name": "cable decline one arm press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7040,7 +7040,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1261",
     "name": "cable decline press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7067,7 +7067,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0159",
     "name": "cable decline seated wide-grip row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -7092,7 +7092,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1632",
     "name": "cable drag curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -7116,7 +7116,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0160",
     "name": "cable floor seated wide-grip row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -7142,7 +7142,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0161",
     "name": "cable forward raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -7166,7 +7166,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0162",
     "name": "cable front raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -7191,7 +7191,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0164",
     "name": "cable front shoulder raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -7216,7 +7216,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0165",
     "name": "cable hammer curl (with rope)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -7241,7 +7241,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1722",
     "name": "cable high pulley overhead tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -7264,8 +7264,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0167",
     "name": "cable high row (kneeling)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -7290,7 +7290,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0168",
     "name": "cable hip adduction",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "adductors"
     ],
@@ -7315,7 +7315,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0169",
     "name": "cable incline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7341,7 +7341,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1318",
     "name": "cable incline bench row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -7367,7 +7367,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0171",
     "name": "cable incline fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7392,7 +7392,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0170",
     "name": "cable incline fly (on stability ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7420,7 +7420,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0172",
     "name": "cable incline pushdown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -7446,7 +7446,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0173",
     "name": "cable incline triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -7472,7 +7472,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0174",
     "name": "cable judo flip",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -7499,7 +7499,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0860",
     "name": "cable kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -7523,8 +7523,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0175",
     "name": "cable kneeling crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -7546,8 +7546,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3697",
     "name": "cable kneeling rear delt row (with rope) (male)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -7572,8 +7572,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0176",
     "name": "cable kneeling triceps extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -7596,8 +7596,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2330",
     "name": "cable lat pulldown full range of motion",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -7623,7 +7623,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0177",
     "name": "cable lateral pulldown (with rope attachment)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -7650,7 +7650,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2616",
     "name": "cable lateral pulldown with v-bar",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -7675,7 +7675,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0178",
     "name": "cable lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -7699,7 +7699,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0179",
     "name": "cable low fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7724,8 +7724,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0180",
     "name": "cable low seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -7750,7 +7750,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1634",
     "name": "cable lying bicep curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -7776,7 +7776,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0182",
     "name": "cable lying close-grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -7802,7 +7802,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0184",
     "name": "cable lying extension pullover (with rope attachment)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -7827,7 +7827,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0185",
     "name": "cable lying fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7851,7 +7851,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0186",
     "name": "cable lying triceps extension v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -7875,7 +7875,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0188",
     "name": "cable middle fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7901,7 +7901,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0189",
     "name": "cable one arm bent over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -7926,7 +7926,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0190",
     "name": "cable one arm curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -7949,7 +7949,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1262",
     "name": "cable one arm decline chest fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7974,7 +7974,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1263",
     "name": "cable one arm fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -7999,7 +7999,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1264",
     "name": "cable one arm incline fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -8023,7 +8023,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1265",
     "name": "cable one arm incline press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -8049,7 +8049,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1266",
     "name": "cable one arm incline press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -8073,7 +8073,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0191",
     "name": "cable one arm lateral bent-over",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -8098,7 +8098,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0192",
     "name": "cable one arm lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -8122,7 +8122,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1633",
     "name": "cable one arm preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8149,7 +8149,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1267",
     "name": "cable one arm press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -8174,7 +8174,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3563",
     "name": "cable one arm pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -8202,7 +8202,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1635",
     "name": "cable one arm reverse preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8228,8 +8228,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0193",
     "name": "cable one arm straight back high row (kneeling)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -8256,7 +8256,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1723",
     "name": "cable one arm tricep pushdown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8282,7 +8282,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1636",
     "name": "cable overhead curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8309,7 +8309,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1637",
     "name": "cable overhead curl on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8333,7 +8333,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0194",
     "name": "cable overhead triceps extension (rope attachment)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8358,7 +8358,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1319",
     "name": "cable palm rotational row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -8385,7 +8385,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0195",
     "name": "cable preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8409,7 +8409,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1268",
     "name": "cable press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -8433,7 +8433,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0196",
     "name": "cable pull through (with rope)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "glutes"
     ],
@@ -8457,7 +8457,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0198",
     "name": "cable pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -8483,7 +8483,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0197",
     "name": "cable pulldown (pro lat bar)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -8508,7 +8508,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1638",
     "name": "cable pulldown bicep curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8534,7 +8534,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0201",
     "name": "cable pushdown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8559,7 +8559,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0199",
     "name": "cable pushdown (straight arm) v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -8584,7 +8584,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0200",
     "name": "cable pushdown (with rope attachment)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8609,7 +8609,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0202",
     "name": "cable rear delt row (stirrups)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -8636,7 +8636,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0203",
     "name": "cable rear delt row (with rope)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -8663,7 +8663,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0204",
     "name": "cable rear drive",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8686,7 +8686,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0205",
     "name": "cable rear pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -8713,7 +8713,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0873",
     "name": "cable reverse crunch",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -8737,7 +8737,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0206",
     "name": "cable reverse curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8763,7 +8763,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2406",
     "name": "cable reverse grip triceps pushdown (sz-bar) (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8788,7 +8788,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1413",
     "name": "cable reverse one arm curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8811,7 +8811,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0209",
     "name": "cable reverse preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -8836,7 +8836,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0210",
     "name": "cable reverse wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "forearms"
     ],
@@ -8861,7 +8861,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0207",
     "name": "cable reverse-grip pushdown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -8886,7 +8886,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0208",
     "name": "cable reverse-grip straight back seated high row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -8910,8 +8910,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1320",
     "name": "cable rope crossover seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -8935,8 +8935,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1321",
     "name": "cable rope elevated seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -8962,7 +8962,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1322",
     "name": "cable rope extension incline bench row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -8988,7 +8988,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1639",
     "name": "cable rope hammer preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9014,7 +9014,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1724",
     "name": "cable rope high pulley overhead tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -9039,7 +9039,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1725",
     "name": "cable rope incline tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -9064,7 +9064,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1726",
     "name": "cable rope lying on floor tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -9088,7 +9088,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1640",
     "name": "cable rope one arm hammer preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9113,8 +9113,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1323",
     "name": "cable rope seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -9139,7 +9139,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0211",
     "name": "cable russian twists (on stability ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9164,7 +9164,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2144",
     "name": "cable seated chest press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -9189,7 +9189,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0212",
     "name": "cable seated crunch",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9212,7 +9212,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1641",
     "name": "cable seated curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9236,7 +9236,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0213",
     "name": "cable seated high row (v-bar)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -9262,7 +9262,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0214",
     "name": "cable seated one arm alternate row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -9288,7 +9288,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1642",
     "name": "cable seated one arm concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9312,7 +9312,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1643",
     "name": "cable seated overhead curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9338,7 +9338,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0215",
     "name": "cable seated rear lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -9361,8 +9361,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0861",
     "name": "cable seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -9386,7 +9386,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0216",
     "name": "cable seated shoulder internal rotation",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -9411,7 +9411,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2399",
     "name": "cable seated twist",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9435,7 +9435,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0218",
     "name": "cable seated wide-grip row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -9461,7 +9461,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0219",
     "name": "cable shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -9486,7 +9486,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0220",
     "name": "cable shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "traps"
     ],
@@ -9509,7 +9509,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0222",
     "name": "cable side bend",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9533,7 +9533,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0221",
     "name": "cable side bend crunch (bosu ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9556,7 +9556,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0223",
     "name": "cable side crunch",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9580,7 +9580,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1717",
     "name": "cable squat row (with rope attachment)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -9608,7 +9608,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1644",
     "name": "cable squatting curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9634,7 +9634,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0224",
     "name": "cable standing back wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "forearms"
     ],
@@ -9659,7 +9659,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1375",
     "name": "cable standing calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "calves"
     ],
@@ -9683,7 +9683,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0225",
     "name": "cable standing cross-over high reverse fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -9710,7 +9710,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0226",
     "name": "cable standing crunch",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9734,7 +9734,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0874",
     "name": "cable standing crunch (with rope attachment)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9758,7 +9758,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0227",
     "name": "cable standing fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -9786,7 +9786,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0228",
     "name": "cable standing hip extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "glutes"
     ],
@@ -9812,7 +9812,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0229",
     "name": "cable standing inner curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9837,7 +9837,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0230",
     "name": "cable standing lift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -9862,7 +9862,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0231",
     "name": "cable standing one arm triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -9886,7 +9886,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1376",
     "name": "cable standing one leg calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "calves"
     ],
@@ -9911,7 +9911,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0232",
     "name": "cable standing pulldown (with rope)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -9937,7 +9937,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0233",
     "name": "cable standing rear delt row (with rope)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -9963,7 +9963,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1727",
     "name": "cable standing reverse grip one arm overhead tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -9986,7 +9986,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0234",
     "name": "cable standing row (v-bar)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -10011,7 +10011,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0235",
     "name": "cable standing shoulder external rotation",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -10036,7 +10036,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0236",
     "name": "cable standing twist row (v-bar)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -10065,7 +10065,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1269",
     "name": "cable standing up straight crossovers",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -10089,7 +10089,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0238",
     "name": "cable straight arm pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -10114,7 +10114,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0237",
     "name": "cable straight arm pulldown (with rope)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -10139,8 +10139,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0239",
     "name": "cable straight back seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -10166,7 +10166,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0240",
     "name": "cable supine reverse fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -10190,7 +10190,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2464",
     "name": "cable thibaudeau kayak row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -10216,7 +10216,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0241",
     "name": "cable triceps pushdown (v-bar)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -10242,7 +10242,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2405",
     "name": "cable triceps pushdown (v-bar) (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -10268,7 +10268,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0242",
     "name": "cable tuck reverse crunch",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -10292,7 +10292,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0243",
     "name": "cable twist",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -10317,7 +10317,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0862",
     "name": "cable twist (up-down)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "abs"
     ],
@@ -10342,7 +10342,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0244",
     "name": "cable twisting pull",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -10369,7 +10369,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1645",
     "name": "cable two arm curl on incline bench",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "biceps"
     ],
@@ -10393,7 +10393,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1728",
     "name": "cable two arm tricep kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "triceps"
     ],
@@ -10416,7 +10416,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0245",
     "name": "cable underhand pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -10441,7 +10441,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1270",
     "name": "cable upper chest crossovers",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "pectorals"
     ],
@@ -10468,7 +10468,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1324",
     "name": "cable upper row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "upper back"
     ],
@@ -10495,7 +10495,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0246",
     "name": "cable upright row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "delts"
     ],
@@ -10520,7 +10520,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1325",
     "name": "cable wide grip rear pulldown behind neck",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -10546,7 +10546,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0247",
     "name": "cable wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "cable",
     "primary_muscles": [
       "forearms"
     ],
@@ -10571,7 +10571,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1407",
     "name": "calf push stretch with hands against wall",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -10595,7 +10595,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1377",
     "name": "calf stretch with hands against wall",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -10619,8 +10619,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1378",
     "name": "calf stretch with rope",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "rope",
     "primary_muscles": [
       "calves"
     ],
@@ -10644,7 +10644,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0248",
     "name": "cambered bar lying row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -10691,7 +10691,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1548",
     "name": "chair leg extended stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "quads"
@@ -10715,7 +10715,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1271",
     "name": "chest and front of shoulder stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -10740,7 +10740,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0251",
     "name": "chest dip",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -10763,7 +10763,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1430",
     "name": "chest dip (on dip-pull-up cage)",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -10790,7 +10790,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2462",
     "name": "chest dip on straight bar",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -10814,8 +10814,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1272",
     "name": "chest stretch with exercise ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -10863,7 +10863,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1326",
     "name": "chin-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -10911,7 +10911,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0257",
     "name": "circles knee stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -10984,7 +10984,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1327",
     "name": "close grip chin-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -11104,7 +11104,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0262",
     "name": "cross body crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -11128,7 +11128,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0267",
     "name": "crunch (hands overhead)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -11151,8 +11151,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0271",
     "name": "crunch (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "abs"
     ],
@@ -11175,8 +11175,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0272",
     "name": "crunch (on stability ball, arms straight)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "abs"
     ],
@@ -11199,7 +11199,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0274",
     "name": "crunch floor",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -11271,8 +11271,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2331",
     "name": "cycle cross trainer",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -11296,7 +11296,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0276",
     "name": "dead bug",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -11394,7 +11394,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1274",
     "name": "deep push up",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -11489,7 +11489,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0285",
     "name": "dumbbell alternate biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11513,7 +11513,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2403",
     "name": "dumbbell alternate biceps curl (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11539,7 +11539,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1646",
     "name": "dumbbell alternate hammer preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11563,7 +11563,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1647",
     "name": "dumbbell alternate preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11588,7 +11588,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1648",
     "name": "dumbbell alternate seated hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11613,7 +11613,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0286",
     "name": "dumbbell alternate side press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -11636,7 +11636,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1649",
     "name": "dumbbell alternating bicep curl with leg raised on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11660,7 +11660,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1650",
     "name": "dumbbell alternating seated bicep curl on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11684,7 +11684,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2137",
     "name": "dumbbell arnold press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -11708,7 +11708,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0287",
     "name": "dumbbell arnold press v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -11732,7 +11732,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0288",
     "name": "dumbbell around pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -11756,7 +11756,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0289",
     "name": "dumbbell bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -11780,7 +11780,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0290",
     "name": "dumbbell bench seated press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -11804,7 +11804,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0291",
     "name": "dumbbell bench squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -11829,7 +11829,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0293",
     "name": "dumbbell bent over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -11854,7 +11854,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1651",
     "name": "dumbbell bicep curl lunge with bowling motion",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11880,7 +11880,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1652",
     "name": "dumbbell bicep curl on exercise ball with leg raised",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11905,7 +11905,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1653",
     "name": "dumbbell bicep curl with stork stance",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11930,7 +11930,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0294",
     "name": "dumbbell biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11954,7 +11954,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2401",
     "name": "dumbbell biceps curl (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -11979,7 +11979,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1654",
     "name": "dumbbell biceps curl reverse",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12003,7 +12003,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1655",
     "name": "dumbbell biceps curl squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12026,7 +12026,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1656",
     "name": "dumbbell biceps curl v sit on bosu ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12052,7 +12052,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1201",
     "name": "dumbbell burpee",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -12082,8 +12082,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0295",
     "name": "dumbbell clean",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -12110,7 +12110,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1731",
     "name": "dumbbell close grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -12135,7 +12135,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0296",
     "name": "dumbbell close-grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -12160,7 +12160,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0297",
     "name": "dumbbell concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12185,7 +12185,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3635",
     "name": "dumbbell contralateral forward lunge",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -12211,7 +12211,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0298",
     "name": "dumbbell cross body hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12236,7 +12236,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1657",
     "name": "dumbbell cross body hammer curl v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12260,7 +12260,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0299",
     "name": "dumbbell cuban press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -12284,7 +12284,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2136",
     "name": "dumbbell cuban press v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -12308,7 +12308,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0300",
     "name": "dumbbell deadlift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -12332,7 +12332,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0301",
     "name": "dumbbell decline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12356,7 +12356,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0302",
     "name": "dumbbell decline fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12379,7 +12379,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0303",
     "name": "dumbbell decline hammer press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12403,7 +12403,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1276",
     "name": "dumbbell decline one arm fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12427,7 +12427,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1617",
     "name": "dumbbell decline one arm hammer press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -12451,7 +12451,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0305",
     "name": "dumbbell decline shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "traps"
     ],
@@ -12476,7 +12476,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0304",
     "name": "dumbbell decline shrug v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "traps"
     ],
@@ -12501,7 +12501,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0306",
     "name": "dumbbell decline triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -12524,7 +12524,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0307",
     "name": "dumbbell decline twist fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12549,7 +12549,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1437",
     "name": "dumbbell finger curls",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -12572,7 +12572,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0308",
     "name": "dumbbell fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12595,7 +12595,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1277",
     "name": "dumbbell fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12620,7 +12620,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1732",
     "name": "dumbbell forward lunge triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -12646,7 +12646,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0310",
     "name": "dumbbell front raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -12669,7 +12669,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0309",
     "name": "dumbbell front raise v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -12693,7 +12693,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0311",
     "name": "dumbbell full can lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -12717,7 +12717,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1760",
     "name": "dumbbell goblet squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "quads"
     ],
@@ -12742,7 +12742,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0313",
     "name": "dumbbell hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12768,7 +12768,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1659",
     "name": "dumbbell hammer curl on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12793,7 +12793,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0312",
     "name": "dumbbell hammer curl v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12819,7 +12819,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2402",
     "name": "dumbbell hammer curls (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12845,7 +12845,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1664",
     "name": "dumbbell high curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12867,7 +12867,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3545",
     "name": "dumbbell incline alternate press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12892,7 +12892,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0314",
     "name": "dumbbell incline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12917,7 +12917,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0315",
     "name": "dumbbell incline biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12941,7 +12941,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0316",
     "name": "dumbbell incline breeding",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -12967,7 +12967,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0318",
     "name": "dumbbell incline curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -12992,7 +12992,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0317",
     "name": "dumbbell incline curl v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -13016,7 +13016,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0319",
     "name": "dumbbell incline fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13040,7 +13040,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1278",
     "name": "dumbbell incline fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13064,7 +13064,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0320",
     "name": "dumbbell incline hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -13089,7 +13089,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0321",
     "name": "dumbbell incline hammer press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13113,7 +13113,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1618",
     "name": "dumbbell incline hammer press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13139,7 +13139,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0322",
     "name": "dumbbell incline inner biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -13164,7 +13164,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1279",
     "name": "dumbbell incline one arm fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13190,7 +13190,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1280",
     "name": "dumbbell incline one arm fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13215,7 +13215,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1619",
     "name": "dumbbell incline one arm hammer press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13240,7 +13240,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1620",
     "name": "dumbbell incline one arm hammer press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13265,7 +13265,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0323",
     "name": "dumbbell incline one arm lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13290,7 +13290,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1281",
     "name": "dumbbell incline one arm press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13314,7 +13314,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1282",
     "name": "dumbbell incline one arm press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13339,7 +13339,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0324",
     "name": "dumbbell incline palm-in press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13365,7 +13365,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1283",
     "name": "dumbbell incline press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13390,7 +13390,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0325",
     "name": "dumbbell incline raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13414,7 +13414,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0326",
     "name": "dumbbell incline rear lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13439,7 +13439,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0327",
     "name": "dumbbell incline row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -13464,7 +13464,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0328",
     "name": "dumbbell incline shoulder raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "serratus anterior"
     ],
@@ -13489,7 +13489,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0329",
     "name": "dumbbell incline shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "traps"
     ],
@@ -13512,7 +13512,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3542",
     "name": "dumbbell incline t-raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13536,7 +13536,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0330",
     "name": "dumbbell incline triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13559,7 +13559,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0331",
     "name": "dumbbell incline twisted flyes",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13584,7 +13584,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1733",
     "name": "dumbbell incline two arm extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13607,7 +13607,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3541",
     "name": "dumbbell incline y-raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -13631,7 +13631,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0332",
     "name": "dumbbell iron cross",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13654,7 +13654,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0333",
     "name": "dumbbell kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13678,7 +13678,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1734",
     "name": "dumbbell kickbacks on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13701,8 +13701,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1660",
     "name": "dumbbell kneeling bicep curl exercise ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -13727,7 +13727,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0334",
     "name": "dumbbell lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13750,7 +13750,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0335",
     "name": "dumbbell lateral to front raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13776,7 +13776,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0336",
     "name": "dumbbell lunge",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -13802,7 +13802,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1658",
     "name": "dumbbell lunge with bicep curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -13827,7 +13827,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0337",
     "name": "dumbbell lying extension (across face)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13850,7 +13850,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1729",
     "name": "dumbbell lying alternate extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13873,7 +13873,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0338",
     "name": "dumbbell lying elbow press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -13896,7 +13896,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0863",
     "name": "dumbbell lying external shoulder rotation",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13920,7 +13920,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0339",
     "name": "dumbbell lying femoral",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -13942,7 +13942,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0340",
     "name": "dumbbell lying hammer press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -13965,7 +13965,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2470",
     "name": "dumbbell lying on floor rear delt raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -13989,7 +13989,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0341",
     "name": "dumbbell lying one arm deltoid rear",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -14013,7 +14013,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0343",
     "name": "dumbbell lying one arm press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14037,7 +14037,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0342",
     "name": "dumbbell lying one arm press v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14062,7 +14062,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0344",
     "name": "dumbbell lying one arm pronated triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14085,7 +14085,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0345",
     "name": "dumbbell lying one arm rear lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -14108,7 +14108,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0346",
     "name": "dumbbell lying one arm supinated triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14131,7 +14131,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0347",
     "name": "dumbbell lying pronation",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -14155,7 +14155,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2705",
     "name": "dumbbell lying pronation on floor",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -14180,7 +14180,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1284",
     "name": "dumbbell lying pullover on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14205,7 +14205,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1328",
     "name": "dumbbell lying rear delt row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -14229,7 +14229,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0348",
     "name": "dumbbell lying rear lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -14253,7 +14253,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1735",
     "name": "dumbbell lying single extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14275,7 +14275,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0349",
     "name": "dumbbell lying supination",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -14299,7 +14299,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2706",
     "name": "dumbbell lying supination on floor",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -14323,7 +14323,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1661",
     "name": "dumbbell lying supine biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14348,7 +14348,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0350",
     "name": "dumbbell lying supine curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14372,7 +14372,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0351",
     "name": "dumbbell lying triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14395,7 +14395,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1662",
     "name": "dumbbell lying wide curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14419,7 +14419,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0352",
     "name": "dumbbell neutral grip bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14443,7 +14443,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1285",
     "name": "dumbbell one arm bench fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14468,7 +14468,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0292",
     "name": "dumbbell one arm bent-over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -14493,7 +14493,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1286",
     "name": "dumbbell one arm chest fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14519,7 +14519,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0353",
     "name": "dumbbell one arm concentration curl (on stability ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14543,7 +14543,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1287",
     "name": "dumbbell one arm decline chest press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14567,7 +14567,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1288",
     "name": "dumbbell one arm fly on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14592,7 +14592,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1736",
     "name": "dumbbell one arm french press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14615,7 +14615,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1663",
     "name": "dumbbell one arm hammer preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14639,7 +14639,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1621",
     "name": "dumbbell one arm hammer press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14664,7 +14664,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1289",
     "name": "dumbbell one arm incline chest press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14689,7 +14689,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0354",
     "name": "dumbbell one arm kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -14713,7 +14713,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0355",
     "name": "dumbbell one arm lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -14738,7 +14738,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0356",
     "name": "dumbbell one arm lateral raise with support",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -14764,7 +14764,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1290",
     "name": "dumbbell one arm press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14789,7 +14789,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1665",
     "name": "dumbbell one arm prone curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14812,7 +14812,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1666",
     "name": "dumbbell one arm prone hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14834,7 +14834,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1291",
     "name": "dumbbell one arm pullover on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14859,7 +14859,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0358",
     "name": "dumbbell one arm reverse wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -14883,7 +14883,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0359",
     "name": "dumbbell one arm reverse fly (with support)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -14908,7 +14908,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1622",
     "name": "dumbbell one arm reverse grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -14933,7 +14933,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1414",
     "name": "dumbbell one arm reverse preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14956,7 +14956,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1667",
     "name": "dumbbell one arm reverse spider curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -14978,7 +14978,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1668",
     "name": "dumbbell one arm seated bicep curl on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15001,7 +15001,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1669",
     "name": "dumbbell one arm seated hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15026,7 +15026,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1415",
     "name": "dumbbell one arm seated neutral wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -15050,7 +15050,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0361",
     "name": "dumbbell one arm shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15073,7 +15073,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0360",
     "name": "dumbbell one arm shoulder press v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15095,8 +15095,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3888",
     "name": "dumbbell one arm snatch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -15124,7 +15124,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1670",
     "name": "dumbbell one arm standing curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15148,7 +15148,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1671",
     "name": "dumbbell one arm standing hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15173,7 +15173,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0362",
     "name": "dumbbell one arm triceps extension (on bench)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -15197,7 +15197,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0363",
     "name": "dumbbell one arm upright row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15221,7 +15221,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0364",
     "name": "dumbbell one arm wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -15245,7 +15245,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1672",
     "name": "dumbbell one arm zottman preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15268,8 +15268,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1292",
     "name": "dumbbell one leg fly on exercise ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -15294,7 +15294,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0365",
     "name": "dumbbell over bench neutral wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15317,7 +15317,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0366",
     "name": "dumbbell over bench one arm neutral wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15339,7 +15339,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1441",
     "name": "dumbbell over bench one arm reverse wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -15363,7 +15363,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0367",
     "name": "dumbbell over bench one arm wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -15387,7 +15387,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0368",
     "name": "dumbbell over bench revers wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -15411,7 +15411,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0369",
     "name": "dumbbell over bench wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -15435,7 +15435,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1329",
     "name": "dumbbell palm rotational bent over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -15462,7 +15462,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1623",
     "name": "dumbbell palms in incline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -15488,7 +15488,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0370",
     "name": "dumbbell peacher hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15513,8 +15513,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0371",
     "name": "dumbbell plyo squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -15540,7 +15540,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0372",
     "name": "dumbbell preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15565,7 +15565,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1673",
     "name": "dumbbell preacher curl over exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15588,7 +15588,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1293",
     "name": "dumbbell press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -15613,7 +15613,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0373",
     "name": "dumbbell pronate-grip triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -15636,7 +15636,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0374",
     "name": "dumbbell prone incline curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15662,7 +15662,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1674",
     "name": "dumbbell prone incline hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15688,7 +15688,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0375",
     "name": "dumbbell pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -15712,7 +15712,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1294",
     "name": "dumbbell pullover hip extension on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -15740,7 +15740,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1295",
     "name": "dumbbell pullover on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -15763,7 +15763,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1700",
     "name": "dumbbell push press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15786,7 +15786,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0376",
     "name": "dumbbell raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15810,7 +15810,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2292",
     "name": "dumbbell rear delt raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15834,7 +15834,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0377",
     "name": "dumbbell rear delt row_shoulder",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15860,7 +15860,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0378",
     "name": "dumbbell rear fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15885,7 +15885,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0380",
     "name": "dumbbell rear lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15909,7 +15909,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0379",
     "name": "dumbbell rear lateral raise (support head)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -15933,7 +15933,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0381",
     "name": "dumbbell rear lunge",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -15958,7 +15958,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0382",
     "name": "dumbbell revers grip biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -15982,7 +15982,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1624",
     "name": "dumbbell reverse bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -16007,7 +16007,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0383",
     "name": "dumbbell reverse fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16032,7 +16032,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1330",
     "name": "dumbbell reverse grip incline bench one arm row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -16062,7 +16062,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1331",
     "name": "dumbbell reverse grip incline bench two arm row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -16088,7 +16088,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2327",
     "name": "dumbbell reverse grip row (female)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -16114,7 +16114,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0384",
     "name": "dumbbell reverse preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16139,7 +16139,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1675",
     "name": "dumbbell reverse spider curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16163,7 +16163,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0385",
     "name": "dumbbell reverse wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -16188,7 +16188,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1459",
     "name": "dumbbell romanian deadlift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -16211,7 +16211,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0386",
     "name": "dumbbell rotation reverse fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16236,7 +16236,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2397",
     "name": "dumbbell scott press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16260,7 +16260,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0387",
     "name": "dumbbell seated alternate front raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16285,7 +16285,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1676",
     "name": "dumbbell seated alternate hammer curl on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16311,7 +16311,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0388",
     "name": "dumbbell seated alternate press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16336,7 +16336,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3546",
     "name": "dumbbell seated alternate shoulder",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16360,7 +16360,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0389",
     "name": "dumbbell seated bench extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -16383,7 +16383,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2317",
     "name": "dumbbell seated bent arm lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16407,7 +16407,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1730",
     "name": "dumbbell seated bent over alternate kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -16432,7 +16432,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1737",
     "name": "dumbbell seated bent over triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -16456,7 +16456,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1677",
     "name": "dumbbell seated bicep curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16479,7 +16479,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0390",
     "name": "dumbbell seated biceps curl (on stability ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16504,7 +16504,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3547",
     "name": "dumbbell seated biceps curl to shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16529,7 +16529,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1379",
     "name": "dumbbell seated calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -16553,7 +16553,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0391",
     "name": "dumbbell seated curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16576,7 +16576,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0392",
     "name": "dumbbell seated front raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16600,7 +16600,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1678",
     "name": "dumbbell seated hammer curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16624,7 +16624,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0393",
     "name": "dumbbell seated inner biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16647,7 +16647,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0394",
     "name": "dumbbell seated kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -16671,7 +16671,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0396",
     "name": "dumbbell seated lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16695,7 +16695,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0395",
     "name": "dumbbell seated lateral raise v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -16719,7 +16719,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0397",
     "name": "dumbbell seated neutral wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16742,7 +16742,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1679",
     "name": "dumbbell seated one arm bicep curl on exercise ball with leg raised",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16769,7 +16769,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0398",
     "name": "dumbbell seated one arm kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -16792,7 +16792,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0399",
     "name": "dumbbell seated one arm rotate",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -16815,8 +16815,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0400",
     "name": "dumbbell seated one leg calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -16840,8 +16840,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1380",
     "name": "dumbbell seated one leg calf raise - hammer grip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -16865,8 +16865,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1381",
     "name": "dumbbell seated one leg calf raise - palm up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -16891,7 +16891,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0401",
     "name": "dumbbell seated palms up wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -16915,7 +16915,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0402",
     "name": "dumbbell seated preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16938,7 +16938,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0403",
     "name": "dumbbell seated revers grip concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -16962,7 +16962,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1738",
     "name": "dumbbell seated reverse grip one arm overhead tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -16985,7 +16985,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0405",
     "name": "dumbbell seated shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17009,7 +17009,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0404",
     "name": "dumbbell seated shoulder press (parallel grip)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17033,7 +17033,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2188",
     "name": "dumbbell seated triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17056,7 +17056,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0406",
     "name": "dumbbell shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "traps"
     ],
@@ -17079,7 +17079,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0407",
     "name": "dumbbell side bend",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "abs"
     ],
@@ -17101,7 +17101,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0408",
     "name": "dumbbell side lying one hand raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17125,7 +17125,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3664",
     "name": "dumbbell side plank with rear fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -17151,7 +17151,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3548",
     "name": "dumbbell single arm overhead carry",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17174,8 +17174,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0409",
     "name": "dumbbell single leg calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -17197,8 +17197,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1757",
     "name": "dumbbell single leg deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -17223,8 +17223,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2805",
     "name": "dumbbell single leg deadlift with stepbox support",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -17248,8 +17248,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0410",
     "name": "dumbbell single leg split squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "quads"
     ],
@@ -17273,8 +17273,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0411",
     "name": "dumbbell single leg squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -17300,7 +17300,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0413",
     "name": "dumbbell squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -17325,7 +17325,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3560",
     "name": "dumbbell standing alternate hammer curl and press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17355,7 +17355,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0414",
     "name": "dumbbell standing alternate overhead press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17379,7 +17379,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0415",
     "name": "dumbbell standing alternate raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17405,7 +17405,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1739",
     "name": "dumbbell standing alternating tricep kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17428,7 +17428,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2143",
     "name": "dumbbell standing around world",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17452,7 +17452,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1740",
     "name": "dumbbell standing bent over one arm triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17476,7 +17476,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1741",
     "name": "dumbbell standing bent over two arm triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17500,7 +17500,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0416",
     "name": "dumbbell standing biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17524,7 +17524,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0417",
     "name": "dumbbell standing calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -17546,7 +17546,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0418",
     "name": "dumbbell standing concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17571,7 +17571,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0419",
     "name": "dumbbell standing front raise above head",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17594,7 +17594,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2321",
     "name": "dumbbell standing inner biceps curl v. 2",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17619,7 +17619,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0420",
     "name": "dumbbell standing kickback",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17642,7 +17642,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0421",
     "name": "dumbbell standing one arm concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17667,7 +17667,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0422",
     "name": "dumbbell standing one arm curl (over incline bench)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17690,7 +17690,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1680",
     "name": "dumbbell standing one arm curl over incline bench",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17713,7 +17713,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0423",
     "name": "dumbbell standing one arm extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17737,7 +17737,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0424",
     "name": "dumbbell standing one arm palm in press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17761,7 +17761,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0425",
     "name": "dumbbell standing one arm reverse curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17784,7 +17784,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0426",
     "name": "dumbbell standing overhead press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17807,7 +17807,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0427",
     "name": "dumbbell standing palms in press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -17830,7 +17830,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0428",
     "name": "dumbbell standing preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17855,7 +17855,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0429",
     "name": "dumbbell standing reverse curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17878,7 +17878,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0430",
     "name": "dumbbell standing triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -17901,7 +17901,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2293",
     "name": "dumbbell standing zottman preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17924,8 +17924,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1684",
     "name": "dumbbell step up single leg balance with bicep curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -17952,7 +17952,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0431",
     "name": "dumbbell step-up",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -17978,7 +17978,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2796",
     "name": "dumbbell step-up lunge",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "quads"
     ],
@@ -18004,7 +18004,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2812",
     "name": "dumbbell step-up split squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "quads"
     ],
@@ -18031,7 +18031,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0432",
     "name": "dumbbell stiff leg deadlift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -18054,7 +18054,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0433",
     "name": "dumbbell straight arm pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -18078,7 +18078,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0434",
     "name": "dumbbell straight leg deadlift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -18102,7 +18102,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2808",
     "name": "dumbbell sumo pull through",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -18129,7 +18129,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2803",
     "name": "dumbbell supported squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "quads"
     ],
@@ -18154,7 +18154,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0436",
     "name": "dumbbell tate press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -18176,7 +18176,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1742",
     "name": "dumbbell tricep kickback with stork stance",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -18200,7 +18200,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1743",
     "name": "dumbbell twisting bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -18227,7 +18227,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0437",
     "name": "dumbbell upright row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -18251,7 +18251,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1765",
     "name": "dumbbell upright row (back pov)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -18276,7 +18276,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0864",
     "name": "dumbbell upright shoulder external rotation",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -18300,7 +18300,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-5201",
     "name": "dumbbell waiter biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -18324,7 +18324,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0438",
     "name": "dumbbell w-press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "delts"
     ],
@@ -18348,7 +18348,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0439",
     "name": "dumbbell zottman curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -18372,7 +18372,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2294",
     "name": "dumbbell zottman preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -18395,7 +18395,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2189",
     "name": "dumbbells seated triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -18417,7 +18417,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1167",
     "name": "dynamic chest stretch (male)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -18539,8 +18539,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1332",
     "name": "exercise ball alternating arm ups",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "lats"
     ],
@@ -18564,8 +18564,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1333",
     "name": "exercise ball back extension with arms extended",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -18588,8 +18588,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1334",
     "name": "exercise ball back extension with hands behind head",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -18613,8 +18613,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1335",
     "name": "exercise ball back extension with knees off ground",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -18637,8 +18637,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1336",
     "name": "exercise ball back extension with rotation",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -18662,8 +18662,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1744",
     "name": "exercise ball dip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "triceps"
     ],
@@ -18686,8 +18686,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1559",
     "name": "exercise ball hip flexor stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "glutes"
     ],
@@ -18710,8 +18710,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1338",
     "name": "exercise ball hug",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -18735,8 +18735,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1339",
     "name": "exercise ball lat stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "lats"
     ],
@@ -18759,8 +18759,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1341",
     "name": "exercise ball lower back stretch (pyramid)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "lats"
     ],
@@ -18784,8 +18784,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1342",
     "name": "exercise ball lying side lat stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "lats"
     ],
@@ -18808,8 +18808,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1382",
     "name": "exercise ball on the wall calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -18833,8 +18833,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3241",
     "name": "exercise ball on the wall calf raise (tennis ball between ankles)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -18859,8 +18859,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3240",
     "name": "exercise ball on the wall calf raise (tennis ball between knees)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -18885,8 +18885,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1416",
     "name": "exercise ball one leg prone lower body rotation",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "glutes"
     ],
@@ -18913,8 +18913,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1417",
     "name": "exercise ball one legged diagonal kick hamstring curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "glutes"
     ],
@@ -18939,8 +18939,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1296",
     "name": "exercise ball pike push up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -18965,8 +18965,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1343",
     "name": "exercise ball prone leg raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "spine"
     ],
@@ -18989,8 +18989,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1560",
     "name": "exercise ball seated hamstring stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -19015,8 +19015,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1745",
     "name": "exercise ball seated triceps stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "triceps"
     ],
@@ -19039,7 +19039,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1746",
     "name": "exercise ball supine triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19062,7 +19062,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1747",
     "name": "ez bar french press on exercise ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19085,7 +19085,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3010",
     "name": "ez bar lying bent arms pullover",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "lats"
     ],
@@ -19110,7 +19110,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1748",
     "name": "ez bar lying close grip triceps extension behind head",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19133,7 +19133,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1344",
     "name": "ez bar reverse grip bent over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -19158,7 +19158,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1682",
     "name": "ez bar seated close grip concentration curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19181,7 +19181,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1749",
     "name": "ez bar standing french press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19204,7 +19204,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0445",
     "name": "ez barbell anti gravity press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -19227,7 +19227,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1627",
     "name": "ez barbell close grip preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19251,7 +19251,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0446",
     "name": "ez barbell close-grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19274,7 +19274,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0447",
     "name": "ez barbell curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19297,7 +19297,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0448",
     "name": "ez barbell decline close grip face press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19322,7 +19322,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2186",
     "name": "ez barbell decline triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19346,7 +19346,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0449",
     "name": "ez barbell incline triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19370,7 +19370,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0450",
     "name": "ez barbell jm bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19394,7 +19394,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0451",
     "name": "ez barbell reverse grip curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19419,7 +19419,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0452",
     "name": "ez barbell reverse grip preacher curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19443,7 +19443,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1458",
     "name": "ez barbell seated curls",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19468,7 +19468,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0453",
     "name": "ez barbell seated triceps extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19492,7 +19492,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0454",
     "name": "ez barbell spider curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19516,7 +19516,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1628",
     "name": "ez barbell spider curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19540,7 +19540,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2404",
     "name": "ez-bar biceps curl (with arm blaster)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19564,7 +19564,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2432",
     "name": "ez-bar close-grip bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -19590,7 +19590,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2741",
     "name": "ez-barbell standing wide grip biceps curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "ez barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -19613,7 +19613,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2133",
     "name": "farmers walk",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "quads"
     ],
@@ -19638,7 +19638,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0455",
     "name": "finger curls",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "forearms"
     ],
@@ -19735,7 +19735,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0458",
     "name": "floor fly (with barbell)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -19833,8 +19833,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3194",
     "name": "frankenstein squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -19858,7 +19858,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2429",
     "name": "frog crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -19881,7 +19881,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3301",
     "name": "frog planche",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -19906,7 +19906,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3296",
     "name": "front lever",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -19933,7 +19933,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3295",
     "name": "front lever reps",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "upper back"
@@ -19958,7 +19958,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0464",
     "name": "front plank with twist",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20008,7 +20008,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3299",
     "name": "full planche",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20034,7 +20034,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3327",
     "name": "full planche push-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -20087,7 +20087,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3561",
     "name": "glute bridge march",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -20112,7 +20112,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3523",
     "name": "glute bridge two legs on bench (male)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -20187,7 +20187,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0469",
     "name": "groin crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20211,8 +20211,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1383",
     "name": "hack calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -20237,7 +20237,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1384",
     "name": "hack one leg calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -20310,7 +20310,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1511",
     "name": "hamstring stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -20333,8 +20333,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2139",
     "name": "hands bike",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "upper body ergometer",
     "primary_muscles": [
       "pectorals"
     ],
@@ -20409,7 +20409,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3302",
     "name": "handstand",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -20435,7 +20435,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0471",
     "name": "handstand push-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -20460,7 +20460,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1764",
     "name": "hanging leg hip raise",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20483,7 +20483,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0472",
     "name": "hanging leg raise",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20529,7 +20529,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0473",
     "name": "hanging pike",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20553,7 +20553,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0474",
     "name": "hanging straight leg hip raise",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20575,7 +20575,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0475",
     "name": "hanging straight leg raise",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20598,7 +20598,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0476",
     "name": "hanging straight twisting leg hip raise",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -20700,7 +20700,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3234",
     "name": "hyght dumbbell fly",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -20890,7 +20890,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0492",
     "name": "incline push up depth jump",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -20916,7 +20916,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0493",
     "name": "incline push-up",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -20940,7 +20940,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3785",
     "name": "incline push-up (on box)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -21040,8 +21040,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1564",
     "name": "intermediate hip flexor and quad stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "rope",
     "primary_muscles": [
       "quads"
     ],
@@ -21089,7 +21089,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2400",
     "name": "inverse leg curl (on pull-up cable machine)",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -21242,7 +21242,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1419",
     "name": "iron cross stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -21319,7 +21319,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0501",
     "name": "jack burpee",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "cardiovascular system"
@@ -21419,7 +21419,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2612",
     "name": "jump rope",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "rope",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -21444,7 +21444,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0514",
     "name": "jump squat",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -21470,7 +21470,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0513",
     "name": "jump squat v. 2",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -21495,8 +21495,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0517",
     "name": "kettlebell advanced windmill",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "abs"
     ],
@@ -21523,8 +21523,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0518",
     "name": "kettlebell alternating hang clean",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "forearms"
     ],
@@ -21550,8 +21550,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0520",
     "name": "kettlebell alternating press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -21574,8 +21574,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0519",
     "name": "kettlebell alternating press on floor",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -21598,8 +21598,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0521",
     "name": "kettlebell alternating renegade row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "upper back"
     ],
@@ -21622,8 +21622,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0522",
     "name": "kettlebell alternating row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "upper back"
     ],
@@ -21646,8 +21646,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0523",
     "name": "kettlebell arnold press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -21669,8 +21669,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0524",
     "name": "kettlebell bent press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "abs"
     ],
@@ -21697,8 +21697,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0525",
     "name": "kettlebell bottoms up clean from the hang position",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "biceps"
     ],
@@ -21724,8 +21724,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0526",
     "name": "kettlebell double alternating hang clean",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "biceps"
     ],
@@ -21750,8 +21750,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0527",
     "name": "kettlebell double jerk",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -21777,8 +21777,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0528",
     "name": "kettlebell double push press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -21802,8 +21802,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0529",
     "name": "kettlebell double snatch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -21827,8 +21827,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0530",
     "name": "kettlebell double windmill",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "abs"
     ],
@@ -21853,8 +21853,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0531",
     "name": "kettlebell extended range one arm press on floor",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -21877,8 +21877,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0532",
     "name": "kettlebell figure 8",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "abs"
     ],
@@ -21903,8 +21903,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0533",
     "name": "kettlebell front squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "glutes"
     ],
@@ -21930,7 +21930,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0534",
     "name": "kettlebell goblet squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "glutes"
     ],
@@ -21954,8 +21954,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0535",
     "name": "kettlebell hang clean",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -21980,8 +21980,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0536",
     "name": "kettlebell lunge pass through",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "glutes"
     ],
@@ -22006,8 +22006,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0537",
     "name": "kettlebell one arm clean and jerk",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22030,8 +22030,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1298",
     "name": "kettlebell one arm floor press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -22054,8 +22054,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0538",
     "name": "kettlebell one arm jerk",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22081,8 +22081,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0539",
     "name": "kettlebell one arm military press to the side",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22105,8 +22105,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0540",
     "name": "kettlebell one arm push press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22129,8 +22129,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0541",
     "name": "kettlebell one arm row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "upper back"
     ],
@@ -22153,8 +22153,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0542",
     "name": "kettlebell one arm snatch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22178,8 +22178,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0543",
     "name": "kettlebell pirate supper legs",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22203,8 +22203,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0544",
     "name": "kettlebell pistol squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "glutes"
     ],
@@ -22228,8 +22228,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0545",
     "name": "kettlebell plyo push-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "pectorals"
     ],
@@ -22253,8 +22253,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0546",
     "name": "kettlebell seated press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22277,8 +22277,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1438",
     "name": "kettlebell seated two arm military press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22301,8 +22301,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0547",
     "name": "kettlebell seesaw press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22325,8 +22325,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0548",
     "name": "kettlebell sumo high pull",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "traps"
     ],
@@ -22351,8 +22351,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0549",
     "name": "kettlebell swing",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "glutes"
     ],
@@ -22376,8 +22376,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0550",
     "name": "kettlebell thruster",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22402,8 +22402,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0551",
     "name": "kettlebell turkish get up (squat style)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "glutes"
     ],
@@ -22431,8 +22431,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0552",
     "name": "kettlebell two arm clean",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22455,8 +22455,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0553",
     "name": "kettlebell two arm military press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "delts"
     ],
@@ -22478,8 +22478,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1345",
     "name": "kettlebell two arm row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "upper back"
     ],
@@ -22502,8 +22502,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0554",
     "name": "kettlebell windmill",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "kettlebell",
     "primary_muscles": [
       "abs"
     ],
@@ -22551,7 +22551,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0558",
     "name": "kipping muscle up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -22578,7 +22578,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3640",
     "name": "knee touch crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -22601,8 +22601,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1420",
     "name": "kneeling jump squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "barbell",
     "primary_muscles": [
       "glutes"
     ],
@@ -22627,7 +22627,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1346",
     "name": "kneeling lat stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -22652,7 +22652,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3239",
     "name": "kneeling plank tap shoulder (male)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -22676,7 +22676,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3211",
     "name": "kneeling push-up (male)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -22723,7 +22723,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3418",
     "name": "l-pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -22748,7 +22748,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3419",
     "name": "l-sit on floor",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -22774,7 +22774,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0562",
     "name": "landmine 180",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "abs"
     ],
@@ -22797,7 +22797,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3237",
     "name": "landmine lateral raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -22820,7 +22820,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3300",
     "name": "lean planche",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -22894,7 +22894,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1576",
     "name": "leg up hamstring stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -22917,8 +22917,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2287",
     "name": "lever alternate leg press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "quads"
     ],
@@ -22943,8 +22943,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0571",
     "name": "lever alternating narrow grip seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -22970,8 +22970,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0572",
     "name": "lever assisted chin-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -22996,8 +22996,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0573",
     "name": "lever back extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "spine"
     ],
@@ -23022,8 +23022,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0574",
     "name": "lever bent over row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -23047,8 +23047,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3200",
     "name": "lever bent-over row with v-bar",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -23071,8 +23071,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0575",
     "name": "lever bicep curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "biceps"
     ],
@@ -23095,8 +23095,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2289",
     "name": "lever calf press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -23120,8 +23120,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0577",
     "name": "lever chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -23144,8 +23144,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0576",
     "name": "lever chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -23168,8 +23168,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0578",
     "name": "lever deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -23195,8 +23195,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1300",
     "name": "lever decline chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -23221,8 +23221,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1253",
     "name": "lever donkey calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -23246,8 +23246,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0579",
     "name": "lever front pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -23272,8 +23272,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0580",
     "name": "lever gripless shrug",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "traps"
     ],
@@ -23296,8 +23296,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1439",
     "name": "lever gripless shrug v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "traps"
     ],
@@ -23320,8 +23320,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2288",
     "name": "lever gripper hands",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "forearms"
     ],
@@ -23344,8 +23344,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1615",
     "name": "lever hammer grip preacher curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "biceps"
     ],
@@ -23369,8 +23369,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0581",
     "name": "lever high row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -23395,8 +23395,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2286",
     "name": "lever hip extension v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -23419,7 +23419,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2611",
     "name": "lever horizontal one leg press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -23444,8 +23444,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1299",
     "name": "lever incline chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -23469,8 +23469,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1479",
     "name": "lever incline chest press v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -23494,8 +23494,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0582",
     "name": "lever kneeling leg curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -23519,8 +23519,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0583",
     "name": "lever kneeling twist",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "abs"
     ],
@@ -23544,8 +23544,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0584",
     "name": "lever lateral raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -23568,8 +23568,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0585",
     "name": "lever leg extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "quads"
     ],
@@ -23592,8 +23592,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0586",
     "name": "lever lying leg curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -23618,7 +23618,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3195",
     "name": "lever lying two-one leg curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -23641,8 +23641,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0587",
     "name": "lever military press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -23665,8 +23665,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0588",
     "name": "lever narrow grip seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -23692,8 +23692,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0589",
     "name": "lever one arm bent over row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "upper back"
     ],
@@ -23719,7 +23719,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1356",
     "name": "lever one arm lateral high row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -23744,7 +23744,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1347",
     "name": "lever one arm lateral wide pulldown",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -23769,7 +23769,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0590",
     "name": "lever one arm shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -23792,8 +23792,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0591",
     "name": "lever overhand triceps dip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -23817,8 +23817,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0592",
     "name": "lever preacher curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "biceps"
     ],
@@ -23842,8 +23842,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1614",
     "name": "lever preacher curl v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "biceps"
     ],
@@ -23866,8 +23866,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2285",
     "name": "lever pullover",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -23891,8 +23891,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2736",
     "name": "lever reverse grip lateral pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -23917,8 +23917,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1616",
     "name": "lever reverse grip preacher curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "biceps"
     ],
@@ -23942,8 +23942,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1348",
     "name": "lever reverse grip vertical row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -23968,8 +23968,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0593",
     "name": "lever reverse hyperextension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -23993,8 +23993,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1349",
     "name": "lever reverse t-bar row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -24019,8 +24019,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2315",
     "name": "lever rotary calf",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -24044,8 +24044,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2335",
     "name": "lever seated calf press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -24069,8 +24069,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0594",
     "name": "lever seated calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -24094,8 +24094,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1452",
     "name": "lever seated crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "abs"
     ],
@@ -24118,8 +24118,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0595",
     "name": "lever seated crunch (chest pad)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "abs"
     ],
@@ -24143,8 +24143,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3760",
     "name": "lever seated crunch v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "abs"
     ],
@@ -24168,8 +24168,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1451",
     "name": "lever seated dip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -24192,8 +24192,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0596",
     "name": "lever seated fly",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -24217,8 +24217,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3759",
     "name": "lever seated good morning",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -24242,8 +24242,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0597",
     "name": "lever seated hip abduction",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "abductors"
     ],
@@ -24267,8 +24267,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0598",
     "name": "lever seated hip adduction",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "adductors"
     ],
@@ -24291,8 +24291,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0599",
     "name": "lever seated leg curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -24316,8 +24316,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0600",
     "name": "lever seated leg raise crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "abs"
     ],
@@ -24339,8 +24339,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0602",
     "name": "lever seated reverse fly",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -24363,8 +24363,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0601",
     "name": "lever seated reverse fly (parallel grip)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -24387,8 +24387,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1350",
     "name": "lever seated row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -24414,8 +24414,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1385",
     "name": "lever seated squat calf raise on leg press machine",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -24441,8 +24441,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0603",
     "name": "lever shoulder press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -24465,8 +24465,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0869",
     "name": "lever shoulder press v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -24490,8 +24490,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2318",
     "name": "lever shoulder press v. 3",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "delts"
     ],
@@ -24515,8 +24515,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0604",
     "name": "lever shrug",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "traps"
     ],
@@ -24538,8 +24538,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0605",
     "name": "lever standing calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "calves"
     ],
@@ -24562,8 +24562,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3758",
     "name": "lever standing chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -24586,8 +24586,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0606",
     "name": "lever t bar row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -24612,8 +24612,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1351",
     "name": "lever t-bar reverse grip row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -24637,8 +24637,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0607",
     "name": "lever triceps extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -24660,8 +24660,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1313",
     "name": "lever unilateral row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -24685,7 +24685,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0609",
     "name": "london bridge",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "rope",
     "primary_muscles": [
       "upper back"
     ],
@@ -24711,7 +24711,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3013",
     "name": "low glute bridge on floor",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -24810,7 +24810,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0613",
     "name": "lying (side) quads stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "quads"
@@ -24905,8 +24905,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1301",
     "name": "machine inner chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -24929,7 +24929,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0624",
     "name": "march sit (wall)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -24955,7 +24955,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1353",
     "name": "medicine ball catch and overhead throw",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "lats"
     ],
@@ -24980,7 +24980,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1302",
     "name": "medicine ball chest pass",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -25004,7 +25004,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1303",
     "name": "medicine ball chest push from 3 point stance",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -25028,7 +25028,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1304",
     "name": "medicine ball chest push multiple response",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -25051,7 +25051,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1305",
     "name": "medicine ball chest push single response",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -25074,7 +25074,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1312",
     "name": "medicine ball chest push with run release",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -25100,7 +25100,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1701",
     "name": "medicine ball close grip push up",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "triceps"
     ],
@@ -25123,7 +25123,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1354",
     "name": "medicine ball overhead slam",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "upper back"
     ],
@@ -25147,7 +25147,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1750",
     "name": "medicine ball supine chest throw",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "triceps"
     ],
@@ -25170,7 +25170,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0627",
     "name": "mixed grip chin-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -25195,7 +25195,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3217",
     "name": "modified hindu push-up (male)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -25220,7 +25220,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1421",
     "name": "modified push up to lower arms",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "forearms"
@@ -25294,7 +25294,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0631",
     "name": "muscle up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -25321,7 +25321,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1401",
     "name": "muscle-up (on vertical bar)",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -25347,8 +25347,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2328",
     "name": "narrow push-up on exercise ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "triceps"
     ],
@@ -25371,7 +25371,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1403",
     "name": "neck side stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "levator scapulae"
@@ -25395,7 +25395,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0634",
     "name": "negative crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -25418,7 +25418,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1495",
     "name": "oblique crunch v. 2",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -25465,8 +25465,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0636",
     "name": "olympic barbell hammer curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "olympic barbell",
     "primary_muscles": [
       "biceps"
     ],
@@ -25490,8 +25490,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0637",
     "name": "olympic barbell triceps extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "olympic barbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -25537,7 +25537,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0638",
     "name": "one arm chin-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -25562,7 +25562,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0639",
     "name": "one arm dip",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -25588,7 +25588,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0640",
     "name": "one arm slam (with medicine ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "abs"
     ],
@@ -25711,8 +25711,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0641",
     "name": "otis up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -25760,7 +25760,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0643",
     "name": "overhead triceps stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -25833,8 +25833,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1388",
     "name": "peroneals stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "rope",
     "primary_muscles": [
       "calves"
     ],
@@ -25886,7 +25886,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1306",
     "name": "plyo push up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -25939,8 +25939,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1389",
     "name": "posterior tibialis stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "rope",
     "primary_muscles": [
       "calves"
     ],
@@ -26015,8 +26015,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0648",
     "name": "power clean",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -26043,7 +26043,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3665",
     "name": "power point plank",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -26092,8 +26092,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1707",
     "name": "prone twist on stability ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "abs"
     ],
@@ -26118,7 +26118,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0651",
     "name": "pull up (neutral grip)",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -26143,8 +26143,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0650",
     "name": "pull-in (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "abs"
     ],
@@ -26166,7 +26166,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0652",
     "name": "pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -26241,8 +26241,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1307",
     "name": "push up on bosu ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "bosu ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -26290,8 +26290,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0653",
     "name": "push-up (bosu ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "bosu ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -26315,8 +26315,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0655",
     "name": "push-up (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -26340,8 +26340,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0656",
     "name": "push-up (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -26417,7 +26417,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0660",
     "name": "push-up close-grip off dumbbell",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "triceps"
     ],
@@ -26467,7 +26467,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0663",
     "name": "push-up medicine ball",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "pectorals"
     ],
@@ -26686,7 +26686,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0669",
     "name": "rear deltoid stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "delts"
@@ -26710,7 +26710,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0670",
     "name": "rear pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -26736,7 +26736,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1582",
     "name": "reclining big toe pose with rope",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "rope",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -26760,8 +26760,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3236",
     "name": "resistance band hip thrusts on knees (female)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "glutes"
     ],
@@ -26786,8 +26786,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3007",
     "name": "resistance band leg extension",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "quads"
     ],
@@ -26809,8 +26809,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3123",
     "name": "resistance band seated biceps curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "biceps"
     ],
@@ -26833,8 +26833,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3124",
     "name": "resistance band seated chest press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "pectorals"
     ],
@@ -26857,8 +26857,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3006",
     "name": "resistance band seated hip abduction",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "abductors"
     ],
@@ -26882,8 +26882,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3122",
     "name": "resistance band seated shoulder press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "delts"
     ],
@@ -26906,8 +26906,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3144",
     "name": "resistance band seated straight back row",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "resistance band",
     "primary_muscles": [
       "upper back"
     ],
@@ -26931,7 +26931,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0872",
     "name": "reverse crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -26954,7 +26954,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0672",
     "name": "reverse dip",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -26977,8 +26977,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0673",
     "name": "reverse grip machine lat pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "lats"
     ],
@@ -27002,7 +27002,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0674",
     "name": "reverse grip pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -27027,8 +27027,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0675",
     "name": "reverse hyper extension (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "glutes"
     ],
@@ -27076,7 +27076,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3663",
     "name": "reverse plank with leg lift",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -27125,7 +27125,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2571",
     "name": "rocking frog stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -27151,7 +27151,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0678",
     "name": "rocky pull-up pulldown",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -27176,8 +27176,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2208",
     "name": "roller back stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "spine"
     ],
@@ -27201,8 +27201,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2204",
     "name": "roller body saw",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "abs"
     ],
@@ -27225,8 +27225,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2205",
     "name": "roller hip lat stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "glutes"
     ],
@@ -27249,8 +27249,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2202",
     "name": "roller hip stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "glutes"
     ],
@@ -27275,8 +27275,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2206",
     "name": "roller reverse crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "abs"
     ],
@@ -27298,8 +27298,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2203",
     "name": "roller seated shoulder flexor depresor retractor",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "pectorals"
     ],
@@ -27322,8 +27322,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2209",
     "name": "roller seated single leg shoulder flexor depresor retractor",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "pectorals"
     ],
@@ -27347,8 +27347,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2207",
     "name": "roller side lat stretch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "roller",
     "primary_muscles": [
       "lats"
     ],
@@ -27372,7 +27372,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0680",
     "name": "rope climb",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "rope",
     "primary_muscles": [
       "upper back"
     ],
@@ -27449,7 +27449,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1585",
     "name": "runners stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -27546,7 +27546,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0688",
     "name": "scapular pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "traps"
@@ -27596,7 +27596,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1390",
     "name": "seated calf stretch (male)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -27619,7 +27619,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1424",
     "name": "seated glute stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -27666,7 +27666,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0690",
     "name": "seated lower back stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -27690,7 +27690,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2567",
     "name": "seated piriformis stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -27712,7 +27712,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0691",
     "name": "seated side crunch (wall)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -27764,7 +27764,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0697",
     "name": "self assisted inverse leg curl",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -27788,7 +27788,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1766",
     "name": "self assisted inverse leg curl",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -27813,7 +27813,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0696",
     "name": "self assisted inverse leg curl (on floor)",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -27889,7 +27889,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1763",
     "name": "shoulder grip pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -28061,7 +28061,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1358",
     "name": "side lying floor stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -28135,7 +28135,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0716",
     "name": "side push neck stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "levator scapulae"
@@ -28186,7 +28186,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0721",
     "name": "side wrist pull stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "forearms"
@@ -28283,7 +28283,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3645",
     "name": "single leg bridge with outstretched leg",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -28307,8 +28307,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0727",
     "name": "single leg calf raise (on a dumbbell)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "calves"
     ],
@@ -28355,7 +28355,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1759",
     "name": "single leg squat (pistol) male",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "glutes"
@@ -28382,7 +28382,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1489",
     "name": "sissy squat",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "quads"
@@ -28482,7 +28482,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-2142",
     "name": "ski ergometer",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "skierg machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -28560,7 +28560,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1425",
     "name": "sled 45 degrees one leg press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28585,8 +28585,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0738",
     "name": "sled 45в° calf press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -28608,8 +28608,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0739",
     "name": "sled 45в° leg press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28635,8 +28635,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1464",
     "name": "sled 45в° leg press (back pov)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28662,8 +28662,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1463",
     "name": "sled 45° leg press (side pov)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28688,8 +28688,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0740",
     "name": "sled 45в° leg wide press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28714,8 +28714,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1391",
     "name": "sled calf press on leg press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -28738,8 +28738,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0741",
     "name": "sled closer hack squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28765,8 +28765,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0742",
     "name": "sled forward angled calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -28789,8 +28789,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0743",
     "name": "sled hack squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28816,8 +28816,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2334",
     "name": "sled lying calf press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -28842,8 +28842,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0744",
     "name": "sled lying squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "sled machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -28871,7 +28871,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1392",
     "name": "sled one leg calf press on leg press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "sled machine",
     "primary_muscles": [
       "calves"
     ],
@@ -28895,8 +28895,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1496",
     "name": "sledge hammer",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "hammer",
     "primary_muscles": [
       "abs"
     ],
@@ -28920,7 +28920,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0746",
     "name": "smith back shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "traps"
     ],
@@ -28944,7 +28944,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0747",
     "name": "smith behind neck press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -28971,7 +28971,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0748",
     "name": "smith bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -28996,8 +28996,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0749",
     "name": "smith bent knee good morning",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29022,7 +29022,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1359",
     "name": "smith bent over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -29048,7 +29048,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0750",
     "name": "smith chair squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "quads"
     ],
@@ -29075,7 +29075,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0751",
     "name": "smith close-grip bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -29099,7 +29099,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0752",
     "name": "smith deadlift",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29126,7 +29126,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0753",
     "name": "smith decline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -29151,7 +29151,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0754",
     "name": "smith decline reverse-grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -29175,8 +29175,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1433",
     "name": "smith front squat (clean grip)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29206,7 +29206,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3281",
     "name": "smith full squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29235,7 +29235,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0755",
     "name": "smith hack squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29265,7 +29265,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0756",
     "name": "smith hip raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "abs"
     ],
@@ -29290,7 +29290,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0757",
     "name": "smith incline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -29315,7 +29315,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0758",
     "name": "smith incline reverse-grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -29341,7 +29341,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0759",
     "name": "smith incline shoulder raises",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "serratus anterior"
     ],
@@ -29367,7 +29367,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0760",
     "name": "smith leg press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29394,7 +29394,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1434",
     "name": "smith low bar squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29425,7 +29425,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1683",
     "name": "smith machine bicep curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "biceps"
     ],
@@ -29451,7 +29451,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1625",
     "name": "smith machine decline close grip bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -29477,7 +29477,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1752",
     "name": "smith machine incline tricep extension",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "triceps"
     ],
@@ -29502,7 +29502,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1626",
     "name": "smith machine reverse decline close grip bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -29527,7 +29527,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0761",
     "name": "smith narrow row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -29551,7 +29551,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1360",
     "name": "smith one arm row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -29577,7 +29577,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1393",
     "name": "smith one leg floor calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "calves"
     ],
@@ -29603,7 +29603,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0762",
     "name": "smith rear delt row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -29628,7 +29628,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0763",
     "name": "smith reverse calf raises",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "calves"
     ],
@@ -29653,7 +29653,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1394",
     "name": "smith reverse calf raises",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "calves"
     ],
@@ -29678,7 +29678,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1361",
     "name": "smith reverse grip bent over row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "upper back"
     ],
@@ -29704,7 +29704,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0764",
     "name": "smith reverse-grip press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -29731,7 +29731,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1395",
     "name": "smith seated one leg calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "calves"
     ],
@@ -29754,7 +29754,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0765",
     "name": "smith seated shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -29780,7 +29780,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1426",
     "name": "smith seated wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "forearms"
     ],
@@ -29805,7 +29805,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0766",
     "name": "smith shoulder press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -29830,7 +29830,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0767",
     "name": "smith shrug",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "traps"
     ],
@@ -29854,7 +29854,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0768",
     "name": "smith single leg split squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "quads"
     ],
@@ -29879,7 +29879,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0769",
     "name": "smith sprint lunge",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29906,7 +29906,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0770",
     "name": "smith squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -29935,7 +29935,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0771",
     "name": "smith standing back wrist curl",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "forearms"
     ],
@@ -29960,7 +29960,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0772",
     "name": "smith standing behind head military press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -29988,7 +29988,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0773",
     "name": "smith standing leg calf raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "calves"
     ],
@@ -30013,7 +30013,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0774",
     "name": "smith standing military press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -30038,7 +30038,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-3142",
     "name": "smith sumo squat",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "glutes"
     ],
@@ -30065,7 +30065,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1396",
     "name": "smith toe raise",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "calves"
     ],
@@ -30092,7 +30092,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0775",
     "name": "smith upright row",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "delts"
     ],
@@ -30117,7 +30117,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1308",
     "name": "smith wide grip bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -30143,7 +30143,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-1309",
     "name": "smith wide grip decline bench press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "smith machine",
     "primary_muscles": [
       "pectorals"
     ],
@@ -30168,8 +30168,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0776",
     "name": "snatch pull",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -30198,7 +30198,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0777",
     "name": "spell caster",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "dumbbell",
     "primary_muscles": [
       "abs"
     ],
@@ -30270,7 +30270,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1363",
     "name": "spine stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "spine"
@@ -30347,8 +30347,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0786",
     "name": "squat jerk",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "barbell",
     "primary_muscles": [
       "quads"
     ],
@@ -30375,8 +30375,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1705",
     "name": "squat on bosu ball",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "bosu ball",
     "primary_muscles": [
       "quads"
     ],
@@ -30452,8 +30452,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2297",
     "name": "stability ball crunch (full range hands behind head)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stability ball",
     "primary_muscles": [
       "abs"
     ],
@@ -30500,7 +30500,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3669",
     "name": "standing archer",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "upper back"
@@ -30528,7 +30528,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0788",
     "name": "standing behind neck press",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "barbell",
     "primary_muscles": [
       "delts"
     ],
@@ -30598,7 +30598,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1398",
     "name": "standing calves calf stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "calves"
@@ -30624,8 +30624,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1599",
     "name": "standing hamstring and calf stretch with strap",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "rope",
     "primary_muscles": [
       "hamstrings"
     ],
@@ -30649,7 +30649,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0794",
     "name": "standing lateral stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -30720,8 +30720,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0796",
     "name": "standing wheel rollerout",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "wheel roller",
     "primary_muscles": [
       "abs"
     ],
@@ -30769,8 +30769,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2138",
     "name": "stationary bike run v. 3",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stationary bike",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -30797,8 +30797,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0798",
     "name": "stationary bike walk",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -30848,7 +30848,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3298",
     "name": "straddle planche",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -30973,7 +30973,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0807",
     "name": "suspended reverse crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -31119,8 +31119,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2459",
     "name": "tire flip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "tire",
     "primary_muscles": [
       "glutes"
     ],
@@ -31146,8 +31146,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0811",
     "name": "trap bar deadlift",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "trap bar",
     "primary_muscles": [
       "glutes"
     ],
@@ -31172,7 +31172,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0814",
     "name": "triceps dip",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -31196,7 +31196,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0812",
     "name": "triceps dip (bench leg)",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -31220,7 +31220,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0813",
     "name": "triceps dip (between benches)",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -31292,7 +31292,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0817",
     "name": "triceps stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "triceps"
@@ -31315,7 +31315,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0871",
     "name": "tuck crunch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -31338,8 +31338,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0818",
     "name": "twin handle parallel grip lat pulldown",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "cable",
     "primary_muscles": [
       "lats"
     ],
@@ -31466,7 +31466,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1365",
     "name": "upper back stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "upper back"
@@ -31515,7 +31515,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3420",
     "name": "v-sit on floor",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "abs"
@@ -31561,8 +31561,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2141",
     "name": "walk elliptical cross trainer",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "elliptical machine",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -31643,8 +31643,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3666",
     "name": "walking on incline treadmill",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "leverage machine",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -31669,8 +31669,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2311",
     "name": "walking on stepmill",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "stepmill machine",
     "primary_muscles": [
       "cardiovascular system"
     ],
@@ -31697,8 +31697,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0830",
     "name": "weighted bench dip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "triceps"
     ],
@@ -31721,8 +31721,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2987",
     "name": "weighted close grip chin-up on dip cage",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "lats"
     ],
@@ -31746,8 +31746,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3643",
     "name": "weighted cossack squats (male)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "glutes"
     ],
@@ -31772,8 +31772,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0832",
     "name": "weighted crunch",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -31795,8 +31795,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3670",
     "name": "weighted decline sit-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -31819,8 +31819,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0833",
     "name": "weighted donkey calf raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "calves"
     ],
@@ -31843,8 +31843,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1310",
     "name": "weighted drop push up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "pectorals"
     ],
@@ -31869,8 +31869,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2135",
     "name": "weighted front plank",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -31896,8 +31896,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0834",
     "name": "weighted front raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "delts"
     ],
@@ -31919,8 +31919,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0866",
     "name": "weighted hanging leg-hip raise",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -31943,8 +31943,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0835",
     "name": "weighted hyperextension (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "spine"
     ],
@@ -31967,8 +31967,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3641",
     "name": "weighted kneeling step with swing",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "weighted",
     "primary_muscles": [
       "delts"
     ],
@@ -31990,8 +31990,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3644",
     "name": "weighted lunge with swing",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "glutes"
     ],
@@ -32015,8 +32015,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3286",
     "name": "weighted muscle up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "lats"
     ],
@@ -32042,8 +32042,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3312",
     "name": "weighted muscle up (on bar)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "lats"
     ],
@@ -32069,8 +32069,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3290",
     "name": "weighted one hand pull up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "lats"
     ],
@@ -32094,8 +32094,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0840",
     "name": "weighted overhead crunch (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -32118,8 +32118,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0841",
     "name": "weighted pull-up",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "lats"
     ],
@@ -32143,8 +32143,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0844",
     "name": "weighted round arm",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "delts"
     ],
@@ -32168,8 +32168,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0846",
     "name": "weighted russian twist",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -32193,8 +32193,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0845",
     "name": "weighted russian twist (legs up)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -32218,8 +32218,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2371",
     "name": "weighted russian twist v. 2",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -32244,7 +32244,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
     "id": "ex-0847",
     "name": "weighted seated bicep curl (on stability ball)",
     "level": "intermediate",
-    "equipment": "body weight",
+    "equipment": "medicine ball",
     "primary_muscles": [
       "biceps"
     ],
@@ -32267,8 +32267,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0849",
     "name": "weighted seated twist (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -32292,8 +32292,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0850",
     "name": "weighted side bend (on stability ball)",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "abs"
     ],
@@ -32316,8 +32316,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0851",
     "name": "weighted sissy squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "quads"
     ],
@@ -32342,8 +32342,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0852",
     "name": "weighted squat",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "glutes"
     ],
@@ -32368,8 +32368,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0853",
     "name": "weighted standing curl",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "biceps"
     ],
@@ -32390,8 +32390,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0854",
     "name": "weighted standing hand squeeze",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "forearms"
     ],
@@ -32414,8 +32414,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3313",
     "name": "weighted straight bar dip",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "pectorals"
     ],
@@ -32437,8 +32437,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-3642",
     "name": "weighted stretch lunge",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "beginner",
+    "equipment": "weighted",
     "primary_muscles": [
       "glutes"
     ],
@@ -32463,8 +32463,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0856",
     "name": "weighted svend press",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "pectorals"
     ],
@@ -32487,8 +32487,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1754",
     "name": "weighted three bench dips",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "triceps"
     ],
@@ -32511,8 +32511,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1755",
     "name": "weighted tricep dips",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "triceps"
     ],
@@ -32536,8 +32536,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1767",
     "name": "weighted triceps dip on high parallel bars",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "triceps"
     ],
@@ -32559,8 +32559,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0857",
     "name": "wheel rollerout",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "wheel roller",
     "primary_muscles": [
       "abs"
     ],
@@ -32608,7 +32608,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1429",
     "name": "wide grip pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -32632,7 +32632,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1367",
     "name": "wide grip rear pull-up",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "lats"
@@ -32681,7 +32681,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-2363",
     "name": "wide-grip chest dip on high parallel bars",
-    "level": "intermediate",
+    "level": "expert",
     "equipment": "body weight",
     "primary_muscles": [
       "pectorals"
@@ -32729,7 +32729,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1604",
     "name": "world greatest stretch",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "hamstrings"
@@ -32755,7 +32755,7 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-1428",
     "name": "wrist circles",
-    "level": "intermediate",
+    "level": "beginner",
     "equipment": "body weight",
     "primary_muscles": [
       "forearms"
@@ -32778,8 +32778,8 @@ export const INITIAL_EXERCISES: Exercise[] = [
   {
     "id": "ex-0859",
     "name": "wrist rollerer",
-    "level": "intermediate",
-    "equipment": "body weight",
+    "level": "expert",
+    "equipment": "weighted",
     "primary_muscles": [
       "forearms"
     ],

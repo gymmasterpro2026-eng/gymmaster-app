@@ -3,6 +3,7 @@ import { Search, Plus, Sparkles } from 'lucide-react';
 import { Exercise } from '../types';
 import { dataService } from '../services/dataService';
 import { fixImageUrl } from '../utils/imageUrl';
+import { matchesLevelFilter } from '../utils/workoutIntelligence';
 
 interface ExerciseCatalogProps {
   exercises: Exercise[];
@@ -117,7 +118,7 @@ export const ExerciseCatalog: React.FC<ExerciseCatalogProps> = ({ exercises, onR
 
       const matchesMuscle = selectedMuscle === 'all' || ex.primary_muscles.includes(selectedMuscle);
       const matchesEquip = selectedEquipment === 'all' || ex.equipment === selectedEquipment;
-      const matchesLevel = selectedLevel === 'all' || ex.level === selectedLevel;
+      const matchesLevel = matchesLevelFilter(ex.level, selectedLevel);
 
       return matchesSearch && matchesMuscle && matchesEquip && matchesLevel;
     })
