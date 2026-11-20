@@ -80,11 +80,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isPlanExpired = activeAlumno ? new Date(activeAlumno.plan_active_until) < new Date() : false;
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // ── MARCA POR GIMNASIO & COACH (Sincronizada con la Nube + LocalStorage) ──
-  // Prioridad de resolución (funciona para Coach y para todos sus Alumnos en cualquier dispositivo):
-  // 1. Clave en localStorage por gym_id (`gymmaster_brand_name_gym_{gym_id}`) o por coach (`gymmaster_brand_name_{coach_id}`)
-  // 2. Datos del tenant `activeGym` sincronizados en Supabase (`activeGym.name` y `activeGym.logo_url`)
-  // 3. Marca por defecto ("TITAN FITNESS CENTER" / emblema Titan)
+  // ── MARCA ESTRICTAMENTE AISLADA POR GIMNASIO (Multi-Tenant RLS) ──
+  // Cada gimnasio (gym_id) tiene su propio logo y su propio nombre de marca, 100% independiente:
+  // - Nunca lee ni hereda el logo o nombre de otro gimnasio ni de la clave global.
+  // - Tanto el Coach como todos los Alumnos de ese gym_id ven exactamente el logo y la marca de su propio gimnasio.
   const getBrandKeys = (suffix: 'name' | 'logo') => {
     const base = suffix === 'name' ? 'gymmaster_brand_name' : 'gymmaster_brand_logo';
     const keys: string[] = [];
@@ -93,12 +92,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (currentUser) {
       if (currentUser.role === 'coach') {
         keys.push(`${base}_${currentUser.id}`);
-        if (currentUser.id === 'coach-001') keys.push(base);
       } else if (currentUser.role === 'alumno' && currentUser.managed_by) {
         keys.push(`${base}_${currentUser.managed_by}`);
       }
     }
-    keys.push(base);
+    // Solo el gimnasio Master ('gym-titan-001') puede leer la clave global legacy como respaldo
+    if (gymId === 'gym-titan-001') {
+      keys.push(base);
+    }
     return keys;
   };
 
@@ -109,22 +110,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   const resolveBrandName = (): string => {
     for (const k of getBrandKeys('name')) {
       const val = localStorage.getItem(k);
-      if (val && val.trim() && val.trim().toUpperCase() !== legacyDefaultName) return val.trim();
-    }
-    if (activeGym?.name && activeGym.name.trim()) return activeGym.name.trim();
-    for (const k of getBrandKeys('name')) {
-      const val = localStorage.getItem(k);
       if (val && val.trim()) return val.trim();
     }
+    if (activeGym?.name && activeGym.name.trim()) return activeGym.name.trim();
     return defaultName;
   };
 
   const resolveBrandLogo = (): string => {
-    if (activeGym?.logo_url && activeGym.logo_url.trim()) return activeGym.logo_url.trim();
     for (const k of getBrandKeys('logo')) {
       const val = localStorage.getItem(k);
       if (val && val.trim() && val !== '/gymmaster-app/fitness_logo.jpg') return val.trim();
     }
+    if (activeGym?.logo_url && activeGym.logo_url.trim()) return activeGym.logo_url.trim();
     return defaultLogo;
   };
 
@@ -155,21 +152,22 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const handleSaveBrand = () => {
-    const cleanName = editBrandName.trim() || defaultName;
+    const fallbackGymName = activeGym?.name?.trim() || defaultName;
+    const cleanName = editBrandName.trim() || fallbackGymName;
     const cleanLogo = editBrandLogo.trim() || defaultLogo;
     setBrandName(cleanName);
     setBrandLogo(cleanLogo);
 
-    // 1. Guardar en localStorage por Gimnasio y por Coach para que todos sus Alumnos lo vean al instante
+    // 1. Guardar en localStorage AISLADO únicamente para este Gimnasio y su Coach (nunca contamina a otros gimnasios ni al Login general)
     const gymId = activeGym?.id || currentUser?.gym_id;
     if (gymId) {
       localStorage.setItem(`gymmaster_brand_name_gym_${gymId}`, cleanName);
       localStorage.setItem(`gymmaster_brand_logo_gym_${gymId}`, cleanLogo);
     }
-    if (currentUser?.id) {
+    if (currentUser?.id && currentUser.role === 'coach') {
       localStorage.setItem(`gymmaster_brand_name_${currentUser.id}`, cleanName);
       localStorage.setItem(`gymmaster_brand_logo_${currentUser.id}`, cleanLogo);
-      if (currentUser.id === 'coach-001') {
+      if (gymId === 'gym-titan-001' && (currentUser.id === 'coach-001' || currentUser.full_name?.toLowerCase().includes('master'))) {
         localStorage.setItem('gymmaster_brand_name', cleanName);
         localStorage.setItem('gymmaster_brand_logo', cleanLogo);
       }

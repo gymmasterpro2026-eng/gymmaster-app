@@ -254,9 +254,19 @@ class DataService {
         supabase.from('gym_workout_sessions').select('*'),
       ]);
 
-      // 1. Gym Tenants — cloud wins
+      // 1. Gym Tenants — merge preserving local logo_url/brand if remote doesn't store logo_url column yet
       if (remoteGyms && remoteGyms.length > 0) {
-        this.gyms = remoteGyms as GymTenant[];
+        const localGymMap = new Map(this.gyms.map((g) => [g.id, g]));
+        this.gyms = (remoteGyms as GymTenant[]).map((rg) => {
+          const local = localGymMap.get(rg.id);
+          const savedLogo = localStorage.getItem(`gymmaster_brand_logo_gym_${rg.id}`);
+          const savedName = localStorage.getItem(`gymmaster_brand_name_gym_${rg.id}`);
+          return {
+            ...rg,
+            name: savedName?.trim() || rg.name || local?.name || 'Gym',
+            logo_url: rg.logo_url || savedLogo || local?.logo_url,
+          };
+        });
       } else {
         await supabase.from('gym_tenants').upsert(this.gyms, { onConflict: 'id' });
       }

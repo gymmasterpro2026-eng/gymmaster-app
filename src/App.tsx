@@ -113,25 +113,29 @@ export default function App() {
     setShowLanding(true);
   };
 
-  // Filter profiles scoped to current Active Gym tenant
+  // Filter profiles scoped strictly to current Active Gym tenant (Multi-Tenant Isolation)
   const currentGymProfiles = activeGym
     ? profiles.filter((p) => p.gym_id === activeGym.id)
     : profiles;
 
   const coachProfile =
-    (currentUser && currentUser.role === 'coach' ? profiles.find(p => p.id === currentUser.id) : null) ||
+    (currentUser && currentUser.role === 'coach' && (!activeGym || currentUser.gym_id === activeGym.id)
+      ? profiles.find((p) => p.id === currentUser.id)
+      : null) ||
     currentGymProfiles.find((p) => p.role === 'coach') ||
-    profiles.find((p) => p.role === 'coach') ||
-    profiles[0];
+    null;
 
-  const alumnosList = currentGymProfiles.filter((p) => p.role === 'alumno');
+  const alumnosList = currentGymProfiles.filter(
+    (p) => p.role === 'alumno' && (!coachProfile || !p.managed_by || p.managed_by === coachProfile.id)
+  );
 
   const activeAlumnoProfile =
-    (currentUser && currentUser.role === 'alumno' ? profiles.find(p => p.id === currentUser.id) : null) ||
-    currentGymProfiles.find((p) => p.id === selectedAlumnoId) ||
+    (currentUser && currentUser.role === 'alumno' && (!activeGym || currentUser.gym_id === activeGym.id)
+      ? profiles.find((p) => p.id === currentUser.id)
+      : null) ||
+    alumnosList.find((p) => p.id === selectedAlumnoId) ||
     alumnosList[0] ||
-    profiles.find((p) => p.id === selectedAlumnoId) ||
-    profiles[0];
+    null;
 
   const checkIsPlanExpired = (profile: Profile | null) => {
     if (!profile || profile.role !== 'alumno' || !profile.plan_active_until) return false;
@@ -177,7 +181,7 @@ export default function App() {
         setCurrentRole={setCurrentRole}
         selectedAlumnoId={selectedAlumnoId}
         setSelectedAlumnoId={setSelectedAlumnoId}
-        alumnos={alumnosList.length > 0 ? alumnosList : profiles.filter((p) => p.role === 'alumno')}
+        alumnos={alumnosList}
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         onResetData={handleResetData}

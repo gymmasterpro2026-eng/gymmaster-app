@@ -16,9 +16,16 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Leer marca desde localStorage (guardada por el coach)
-  const brandName = localStorage.getItem('gymmaster_brand_name') || 'TU MEJOR VERSIÓN TE ESPERA';
-  const brandLogo = localStorage.getItem('gymmaster_brand_logo') || '/gymmaster-app/fitness_logo.jpg';
+  // Cuadro de inicio de sesión: lee exclusivamente la marca global del Administrador Master (o los valores originales por defecto).
+  // Ningún gimnasio creado puede alterar el logo ni el título de la pantalla de inicio de sesión.
+  const rawLoginBrandName = localStorage.getItem('gymmaster_login_brand_name');
+  const brandName = rawLoginBrandName && rawLoginBrandName.trim()
+    ? rawLoginBrandName.trim()
+    : 'TU MEJOR VERSIÓN TE ESPERA';
+  const rawLoginLogo = localStorage.getItem('gymmaster_login_brand_logo');
+  const brandLogo = rawLoginLogo && rawLoginLogo.trim() && rawLoginLogo !== '/gymmaster-app/titan-ui/titan-shield-emblem.png'
+    ? rawLoginLogo.trim()
+    : '/gymmaster-app/fitness_logo.jpg';
   const getBrandParts = (name: string) => {
     const words = name.trim().split(' ');
     return { main: words.slice(0, -2).join(' '), accent: words.slice(-2).join(' ') };
