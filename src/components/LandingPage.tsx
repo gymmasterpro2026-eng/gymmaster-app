@@ -313,33 +313,29 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
 
         <div style={S.logoWrap}>
           <div style={{
-            width: 112,
-            height: 112,
+            width: 130,
+            height: 130,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+            backdropFilter: 'blur(8px)',
+            border: '2px solid rgba(255,255,255,0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            filter: 'drop-shadow(0 0 22px rgba(213,122,48,0.45))',
-            marginBottom: 12,
+            boxShadow: '0 0 40px rgba(255,200,0,0.25), 0 0 80px rgba(255,200,0,0.1)',
+            overflow: 'hidden',
+            marginBottom: 8,
           }}>
             <img
-              src={brandLogo.startsWith('data:') ? brandLogo : '/gymmaster-app/titan-ui/titan-shield-emblem.png'}
+              src={brandLogo}
               alt="Logo"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: brandLogo.startsWith('data:') ? 'cover' : 'contain',
-                border: brandLogo.startsWith('data:') ? '2px solid #D57A30' : 'none',
-              }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: brandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
             />
           </div>
           <h1 style={S.title}>
-            {brandName === 'TU MEJOR VERSIÓN TE ESPERA' ? (
-              <>TITAN <span style={S.accent}>FITNESS CENTER</span></>
-            ) : (
-              <>{brandMain} <span style={S.accent}>{brandAccent}</span></>
-            )}
+            {brandMain} <span style={{ ...S.accent, color: '#ffffff' }}>{brandAccent}</span>
           </h1>
-          <p style={S.subtitle}>Gestión táctica de entrenamientos</p>
+          <p style={S.subtitle}>Gestión inteligente de entrenamientos</p>
         </div>
 
         <form onSubmit={handleLogin} style={S.form}>
