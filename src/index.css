@@ -64,15 +64,33 @@ body {
    KIT METÁLICO 3D TITAN FITNESS CENTER (Nano Banana UI Sprites)
    ===================================================================== */
 .titan-sidebar-shell {
-  background-color: #06080B;
+  background-color: #7D8794;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 0px,
+      rgba(255, 255, 255, 0.04) 1px,
+      rgba(0, 0, 0, 0.03) 1px,
+      rgba(0, 0, 0, 0.03) 2px
+    ),
+    linear-gradient(
+      165deg,
+      #B2BCC8 0%,
+      #8B95A3 32%,
+      #6C7684 68%,
+      #96A0AE 100%
+    );
   width: 272px;
   display: flex;
   flex-direction: column;
   height: 100vh;
   position: relative;
   z-index: 50;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 10px 0 32px rgba(0, 0, 0, 0.75);
+  border-right: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    inset 1px 0 0 rgba(255, 255, 255, 0.45),
+    inset -2px 0 6px rgba(0, 0, 0, 0.35),
+    10px 0 32px rgba(0, 0, 0, 0.75);
 }
 
 .titan-header-plate {
