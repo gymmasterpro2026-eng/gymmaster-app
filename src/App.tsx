@@ -52,7 +52,13 @@ export default function App() {
 
   useEffect(() => {
     refreshData();
-  }, []);
+    const unsub = dataService.subscribe(() => {
+      refreshData();
+    });
+    return () => {
+      unsub();
+    };
+  }, [activeGym?.id]);
 
   const refreshData = () => {
     const allProfiles = dataService.getProfiles();
@@ -61,10 +67,15 @@ export default function App() {
 
     setProfiles(allProfiles);
     setExercises(allExercises);
-    setGyms(allGyms);
+    setGyms([...allGyms]);
 
-    if (!activeGym && allGyms.length > 0) {
-      setActiveGym(allGyms[0]);
+    if (activeGym) {
+      const updatedActiveGym = allGyms.find((g) => g.id === activeGym.id);
+      if (updatedActiveGym) {
+        setActiveGym({ ...updatedActiveGym });
+      }
+    } else if (allGyms.length > 0) {
+      setActiveGym({ ...allGyms[0] });
     }
 
     const alumnos = allProfiles.filter((p) => p.role === 'alumno');

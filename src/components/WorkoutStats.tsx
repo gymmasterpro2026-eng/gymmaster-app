@@ -820,13 +820,12 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
           return { id: s.id, peso, delta, timeLabel };
         });
 
-        // Get the ID format from the most recent entry
+        // Get the ID format from the most recent entry (O(1) via indexed catalog map)
         const exRecord = exSessions.flatMap(s => s.ejercicios).reverse().find(e => e.nombre === exName);
         let idStr = '';
         if (exRecord?.exercise_id) {
-          const allEx = dataService.getExercises();
-          const catIdx = allEx.findIndex(e => e.id === exRecord.exercise_id);
-          idStr = catIdx >= 0 ? `Nº ${catIdx + 1}/${allEx.length}` : `Nº ${exRecord.exercise_id}`;
+          const catPos = dataService.getExerciseCatalogPosition(exRecord.exercise_id);
+          idStr = catPos ? `Nº ${catPos}` : `Nº ${exRecord.exercise_id}`;
         }
         const lastPeso = history.length > 0 ? history[history.length - 1].peso : 0;
         

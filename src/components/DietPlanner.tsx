@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Apple, Activity, Scale, Ruler, Calendar, Check, Save, ChevronDown, ChevronUp } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
 
 export const DietPlanner: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'calculator' | 'diet'>('calculator');
@@ -516,6 +515,8 @@ export const DietPlanner: React.FC = () => {
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak:    { mode: ['css', 'legacy'] }
       };
+      const html2pdfModule = await import('html2pdf.js');
+      const html2pdf = html2pdfModule.default || html2pdfModule;
       await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error('Error exporting PDF:', error);

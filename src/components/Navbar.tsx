@@ -80,33 +80,68 @@ export const Navbar: React.FC<NavbarProps> = ({
   const isPlanExpired = activeAlumno ? new Date(activeAlumno.plan_active_until) < new Date() : false;
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // ── MARCA POR COACH ──────────────────────────────────────────────────
-  // Determinar qué clave de marca usar según el usuario actual:
-  // - Admin Master (coach-001) → clave global 'gymmaster_brand_name'
-  // - Otro coach → clave propia 'gymmaster_brand_name_{id}'
-  // - Alumno → clave del coach al que pertenece 'gymmaster_brand_name_{managed_by}'
-  const getBrandKey = (suffix: 'name' | 'logo') => {
+  // ── MARCA POR GIMNASIO & COACH (Sincronizada con la Nube + LocalStorage) ──
+  // Prioridad de resolución (funciona para Coach y para todos sus Alumnos en cualquier dispositivo):
+  // 1. Clave en localStorage por gym_id (`gymmaster_brand_name_gym_{gym_id}`) o por coach (`gymmaster_brand_name_{coach_id}`)
+  // 2. Datos del tenant `activeGym` sincronizados en Supabase (`activeGym.name` y `activeGym.logo_url`)
+  // 3. Marca por defecto ("TITAN FITNESS CENTER" / emblema Titan)
+  const getBrandKeys = (suffix: 'name' | 'logo') => {
     const base = suffix === 'name' ? 'gymmaster_brand_name' : 'gymmaster_brand_logo';
-    if (!currentUser) return base;
-    if (currentUser.id === 'coach-001') return base; // Admin Master = global
-    if (currentUser.role === 'coach') return `${base}_${currentUser.id}`;
-    if (currentUser.role === 'alumno' && currentUser.managed_by) return `${base}_${currentUser.managed_by}`;
-    return base;
+    const keys: string[] = [];
+    const gymId = activeGym?.id || currentUser?.gym_id;
+    if (gymId) keys.push(`${base}_gym_${gymId}`);
+    if (currentUser) {
+      if (currentUser.role === 'coach') {
+        keys.push(`${base}_${currentUser.id}`);
+        if (currentUser.id === 'coach-001') keys.push(base);
+      } else if (currentUser.role === 'alumno' && currentUser.managed_by) {
+        keys.push(`${base}_${currentUser.managed_by}`);
+      }
+    }
+    keys.push(base);
+    return keys;
   };
 
-  const defaultName = 'TU MEJOR VERSIÓN TE ESPERA';
-  const defaultLogo = '/gymmaster-app/fitness_logo.jpg';
+  const defaultName = 'TITAN FITNESS CENTER';
+  const legacyDefaultName = 'TU MEJOR VERSIÓN TE ESPERA';
+  const defaultLogo = '/gymmaster-app/titan-ui/titan-shield-emblem.png';
 
-  const [brandName, setBrandName] = useState<string>(
-    () => localStorage.getItem(getBrandKey('name')) || localStorage.getItem('gymmaster_brand_name') || defaultName
-  );
-  const [brandLogo, setBrandLogo] = useState<string>(
-    () => localStorage.getItem(getBrandKey('logo')) || localStorage.getItem('gymmaster_brand_logo') || defaultLogo
-  );
+  const resolveBrandName = (): string => {
+    for (const k of getBrandKeys('name')) {
+      const val = localStorage.getItem(k);
+      if (val && val.trim() && val.trim().toUpperCase() !== legacyDefaultName) return val.trim();
+    }
+    if (activeGym?.name && activeGym.name.trim()) return activeGym.name.trim();
+    for (const k of getBrandKeys('name')) {
+      const val = localStorage.getItem(k);
+      if (val && val.trim()) return val.trim();
+    }
+    return defaultName;
+  };
+
+  const resolveBrandLogo = (): string => {
+    if (activeGym?.logo_url && activeGym.logo_url.trim()) return activeGym.logo_url.trim();
+    for (const k of getBrandKeys('logo')) {
+      const val = localStorage.getItem(k);
+      if (val && val.trim() && val !== '/gymmaster-app/fitness_logo.jpg') return val.trim();
+    }
+    return defaultLogo;
+  };
+
+  const [brandName, setBrandName] = useState<string>(() => resolveBrandName());
+  const [brandLogo, setBrandLogo] = useState<string>(() => resolveBrandLogo());
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [editBrandName, setEditBrandName] = useState(brandName);
   const [editBrandLogo, setEditBrandLogo] = useState(brandLogo);
   const brandFileRef = useRef<HTMLInputElement>(null);
+
+  // Actualizar automáticamente la marca visible cuando cambie el usuario logueado (Coach o Alumno) o el Gimnasio activo
+  useEffect(() => {
+    const nextName = resolveBrandName();
+    const nextLogo = resolveBrandLogo();
+    setBrandName(nextName);
+    setBrandLogo(nextLogo);
+  }, [currentUser?.id, currentUser?.gym_id, currentUser?.managed_by, activeGym?.id, activeGym?.name, activeGym?.logo_url]);
 
   const handleBrandLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -120,16 +155,41 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const handleSaveBrand = () => {
-    setBrandName(editBrandName);
-    setBrandLogo(editBrandLogo);
-    // Guardar en la clave correcta según el coach
-    localStorage.setItem(getBrandKey('name'), editBrandName);
-    localStorage.setItem(getBrandKey('logo'), editBrandLogo);
+    const cleanName = editBrandName.trim() || defaultName;
+    const cleanLogo = editBrandLogo.trim() || defaultLogo;
+    setBrandName(cleanName);
+    setBrandLogo(cleanLogo);
+
+    // 1. Guardar en localStorage por Gimnasio y por Coach para que todos sus Alumnos lo vean al instante
+    const gymId = activeGym?.id || currentUser?.gym_id;
+    if (gymId) {
+      localStorage.setItem(`gymmaster_brand_name_gym_${gymId}`, cleanName);
+      localStorage.setItem(`gymmaster_brand_logo_gym_${gymId}`, cleanLogo);
+    }
+    if (currentUser?.id) {
+      localStorage.setItem(`gymmaster_brand_name_${currentUser.id}`, cleanName);
+      localStorage.setItem(`gymmaster_brand_logo_${currentUser.id}`, cleanLogo);
+      if (currentUser.id === 'coach-001') {
+        localStorage.setItem('gymmaster_brand_name', cleanName);
+        localStorage.setItem('gymmaster_brand_logo', cleanLogo);
+      }
+    }
+
+    // 2. Persistir en el tenant del Gimnasio y sincronizar con Supabase en la nube
+    if (gymId) {
+      dataService.updateGymBranding(gymId, cleanName, cleanLogo);
+    }
     setShowBrandModal(false);
   };
 
   const getBrandParts = (name: string) => {
-    const words = name.trim().split(' ');
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length <= 1) {
+      return { main: words[0] || 'TITAN', accent: '' };
+    }
+    if (words.length === 2) {
+      return { main: words[0], accent: words[1] };
+    }
     const accent = words.slice(-2).join(' ');
     const main = words.slice(0, -2).join(' ');
     return { main, accent };
@@ -151,14 +211,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     dataService.syncNow();
   };
 
-  const isDefaultBrand = !brandName || brandName.trim().toUpperCase() === defaultName;
-  const isTitanGym = !activeGym || activeGym.name.toLowerCase().includes('titan');
-  const displayHeadline = isDefaultBrand && isTitanGym
-    ? 'TITAN'
-    : brandName.trim().split(' ')[0]?.toUpperCase() || 'TITAN';
-  const displaySubline = isDefaultBrand && isTitanGym
-    ? 'FITNESS CENTER'
-    : (activeGym?.name || brandName.trim().split(' ').slice(1).join(' ') || 'FITNESS CENTER').toUpperCase();
+  const brandParts = getBrandParts(brandName || defaultName);
+  const displayHeadline = (brandParts.main || 'TITAN').toUpperCase();
+  const displaySubline = (brandParts.accent || (activeGym?.name && activeGym.name.toUpperCase() !== displayHeadline ? activeGym.name : '')).toUpperCase();
+  const isCustomLogo = Boolean(
+    brandLogo &&
+    brandLogo !== defaultLogo &&
+    brandLogo !== '/gymmaster-app/fitness_logo.jpg'
+  );
 
   const handleNavClick = (tab: string, role?: UserRole) => {
     if (role) setCurrentRole(role);
@@ -416,26 +476,36 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div style={{ ...S.logoRow, position: 'relative' }}>
           <div style={S.logoIcon}>
             <img
-              src={brandLogo.startsWith('data:') ? brandLogo : '/gymmaster-app/titan-ui/titan-shield-emblem.png'}
-              alt="Titan Emblem"
+              src={isCustomLogo ? brandLogo : '/gymmaster-app/titan-ui/titan-shield-emblem.png'}
+              alt={displayHeadline}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/gymmaster-app/titan-ui/titan-shield-emblem.png';
+              }}
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: brandLogo.startsWith('data:') ? 'cover' : 'contain',
-                border: brandLogo.startsWith('data:') ? '1px solid #D67B35' : 'none',
+                objectFit: isCustomLogo ? 'cover' : 'contain',
+                border: isCustomLogo ? '1.5px solid #D67B35' : 'none',
               }}
             />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h1 style={S.logoTitle}>{displayHeadline}</h1>
-            <div style={S.logoSub}>
-              <span style={S.logoGym}>{displaySubline}</span>
-            </div>
+            <h1 style={{
+              ...S.logoTitle,
+              fontSize: displayHeadline.length > 14 ? '16px' : displayHeadline.length > 9 ? '20px' : '26px',
+              lineHeight: 1.05,
+              wordBreak: 'break-word',
+            }}>{displayHeadline}</h1>
+            {displaySubline && (
+              <div style={S.logoSub}>
+                <span style={S.logoGym}>{displaySubline}</span>
+              </div>
+            )}
           </div>
           {currentRole === 'coach' && (
             <button
               onClick={(e) => { e.stopPropagation(); setEditBrandName(brandName); setEditBrandLogo(brandLogo); setShowBrandModal(true); }}
-              title="Editar mi marca"
+              title="Editar logo y nombre de mi gimnasio"
               style={{
                 position: 'absolute', top: -8, right: -6,
                 background: 'rgba(13, 16, 21, 0.85)', border: '1px solid rgba(214,123,53,0.4)',
@@ -464,24 +534,48 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div style={{
                 width: 96, height: 96,
                 overflow: 'hidden', border: '2px solid #D57A30',
+                background: '#090C10',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 0 20px rgba(213,122,48,0.35)',
               }}>
                 <img
-                  src={editBrandLogo}
+                  src={editBrandLogo || defaultLogo}
                   alt="preview"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', filter: editBrandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: editBrandLogo && editBrandLogo !== defaultLogo ? 'cover' : 'contain',
+                    filter: editBrandLogo === '/gymmaster-app/fitness_logo.jpg' ? 'invert(1) brightness(2)' : 'none',
+                  }}
                 />
               </div>
-              <button
-                onClick={() => brandFileRef.current?.click()}
-                className="titan-btn-armor-steel"
-                style={{
-                  padding: '8px 16px',
-                  fontSize: 11,
-                }}
-              >
-                📷 Cambiar Foto del Logo
-              </button>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <button
+                  type="button"
+                  onClick={() => brandFileRef.current?.click()}
+                  className="titan-btn-armor-steel"
+                  style={{
+                    padding: '8px 16px',
+                    fontSize: 11,
+                  }}
+                >
+                  📷 Cambiar Foto del Logo
+                </button>
+                {editBrandLogo !== defaultLogo && (
+                  <button
+                    type="button"
+                    onClick={() => setEditBrandLogo(defaultLogo)}
+                    className="titan-btn-armor-steel"
+                    style={{
+                      padding: '8px 12px',
+                      fontSize: 10,
+                    }}
+                    title="Restaurar escudo Titan original"
+                  >
+                    Restaurar Escudo
+                  </button>
+                )}
+              </div>
               <input ref={brandFileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleBrandLogoUpload} />
             </div>
 

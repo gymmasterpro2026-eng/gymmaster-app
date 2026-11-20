@@ -564,9 +564,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
           const ex = log.exercise;
           const exp = expandedExerciseId === log.id;
           const done = log.completed_series?.every(s => s) || false;
-          const allExercises = dataService.getExercises();
-          const catIdx = ex?.id ? allExercises.findIndex(e => e.id === ex.id) : -1;
-          const catPosStr = catIdx >= 0 ? `${catIdx + 1}/${allExercises.length}` : null;
+          const catPosStr = dataService.getExerciseCatalogPosition(ex?.id);
           const dayColor = DAY_COLOR_MAP[log.dia] || DAY_COLOR_MAP['Lunes'];
 
           return (
@@ -589,7 +587,7 @@ export const DashboardAlumno: React.FC<DashboardAlumnoProps> = ({ alumno, onRefr
                       {ex?.name}
                       {catPosStr && (
                         <span 
-                          title={`Ejercicio #${catIdx + 1} de ${allExercises.length} en la biblioteca`}
+                          title={`Ejercicio Nº ${catPosStr} en la biblioteca`}
                           className="titan-badge-copper"
                           style={{
                             fontSize: '11px',

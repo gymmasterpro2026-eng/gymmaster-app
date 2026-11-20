@@ -50,19 +50,38 @@ class DataService {
   private realtimeSubscribed: boolean = false;
   private realtimeSyncTimer: ReturnType<typeof setTimeout> | null = null;
   private exerciseByIdMap = new Map<string, Exercise>();
+  private exerciseCatalogIndexMap = new Map<string, number>();
   private translatedExercisesCache: Exercise[] | null = null;
   private translatedByIdCache = new Map<string, Exercise>();
+  private logsByRoutineIdMap = new Map<string, RoutineLog[]>();
+  private persistTimer: ReturnType<typeof setTimeout> | null = null;
+  private pendingOps: Array<() => Promise<any>> = [];
+  private isFlushingOps: boolean = false;
+  private opsRetryTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     this.loadFromLocalStorage();
     this.rebuildExerciseIndex();
+    this.rebuildLogsIndex();
     if (isSupabaseConfigured && supabase) {
       this.initCloudSync();
       this.subscribeRealtime();
     }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeunload', () => {
+        if (this.persistTimer) {
+          clearTimeout(this.persistTimer);
+          this.persistNow();
+        }
+      });
+      window.addEventListener('online', () => {
+        this.flushPendingOps();
+      });
+    }
     // Auto-polling heartbeat every 90 seconds to keep APK, Web and Local synchronized without lag
     setInterval(() => {
       if (isSupabaseConfigured && supabase && !this.isSyncing) {
+        this.flushPendingOps();
         this.syncNow();
       }
     }, 90000);
@@ -70,11 +89,37 @@ class DataService {
 
   private rebuildExerciseIndex() {
     this.exerciseByIdMap.clear();
-    for (const ex of this.exercises) {
+    this.exerciseCatalogIndexMap.clear();
+    for (let i = 0; i < this.exercises.length; i++) {
+      const ex = this.exercises[i];
       this.exerciseByIdMap.set(ex.id, ex);
+      this.exerciseCatalogIndexMap.set(ex.id, i);
     }
     this.translatedExercisesCache = null;
     this.translatedByIdCache.clear();
+  }
+
+  private rebuildLogsIndex() {
+    this.logsByRoutineIdMap.clear();
+    for (let i = 0; i < this.logs.length; i++) {
+      const log = this.logs[i];
+      let arr = this.logsByRoutineIdMap.get(log.routine_id);
+      if (!arr) {
+        arr = [];
+        this.logsByRoutineIdMap.set(log.routine_id, arr);
+      }
+      arr.push(log);
+    }
+    for (const arr of this.logsByRoutineIdMap.values()) {
+      arr.sort((a, b) => a.orden - b.orden);
+    }
+  }
+
+  public getExerciseCatalogPosition(exerciseId?: string): string | null {
+    if (!exerciseId) return null;
+    const idx = this.exerciseCatalogIndexMap.get(exerciseId);
+    if (idx === undefined) return null;
+    return `${idx + 1}/${this.exercises.length}`;
   }
 
   public subscribe(listener: () => void) {
@@ -111,11 +156,68 @@ class DataService {
     }
   }
 
+  private isTransientNetworkOrServerError(e: any): boolean {
+    const msg = String(e?.message || e || '').toLowerCase();
+    const status = Number(e?.status || e?.statusCode || 0);
+    if (status === 429 || (status >= 500 && status <= 599)) return true;
+    return (
+      msg.includes('failed to fetch') ||
+      msg.includes('network') ||
+      msg.includes('timeout') ||
+      msg.includes('timed out') ||
+      msg.includes('load failed') ||
+      msg.includes('502') ||
+      msg.includes('503') ||
+      msg.includes('504')
+    );
+  }
+
+  private async flushPendingOps() {
+    if (!supabase || this.isFlushingOps || this.pendingOps.length === 0) return;
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return;
+    this.isFlushingOps = true;
+    try {
+      while (this.pendingOps.length > 0) {
+        const op = this.pendingOps[0];
+        try {
+          await op();
+          this.pendingOps.shift();
+        } catch (e: any) {
+          if (this.isTransientNetworkOrServerError(e)) {
+            if (!this.opsRetryTimer) {
+              this.opsRetryTimer = setTimeout(() => {
+                this.opsRetryTimer = null;
+                this.flushPendingOps();
+              }, 30000);
+            }
+            break;
+          } else {
+            // Non-transient error: log and discard so queue doesn't block forever
+            this.pendingOps.shift();
+          }
+        }
+      }
+    } finally {
+      this.isFlushingOps = false;
+    }
+  }
+
   private async saveToCloud(operation: () => Promise<any>) {
     if (!supabase) return;
     try {
       await operation();
     } catch (e: any) {
+      if (this.isTransientNetworkOrServerError(e)) {
+        console.warn('⏳ Red/Supabase temporalmente inaccesible. Operación encolada para reintento automático:', e?.message || e);
+        this.pendingOps.push(operation);
+        if (!this.opsRetryTimer) {
+          this.opsRetryTimer = setTimeout(() => {
+            this.opsRetryTimer = null;
+            this.flushPendingOps();
+          }, 30000);
+        }
+        return;
+      }
       console.group('❌ Error de Sincronización Supabase');
       console.error('Mensaje completo:', e.message || e);
       if (e.details) console.error('Detalles PostgREST:', e.details);
@@ -172,6 +274,7 @@ class DataService {
       // 4. Routine Logs — Cloud Wins
       if (remoteLogs) {
         this.logs = remoteLogs as RoutineLog[];
+        this.rebuildLogsIndex();
       }
 
       // 5. Custom Exercises — pull only new remote exercises
@@ -285,6 +388,9 @@ class DataService {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_exercises' }, () => {
           this.scheduleRealtimeSync();
         })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_tenants' }, () => {
+          this.scheduleRealtimeSync();
+        })
         .subscribe();
         
     } catch (e) {
@@ -347,7 +453,7 @@ class DataService {
     }
   }
 
-  private persist() {
+  private persistNow() {
     try {
       const customExercises = this.exercises.filter((e) => !INITIAL_EXERCISE_IDS.has(e.id));
       localStorage.setItem('gymmaster_profiles', JSON.stringify(this.profiles));
@@ -360,6 +466,14 @@ class DataService {
     } catch (e) {
       console.error('Error persisting to localStorage', e);
     }
+  }
+
+  private persist() {
+    if (this.persistTimer) clearTimeout(this.persistTimer);
+    this.persistTimer = setTimeout(() => {
+      this.persistTimer = null;
+      this.persistNow();
+    }, 120);
   }
 
   // LANGUAGE TOGGLE
@@ -384,7 +498,8 @@ class DataService {
     this.gyms = [...INITIAL_GYMS];
     this.language = 'es';
     this.rebuildExerciseIndex();
-    this.persist();
+    this.rebuildLogsIndex();
+    this.persistNow();
 
     if (supabase) {
       this.saveToCloud(async () => {
@@ -418,6 +533,30 @@ class DataService {
       }
       this.notify();
     }
+  }
+
+  updateGymBranding(id: string, name: string, logoUrl?: string): GymTenant | undefined {
+    const gym = this.getGymById(id);
+    if (gym) {
+      gym.name = name.trim() || gym.name;
+      if (logoUrl !== undefined) {
+        gym.logo_url = logoUrl;
+      }
+      this.persistNow();
+      if (supabase) {
+        this.saveToCloud(async () => {
+          const payload: Record<string, any> = { name: gym.name };
+          if (logoUrl !== undefined) payload.logo_url = gym.logo_url;
+          const { error } = await supabase.from('gym_tenants').update(payload).eq('id', id);
+          if (error) {
+            // Fallback en caso de que la tabla remota no tenga columna logo_url aún
+            await supabase.from('gym_tenants').update({ name: gym.name }).eq('id', id);
+          }
+        });
+      }
+      this.notify();
+    }
+    return gym;
   }
 
   createGym(
@@ -715,18 +854,16 @@ class DataService {
     return newEx;
   }
 
-  // ROUTINES
+  // ROUTINES (O(1) lookup via logsByRoutineIdMap)
   getRoutinesForAlumno(alumnoId: string): RoutineWithLogs[] {
     const alumnoRoutines = this.routines.filter((r) => r.alumno_id === alumnoId);
 
     return alumnoRoutines.map((routine) => {
-      const routineLogs = this.logs
-        .filter((l) => l.routine_id === routine.id)
-        .sort((a, b) => a.orden - b.orden)
-        .map((log) => ({
-          ...log,
-          exercise: this.getExerciseById(log.exercise_id),
-        }));
+      const indexedLogs = this.logsByRoutineIdMap.get(routine.id) || [];
+      const routineLogs = indexedLogs.map((log) => ({
+        ...log,
+        exercise: this.getExerciseById(log.exercise_id),
+      }));
 
       return {
         ...routine,
@@ -744,7 +881,7 @@ class DataService {
     let activeRoutine = activeRoutines[0];
     if (activeRoutines.length > 1) {
       // Desactivar las rutinas con menos logs, dejar activa solo la más completa
-      const countLogs = (r: Routine) => this.logs.filter((l) => l.routine_id === r.id).length;
+      const countLogs = (r: Routine) => (this.logsByRoutineIdMap.get(r.id) || []).length;
       activeRoutine = activeRoutines.reduce((best, r) =>
         countLogs(r) >= countLogs(best) ? r : best
       );
@@ -761,13 +898,11 @@ class DataService {
       this.persist();
     }
 
-    const routineLogs = this.logs
-      .filter((l) => l.routine_id === activeRoutine.id)
-      .sort((a, b) => a.orden - b.orden)
-      .map((log) => ({
-        ...log,
-        exercise: this.getExerciseById(log.exercise_id),
-      }));
+    const indexedLogs = this.logsByRoutineIdMap.get(activeRoutine.id) || [];
+    const routineLogs = indexedLogs.map((log) => ({
+      ...log,
+      exercise: this.getExerciseById(log.exercise_id),
+    }));
 
     return {
       ...activeRoutine,
@@ -818,6 +953,7 @@ class DataService {
     }));
 
     this.logs.push(...newLogs);
+    this.rebuildLogsIndex();
     this.persist();
 
     if (supabase) {
@@ -876,6 +1012,7 @@ class DataService {
     }));
 
     this.logs.push(...updatedLogs);
+    this.rebuildLogsIndex();
     this.persist();
 
     if (supabase) {
@@ -988,6 +1125,7 @@ class DataService {
     const index = this.logs.findIndex((l) => l.id === logId);
     if (index !== -1) {
       this.logs.splice(index, 1);
+      this.rebuildLogsIndex();
       this.persist();
       if (supabase) {
         this.saveToCloud(async () => {
