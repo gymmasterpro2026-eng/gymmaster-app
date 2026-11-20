@@ -220,6 +220,13 @@ export const Navbar: React.FC<NavbarProps> = ({
     brandLogo !== '/gymmaster-app/fitness_logo.jpg'
   );
 
+  const isMasterAdmin = Boolean(
+    currentRole === 'coach' &&
+    activeGym?.id === 'gym-titan-001' &&
+    currentUser?.gym_id === 'gym-titan-001' &&
+    (currentUser?.id === 'coach-001' || currentUser?.full_name?.toLowerCase().includes('master'))
+  );
+
   const handleNavClick = (tab: string, role?: UserRole) => {
     if (role) setCurrentRole(role);
     setCurrentTab(tab);
@@ -674,7 +681,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" compact />
               <NavButton active={currentTab === 'alumnos-cuotas'} onClick={() => handleNavClick('alumnos-cuotas')} icon={User} label="Alumnos Cuotas" compact />
               <NavButton active={currentTab === 'cobros'} onClick={() => handleNavClick('cobros')} icon={Database} label="Cobros" compact />
-              {activeGym?.id === 'gym-titan-001' && (
+              {isMasterAdmin && (
                 <>
                   <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" compact />
                   <NavButton active={currentTab === 'import'} onClick={() => handleNavClick('import')} icon={Code2} label="Import Node" compact />
@@ -686,7 +693,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Administración — solo visible para el Admin Master (Titan Fitness Center) */}
-        {currentRole === 'coach' && activeGym?.id === 'gym-titan-001' && (
+        {isMasterAdmin && (
           <div style={S.section}>
             <p style={S.sectionLabel}>Administración</p>
             <NavButton active={currentTab === 'create-gym'} onClick={() => handleNavClick('create-gym')} icon={Building2} label="Nuevo Gimnasio" compact />

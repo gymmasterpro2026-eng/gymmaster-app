@@ -60,7 +60,7 @@ export default function App() {
     };
   }, [activeGym?.id]);
 
-  const refreshData = () => {
+  const refreshData = (targetGymId?: string) => {
     const allProfiles = dataService.getProfiles();
     const allExercises = dataService.getExercises();
     const allGyms = dataService.getGyms();
@@ -69,8 +69,9 @@ export default function App() {
     setExercises(allExercises);
     setGyms([...allGyms]);
 
-    if (activeGym) {
-      const updatedActiveGym = allGyms.find((g) => g.id === activeGym.id);
+    const effectiveGymId = targetGymId || activeGym?.id;
+    if (effectiveGymId) {
+      const updatedActiveGym = allGyms.find((g) => g.id === effectiveGymId);
       if (updatedActiveGym) {
         setActiveGym({ ...updatedActiveGym });
       }
@@ -78,7 +79,7 @@ export default function App() {
       setActiveGym({ ...allGyms[0] });
     }
 
-    const alumnos = allProfiles.filter((p) => p.role === 'alumno');
+    const alumnos = allProfiles.filter((p) => p.role === 'alumno' && (!effectiveGymId || p.gym_id === effectiveGymId));
     if (alumnos.length > 0 && !alumnos.some((a) => a.id === selectedAlumnoId)) {
       setSelectedAlumnoId(alumnos[0].id);
     }
@@ -87,7 +88,7 @@ export default function App() {
   const handleResetData = () => {
     if (window.confirm('¿Deseas restablecer los datos de demostración a su estado inicial?')) {
       dataService.resetToDefault();
-      refreshData();
+      refreshData('gym-titan-001');
       setActiveGym(dataService.getGyms()[0] || null);
       const defaultUser = dataService.getProfiles()[0] || null;
       setCurrentUser(defaultUser);
@@ -100,7 +101,7 @@ export default function App() {
     setCurrentUser(userProfile);
     setCurrentRole(userProfile.role);
     setCurrentTab('home');
-    refreshData();
+    refreshData(gym.id);
 
     if (userProfile.role === 'alumno') {
       setSelectedAlumnoId(userProfile.id);
@@ -136,6 +137,13 @@ export default function App() {
     if (!profile || profile.role !== 'alumno' || !profile.plan_active_until) return false;
     return new Date() > new Date(profile.plan_active_until);
   };
+
+  const isMasterAdmin = Boolean(
+    currentRole === 'coach' &&
+    activeGym?.id === 'gym-titan-001' &&
+    currentUser?.gym_id === 'gym-titan-001' &&
+    (currentUser?.id === 'coach-001' || currentUser?.full_name?.toLowerCase().includes('master'))
+  );
 
   const isAlumnoBlocked = currentRole === 'alumno' && checkIsPlanExpired(activeAlumnoProfile);
 
@@ -229,14 +237,14 @@ export default function App() {
         )}
 
         <Suspense fallback={<div className="p-10 text-center font-titan text-xs tracking-widest uppercase text-amber-400">Cargando módulo...</div>}>
-        {currentTab === 'create-gym' && (
+        {currentTab === 'create-gym' && isMasterAdmin && (
           <CreateGymView onGymCreated={(gym, coach) => {
             handleGymGeneratedOrLoggedIn(gym, coach);
             setCurrentTab('home');
           }} />
         )}
         
-        {currentTab === 'list-gyms' && (
+        {currentTab === 'list-gyms' && isMasterAdmin && (
           <GymListView onEnterGym={(gym, coach) => {
             handleGymGeneratedOrLoggedIn(gym, coach);
             setCurrentTab('home');
@@ -257,11 +265,11 @@ export default function App() {
 
         {currentTab === 'running' && <RunningTrainer />}
 
-        {currentTab === 'sql' && <SqlSchemaViewer />}
+        {currentTab === 'sql' && isMasterAdmin && <SqlSchemaViewer />}
 
-        {currentTab === 'import' && <ImportScriptViewer />}
+        {currentTab === 'import' && isMasterAdmin && <ImportScriptViewer />}
 
-        {currentTab === 'structure' && <FolderStructureViewer />}
+        {currentTab === 'structure' && isMasterAdmin && <FolderStructureViewer />}
 
         {currentTab === 'diet' && <DietPlanner />}
         </Suspense>
