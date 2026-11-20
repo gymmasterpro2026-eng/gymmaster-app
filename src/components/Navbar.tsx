@@ -714,6 +714,39 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Cerrar Sesión"
             className="titan-logout-plate"
           >
+            <span
+              title={currentUser.full_name}
+              style={{
+                position: 'absolute',
+                top: '8px',
+                left: '16px',
+                width: '96px',
+                height: '28px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                pointerEvents: 'none',
+                overflow: 'hidden',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: currentUser.full_name.length > 10 ? '10px' : '12px',
+                  fontFamily: "'Chakra Petch', sans-serif",
+                  fontWeight: 800,
+                  color: '#0B0E13',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  textShadow: '0 1px 0 rgba(255, 225, 190, 0.45)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%',
+                }}
+              >
+                {currentUser.full_name}
+              </span>
+            </span>
             <LogOut size={15} color="#FF5A45" style={{ filter: 'drop-shadow(0 0 6px rgba(255, 72, 42, 0.65))', flexShrink: 0 }} />
             <span
               style={{
