@@ -643,6 +643,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div style={S.scrollArea}>
         <div style={S.section}>
           {currentRole === 'coach' && <p style={S.sectionLabel}>Principal</p>}
+          {currentUser?.role === 'coach' && (
+            <NavButton
+              active={false}
+              onClick={() => handleNavClick('home', currentRole === 'coach' ? 'alumno' : 'coach')}
+              icon={User}
+              label={currentRole === 'coach' ? 'Ver como Alumno' : 'Volver a Coach'}
+              compact={currentRole === 'coach'}
+            />
+          )}
           <NavButton
             active={currentTab === 'home'}
             onClick={() => handleNavClick('home')}
