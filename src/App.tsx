@@ -192,7 +192,21 @@ export default function App() {
       />
 
       {/* Main Content Scrollable Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflowY: 'auto', position: 'relative', zIndex: 10, background: '#06080B' }}>
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflowY: 'auto',
+        position: 'relative',
+        zIndex: 10,
+        backgroundColor: '#06080B',
+        backgroundImage: "linear-gradient(rgba(6, 8, 11, 0.58), rgba(6, 8, 11, 0.72)), url('/gymmaster-app/titan-ui/main-gym-bg.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+      }}>
 
         <main id="main-content-area" className="main-content-area">
           {isAlumnoBlocked ? (
