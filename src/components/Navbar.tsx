@@ -26,52 +26,46 @@ interface NavButtonProps {
   onClick: () => void;
   icon: React.ElementType;
   label: string;
-  iconColor?: string;
+  compact?: boolean;
 }
 
-function NavButton({ active, onClick, icon: Icon, label, iconColor = '#64748b' }: NavButtonProps) {
-  const [hovered, setHovered] = useState(false);
-  const isActiveOrHovered = active || hovered;
+function SyncTimeText({ lastSyncTime, isSyncing }: { lastSyncTime: Date | null; isSyncing: boolean }) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 15000);
+    return () => clearInterval(id);
+  }, []);
 
+  if (isSyncing) return <span>En vivo</span>;
+  if (!lastSyncTime) return <span>Live</span>;
+  const diffSec = Math.max(0, Math.floor((now - lastSyncTime.getTime()) / 1000));
+  if (diffSec < 15) return <span>Ahora</span>;
+  if (diffSec < 60) return <span>Hace {diffSec}s</span>;
+  return <span>Hace {Math.floor(diffSec / 60)}m</span>;
+}
+
+function NavButton({ active, onClick, label, compact = false }: NavButtonProps) {
   return (
     <button
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className={active ? 'titan-nav-btn-active' : 'titan-nav-btn-idle'}
       style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        padding: '10px 12px',
-        borderRadius: '8px',
-        border: 'none',
+        justifyContent: 'center',
+        padding: compact ? '0 18px' : '0 22px',
+        minHeight: compact ? (active ? '50px' : '44px') : (active ? '64px' : '58px'),
+        marginBottom: compact ? '4px' : '6px',
         cursor: 'pointer',
-        fontSize: '13px',
-        fontWeight: 700,
-        fontFamily: 'inherit',
-        transition: 'all 0.2s ease',
-        background: isActiveOrHovered ? '#475569' : '#f1f5f9',
-        color: isActiveOrHovered ? '#ffffff' : '#0f172a',
-        marginBottom: '4px',
+        color: active ? '#FFFFFF' : '#CBD5E1',
+        fontSize: compact ? '13px' : '15px',
+        fontWeight: active ? 700 : 500,
+        fontFamily: "'Inter', sans-serif",
+        letterSpacing: '0.02em',
+        textShadow: active ? '0 0 12px rgba(255, 160, 80, 0.45)' : '0 1px 2px rgba(0,0,0,0.8)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <Icon
-          size={15}
-          style={{ color: isActiveOrHovered ? '#ffffff' : iconColor, flexShrink: 0 }}
-        />
-        <span>{label}</span>
-      </div>
-      <ChevronRight
-        size={12}
-        style={{
-          color: isActiveOrHovered ? '#ffffff' : '#0f172a',
-          opacity: isActiveOrHovered ? 1 : 0.4,
-          transform: active ? 'translateX(2px)' : 'none',
-          transition: 'all 0.2s',
-        }}
-      />
+      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
     </button>
   );
 }
@@ -143,16 +137,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   // ─────────────────────────────────────────────────────────────────────
 
   const [syncState, setSyncState] = useState(() => dataService.getSyncState());
-  const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
     const unsub = dataService.subscribe(() => {
       setSyncState(dataService.getSyncState());
     });
-    const interval = setInterval(() => setNow(Date.now()), 1000);
     return () => {
       unsub();
-      clearInterval(interval);
     };
   }, []);
 
@@ -160,14 +151,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     dataService.syncNow();
   };
 
-  const getTimeAgo = () => {
-    if (!syncState.lastSyncTime) return 'En vivo';
-    const diffSec = Math.max(0, Math.floor((now - syncState.lastSyncTime.getTime()) / 1000));
-    if (diffSec < 5) return 'Ahora';
-    if (diffSec < 60) return `Hace ${diffSec}s`;
-    const diffMin = Math.floor(diffSec / 60);
-    return `Hace ${diffMin}m`;
-  };
+  const isDefaultBrand = !brandName || brandName.trim().toUpperCase() === defaultName;
+  const isTitanGym = !activeGym || activeGym.name.toLowerCase().includes('titan');
+  const displayHeadline = isDefaultBrand && isTitanGym
+    ? 'TITAN'
+    : brandName.trim().split(' ')[0]?.toUpperCase() || 'TITAN';
+  const displaySubline = isDefaultBrand && isTitanGym
+    ? 'FITNESS CENTER'
+    : (activeGym?.name || brandName.trim().split(' ').slice(1).join(' ') || 'FITNESS CENTER').toUpperCase();
 
   const handleNavClick = (tab: string, role?: UserRole) => {
     if (role) setCurrentRole(role);
@@ -177,59 +168,54 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const S: Record<string, React.CSSProperties> = {
     aside: {
-      width: '260px',
+      width: '272px',
       flexShrink: 0,
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
-      background: 'rgba(15, 23, 42, 0.95)',
-      backdropFilter: 'blur(10px)',
-      borderRight: '1px solid rgba(255,255,255,0.1)',
+      backgroundColor: '#06080B',
       position: 'relative',
       zIndex: 50,
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     },
     header: {
-      padding: '24px 20px 20px',
-      borderBottom: '1px solid #94a3b8',
+      height: '136px',
+      padding: '18px 18px 22px',
       position: 'relative',
       overflow: 'hidden',
       cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
     },
     headerGlow: {
-      position: 'absolute',
-      top: '-20px',
-      right: '-20px',
-      width: '80px',
-      height: '80px',
-      background: 'radial-gradient(circle, rgba(245,158,11,0.15), transparent)',
-      pointerEvents: 'none',
+      display: 'none',
     },
     logoRow: {
       display: 'flex',
       alignItems: 'center',
       gap: '12px',
+      width: '100%',
     },
     logoIcon: {
-      width: '40px',
-      height: '40px',
-      background: '#fff',
-      borderRadius: '0',
+      width: '54px',
+      height: '54px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      boxShadow: '0 0 20px rgba(245,158,11,0.3)',
       flexShrink: 0,
+      filter: 'drop-shadow(0 0 10px rgba(214, 123, 53, 0.35))',
     },
     logoTitle: {
-      fontSize: '18px',
-      fontWeight: 900,
-      color: '#ffffff',
+      fontSize: '28px',
+      fontWeight: 700,
+      fontFamily: "'Chakra Petch', sans-serif",
+      color: '#FFFFFF',
       margin: 0,
-      letterSpacing: '-0.5px',
-      lineHeight: 1.1,
+      letterSpacing: '0.06em',
+      lineHeight: 0.95,
     },
-    logoAccent: { color: '#f59e0b' },
+    logoAccent: { color: '#D67B35' },
     logoSub: {
       display: 'flex',
       alignItems: 'center',
@@ -237,47 +223,47 @@ export const Navbar: React.FC<NavbarProps> = ({
       marginTop: '4px',
     },
     logoDot: {
-      width: '5px',
-      height: '5px',
-      borderRadius: '0',
-      background: '#f59e0b',
+      display: 'none',
     },
     logoGym: {
       fontSize: '10px',
-      color: '#475569',
-      fontWeight: 600,
+      fontFamily: "'Chakra Petch', sans-serif",
+      color: '#D67B35',
+      fontWeight: 700,
       textTransform: 'uppercase',
-      letterSpacing: '0.08em',
+      letterSpacing: '0.18em',
     },
     scrollArea: {
       flex: 1,
       overflowY: 'auto',
-      padding: '16px 12px',
+      overflowX: 'hidden',
+      padding: '10px 16px 6px 8px',
       display: 'flex',
       flexDirection: 'column',
-      gap: '24px',
+      gap: '10px',
     },
-    section: { display: 'flex', flexDirection: 'column', gap: '4px' },
+    section: { display: 'flex', flexDirection: 'column', gap: '2px' },
     sectionLabel: {
       fontSize: '10px',
+      fontFamily: "'Chakra Petch', sans-serif",
       fontWeight: 700,
-      color: '#475569',
+      color: '#D67B35',
       textTransform: 'uppercase',
-      letterSpacing: '0.1em',
-      padding: '0 12px',
+      letterSpacing: '0.16em',
+      padding: '0 8px',
       marginBottom: '6px',
     },
     footer: {
-      padding: '12px 12px 60px',
-      borderTop: '1px solid #94a3b8',
+      padding: '4px 10px 12px',
       display: 'flex',
       flexDirection: 'column',
-      gap: '12px',
+      gap: '8px',
+      flexShrink: 0,
     },
     roleSwitcher: {
       display: 'flex',
-      background: 'rgba(255,255,255,0.04)',
-      border: '1px solid rgba(255,255,255,0.06)',
+      background: 'rgba(13, 16, 21, 0.75)',
+      border: '1px solid rgba(249, 115, 22, 0.25)',
       borderRadius: '0',
       padding: '3px',
       position: 'relative',
@@ -290,15 +276,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       cursor: 'pointer',
       fontSize: '11px',
       fontWeight: 700,
-      fontFamily: 'inherit',
+      fontFamily: "'Chakra Petch', sans-serif",
       textTransform: 'uppercase',
-      letterSpacing: '0.06em',
+      letterSpacing: '0.08em',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       gap: '5px',
-      background: active ? '#f59e0b' : 'transparent',
-      color: active ? '#000000' : 'rgba(255,255,255,0.4)',
+      background: active ? 'linear-gradient(90deg, #F59E0B, #EA580C)' : 'transparent',
+      color: active ? '#090D12' : 'rgba(255,255,255,0.45)',
       transition: 'all 0.2s ease',
       zIndex: 1,
     }),
@@ -342,18 +328,20 @@ export const Navbar: React.FC<NavbarProps> = ({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      background: '#0f172a',
-      border: '1px solid #334155',
+      background: 'linear-gradient(145deg, #1A1F26 0%, #111419 100%)',
+      border: '1px solid rgba(249, 115, 22, 0.25)',
       borderRadius: '0',
+      clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)',
       padding: '10px 12px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
     },
     avatar: {
       width: '32px',
       height: '32px',
       borderRadius: '0',
-      background: 'linear-gradient(135deg, rgba(245,158,11,0.25), rgba(245,158,11,0.1))',
-      border: '1px solid #f59e0b',
+      clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)',
+      background: 'linear-gradient(135deg, rgba(245,158,11,0.3), rgba(234,88,12,0.12))',
+      border: '1px solid #F97316',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -397,67 +385,65 @@ export const Navbar: React.FC<NavbarProps> = ({
       </button>
       <div className={`gm-mobile-overlay ${isMobileOpen ? 'open' : ''}`} onClick={() => setIsMobileOpen(false)} />
 
-      <aside className={`gm-sidebar ${isMobileOpen ? 'open' : ''}`} style={S.aside}>
+      <aside className={`gm-sidebar titan-sidebar-shell ${isMobileOpen ? 'open' : ''}`} style={S.aside}>
         <style>{`
           @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
           .nav-glow-dot { animation: pulse 2s infinite; }
           aside::-webkit-scrollbar { width: 4px; }
-          aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+          aside::-webkit-scrollbar-thumb { background: rgba(214,123,53,0.35); border-radius: 4px; }
           
           .gm-sidebar { transition: left 0.3s ease; }
           .gm-mobile-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             z-index: 40; backdrop-filter: blur(4px);
           }
           .gm-mobile-toggle {
-            display: none; position: fixed; top: 16px; left: 16px; z-index: 60;
-            background: #f59e0b; border: none; padding: 10px; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); border-radius: 8px;
+            display: none; position: fixed; top: 14px; left: 14px; z-index: 60;
+            background: linear-gradient(180deg, #D57A30, #B55B1E); border: 1px solid rgba(255,200,130,0.4); padding: 10px; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(213, 122, 48, 0.45);
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
           }
           @media (max-width: 768px) {
-            .gm-sidebar { position: fixed !important; left: -260px; height: 100vh; z-index: 50; }
-            .gm-sidebar.open { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.3); }
+            .gm-sidebar { position: fixed !important; left: -280px; height: 100vh; z-index: 50; }
+            .gm-sidebar.open { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.75); }
             .gm-mobile-overlay.open { display: block; }
             .gm-mobile-toggle { display: flex; align-items: center; justify-content: center; }
           }
         `}</style>
 
-      {/* Header / Brand */}
-      <div style={S.header} onClick={() => handleNavClick('home')}>
-        <div style={S.headerGlow} />
+      {/* Header / Brand Plate 3D */}
+      <div className="titan-header-plate" style={S.header} onClick={() => handleNavClick('home')}>
         <div style={{ ...S.logoRow, position: 'relative' }}>
-          <div style={{ ...S.logoIcon, overflow: 'hidden', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>
+          <div style={S.logoIcon}>
             <img
-              src={brandLogo}
-              alt="Logo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: brandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
+              src={brandLogo.startsWith('data:') ? brandLogo : '/gymmaster-app/titan-ui/titan-shield-emblem.png'}
+              alt="Titan Emblem"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: brandLogo.startsWith('data:') ? 'cover' : 'contain',
+                border: brandLogo.startsWith('data:') ? '1px solid #D67B35' : 'none',
+              }}
             />
           </div>
-          <div style={{ flex: 1 }}>
-            <h1 style={S.logoTitle}>
-              {getBrandParts(brandName).main} <span style={S.logoAccent}>{getBrandParts(brandName).accent}</span>
-            </h1>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h1 style={S.logoTitle}>{displayHeadline}</h1>
             <div style={S.logoSub}>
-              <div className="nav-glow-dot" style={S.logoDot} />
-              <span style={S.logoGym}>
-                {activeGym ? activeGym.name : 'SaaS Multi-Tenant'}
-              </span>
+              <span style={S.logoGym}>{displaySubline}</span>
             </div>
           </div>
-          {/* Cada coach puede editar SU PROPIA marca */}
           {currentRole === 'coach' && (
             <button
               onClick={(e) => { e.stopPropagation(); setEditBrandName(brandName); setEditBrandLogo(brandLogo); setShowBrandModal(true); }}
               title="Editar mi marca"
               style={{
-                position: 'absolute', top: 4, right: 4,
-                background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)',
-                borderRadius: '6px', padding: '3px 6px', cursor: 'pointer',
-                color: '#f59e0b', fontSize: '10px', fontWeight: 800,
-                display: 'flex', alignItems: 'center', gap: '3px',
+                position: 'absolute', top: -8, right: -6,
+                background: 'rgba(13, 16, 21, 0.85)', border: '1px solid rgba(214,123,53,0.4)',
+                borderRadius: '2px', padding: '2px 6px', cursor: 'pointer',
+                color: '#D67B35', fontSize: '9px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700,
               }}
             >
-              ✏️ Editar
+              Editar
             </button>
           )}
         </div>
@@ -465,25 +451,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Modal editar marca */}
       {showBrandModal && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 9999,
-          background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
-        }}>
-          <div style={{
-            background: '#0f172a', border: '1px solid #1e293b', borderRadius: 16,
-            padding: 28, width: '100%', maxWidth: 420, boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+        <div className="titan-modal-overlay" style={{ zIndex: 9999 }}>
+          <div className="titan-modal" style={{
+            padding: 28, width: '100%', maxWidth: 420,
           }}>
-            <h2 style={{ color: '#fff', fontSize: 16, fontWeight: 900, margin: '0 0 20px', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <h2 className="titan-section-title" style={{ fontSize: 16, margin: '0 0 20px' }}>
               ✏️ Editar Marca del Gimnasio
             </h2>
 
             {/* Logo preview */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+            <div className="titan-inset-well" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginBottom: 20, padding: 16 }}>
               <div style={{
-                width: 100, height: 100, borderRadius: '50%',
-                overflow: 'hidden', border: '2px solid #f59e0b',
-                boxShadow: '0 0 20px rgba(245,158,11,0.3)',
+                width: 96, height: 96,
+                overflow: 'hidden', border: '2px solid #D57A30',
+                boxShadow: '0 0 20px rgba(213,122,48,0.35)',
               }}>
                 <img
                   src={editBrandLogo}
@@ -493,10 +474,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
               <button
                 onClick={() => brandFileRef.current?.click()}
+                className="titan-btn-armor-steel"
                 style={{
-                  background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.4)',
-                  color: '#f59e0b', borderRadius: 8, padding: '8px 16px',
-                  fontSize: 12, fontWeight: 800, cursor: 'pointer', textTransform: 'uppercase',
+                  padding: '8px 16px',
+                  fontSize: 11,
                 }}
               >
                 📷 Cambiar Foto del Logo
@@ -505,8 +486,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Brand name input */}
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ color: '#94a3b8', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, display: 'block', marginBottom: 8 }}>
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ color: '#D57A30', fontSize: 11, fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, display: 'block', marginBottom: 8 }}>
                 Nombre de la Marca
               </label>
               <textarea
@@ -514,27 +495,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onChange={(e) => setEditBrandName(e.target.value)}
                 placeholder="TU MEJOR VERSIÓN TE ESPERA"
                 rows={3}
+                className="titan-textarea"
                 style={{
-                  width: '100%', background: '#1e293b', border: '1px solid #334155',
-                  borderRadius: 8, padding: '10px 14px', color: '#fff',
+                  width: '100%',
+                  padding: '10px 14px',
                   fontSize: 14, fontWeight: 700, boxSizing: 'border-box',
                   resize: 'vertical',
                 }}
               />
-              <p style={{ color: '#64748b', fontSize: 11, margin: '6px 0 0' }}>
-                💡 Las últimas 2 palabras se muestran en amarillo.
+              <p style={{ color: '#94A3B8', fontSize: 11, margin: '6px 0 0' }}>
+                💡 Las últimas 2 palabras se muestran en cobre/dorado.
               </p>
             </div>
 
             {/* Preview del nombre */}
-            <div style={{
-              background: '#1e293b', borderRadius: 8, padding: '10px 14px',
+            <div className="titan-inset-well" style={{
+              padding: '10px 14px',
               marginBottom: 20, textAlign: 'center',
             }}>
-              <span style={{ color: '#fff', fontWeight: 900, fontSize: 14 }}>
+              <span className="titan-section-title" style={{ color: '#fff', fontSize: 14 }}>
                 {getBrandParts(editBrandName).main}{' '}
               </span>
-              <span style={{ color: '#f59e0b', fontWeight: 900, fontSize: 14 }}>
+              <span className="titan-section-title" style={{ color: '#FFBD4A', fontSize: 14 }}>
                 {getBrandParts(editBrandName).accent}
               </span>
             </div>
@@ -542,14 +524,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
               <button
                 onClick={() => setShowBrandModal(false)}
-                style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: 12, fontWeight: 800, cursor: 'pointer', textTransform: 'uppercase' }}
+                className="titan-btn-armor-steel"
+                style={{ fontSize: 11, padding: '9px 14px' }}
               >Cancelar</button>
               <button
                 onClick={handleSaveBrand}
+                className="titan-btn-armor-copper"
                 style={{
-                  background: '#f59e0b', color: '#000', border: 'none',
-                  borderRadius: 8, padding: '10px 20px', fontSize: 12,
-                  fontWeight: 900, cursor: 'pointer', textTransform: 'uppercase',
+                  padding: '10px 20px', fontSize: 12,
                 }}
               >💾 Guardar</button>
             </div>
@@ -559,16 +541,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Nav scroll area */}
       <div style={S.scrollArea}>
-
-        {/* Principal */}
         <div style={S.section}>
-          <p style={S.sectionLabel}>Principal</p>
+          {currentRole === 'coach' && <p style={S.sectionLabel}>Principal</p>}
           <NavButton
             active={currentTab === 'home'}
             onClick={() => handleNavClick('home')}
             icon={currentRole === 'alumno' ? Dumbbell : User}
             label={currentRole === 'alumno' ? 'Mi Entrenamiento' : 'Coach & Alumnos'}
-            iconColor="rgba(245,158,11,0.6)"
+            compact={currentRole === 'coach'}
           />
           {currentRole === 'coach' && (
           <NavButton
@@ -576,7 +556,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick('diet')}
             icon={Apple}
             label="Dieta y Nutrición"
-            iconColor="rgba(34,197,94,0.7)"
+            compact
           />
           )}
           {currentRole === 'alumno' && (
@@ -585,7 +565,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => handleNavClick('running')}
               icon={Activity}
               label="Trainer de Running"
-              iconColor="rgba(251,191,36,0.7)"
             />
           )}
           {currentRole === 'alumno' && (
@@ -593,20 +572,19 @@ export const Navbar: React.FC<NavbarProps> = ({
               active={currentTab === 'stats'}
               onClick={() => handleNavClick('stats')}
               icon={Activity}
-              label="📊 Mi Progreso"
-              iconColor="rgba(6,182,212,0.7)"
+              label="Mi Progreso"
             />
           )}
           {currentRole === 'coach' && (
             <>
-              <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" iconColor="rgba(96,165,250,0.7)" />
-              <NavButton active={currentTab === 'alumnos-cuotas'} onClick={() => handleNavClick('alumnos-cuotas')} icon={User} label="Alumnos Cuotas" iconColor="rgba(239,68,68,0.7)" />
-              <NavButton active={currentTab === 'cobros'} onClick={() => handleNavClick('cobros')} icon={Database} label="Cobros" iconColor="rgba(16,185,129,0.7)" />
+              <NavButton active={currentTab === 'catalog'} onClick={() => handleNavClick('catalog')} icon={Database} label="Ejercicios" compact />
+              <NavButton active={currentTab === 'alumnos-cuotas'} onClick={() => handleNavClick('alumnos-cuotas')} icon={User} label="Alumnos Cuotas" compact />
+              <NavButton active={currentTab === 'cobros'} onClick={() => handleNavClick('cobros')} icon={Database} label="Cobros" compact />
               {activeGym?.id === 'gym-titan-001' && (
                 <>
-                  <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" iconColor="rgba(251,191,36,0.7)" />
-                  <NavButton active={currentTab === 'import'} onClick={() => handleNavClick('import')} icon={Code2} label="Import Node" iconColor="rgba(52,211,153,0.7)" />
-                  <NavButton active={currentTab === 'structure'} onClick={() => handleNavClick('structure')} icon={FolderTree} label="Estructura" iconColor="rgba(167,139,250,0.7)" />
+                  <NavButton active={currentTab === 'sql'} onClick={() => handleNavClick('sql')} icon={Shield} label="SQL & RLS" compact />
+                  <NavButton active={currentTab === 'import'} onClick={() => handleNavClick('import')} icon={Code2} label="Import Node" compact />
+                  <NavButton active={currentTab === 'structure'} onClick={() => handleNavClick('structure')} icon={FolderTree} label="Estructura" compact />
                 </>
               )}
             </>
@@ -617,120 +595,126 @@ export const Navbar: React.FC<NavbarProps> = ({
         {currentRole === 'coach' && activeGym?.id === 'gym-titan-001' && (
           <div style={S.section}>
             <p style={S.sectionLabel}>Administración</p>
-            <NavButton active={currentTab === 'create-gym'} onClick={() => handleNavClick('create-gym')} icon={Building2} label="Nuevo Gimnasio" />
-            <NavButton active={currentTab === 'list-gyms'} onClick={() => handleNavClick('list-gyms')} icon={Globe2} label="Ver Gimnasios" />
+            <NavButton active={currentTab === 'create-gym'} onClick={() => handleNavClick('create-gym')} icon={Building2} label="Nuevo Gimnasio" compact />
+            <NavButton active={currentTab === 'list-gyms'} onClick={() => handleNavClick('list-gyms')} icon={Globe2} label="Ver Gimnasios" compact />
+          </div>
+        )}
+
+        {/* Pieza Armadura Intermedia 3D (Cobre + LED vertical rojo-naranja como en Imagen 1) */}
+        {currentRole === 'alumno' && (
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', marginTop: '4px', minHeight: '115px' }}>
+            <img
+              src="/gymmaster-app/titan-ui/sidebar-armor-divider.png"
+              alt=""
+              className="titan-armor-divider"
+              style={{ width: '100%', height: '100%', maxHeight: '185px', objectFit: 'contain' }}
+            />
           </div>
         )}
       </div>
 
       {/* Footer */}
       <div style={S.footer}>
-        {/* Role indicator */}
-        {currentUser && (
-          <div style={S.roleSwitcher}>
-            {currentUser.role === 'coach' ? (
-              <button style={S.roleBtn(true)} onClick={() => handleNavClick('home', 'coach')}>
-                <Shield size={11} /> Coach
-              </button>
-            ) : (
-              <button style={S.roleBtn(true)} onClick={() => handleNavClick('home', 'alumno')}>
-                <User size={11} /> Alumno
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Realtime Sync Status Button */}
+        {/* Realtime Sync Status Plate 3D */}
         <button
           type="button"
           onClick={handleSyncClick}
-          title="Toca para sincronizar en tiempo real con Supabase (APK, Web y Local)"
+          title="Toca para sincronizar en tiempo real con Supabase"
+          className="titan-sync-plate"
           style={{
-            width: '100%',
-            padding: '10px 12px',
-            background: syncState.isSyncing
-              ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-              : '#0f172a',
-            border: syncState.isSyncing
-              ? '2px solid #b45309'
-              : '2px solid #10b981',
-            borderRadius: '0',
+            height: '62px',
+            padding: '0 22px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
             cursor: 'pointer',
+          }}
+        >
+          <span
+            style={{
+              fontSize: '13px',
+              fontFamily: "'Chakra Petch', sans-serif",
+              fontWeight: 700,
+              color: syncState.isSyncing ? '#FBBF24' : '#FFFFFF',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {syncState.isSyncing ? 'SINCRONIZANDO' : 'SINCRONIZADO'}
+          </span>
+          <div
+            className="nav-glow-dot"
+            style={{
+              width: '10px',
+              height: '10px',
+              borderRadius: '50%',
+              background: syncState.isSyncing ? '#F59E0B' : '#FF2957',
+              boxShadow: syncState.isSyncing
+                ? '0 0 8px #F59E0B, 0 0 18px rgba(245, 158, 11, 0.7)'
+                : '0 0 8px #FF2957, 0 0 18px rgba(255, 41, 87, 0.85)',
+              flexShrink: 0,
+            }}
+          />
+          <span style={{ fontSize: '9px', color: '#64748B', fontFamily: 'monospace', marginLeft: '2px' }}>
+            <SyncTimeText lastSyncTime={syncState.lastSyncTime} isSyncing={syncState.isSyncing} />
+          </span>
+        </button>
+
+        {/* Barra discreta de usuario/rol en acero oscuro */}
+        <div
+          style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'all 0.2s ease',
-            boxShadow: syncState.isSyncing ? '0 0 20px rgba(245,158,11,0.4)' : '0 4px 12px rgba(0,0,0,0.2)',
+            background: '#0B0E13',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            padding: '7px 10px',
+            gap: '8px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <RefreshCw
-              size={15}
-              style={{
-                color: syncState.isSyncing ? '#000000' : '#10b981',
-                animation: syncState.isSyncing ? 'spin 0.8s linear infinite' : 'none',
-              }}
-            />
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 900,
-                color: syncState.isSyncing ? '#000000' : '#10b981',
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-              }}
-            >
-              {syncState.isSyncing ? 'SINCRONIZANDO...' : 'SINCRONIZADO'}
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span
-              style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                color: syncState.isSyncing ? '#000000' : '#94a3b8',
-                fontFamily: 'monospace',
-              }}
-            >
-              {syncState.isSyncing ? 'En vivo' : getTimeAgo()}
-            </span>
-            <div
-              className={syncState.isSyncing ? 'nav-glow-dot' : ''}
-              style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: syncState.isSyncing ? '#000000' : '#10b981',
-                boxShadow: syncState.isSyncing ? '0 0 6px #000' : '0 0 8px #10b981',
-              }}
-            />
-          </div>
-        </button>
-
-
-
-        {/* User card */}
-        <div style={S.userCard}>
           {currentUser ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', flex: 1 }}>
-              <div style={S.avatar}>
-                <User size={15} color="#f59e0b" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', flex: 1 }}>
+              <div
+                style={{
+                  width: '26px',
+                  height: '26px',
+                  background: '#161A22',
+                  border: '1px solid rgba(214, 123, 53, 0.45)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <User size={13} color="#D67B35" />
               </div>
-              <div style={{ overflow: 'hidden' }}>
-                <p style={S.userName}>{currentUser.full_name}</p>
-                <p style={S.userRole}>{currentUser.role}</p>
+              <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                <p style={{ ...S.userName, fontSize: '11px', fontWeight: 700 }}>{currentUser.full_name}</p>
+                <p style={{ ...S.userRole, fontSize: '9px', color: '#D67B35' }}>{currentRole === 'coach' ? 'COACH' : 'ALUMNO'}</p>
               </div>
             </div>
           ) : (
             <button
               onClick={onOpenGymGenerator}
-              style={{ ...S.iconBtn, color: '#f59e0b', fontSize: '13px', fontWeight: 700, gap: '6px', display: 'flex', alignItems: 'center' }}
+              style={{ ...S.iconBtn, color: '#D67B35', fontSize: '12px', fontWeight: 700, gap: '6px', display: 'flex', alignItems: 'center' }}
             >
-              <LogIn size={15} /> Iniciar Sesión
+              <LogIn size={14} /> Iniciar Sesión
             </button>
           )}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+            {currentUser?.role === 'coach' && (
+              <button
+                type="button"
+                onClick={() => handleNavClick('home', currentRole === 'coach' ? 'alumno' : 'coach')}
+                className="titan-steel-btn"
+                title={currentRole === 'coach' ? 'Ver como Alumno' : 'Volver a Coach'}
+                style={{ padding: '4px 7px', fontSize: '9px', clipPath: 'none' }}
+              >
+                {currentRole === 'coach' ? 'Alumno' : 'Coach'}
+              </button>
+            )}
             <button
               onClick={onResetData}
               title="Restablecer Datos"
@@ -738,7 +722,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
-              <RefreshCw size={14} color="rgba(255,255,255,0.35)" />
+              <RefreshCw size={13} color="rgba(255,255,255,0.45)" />
             </button>
             {currentUser && (
               <button
@@ -748,7 +732,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239,68,68,0.15)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
-                <LogOut size={14} color="#f87171" />
+                <LogOut size={13} color="#f87171" />
               </button>
             )}
           </div>

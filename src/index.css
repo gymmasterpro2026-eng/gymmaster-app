@@ -1,23 +1,759 @@
 @import "tailwindcss";
 
 @theme {
-  --color-neon-lime: #D4FF00;
-  --color-neon-lime-dim: rgba(212, 255, 0, 0.2);
+  --color-neon-lime: #D57A30;
+  --color-neon-lime-dim: rgba(201, 111, 40, 0.22);
+  --color-titan-orange: #D97724;
+  --color-titan-amber: #F59E0B;
+  --color-titan-bg: #06080B;
 }
 
 :root {
-  --background: #030303;
-  --foreground: #ffffff;
+  color-scheme: dark;
+  --background: #06080B;
+  --foreground: #E2E8F0;
+}
+
+/* Global Dark Form & Chrome Autofill Override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #090C11 inset !important;
+  -webkit-text-fill-color: #F1F5F9 !important;
+  caret-color: #F59E0B !important;
+  border-color: rgba(213, 122, 48, 0.5) !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+select option {
+  background-color: #0D1117;
+  color: #E2E8F0;
 }
 
 body {
-  background-color: #030303;
-  color: #ffffff;
+  background-color: #06080B;
+  color: #E2E8F0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
+
+/* Tipografía táctica / armadura Titan */
+.font-titan {
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+/* Cortes angulares estilo armadura / táctico */
+.clip-sidebar-btn {
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+.clip-filter {
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%, 0 10px);
+}
+.clip-tab {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+.clip-card {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+}
+
+/* =====================================================================
+   KIT METÁLICO 3D TITAN FITNESS CENTER (Nano Banana UI Sprites)
+   ===================================================================== */
+.titan-sidebar-shell {
+  background-color: #06080B;
+  width: 272px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  z-index: 50;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 10px 0 32px rgba(0, 0, 0, 0.75);
+}
+
+.titan-header-plate {
+  background-image: url('/gymmaster-app/titan-ui/sidebar-header-plate.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.titan-nav-btn-idle {
+  background-image: url('/gymmaster-app/titan-ui/sidebar-btn-idle.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  min-height: 58px;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.titan-nav-btn-idle:hover {
+  filter: brightness(1.16);
+}
+
+.titan-nav-btn-active {
+  background-image: url('/gymmaster-app/titan-ui/sidebar-btn-active.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: calc(100% + 14px);
+  margin-left: -4px;
+  min-height: 68px;
+  position: relative;
+  z-index: 10;
+  transition: filter 0.2s ease;
+}
+
+.titan-armor-divider {
+  width: 100%;
+  display: block;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.titan-sync-plate {
+  background-image: url('/gymmaster-app/titan-ui/sidebar-sync-plate.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  min-height: 62px;
+  transition: filter 0.2s ease;
+}
+.titan-sync-plate:hover {
+  filter: brightness(1.14);
+}
+
+.titan-filter-pill {
+  background-image: url('/gymmaster-app/titan-ui/filter-pill-metal.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  color: #CBD5E1;
+  font-family: 'Chakra Petch', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: filter 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  filter: brightness(0.92);
+}
+.titan-filter-pill:hover {
+  filter: brightness(1.1);
+  color: #FFFFFF;
+}
+.titan-filter-pill.active {
+  color: #FFFFFF;
+  filter: brightness(1.22) drop-shadow(0 0 8px rgba(217, 119, 36, 0.32));
+}
+
+.titan-tab-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-bottom: 2px solid #C96F28;
+  margin-bottom: 0;
+}
+
+.titan-tab {
+  background: linear-gradient(180deg, #242A33 0%, #161A20 100%);
+  color: #D1D9E4;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(0, 0, 0, 0.45);
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: filter 0.2s ease, background 0.2s ease;
+}
+.titan-tab:hover {
+  filter: brightness(1.12);
+}
+
+.titan-tab-active {
+  background: linear-gradient(180deg, #D57A30 0%, #B55B1E 100%);
+  color: #0A0D11;
+  border-top: 1px solid rgba(255, 210, 150, 0.45);
+  border-right: none;
+  box-shadow: 0 -2px 16px rgba(201, 111, 40, 0.25);
+}
+
+.titan-panel {
+  background-color: #0E1217;
+  background-image: url('/gymmaster-app/titan-ui/panel-surface-metal.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65);
+}
+
+.titan-metal-card {
+  background-color: #10141B;
+  background-image: linear-gradient(155deg, rgba(32, 39, 49, 0.85) 0%, rgba(14, 18, 24, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.titan-copper-btn {
+  background: linear-gradient(180deg, #D57A30 0%, #B55B1E 100%);
+  color: #0A0D11;
+  border: 1px solid rgba(255, 200, 130, 0.35);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+.titan-copper-btn:hover {
+  filter: brightness(1.1);
+}
+
+.titan-steel-btn {
+  background: linear-gradient(180deg, #242A33 0%, #161A20 100%);
+  color: #E2E8F0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: filter 0.2s ease, border-color 0.2s ease;
+}
+.titan-steel-btn:hover {
+  filter: brightness(1.14);
+  border-color: rgba(201, 111, 40, 0.45);
+}
+
+/* Textura metálica oscura y utilidades heredadas */
+.bg-metal-dark {
+  background: linear-gradient(145deg, #181D24 0%, #0E1217 100%);
+}
+.titan-card {
+  background-color: #0E1217;
+  background-image: url('/gymmaster-app/titan-ui/panel-surface-metal.png');
+  background-size: cover;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+}
+
+/* =====================================================================
+   TITAN 3D MACHINED ARMOR SYSTEM (FULL INTERIOR & MODALS)
+   ===================================================================== */
+.titan-armor-banner {
+  position: relative;
+  background-color: #0B0F15;
+  background-image:
+    linear-gradient(155deg, rgba(52, 62, 76, 0.52) 0%, rgba(16, 21, 28, 0.94) 40%, rgba(9, 12, 17, 0.99) 100%),
+    url('/gymmaster-app/titan-ui/panel-surface-metal.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-top: 2px solid rgba(203, 213, 225, 0.42);
+  border-bottom: 2px solid rgba(201, 111, 40, 0.72);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.72),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.8);
+}
+.titan-armor-banner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 4px;
+  background: linear-gradient(180deg, transparent, #FF5A1F 25%, #FF9B47 50%, #FF5A1F 75%, transparent);
+  box-shadow: 0 0 14px rgba(255, 90, 31, 0.85);
+  pointer-events: none;
+  z-index: 1;
+}
+.titan-armor-banner::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 96px;
+  height: 16px;
+  background: linear-gradient(135deg, #F0A360 0%, #C66B2C 48%, #6A3413 88%, #2D1508 100%);
+  clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 225, 185, 0.55);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.titan-armor-card {
+  position: relative;
+  background-color: #0C1016;
+  background-image:
+    linear-gradient(160deg, rgba(60, 72, 88, 0.34) 0%, rgba(18, 23, 31, 0.92) 30%, rgba(9, 12, 17, 0.98) 100%),
+    url('/gymmaster-app/titan-ui/panel-surface-metal.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-top: 1.5px solid rgba(226, 232, 240, 0.36);
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.9);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.85),
+    inset 1px 0 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.titan-armor-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 3px;
+  height: 42px;
+  background: linear-gradient(180deg, #FF9C4A, #E8591C);
+  box-shadow: 0 0 12px rgba(232, 89, 28, 0.75);
+  pointer-events: none;
+  z-index: 1;
+}
+.titan-armor-card::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 52px;
+  height: 11px;
+  background: linear-gradient(135deg, #EA9852 0%, #A9531E 60%, #4E230B 100%);
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 225, 185, 0.4);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.titan-armor-card-interactive:hover {
+  border-color: rgba(217, 119, 36, 0.65);
+  box-shadow:
+    0 22px 46px rgba(0, 0, 0, 0.78),
+    0 0 22px rgba(217, 119, 36, 0.2),
+    inset 0 1px 0 rgba(255, 220, 175, 0.35);
+}
+
+.titan-armor-card-active {
+  border-color: #E87A2B !important;
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.72),
+    0 0 24px rgba(232, 122, 43, 0.26),
+    inset 0 1px 0 rgba(255, 215, 170, 0.35) !important;
+}
+
+.titan-armor-card-warn {
+  background-image: linear-gradient(155deg, rgba(78, 42, 14, 0.88) 0%, rgba(22, 15, 10, 0.97) 52%, #0E0B09 100%) !important;
+  border-color: rgba(245, 158, 11, 0.55) !important;
+  border-top-color: #FBBF24 !important;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.72),
+    0 0 22px rgba(245, 158, 11, 0.18),
+    inset 0 1px 0 rgba(253, 230, 138, 0.3) !important;
+}
+.titan-armor-card-warn::before {
+  background: linear-gradient(180deg, #FDE047, #F59E0B);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.9);
+}
+
+.titan-armor-card-danger {
+  background-image: linear-gradient(155deg, rgba(74, 16, 22, 0.9) 0%, rgba(20, 9, 11, 0.97) 52%, #0E080A 100%) !important;
+  border-color: rgba(239, 68, 68, 0.55) !important;
+  border-top-color: #F87171 !important;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.72),
+    0 0 24px rgba(239, 68, 68, 0.22),
+    inset 0 1px 0 rgba(254, 202, 202, 0.25) !important;
+}
+.titan-armor-card-danger::before {
+  background: linear-gradient(180deg, #FCA5A5, #EF4444);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.95);
+}
+.titan-armor-card-danger::after {
+  background: linear-gradient(135deg, #DC2626 0%, #881337 60%, #3F0A14 100%);
+}
+
+.titan-inset-well {
+  background: linear-gradient(180deg, #06090D 0%, #0B0F15 100%);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-top-color: rgba(0, 0, 0, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 3px 12px rgba(0, 0, 0, 0.88),
+    inset 0 1px 2px rgba(0, 0, 0, 0.95);
+}
+
+.titan-pill-compact {
+  padding: 6px 12px !important;
+  font-size: 11px !important;
+}
+
+/* Botones Sprite 3D (para CTAs tamaño banner) */
+.titan-btn-sprite-active {
+  background-image: url('/gymmaster-app/titan-ui/sidebar-btn-active.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  color: #FFFFFF;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: none;
+  padding: 14px 26px;
+  min-height: 52px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: filter 0.18s ease, transform 0.15s ease;
+}
+.titan-btn-sprite-active:hover {
+  filter: brightness(1.14);
+}
+.titan-btn-sprite-active:active {
+  transform: scale(0.98);
+}
+
+.titan-btn-sprite-idle {
+  background-image: url('/gymmaster-app/titan-ui/sidebar-btn-idle.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  color: #E2E8F0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  padding: 12px 24px;
+  min-height: 48px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: filter 0.18s ease, color 0.18s ease, transform 0.15s ease;
+}
+.titan-btn-sprite-idle:hover {
+  filter: brightness(1.18);
+  color: #FFFFFF;
+}
+
+/* Botones Biselados Forjados 3D (independientes de proporción) */
+.titan-btn-armor-glow {
+  background: linear-gradient(180deg, rgba(68, 36, 16, 0.95) 0%, rgba(24, 14, 9, 0.98) 54%, rgba(44, 22, 10, 0.96) 100%);
+  border: 1.5px solid #EC7F2E;
+  border-top-color: #FFC078;
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(255, 148, 56, 0.45);
+  box-shadow:
+    0 0 16px rgba(234, 106, 24, 0.32),
+    inset 0 1px 0 rgba(255, 225, 180, 0.45),
+    inset 0 -2px 8px rgba(217, 102, 22, 0.35);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: filter 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+}
+.titan-btn-armor-glow:hover:not(:disabled) {
+  filter: brightness(1.14);
+  box-shadow:
+    0 0 22px rgba(234, 106, 24, 0.48),
+    inset 0 1px 0 rgba(255, 235, 200, 0.6),
+    inset 0 -2px 10px rgba(217, 102, 22, 0.45);
+}
+
+.titan-btn-armor-copper {
+  background: linear-gradient(180deg, #E88E3F 0%, #C66722 54%, #954511 100%);
+  border: 1px solid #F7B16C;
+  border-bottom-color: #5C2808;
+  color: #090C11;
+  box-shadow:
+    0 6px 16px rgba(201, 111, 40, 0.32),
+    inset 0 1px 0 rgba(255, 235, 205, 0.65),
+    inset 0 -2px 0 rgba(56, 22, 5, 0.75);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: filter 0.18s ease, transform 0.15s ease;
+}
+.titan-btn-armor-copper:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+.titan-btn-armor-copper:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.titan-btn-armor-steel {
+  background: linear-gradient(180deg, #333C49 0%, #1D232C 48%, #11151C 100%);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-top-color: rgba(226, 232, 240, 0.45);
+  border-bottom-color: rgba(0, 0, 0, 0.9);
+  color: #E2E8F0;
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.75);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: filter 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.titan-btn-armor-steel:hover:not(:disabled) {
+  filter: brightness(1.16);
+  border-color: rgba(213, 122, 48, 0.6);
+  color: #FFFFFF;
+}
+.titan-btn-armor-steel:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.titan-btn-armor-emerald {
+  background: linear-gradient(180deg, #16382C 0%, #0C2119 52%, #081510 100%);
+  border: 1px solid #34D399;
+  border-bottom-color: #064E3B;
+  color: #6EE7B7;
+  box-shadow:
+    0 4px 12px rgba(16, 185, 129, 0.18),
+    inset 0 1px 0 rgba(167, 243, 208, 0.35),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.75);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: filter 0.18s ease;
+}
+.titan-btn-armor-emerald:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.titan-btn-armor-danger {
+  background: linear-gradient(180deg, #42161B 0%, #250C0F 55%, #160709 100%);
+  border: 1px solid rgba(248, 113, 113, 0.48);
+  border-top-color: rgba(254, 202, 202, 0.35);
+  border-bottom-color: rgba(0, 0, 0, 0.9);
+  color: #FCA5A5;
+  box-shadow:
+    0 4px 12px rgba(220, 38, 38, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: filter 0.18s ease, border-color 0.18s ease;
+}
+.titan-btn-armor-danger:hover:not(:disabled) {
+  filter: brightness(1.22);
+  border-color: #EF4444;
+  color: #FFFFFF;
+}
+
+/* Inputs, Selects & Textareas Empotrados */
+.titan-input,
+.titan-select,
+.titan-textarea {
+  background: linear-gradient(180deg, #070A0F 0%, #0E131B 100%);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-top-color: rgba(0, 0, 0, 0.9);
+  border-bottom-color: rgba(226, 232, 240, 0.22);
+  box-shadow: inset 0 2px 7px rgba(0, 0, 0, 0.88);
+  color: #F1F5F9;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.titan-input:focus,
+.titan-select:focus,
+.titan-textarea:focus {
+  border-color: #E07D30 !important;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.85),
+    0 0 0 2px rgba(224, 125, 48, 0.28),
+    0 0 14px rgba(224, 125, 48, 0.22) !important;
+}
+.titan-input::placeholder,
+.titan-textarea::placeholder {
+  color: #64748B;
+}
+
+/* Badges Metálicos */
+.titan-badge-copper {
+  background: linear-gradient(180deg, rgba(213, 122, 48, 0.22) 0%, rgba(130, 62, 16, 0.28) 100%);
+  color: #FFBD4A;
+  border: 1px solid rgba(213, 122, 48, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 220, 175, 0.2);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.titan-badge-steel {
+  background: linear-gradient(180deg, #27303D 0%, #151A22 100%);
+  color: #CBD5E1;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.titan-badge-emerald {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 78, 59, 0.35) 100%);
+  color: #6EE7B7;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.titan-badge-danger {
+  background: linear-gradient(180deg, rgba(220, 38, 38, 0.28) 0%, rgba(127, 29, 29, 0.45) 100%);
+  color: #FECACA;
+  border: 1px solid rgba(248, 113, 113, 0.55);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Modales & Tablas Titan */
+.titan-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(4, 6, 9, 0.88);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.titan-modal {
+  position: relative;
+  background-color: #0C1016;
+  background-image:
+    linear-gradient(160deg, rgba(60, 72, 88, 0.34) 0%, rgba(18, 23, 31, 0.94) 30%, rgba(9, 12, 17, 0.99) 100%),
+    url('/gymmaster-app/titan-ui/panel-surface-metal.png');
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(213, 122, 48, 0.45);
+  border-top: 2px solid #D57A30;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.95);
+  box-shadow:
+    0 32px 84px rgba(0, 0, 0, 0.92),
+    0 0 36px rgba(201, 111, 40, 0.16),
+    inset 0 1px 0 rgba(255, 220, 175, 0.3);
+  box-sizing: border-box;
+}
+.titan-modal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  width: 3px;
+  height: 44px;
+  background: linear-gradient(180deg, #FF9C4A, #E8591C);
+  box-shadow: 0 0 12px rgba(232, 89, 28, 0.75);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.titan-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.titan-table thead tr {
+  background: linear-gradient(180deg, #212833 0%, #12161D 100%);
+  border-bottom: 2px solid #C96F28;
+}
+.titan-table thead th {
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #CBD5E1;
+}
+.titan-table tbody tr {
+  background: #0B0F15;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  transition: background 0.15s ease;
+}
+.titan-table tbody tr:nth-child(even) {
+  background: #0E131B;
+}
+.titan-table tbody tr:hover {
+  background: rgba(213, 122, 48, 0.08);
+}
+
+.titan-section-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -25,43 +761,45 @@ body {
 
 .main-content-area {
   flex: 1;
-  padding: 32px 40px;
-  max-width: 1600px;
+  padding: 22px 32px;
+  max-width: 1480px;
   margin: 0 auto;
   width: 100%;
 }
 
 @media (max-width: 768px) {
   .main-content-area {
-    padding: 16px 8px; /* Remove the huge padding on mobile */
+    padding: 64px 10px 24px;
   }
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #06080B;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
+  background: rgba(201, 111, 40, 0.5);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D57A30;
 }
 
 .glass-panel {
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(24px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(145deg, #181D24 0%, #0E1217 100%);
+  border: 1px solid rgba(201, 111, 40, 0.22);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
 }
 
 .glass-panel-hover:hover {
-  background-color: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.1);
-  transition: all 300ms ease;
+  border-color: rgba(213, 122, 48, 0.45);
+  transition: all 250ms ease;
 }
 
 .text-gradient {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0.6));
+  background-image: linear-gradient(to right, #ffffff, #D57A30);
 }
 
 @keyframes shimmer {
@@ -75,46 +813,30 @@ body {
   50% { transform: translateY(-10px); }
 }
 
-/* ====================================================
-   GIF de Ejercicios - Efecto Dark Mode Invertido
-   + Suavizado anti-pixelado (blur+contrast trick)
-   Blanco → Negro | Negro/Gris → Blanco | Rojo → Turquesa
-   ==================================================== */
+/* GIF de Ejercicios - Super-Resolución GPU UHD 32-bit float + Fondo Negro Puro */
 .gm-exercise-gif {
-  /* Invert colors + suavizado anti-pixelado:
-     blur(0.6px)     → suaviza bordes dentados/pixelados
-     contrast(1.12)  → recupera la nitidez perdida por el blur
-     brightness(1.05)→ compensa el leve oscurecimiento del contrast  */
-  filter: invert(1) blur(0.6px) contrast(1.12) brightness(1.05);
-
-  /* GPU acceleration: fuerza compositing en capa propia → subpixel rendering suave */
-  transform: translateZ(0);
-  will-change: filter, transform;
+  filter: url(#gm-uhd-filter);
   backface-visibility: hidden;
-
-  /* Interpolación bilineal/suave para upscaling */
+  image-rendering: high-quality;
   image-rendering: auto;
   -ms-interpolation-mode: bicubic;
-
-  transition: filter 0.3s ease, transform 0.4s ease;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gm-exercise-gif:hover {
-  filter: invert(1) blur(0.4px) contrast(1.15) brightness(1.1);
-  transform: translateZ(0) scale(1.02);
+  filter: url(#gm-uhd-filter);
+  transform: scale(1.02);
 }
 
-/* Fondo de contenedor de GIF en modo oscuro */
 .gm-gif-wrap {
   background: #000 !important;
-  /* Antialiasing del contenedor */
   -webkit-font-smoothing: antialiased;
 }
 
-/* Tamaños grandes (fullscreen/preview) — menos blur porque se ve mejor a tamaño completo */
 .gm-exercise-gif-lg {
-  filter: invert(1) blur(0.3px) contrast(1.08) brightness(1.03);
-  transform: translateZ(0);
+  filter: url(#gm-uhd-filter-lg);
+  backface-visibility: hidden;
+  image-rendering: high-quality;
   image-rendering: auto;
   -ms-interpolation-mode: bicubic;
 }

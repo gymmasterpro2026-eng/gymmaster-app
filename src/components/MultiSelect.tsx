@@ -42,22 +42,20 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({ options, selected, onC
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        className="titan-select"
         style={{
           width: '100%',
-          background: '#0f172a',
-          color: selected.length > 0 ? '#f59e0b' : '#94a3b8',
+          color: selected.length > 0 ? '#FFBD4A' : '#CBD5E1',
           fontSize: '11px',
-          fontWeight: 800,
+          fontFamily: "'Chakra Petch', sans-serif",
+          fontWeight: 700,
           padding: '8px 10px',
-          border: isOpen ? '1px solid #f59e0b' : '1px solid #334155',
-          outline: 'none',
+          borderColor: isOpen ? '#D57A30' : undefined,
           textTransform: 'uppercase',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderRadius: '4px',
-          transition: 'all 0.2s ease'
         }}
       >
         <span>{getDisplayText()}</span>
@@ -65,19 +63,16 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({ options, selected, onC
       </button>
 
       {isOpen && (
-        <div style={{
+        <div className="titan-armor-card" style={{
           position: 'absolute',
           top: '100%',
           left: 0,
-          width: '200px',
+          width: '215px',
           maxHeight: '250px',
           overflowY: 'auto',
-          background: '#0f172a',
-          border: '1px solid rgba(245, 158, 11, 0.5)',
-          borderRadius: '4px',
+          borderColor: 'rgba(213, 122, 48, 0.55)',
           marginTop: '4px',
-          zIndex: 50,
-          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)',
+          zIndex: 80,
           display: 'flex',
           flexDirection: 'column'
         }}>
@@ -91,26 +86,25 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({ options, selected, onC
                 alignItems: 'center',
                 gap: '8px',
                 cursor: 'pointer',
-                background: selected.includes(option) ? 'rgba(245, 158, 11, 0.1)' : 'transparent',
-                borderBottom: '1px solid #1e293b'
+                background: selected.includes(option) ? 'rgba(213, 122, 48, 0.14)' : 'transparent',
+                borderBottom: '1px solid rgba(255,255,255,0.06)'
               }}
             >
               <div style={{
                 width: '14px',
                 height: '14px',
-                borderRadius: '3px',
-                border: selected.includes(option) ? '1px solid #f59e0b' : '1px solid #64748b',
-                background: selected.includes(option) ? '#f59e0b' : 'transparent',
+                border: selected.includes(option) ? '1px solid #D57A30' : '1px solid #64748b',
+                background: selected.includes(option) ? '#D57A30' : 'rgba(0,0,0,0.4)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                {selected.includes(option) && <Check size={10} color="#000" strokeWidth={4} />}
+                {selected.includes(option) && <Check size={10} color="#090C11" strokeWidth={4} />}
               </div>
               <span style={{ 
                 fontSize: '11px', 
                 fontWeight: 700, 
-                color: selected.includes(option) ? '#f59e0b' : '#cbd5e1',
+                color: selected.includes(option) ? '#FFBD4A' : '#cbd5e1',
                 textTransform: 'uppercase'
               }}>
                 {option}

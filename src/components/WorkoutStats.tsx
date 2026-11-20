@@ -67,23 +67,88 @@ const MUSCLE_COLORS: Record<string, string> = {
 };
 const getMuscleColor = (m: string) => MUSCLE_COLORS[m.toLowerCase()] || '#64748b';
 
-// ── Radar Chart (SVG pure) ─────────────────────────────────────────────
-const RadarChart = ({ data }: { data: { label: string; value: number; color: string }[] }) => {
+// Iconos anatómicos minimalistas dentro de hexágono cobre (como Imagen 1)
+function renderMuscleGlyph(label: string) {
+  const key = label.toUpperCase();
+  if (key.includes('PECTORAL')) {
+    return (
+      <g stroke="#E8893A" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M-7,-3 Q-3,-5 0,-1 Q3,-5 7,-3 L6,4 Q2,6 0,2 Q-2,6 -6,4 Z" fill="rgba(232,137,58,0.28)" />
+        <line x1="0" y1="-2" x2="0" y2="5" />
+      </g>
+    );
+  }
+  if (key.includes('BÍCEPS') || key.includes('BICEPS')) {
+    return (
+      <g stroke="#E8893A" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M-6,4 C-6,-1 -3,-5 2,-4 C4,-4 5,-2 3,0 C1,1 0,0 1,-2 M-5,4 L5,4 C6,4 7,1 5,-1" fill="rgba(232,137,58,0.22)" />
+      </g>
+    );
+  }
+  if (key.includes('CUÁDRICEPS') || key.includes('CUADRICEPS')) {
+    return (
+      <g stroke="#E8893A" strokeWidth="1.35" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M-4,-6 L-1,-6 L-1,6 L-4,6 C-5,2 -5,-2 -4,-6 Z" fill="rgba(232,137,58,0.25)" />
+        <path d="M1,-6 L4,-6 C5,-2 5,2 4,6 L1,6 Z" fill="rgba(232,137,58,0.25)" />
+      </g>
+    );
+  }
+  if (key.includes('TRÍCEPS') || key.includes('TRICEPS')) {
+    return (
+      <g stroke="#E8893A" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M-6,4 C-5,0 -2,-5 3,-4 C5,-3 6,-1 4,1 L6,4 L-6,4 Z" fill="rgba(232,137,58,0.25)" />
+        <path d="M-2,-1 L2,-3" />
+      </g>
+    );
+  }
+  if (key.includes('DORSAL')) {
+    return (
+      <g stroke="#E8893A" strokeWidth="1.35" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M-7,-5 L-2,-2 L-2,6 L-4,6 Z" fill="rgba(232,137,58,0.28)" />
+        <path d="M7,-5 L2,-2 L2,6 L4,6 Z" fill="rgba(232,137,58,0.28)" />
+        <line x1="0" y1="-5" x2="0" y2="6" />
+      </g>
+    );
+  }
+  // Abdominales
+  return (
+    <g stroke="#E8893A" strokeWidth="1.2" fill="rgba(232,137,58,0.22)">
+      <rect x="-4.5" y="-5.5" width="3.5" height="3" rx="0.6" />
+      <rect x="1" y="-5.5" width="3.5" height="3" rx="0.6" />
+      <rect x="-4.5" y="-1.5" width="3.5" height="3" rx="0.6" />
+      <rect x="1" y="-1.5" width="3.5" height="3" rx="0.6" />
+      <rect x="-4.5" y="2.5" width="3.5" height="3" rx="0.6" />
+      <rect x="1" y="2.5" width="3.5" height="3" rx="0.6" />
+    </g>
+  );
+}
+
+// ── Radar Chart (SVG pure — Titan Hexagonal Neon Look) ─────────────────
+const RadarChart = ({
+  data,
+  secondaryData,
+  showHexIcons = true,
+}: {
+  data: { label: string; value: number; color: string }[];
+  secondaryData?: number[];
+  showHexIcons?: boolean;
+}) => {
   const [rotation, setRotation] = useState(0);
   const [selectedLabelIndex, setSelectedLabelIndex] = useState<number | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   if (data.length < 3) return (
-    <div style={{ textAlign: 'center', color: '#64748b', padding: '40px', fontSize: '13px' }}>
-      Necesitás al menos 3 grupos musculares para el radar. Completá más sesiones. 💪
+    <div style={{ textAlign: 'center', color: '#94A3B8', padding: '40px', fontSize: '13px' }}>
+      Necesitás al menos 3 grupos musculares para el radar. Completá más sesiones.
     </div>
   );
 
-  const cx = 280, cy = 220, r = 130;
+  const isSixMode = showHexIcons && data.length === 6;
+  const cx = 320, cy = 205, r = isSixMode ? 128 : 132;
   const n = data.length;
-  const max = Math.max(...data.map(d => d.value), 1);
+  const secMax = secondaryData && secondaryData.length === n ? Math.max(...secondaryData, 0) : 0;
+  const max = Math.max(...data.map(d => d.value), secMax, 1);
 
-  // Drag logic
   const getPointerAngle = (e: React.PointerEvent) => {
     if (!svgRef.current) return 0;
     const rect = svgRef.current.getBoundingClientRect();
@@ -105,14 +170,10 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
       const startAngle = parseFloat(svgRef.current.getAttribute('data-start-angle') || '0');
       const startRotation = parseFloat(svgRef.current.getAttribute('data-start-rotation') || '0');
       const currentAngle = getPointerAngle(e);
-      
       let delta = currentAngle - startAngle;
       if (delta > 180) delta -= 360;
       if (delta < -180) delta += 360;
-
-      // Si hay un giro significativo, limpiamos el label seleccionado para no confundir
       if (Math.abs(delta) > 5) setSelectedLabelIndex(null);
-
       setRotation(startRotation + delta);
     }
   };
@@ -129,11 +190,11 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
   };
   const getLabelPoint = (i: number) => {
     const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-    const dist = r + 26; // Distance from radar edge
+    const dist = isSixMode ? r + 28 : r + 26;
     return { x: cx + dist * Math.cos(angle), y: cy + dist * Math.sin(angle), angle };
   };
 
-  // Grid rings
+  // Grid rings (4 anillos como en Imagen 1)
   const rings = [0.25, 0.5, 0.75, 1.0];
   const ringPaths = rings.map(pct => {
     const pts = data.map((_, i) => {
@@ -143,141 +204,219 @@ const RadarChart = ({ data }: { data: { label: string; value: number; color: str
     return pts.join(' ');
   });
 
-  // Puntos individuales para los marcadores (círculos) - solo activos
-  const activeData = data.filter(d => d.value > 0);
-  
-  const activeDataPoints = activeData.map(d => {
-    const originalIndex = data.indexOf(d);
-    return getPoint(originalIndex, d.value);
-  });
+  // Polígono completo sobre los N ejes (si algunos valen 0 quedan en el centro o cerca del centro formando silueta cerrada fiel)
+  const allPoints = data.map((d, i) => getPoint(i, d.value));
+  const hasAnyActive = data.some(d => d.value > 0);
+  const polygon = hasAnyActive ? allPoints.map(p => `${p.x},${p.y}`).join(' ') : '';
+  const activeDataPoints = data
+    .map((d, i) => (d.value > 0 ? getPoint(i, d.value) : null))
+    .filter((p): p is { x: number; y: number } => p !== null);
 
-  let polygon = activeDataPoints.map(p => `${p.x},${p.y}`).join(' ');
+  const hasSecondary = Boolean(secondaryData && secondaryData.length === n && secondaryData.some(v => v > 0));
+  const secondaryPolygon = hasSecondary
+    ? secondaryData!.map((v, i) => {
+        const pt = getPoint(i, v);
+        return `${pt.x},${pt.y}`;
+      }).join(' ')
+    : '';
 
-  // Si hay 1 o 2 grupos musculares trabajados, agregamos el centro al polígono y a los marcadores 
-  // para que se forme un área cerrada (triángulo) hacia el origen.
-  if (activeData.length > 0 && activeData.length < 3) {
-    polygon += ` ${cx},${cy}`;
-    activeDataPoints.push({ x: cx, y: cy });
-  }
-
-  // Color principal para el gráfico analítico
-  const themeColor = '#14b8a6'; // Teal-500
+  const themeColor = '#FFBD4A';
+  const hexBadgePts = '0,-14 12.1,-7 12.1,7 0,14 -12.1,7 -12.1,-7';
 
   return (
-    <svg 
+    <svg
       ref={svgRef}
-      width="100%" viewBox="20 20 520 400" 
-      style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', cursor: 'grab', touchAction: 'none' }}
+      width="100%"
+      viewBox="0 0 640 410"
+      style={{ display: 'block', margin: '0 auto', maxWidth: '720px', height: 'auto', cursor: 'grab', touchAction: 'none' }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
+      <defs>
+        <radialGradient id="titanRadarGrad" cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stopColor="#FFBE55" stopOpacity="0.46" />
+          <stop offset="100%" stopColor="#C95812" stopOpacity="0.22" />
+        </radialGradient>
+        <radialGradient id="titanRadarSecondaryGrad" cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stopColor="#D97724" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#7C2D12" stopOpacity="0.1" />
+        </radialGradient>
+        <filter id="titanGlow" x="-25%" y="-25%" width="150%" height="150%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <pattern id="titanTechGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(255,255,255,0.035)" strokeWidth="1" />
+        </pattern>
+      </defs>
       <style>{`
         .muscle-label {
-          transition: font-size 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.3s ease;
+          transition: fill 0.2s ease;
           cursor: pointer;
           pointer-events: bounding-box;
         }
         @media (hover: hover) {
           .muscle-label:hover {
-            font-size: 11px !important;
-            fill: #14b8a6 !important;
+            fill: #FFBD4A !important;
           }
         }
       `}</style>
-      
-      {/* Grupo principal giratorio manual */}
+
+      {/* Fondo micro-cuadrícula detrás del radar */}
+      <rect x={cx - r - 60} y={cy - r - 20} width={(r + 60) * 2} height={(r + 20) * 2} fill="url(#titanTechGrid)" />
+
+      {/* Grupo principal */}
       <g style={{ transform: `rotate(${rotation}deg)`, transformOrigin: `${cx}px ${cy}px` }}>
-      {/* Grid rings (Líneas concéntricas de la telaraña) */}
-      {ringPaths.map((pts, i) => (
-        <polygon 
-          key={`ring-${i}`} 
-          points={pts} 
-          fill="none" 
-          stroke="#1e293b" // slate-800
-          strokeWidth="1" 
-        />
-      ))}
-      
-      {/* Radial lines (Ejes desde el centro) */}
-      {data.map((d, i) => {
-        const outer = getPoint(i, max);
-        const dataPt = getPoint(i, d.value);
-        return (
-          <React.Fragment key={`spoke-${i}`}>
-            {/* Eje base completo */}
-            <line 
-              x1={cx} y1={cy} 
-              x2={outer.x} y2={outer.y} 
-              stroke="#334155" // slate-700
-              strokeWidth="1" 
+        {/* Anillos hexagonales */}
+        {ringPaths.map((pts, i) => (
+          <polygon
+            key={`ring-${i}`}
+            points={pts}
+            fill="none"
+            stroke={i === rings.length - 1 ? 'rgba(217, 119, 36, 0.42)' : 'rgba(217, 119, 36, 0.24)'}
+            strokeWidth={i === rings.length - 1 ? '1.2' : '1'}
+          />
+        ))}
+
+        {/* Radios desde el centro */}
+        {data.map((_, i) => {
+          const outer = getPoint(i, max);
+          return (
+            <line
+              key={`spoke-${i}`}
+              x1={cx} y1={cy}
+              x2={outer.x} y2={outer.y}
+              stroke="rgba(217, 119, 36, 0.24)"
+              strokeWidth="1"
             />
-            {/* Resalte verde agua solo para la parte de afuera de la telaraña (si fue entrenado) */}
-            {d.value > 0 && (
-              <line 
-                x1={dataPt.x} y1={dataPt.y} 
-                x2={outer.x} y2={outer.y} 
-                stroke={themeColor} 
-                strokeWidth="2" 
-                strokeOpacity="0.8"
-              />
-            )}
-          </React.Fragment>
-        );
-      })}
-      
-      {/* Área de Datos (Polígono cerrado) */}
-      <polygon 
-        points={polygon} 
-        fill="rgba(20, 184, 166, 0.4)" // Teal-500 semi-transparente
-        stroke={themeColor} 
-        strokeWidth="2" 
-      />
-      
-      {/* Puntos de Datos (Marcadores en los vértices) */}
-      {activeDataPoints.map((p, i) => (
-        <circle 
-          key={`dot-${i}`} 
-          cx={p.x} 
-          cy={p.y} 
-          r="4" 
-          fill={themeColor} 
-        />
-      ))}
-      
-      {/* Labels */}
-      {data.map((d, i) => {
-        const lp = getLabelPoint(i);
-        const isRight = Math.cos(lp.angle) > 0.1;
-        const isLeft = Math.cos(lp.angle) < -0.1;
-        const anchor = isRight ? 'start' : isLeft ? 'end' : 'middle';
-        
-        return (
-          <text 
-            key={`label-${i}`} 
-            x={lp.x} 
-            y={lp.y} 
-            textAnchor={anchor} 
-            dominantBaseline="middle"
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedLabelIndex(selectedLabelIndex === i ? null : i);
-            }}
-            className={`muscle-label uppercase tracking-wider ${d.value === 0 ? 'fill-red-500' : 'fill-slate-400'}`}
-            fontSize={selectedLabelIndex === i ? "24" : "9"} 
-            fontWeight="800"
-            style={{ 
-              fontFamily: "'Inter', sans-serif", 
-              letterSpacing: '0.05em',
-              transformOrigin: `${lp.x}px ${lp.y}px`,
-              transform: `rotate(${-rotation}deg)`,
-              fill: selectedLabelIndex === i ? '#14b8a6' : undefined
-            }}>
-            {d.label.length > 22 ? d.label.slice(0, 21) + '.' : d.label}
-          </text>
-        );
-      })}
+          );
+        })}
+
+        {/* Capa secundaria comparativa (doble malla como Imagen 1) */}
+        {secondaryPolygon && (
+          <polygon
+            points={secondaryPolygon}
+            fill="url(#titanRadarSecondaryGrad)"
+            stroke="#C96F28"
+            strokeOpacity="0.65"
+            strokeWidth="1.5"
+          />
+        )}
+
+        {/* Polígono principal neón naranja/ámbar */}
+        {polygon && (
+          <polygon
+            points={polygon}
+            fill="url(#titanRadarGrad)"
+            stroke={themeColor}
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+            filter="url(#titanGlow)"
+          />
+        )}
+
+        {/* Vértices */}
+        {activeDataPoints.map((p, i) => (
+          <circle
+            key={`dot-${i}`}
+            cx={p.x}
+            cy={p.y}
+            r="3.5"
+            fill="#FFBD4A"
+            stroke="#0E1217"
+            strokeWidth="1.2"
+          />
+        ))}
+
+        {/* Etiquetas e Insignias Hexagonales */}
+        {data.map((d, i) => {
+          const lp = getLabelPoint(i);
+          if (isSixMode) {
+            const isTop = i === 0;
+            const isBottom = i === 3;
+            const isRight = i === 1 || i === 2;
+            const hexX = isTop || isBottom ? lp.x - 42 : isRight ? lp.x + 12 : lp.x - 12;
+            const hexY = isTop ? lp.y - 2 : isBottom ? lp.y + 4 : lp.y;
+            const textX = isTop || isBottom ? hexX + 20 : isRight ? hexX + 20 : hexX - 20;
+            const textAnchor: 'start' | 'end' = isRight || isTop || isBottom ? 'start' : 'end';
+
+            return (
+              <g
+                key={`label-${i}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedLabelIndex(selectedLabelIndex === i ? null : i);
+                }}
+                style={{
+                  cursor: 'pointer',
+                  transformOrigin: `${lp.x}px ${lp.y}px`,
+                  transform: `rotate(${-rotation}deg)`,
+                }}
+              >
+                <g transform={`translate(${hexX}, ${hexY})`}>
+                  <polygon
+                    points={hexBadgePts}
+                    fill="#14100C"
+                    stroke="#D97724"
+                    strokeWidth="1.6"
+                  />
+                  {renderMuscleGlyph(d.label)}
+                </g>
+                <text
+                  x={textX}
+                  y={hexY + 1}
+                  textAnchor={textAnchor}
+                  dominantBaseline="middle"
+                  className="muscle-label uppercase"
+                  fontSize="13.5"
+                  fontWeight="700"
+                  style={{
+                    fontFamily: "'Chakra Petch', sans-serif",
+                    letterSpacing: '0.06em',
+                    fill: selectedLabelIndex === i ? '#FFBD4A' : '#E2E8F0',
+                  }}
+                >
+                  {d.label}
+                </text>
+              </g>
+            );
+          }
+
+          const isRight = Math.cos(lp.angle) > 0.1;
+          const isLeft = Math.cos(lp.angle) < -0.1;
+          const anchor = isRight ? 'start' : isLeft ? 'end' : 'middle';
+
+          return (
+            <text
+              key={`label-${i}`}
+              x={lp.x}
+              y={lp.y}
+              textAnchor={anchor}
+              dominantBaseline="middle"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedLabelIndex(selectedLabelIndex === i ? null : i);
+              }}
+              className="muscle-label uppercase tracking-wider"
+              fontSize={selectedLabelIndex === i ? "18" : "9.5"}
+              fontWeight="700"
+              style={{
+                fontFamily: "'Chakra Petch', 'Inter', sans-serif",
+                letterSpacing: '0.06em',
+                transformOrigin: `${lp.x}px ${lp.y}px`,
+                transform: `rotate(${-rotation}deg)`,
+                fill: selectedLabelIndex === i ? '#FFBD4A' : d.value === 0 ? '#64748b' : '#E2E8F0'
+              }}
+            >
+              {d.label.length > 22 ? d.label.slice(0, 21) + '.' : d.label}
+            </text>
+          );
+        })}
       </g>
     </svg>
   );
@@ -370,40 +509,45 @@ function MuscleProgressAccordion({ item, index }: { item: any; index: number }) 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', borderRadius: '6px' }}>
-      <div 
+    <div className="titan-armor-card" style={{ padding: '16px' }}>
+      <button 
+        type="button"
+        className="titan-btn-armor-steel"
         style={{ 
+          width: '100%',
           display: 'flex', alignItems: 'center', gap: '8px', 
-          marginBottom: isOpen ? '16px' : '0', 
-          cursor: 'pointer', userSelect: 'none',
-          background: '#334155', padding: '12px', borderRadius: '6px'
+          justifyContent: 'flex-start',
+          marginBottom: isOpen ? '14px' : '0', 
+          padding: '12px 14px',
+          borderLeft: `3px solid ${item.color}`,
+          textAlign: 'left',
         }}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace' }}>#{index + 1}</span>
-        <span style={{ width: '10px', height: '10px', background: item.color, display: 'inline-block', borderRadius: '50%' }} />
-        <span style={{ fontSize: '14px', fontWeight: 900, color: '#fff', textTransform: 'capitalize', flex: 1 }}>
+        <span style={{ width: '9px', height: '9px', background: item.color, display: 'inline-block', transform: 'rotate(45deg)' }} />
+        <span style={{ fontSize: '13px', color: '#fff', textTransform: 'uppercase', flex: 1 }}>
           {item.muscle}
         </span>
-        <span style={{ color: '#fff', fontSize: '10px', fontWeight: 700 }}>{isOpen ? 'Ocultar ▲' : 'Mostrar ▼'}</span>
-      </div>
+        <span style={{ color: '#FFBD4A', fontSize: '10px' }}>{isOpen ? 'Ocultar ▲' : 'Mostrar ▼'}</span>
+      </button>
       
       {isOpen && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="titan-inset-well" style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '16px' }}>
           {item.exercises.length === 0 ? (
-            <div style={{ fontSize: '11px', color: '#64748b', fontStyle: 'italic', paddingLeft: '16px' }}>
+            <div style={{ fontSize: '11px', color: '#94A3B8', fontStyle: 'italic' }}>
               Aún no hay sesiones registradas para este grupo muscular.
             </div>
           ) : (
             item.exercises.map((ex: any) => {
               const maxPeso = Math.max(...ex.history.map((h: any) => h.peso), 1);
               return (
-                <div key={ex.name} style={{ display: 'flex', flexDirection: 'column', gap: '12px', borderBottom: '1px solid #1e293b', paddingBottom: '16px' }}>
+                <div key={ex.name} style={{ display: 'flex', flexDirection: 'column', gap: '12px', borderBottom: '1px solid rgba(255,255,255,0.07)', paddingBottom: '16px' }}>
                    {/* Exercise Header */}
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#fff', fontSize: '13px', fontWeight: 800 }}>{ex.name}</span>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span className="titan-section-title" style={{ fontSize: '13px' }}>{ex.name}</span>
                       {ex.idStr && (
-                        <span style={{ border: '1px solid #d97706', color: '#d97706', fontSize: '9px', padding: '2px 4px', fontWeight: 700, borderRadius: '4px' }}>
+                        <span className="titan-badge-copper" style={{ fontSize: '9px', padding: '2px 6px' }}>
                           {ex.idStr}
                         </span>
                       )}
@@ -411,7 +555,7 @@ function MuscleProgressAccordion({ item, index }: { item: any; index: number }) 
 
                    {/* Exercise History (Mini Bar Chart) */}
                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-                     <div className="custom-scrollbar" style={{ display: 'flex', gap: '12px', paddingLeft: '12px', borderLeft: `2px solid ${item.color}40`, overflowX: 'auto', flex: 1 }}>
+                     <div className="custom-scrollbar" style={{ display: 'flex', gap: '12px', paddingLeft: '12px', borderLeft: `2px solid ${item.color}55`, overflowX: 'auto', flex: 1 }}>
                        {ex.history.map((h: any, idx: number) => {
                           const heightPct = Math.max(10, (h.peso / maxPeso) * 100);
                           const isFirst = idx === 0;
@@ -421,15 +565,15 @@ function MuscleProgressAccordion({ item, index }: { item: any; index: number }) 
                               {/* Delta text */}
                               <span style={{ 
                                 fontSize: '10px', fontWeight: 900, 
-                                color: h.delta > 0 ? '#10b981' : h.delta < 0 ? '#ef4444' : 'transparent',
-                                height: '14px' // keep space
+                                color: h.delta > 0 ? '#6EE7B7' : h.delta < 0 ? '#FCA5A5' : 'transparent',
+                                height: '14px'
                               }}>
                                 {!isFirst && h.delta !== 0 ? (h.delta > 0 ? `+${h.delta}` : h.delta) : ''}
                               </span>
                               
                               {/* Vertical Bar */}
-                              <div style={{ width: '12px', height: '35px', background: '#1e293b', borderRadius: '4px', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
-                                <div style={{ width: '100%', height: `${heightPct}%`, background: isFirst ? '#475569' : item.color, transition: 'height 0.5s' }} />
+                              <div style={{ width: '12px', height: '35px', background: '#141922', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
+                                <div style={{ width: '100%', height: `${heightPct}%`, background: isFirst ? '#47505E' : item.color, transition: 'height 0.5s' }} />
                               </div>
                               
                               {/* Peso */}
@@ -446,16 +590,17 @@ function MuscleProgressAccordion({ item, index }: { item: any; index: number }) 
                        })}
                      </div>
                      {ex.imgUrl && (
-                       <img 
-                         src={fixImageUrl(ex.imgUrl)} 
-                         alt={ex.name} 
-                         className="gm-exercise-gif"
-                         style={{ 
-                           width: '70px', height: '70px', objectFit: 'contain', 
-                           background: '#000', borderRadius: '6px', 
-                           border: `1px solid ${item.color}40`
-                         }} 
-                       />
+                       <div className="gm-gif-wrap" style={{ width: '72px', height: '72px', background: '#000', padding: '4px', border: `1px solid ${item.color}66`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                         <img 
+                           src={fixImageUrl(ex.imgUrl)} 
+                           alt={ex.name} 
+                           className="gm-exercise-gif"
+                           style={{ 
+                             width: '100%', height: '100%', objectFit: 'contain', 
+                             background: 'transparent', display: 'block'
+                           }} 
+                         />
+                       </div>
                      )}
                    </div>
                 </div>
@@ -473,8 +618,18 @@ interface WorkoutStatsProps {
   alumno: Profile;
 }
 
+const SIX_GROUP_BUCKETS: { label: string; keys: string[] }[] = [
+  { label: 'PECTORALES', keys: ['pectorals', 'pectorales', 'pecho (pectorales)', 'pecho', 'chest', 'serrato mayor'] },
+  { label: 'BÍCEPS', keys: ['bíceps', 'biceps', 'bicep', 'antebrazos', 'forearms'] },
+  { label: 'CUÁDRICEPS', keys: ['cuádriceps', 'quadriceps', 'quads', 'piernas', 'glúteos', 'glutes', 'isquiotibiales (femorales)', 'isquiotibiales', 'gemelos (pantorrillas)', 'gemelos', 'abductores', 'aductores'] },
+  { label: 'TRÍCEPS', keys: ['tríceps', 'triceps', 'tricep', 'delts', 'hombros (deltoides)', 'hombros', 'shoulders', 'deltoides'] },
+  { label: 'DORSALES', keys: ['dorsales (espalda)', 'dorsales', 'espalda alta', 'espalda', 'lats', 'back', 'trapecios', 'levator scapulae', 'spine'] },
+  { label: 'ABDOMINALES', keys: ['abdominales', 'abs', 'core', 'oblicuos', 'cardiovascular system'] },
+];
+
 export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
-  const [period, setPeriod] = useState<'7days' | '14days' | 'month' | 'all' | 'custom'>('7days');
+  const [period, setPeriod] = useState<'7days' | '30days' | 'month' | 'all' | 'custom'>('7days');
+  const [radarMode, setRadarMode] = useState<'6' | '19'>('6');
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<'radar' | 'progress' | 'history'>('radar');
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -510,12 +665,11 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
       const ts = parseInt(s.id.split('_').pop() || '0');
       const d = ts > 1000000000000 ? new Date(ts) : (s.fecha.length === 10 ? new Date(s.fecha.replace(/-/g, '/')) : new Date(s.fecha));
       
-      // Si estamos en la pestaña radar
+      // Si estamos en la pestaña radar y seleccionó un día puntual o 'custom' semana actual
       if (activeSection === 'radar') {
         if (selectedDate) {
           return d.toDateString() === new Date(selectedDate).toDateString();
         } else if (period === 'custom') {
-          // General: limitar estrictamente a los 7 días que se muestran en la barra
           const startOfWeek = new Date(currentWeekDays[0]);
           startOfWeek.setHours(0, 0, 0, 0);
           const endOfWeek = new Date(currentWeekDays[6]);
@@ -524,21 +678,20 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
         }
       }
 
-      // Filtros globales para ver el pasado (excluyen el día de hoy)
-      const startOfToday = new Date(now);
-      startOfToday.setHours(0, 0, 0, 0);
+      const endOfToday = new Date(now);
+      endOfToday.setHours(23, 59, 59, 999);
 
       if (period === '7days') {
-        const daysAgo = new Date(startOfToday); daysAgo.setDate(startOfToday.getDate() - 7);
-        return d >= daysAgo && d < startOfToday;
+        const daysAgo = new Date(now); daysAgo.setHours(0, 0, 0, 0); daysAgo.setDate(daysAgo.getDate() - 6);
+        return d >= daysAgo && d <= endOfToday;
       }
-      if (period === '14days') {
-        const daysAgo = new Date(startOfToday); daysAgo.setDate(startOfToday.getDate() - 14);
-        return d >= daysAgo && d < startOfToday;
+      if (period === '30days') {
+        const daysAgo = new Date(now); daysAgo.setHours(0, 0, 0, 0); daysAgo.setDate(daysAgo.getDate() - 29);
+        return d >= daysAgo && d <= endOfToday;
       }
       if (period === 'month') {
-        const monthAgo = new Date(startOfToday); monthAgo.setDate(startOfToday.getDate() - 30);
-        return d >= monthAgo && d < startOfToday;
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+        return d >= startOfMonth && d <= endOfToday;
       }
       return true;
     });
@@ -547,23 +700,16 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
   // Aggregate EXERCISE COUNT (Ejercicios completados con >= 3 series) by muscle group
   const muscleVolume = useMemo(() => {
     const map: Record<string, number> = {};
-    
-    // Inicializar todos los músculos en 0
     ALL_MUSCLES.forEach(m => {
       map[m.toLowerCase()] = 0;
     });
 
     filteredSessions.forEach(s => {
       s.ejercicios.forEach(e => {
-        // Un ejercicio cuenta si el usuario completó por lo menos 3 series
         if (e.series_completadas >= 3) {
           e.primary_muscles.forEach(m => {
             const key = m.toLowerCase();
-            if (map[key] !== undefined) {
-               map[key] += 1; // Sumamos 1 ejercicio válido
-            } else {
-               map[key] = 1;
-            }
+            map[key] = (map[key] || 0) + 1;
           });
         }
       });
@@ -571,21 +717,44 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
     return map;
   }, [filteredSessions]);
 
-  const radarData = useMemo(() =>
-    Object.entries(muscleVolume)
-      // Remove slice(0, 8) to include all muscles, or we can slice to top 8 if > 0, 
-      // but the user wants to see all muscles. We will show all 19 in the radar!
-      .map(([m, vol]) => {
-        // Encontrar el nombre original en ALL_MUSCLES para un buen capitalizado
-        const originalName = ALL_MUSCLES.find(x => x.toLowerCase() === m) || (m.charAt(0).toUpperCase() + m.slice(1));
+  // Malla secundaria histórica (todas las sesiones) para comparación visual de doble capa
+  const allTimeSixBuckets = useMemo(() => {
+    const rawMap: Record<string, number> = {};
+    sessions.forEach(s => {
+      s.ejercicios.forEach(e => {
+        if (e.series_completadas >= 3) {
+          e.primary_muscles.forEach(m => {
+            const key = m.toLowerCase();
+            rawMap[key] = (rawMap[key] || 0) + 1;
+          });
+        }
+      });
+    });
+    return SIX_GROUP_BUCKETS.map(b =>
+      b.keys.reduce((acc, k) => acc + (rawMap[k] || 0), 0)
+    );
+  }, [sessions]);
+
+  const radarData = useMemo(() => {
+    if (radarMode === '6') {
+      return SIX_GROUP_BUCKETS.map((b) => {
+        const val = b.keys.reduce((acc, k) => acc + (muscleVolume[k] || 0), 0);
         return {
-          label: originalName,
-          value: Math.round(vol),
-          color: getMuscleColor(m),
+          label: b.label,
+          value: Math.round(val),
+          color: '#FFBD4A',
         };
-      }),
-    [muscleVolume]
-  );
+      });
+    }
+    return Object.entries(muscleVolume).map(([m, vol]) => {
+      const originalName = ALL_MUSCLES.find(x => x.toLowerCase() === m) || (m.charAt(0).toUpperCase() + m.slice(1));
+      return {
+        label: originalName,
+        value: Math.round(vol),
+        color: getMuscleColor(m),
+      };
+    });
+  }, [muscleVolume, radarMode]);
 
   const muscleRanking = useMemo(() =>
     Object.entries(muscleVolume)
@@ -596,8 +765,9 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
   const allMuscles = useMemo(() => Object.keys(muscleVolume).sort(), [muscleVolume]);
 
-  // Progress chart data for all muscles (vertical list with deltas)
+  // Progress chart data for all muscles (vertical list with deltas) — solo calcular cuando la pestaña Progreso está activa
   const muscleProgressList = useMemo(() => {
+    if (activeSection !== 'progress') return [];
     // Sort sessions chronologically (oldest to newest) to calculate deltas
     const chronoSessions = [...sessions].reverse();
 
@@ -679,7 +849,7 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
       };
     })
     .sort((a, b) => b.lastPesoSum - a.lastPesoSum);
-  }, [sessions, allMuscles]);
+  }, [sessions, allMuscles, activeSection]);
 
   // Stats summary
   const totalSessions = sessions.length;
@@ -688,51 +858,31 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
     ? Math.round(sessions.reduce((a, s) => a + s.duracion_min, 0) / sessions.length) : 0;
 
   const S = {
-    page: { fontFamily: "'Inter', sans-serif", color: '#fff', maxWidth: '800px', margin: '0 auto' },
-    header: { marginBottom: '24px' },
-    title: { fontSize: '22px', fontWeight: 900, color: '#fff', margin: '0 0 4px' },
-    subtitle: { fontSize: '12px', color: '#64748b', margin: 0 },
-    statCards: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' } as React.CSSProperties,
-    statCard: { background: '#0f172a', border: '1px solid #1e293b', padding: '16px', textAlign: 'center' as const },
-    statNum: { fontSize: '28px', fontWeight: 900, color: '#f59e0b', display: 'block' },
-    statLbl: { fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' as const },
-    tabs: { display: 'flex', gap: '8px', marginBottom: '24px' },
-    tab: (active: boolean): React.CSSProperties => ({
-      background: active ? '#f59e0b' : '#1e293b',
-      color: active ? '#000' : '#94a3b8',
-      border: `1px solid ${active ? '#f59e0b' : '#334155'}`,
-      padding: '10px 16px', fontSize: '12px', fontWeight: 800,
-      cursor: 'pointer', borderRadius: '0', textTransform: 'uppercase',
-      letterSpacing: '0.03em', transition: 'all 0.2s',
-    }),
-    periodBar: { display: 'flex', gap: '6px', marginBottom: '20px' },
-    periodBtn: (active: boolean): React.CSSProperties => ({
-      background: active ? '#10b981' : 'transparent',
-      color: active ? '#fff' : '#64748b',
-      border: `1px solid ${active ? '#10b981' : '#1e293b'}`,
-      padding: '6px 14px', fontSize: '11px', fontWeight: 800,
-      cursor: 'pointer', borderRadius: '0',
-    }),
-    section: { background: '#0f172a', border: '1px solid #1e293b', padding: '6px', marginBottom: '16px' },
-    sectionTitle: { fontSize: '13px', fontWeight: 900, color: '#fff', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' },
-    emptyState: { textAlign: 'center' as const, color: '#64748b', padding: '40px', fontSize: '13px' },
+    page: { fontFamily: "'Inter', sans-serif", color: '#E2E8F0', maxWidth: '1040px', margin: '0 auto', padding: '4px 0 32px' },
+    section: {
+      padding: '24px 28px',
+      marginBottom: '20px',
+    },
+    sectionTitle: { fontSize: '18px', fontWeight: 600, fontFamily: "'Inter', sans-serif", color: '#FFFFFF', margin: '0 0 8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: '12px' },
+    emptyState: { textAlign: 'center' as const, color: '#94A3B8', padding: '40px', fontSize: '13px' },
   };
 
   if (sessions.length === 0) {
     return (
       <div style={S.page}>
-        <div style={S.header}>
-          <h2 style={S.title}>📊 Mi Progreso</h2>
-          <p style={S.subtitle}>Estadísticas generadas a partir de tus entrenamientos</p>
+        <div className="titan-tab-strip">
+          <button className="titan-tab titan-tab-active">DISTRIBUCIÓN</button>
+          <button className="titan-tab" style={{ opacity: 0.6 }}>PROGRESO</button>
+          <button className="titan-tab" style={{ opacity: 0.6 }}>HISTORIAL</button>
         </div>
-        <div style={{ ...S.section, ...S.emptyState }}>
-          <Flame size={48} color="#f59e0b" style={{ margin: '0 auto 16px', display: 'block' }} />
-          <h3 style={{ color: '#fff', fontSize: '18px', fontWeight: 900, margin: '0 0 8px' }}>
-            ¡Aún no hay sesiones registradas!
+        <div className="titan-panel" style={{ ...S.section, ...S.emptyState }}>
+          <Flame size={44} color="#D57A30" style={{ margin: '0 auto 16px', display: 'block' }} />
+          <h3 className="font-titan" style={{ color: '#fff', fontSize: '18px', fontWeight: 700, margin: '0 0 8px', textTransform: 'uppercase' }}>
+            Aún no hay sesiones registradas
           </h3>
-          <p style={{ fontSize: '13px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>
-            Completá tu primer entrenamiento y presioná el botón<br />
-            <strong style={{ color: '#f59e0b' }}>🏁 Terminar Entrenamiento</strong> para empezar a ver tu progreso aquí.
+          <p style={{ fontSize: '13px', color: '#94A3B8', margin: 0, lineHeight: 1.6 }}>
+            Completa tu primer entrenamiento y presiona{' '}
+            <strong style={{ color: '#D57A30' }}>Terminar Entrenamiento</strong> para ver tu progreso aquí.
           </p>
         </div>
       </div>
@@ -742,125 +892,140 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
   return (
     <div style={S.page}>
       <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          height: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(30, 41, 59, 0.5); /* slate-800 translúcido */
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #f59e0b; /* Amarillo-Naranja */
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #d97706;
-        }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0B0E13; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #C96F28; border-radius: 2px; }
       `}</style>
-      
-      {/* Header */}
-      <div style={S.header}>
-        <h2 style={S.title}>📊 Mi Progreso</h2>
-        <p style={S.subtitle}>{totalSessions} sesiones registradas · {totalVolume.toLocaleString()} kg volumen total</p>
-      </div>
 
-      {/* Summary cards */}
-      <div style={{ ...S.statCards, gridTemplateColumns: 'repeat(2, 1fr)' }}>
-        <div style={S.statCard}>
-          <span style={S.statNum}>{totalSessions}</span>
-          <span style={S.statLbl}>Sesiones</span>
+      {/* Fila superior única: Filtros de tiempo en pastillas metálicas + resumen discreto */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '10px' }}>
+          {(['7days', '30days', 'month', 'all'] as const).map(p => (
+            <button
+              key={p}
+              className={`titan-filter-pill ${period === p && !selectedDate ? 'active' : ''}`}
+              onClick={() => {
+                setPeriod(p);
+                setSelectedDate(null);
+              }}
+            >
+              {p === '7days' ? 'Últimos 7 días' : p === '30days' ? 'Últimos 30 días' : p === 'month' ? 'Este mes' : 'Todo'}
+            </button>
+          ))}
         </div>
-        <div style={S.statCard}>
-          <span style={{ ...S.statNum, color: '#10b981' }}>{avgDuration}</span>
-          <span style={S.statLbl}>min promedio</span>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", color: '#94A3B8', letterSpacing: '0.06em' }}>
+          <span><strong style={{ color: '#D67B35' }}>{totalSessions}</strong> SESIONES</span>
+          <span style={{ opacity: 0.35 }}>|</span>
+          <span><strong style={{ color: '#D67B35' }}>{avgDuration}</strong> MIN PROM</span>
+          <span style={{ opacity: 0.35 }}>|</span>
+          <span><strong style={{ color: '#E2E8F0' }}>{totalVolume.toLocaleString()}</strong> KG</span>
         </div>
       </div>
 
-      {/* Period selector */}
-      <div style={S.periodBar}>
-        {(['7days', '14days', 'month', 'all'] as const).map(p => (
-          <button 
-            key={p} 
-            style={S.periodBtn(period === p)} 
-            onClick={() => {
-              setPeriod(p);
-              setSelectedDate(null); // Limpiamos el día específico si cambian el período general
-            }}
-          >
-            {p === '7days' ? 'Últimos 7 días' : p === '14days' ? 'Últimos 14 días' : p === 'month' ? 'Este mes' : 'Todo'}
-          </button>
-        ))}
-      </div>
-
-      {/* Section tabs */}
-      <div style={S.tabs}>
-        <button style={S.tab(activeSection === 'radar')} onClick={() => setActiveSection('radar')}>
-          🕸️ Distribución
+      {/* Barra de 3 Pestañas soldadas directamente al borde cobre del panel */}
+      <div className="titan-tab-strip">
+        <button
+          className={`titan-tab ${activeSection === 'radar' ? 'titan-tab-active' : ''}`}
+          onClick={() => setActiveSection('radar')}
+        >
+          DISTRIBUCIÓN
         </button>
-        <button style={S.tab(activeSection === 'progress')} onClick={() => setActiveSection('progress')}>
-          📈 Progreso
+        <button
+          className={`titan-tab ${activeSection === 'progress' ? 'titan-tab-active' : ''}`}
+          onClick={() => setActiveSection('progress')}
+        >
+          PROGRESO
         </button>
-        <button style={S.tab(activeSection === 'history')} onClick={() => setActiveSection('history')}>
-          📋 Historial
+        <button
+          className={`titan-tab ${activeSection === 'history' ? 'titan-tab-active' : ''}`}
+          onClick={() => setActiveSection('history')}
+        >
+          HISTORIAL
         </button>
       </div>
 
       {/* RADAR section */}
       {activeSection === 'radar' && (
         <>
-          {/* Day Sub-tabs */}
-          <div className="custom-scrollbar" style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '16px', borderBottom: '1px solid #1e293b' }}>
-            <button 
-              onClick={() => { setSelectedDate(null); setPeriod('custom'); }}
-              style={{ ...S.periodBtn(!selectedDate && period === 'custom'), flexShrink: 0 }}
-            >
-              General
-            </button>
-            {currentWeekDays.map(d => {
-              const dateStr = d.toISOString();
-              const isSelected = selectedDate ? new Date(selectedDate).toDateString() === d.toDateString() : false;
-              const isFuture = d > new Date() && d.toDateString() !== new Date().toDateString();
-              const dayName = d.toLocaleString('es-ES', { weekday: 'short' });
-              
-              return (
-                <button 
-                  key={dateStr}
-                  onClick={() => { setSelectedDate(dateStr); setPeriod('custom'); }}
-                  style={{ ...S.periodBtn(isSelected), flexShrink: 0, opacity: isFuture ? 0.5 : 1 }}
-                >
-                  {dayName.charAt(0).toUpperCase() + dayName.slice(1)} {d.getDate()}/{d.getMonth() + 1}
-                </button>
-              );
-            })}
-          </div>
+          <div className="titan-panel" style={S.section}>
+            <div style={S.sectionTitle}>
+              <span>
+                Distribución por Volumen{selectedDate ? ` · ${new Date(selectedDate).toLocaleDateString('es-ES')}` : ''}
+              </span>
 
-          <div style={S.section}>
-            <p style={S.sectionTitle}><Activity size={16} color="#06b6d4" /> Distribución por Volumen {selectedDate && `(${new Date(selectedDate).toLocaleDateString('es-ES')})`}</p>
-            {radarData.length < 3 ? (
-              <div style={S.emptyState}>Completá más sesiones con distintos grupos musculares.</div>
-            ) : (
-              <RadarChart data={radarData} />
-            )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <select
+                  aria-label="Filtrar por día de la semana"
+                  value={selectedDate || ''}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (!v) {
+                      setSelectedDate(null);
+                      if (period === 'custom') setPeriod('7days');
+                    } else {
+                      setSelectedDate(v);
+                      setPeriod('custom');
+                    }
+                  }}
+                  style={{
+                    fontSize: '11px',
+                    fontFamily: "'Chakra Petch', sans-serif",
+                    fontWeight: 600,
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                  }}
+                  className="titan-select"
+                >
+                  <option value="">Todos los días del rango</option>
+                  {currentWeekDays.map(d => {
+                    const dayName = d.toLocaleString('es-ES', { weekday: 'short' });
+                    return (
+                      <option key={d.toISOString()} value={d.toISOString()}>
+                        {dayName.charAt(0).toUpperCase() + dayName.slice(1)} {d.getDate()}/{d.getMonth() + 1}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                <button
+                  type="button"
+                  onClick={() => setRadarMode(m => (m === '6' ? '19' : '6'))}
+                  className="titan-btn-armor-steel"
+                  style={{ padding: '5px 12px', fontSize: '10px', color: '#FFBD4A' }}
+                >
+                  {radarMode === '6' ? '6 Grupos ▾' : '19 Músculos ▾'}
+                </button>
+              </div>
+            </div>
+
+            <RadarChart
+              data={radarData}
+              secondaryData={radarMode === '6' ? allTimeSixBuckets : undefined}
+              showHexIcons={radarMode === '6'}
+            />
           </div>
 
           {/* Ranking */}
           {muscleRanking.length > 0 && (
-            <div style={S.section}>
-              <p style={S.sectionTitle}><Trophy size={16} color="#f59e0b" /> Ranking de Ejercicios Completados</p>
+            <div className="titan-armor-card" style={{ padding: '22px 24px', marginBottom: '18px' }}>
+              <p className="titan-section-title" style={{ fontSize: '14px', margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Trophy size={15} color="#D57A30" /> Ranking de Ejercicios Completados
+              </p>
               {muscleRanking.map((item, i) => {
                 const pct = muscleRanking[0].vol > 0 ? Math.round((item.vol / muscleRanking[0].vol) * 100) : 0;
                 return (
                   <div key={item.muscle} style={{ marginBottom: '10px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '12px', fontWeight: 800, color: '#fff', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '10px', color: '#64748b', fontFamily: 'monospace', width: '16px' }}>#{i + 1}</span>
-                        <span style={{ width: '10px', height: '10px', background: item.color, display: 'inline-block', borderRadius: '50%' }} />
+                      <span style={{ fontSize: '12px', fontWeight: 700, color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'monospace', width: '16px' }}>#{i + 1}</span>
+                        <span style={{ width: '8px', height: '8px', background: '#D57A30', display: 'inline-block', transform: 'rotate(45deg)' }} />
                         {item.muscle.charAt(0).toUpperCase() + item.muscle.slice(1)}
                       </span>
-                      <span style={{ fontSize: '12px', fontWeight: 900, color: item.color }}>{item.vol.toLocaleString()} ejer.</span>
+                      <span style={{ fontSize: '12px', fontWeight: 700, fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A' }}>{item.vol.toLocaleString()} ejer.</span>
                     </div>
-                    <div style={{ background: '#1e293b', height: '6px', borderRadius: '0' }}>
-                      <div style={{ width: `${pct}%`, height: '100%', background: item.color, borderRadius: '0', transition: 'width 0.5s' }} />
+                    <div className="titan-inset-well" style={{ height: '7px' }}>
+                      <div style={{ width: `${pct}%`, height: '100%', background: 'linear-gradient(90deg, #B55B1E, #FFBD4A)', transition: 'width 0.5s' }} />
                     </div>
                   </div>
                 );
@@ -872,8 +1037,10 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
       {/* PROGRESS section */}
       {activeSection === 'progress' && (
-        <div style={S.section}>
-          <p style={S.sectionTitle}><BarChart2 size={16} color="#f59e0b" /> Progreso por Músculo / Ejercicio</p>
+        <div className="titan-panel" style={S.section}>
+          <p className="titan-section-title" style={{ fontSize: '16px', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <BarChart2 size={16} color="#D57A30" /> Progreso por Músculo / Ejercicio
+          </p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {muscleProgressList.map((item, i) => (
@@ -885,40 +1052,42 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
 
       {/* HISTORY section */}
       {activeSection === 'history' && (
-        <div style={S.section}>
-          <p style={S.sectionTitle}><Calendar size={16} color="#a855f7" /> Historial de Sesiones</p>
+        <div className="titan-panel" style={S.section}>
+          <p className="titan-section-title" style={{ fontSize: '16px', margin: '0 0 18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Calendar size={16} color="#D57A30" /> Historial de Sesiones
+          </p>
           {sessions.slice(0, 20).map(s => (
-            <div key={s.id} style={{ borderBottom: '1px solid #1e293b', paddingBottom: '16px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <div key={s.id} className="titan-inset-well" style={{ padding: '16px', marginBottom: '14px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
                 <div>
-                  <span style={{ fontSize: '13px', fontWeight: 900, color: '#fff' }}>
+                  <span style={{ fontSize: '13px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#fff', textTransform: 'uppercase' }}>
                     {new Date(s.fecha).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                   </span>
-                  <span style={{ marginLeft: '8px', fontSize: '10px', color: '#64748b', fontWeight: 700 }}>
+                  <span style={{ marginLeft: '8px', fontSize: '10px', color: '#94A3B8', fontWeight: 700 }}>
                     Sem {s.semana} · {s.dia}
                   </span>
                 </div>
-                <div style={{ display: 'flex', gap: '12px', fontSize: '11px', color: '#94a3b8', fontWeight: 700 }}>
-                  <span style={{ color: '#f59e0b' }}>⏱ {s.duracion_min} min</span>
-                  <span style={{ color: '#06b6d4' }}>⚡ {s.total_volumen_kg.toLocaleString()} kg</span>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700 }}>
+                  <span className="titan-badge-copper" style={{ padding: '2px 8px' }}>⏱ {s.duracion_min} min</span>
+                  <span className="titan-badge-steel" style={{ padding: '2px 8px', color: '#FFBD4A' }}>⚡ {s.total_volumen_kg.toLocaleString()} kg</span>
                 </div>
               </div>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+              <table className="titan-table" style={{ fontSize: '11px' }}>
                 <thead>
-                  <tr style={{ color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>
-                    <th style={{ textAlign: 'left', padding: '4px 0' }}>Ejercicio</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px' }}>KG</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px' }}>Series</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px' }}>Reps</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px' }}>Volumen</th>
+                  <tr style={{ fontSize: '10px' }}>
+                    <th style={{ textAlign: 'left', padding: '7px 10px' }}>Ejercicio</th>
+                    <th style={{ textAlign: 'center', padding: '7px 8px' }}>KG</th>
+                    <th style={{ textAlign: 'center', padding: '7px 8px' }}>Series</th>
+                    <th style={{ textAlign: 'center', padding: '7px 8px' }}>Reps</th>
+                    <th style={{ textAlign: 'center', padding: '7px 8px' }}>Volumen</th>
                   </tr>
                 </thead>
                 <tbody>
                   {s.ejercicios.map((e, i) => (
-                    <tr key={i} style={{ borderTop: '1px solid #0f172a' }}>
-                      <td style={{ padding: '6px 0', color: '#fff', fontWeight: 700 }}>
+                    <tr key={i}>
+                      <td style={{ padding: '7px 10px', color: '#fff', fontWeight: 700 }}>
                         {e.nombre}
-                        <div style={{ display: 'flex', gap: '4px', marginTop: '2px', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', gap: '4px', marginTop: '3px', flexWrap: 'wrap' }}>
                           {e.primary_muscles.slice(0, 2).map(m => (
                             <span key={m} style={{ fontSize: '9px', background: getMuscleColor(m.toLowerCase()) + '22', color: getMuscleColor(m.toLowerCase()), border: `1px solid ${getMuscleColor(m.toLowerCase())}44`, padding: '1px 5px' }}>
                               {m}
@@ -926,10 +1095,10 @@ export const WorkoutStats: React.FC<WorkoutStatsProps> = ({ alumno }) => {
                           ))}
                         </div>
                       </td>
-                      <td style={{ textAlign: 'center', color: '#f59e0b', fontWeight: 900 }}>{e.peso_real}</td>
-                      <td style={{ textAlign: 'center', color: '#94a3b8' }}>{e.series_completadas}/{e.series}</td>
-                      <td style={{ textAlign: 'center', color: '#94a3b8' }}>{e.repeticiones}</td>
-                      <td style={{ textAlign: 'center', color: '#06b6d4', fontWeight: 800 }}>{e.volumen_kg}</td>
+                      <td style={{ textAlign: 'center', color: '#FFBD4A', fontWeight: 900 }}>{e.peso_real}</td>
+                      <td style={{ textAlign: 'center', color: '#CBD5E1' }}>{e.series_completadas}/{e.series}</td>
+                      <td style={{ textAlign: 'center', color: '#CBD5E1' }}>{e.repeticiones}</td>
+                      <td style={{ textAlign: 'center', color: '#D57A30', fontWeight: 800 }}>{e.volumen_kg}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -961,8 +1130,8 @@ export const WorkoutStatsCompact: React.FC<{ alumno: Profile; onExpand?: () => v
 
   if (totalSessions === 0) {
     return (
-      <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '12px', marginTop: '8px' }}>
-        <p style={{ fontSize: '11px', color: '#64748b', margin: 0, textAlign: 'center', fontWeight: 700 }}>
+      <div className="titan-inset-well" style={{ padding: '12px', marginTop: '8px' }}>
+        <p style={{ fontSize: '11px', color: '#94A3B8', margin: 0, textAlign: 'center', fontWeight: 700 }}>
           Sin sesiones registradas aún
         </p>
       </div>
@@ -970,33 +1139,33 @@ export const WorkoutStatsCompact: React.FC<{ alumno: Profile; onExpand?: () => v
   }
 
   return (
-    <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '12px', marginTop: '8px' }}>
+    <div className="titan-inset-well" style={{ padding: '12px', marginTop: '8px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-        <span style={{ fontSize: '11px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <span style={{ fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#FFBD4A', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           📊 Estadísticas
         </span>
         {onExpand && (
-          <button onClick={onExpand}
-            style={{ fontSize: '10px', color: '#06b6d4', background: 'transparent', border: 'none', cursor: 'pointer', fontWeight: 800 }}>
+          <button onClick={onExpand} className="titan-btn-armor-steel"
+            style={{ fontSize: '10px', padding: '3px 8px', color: '#FFBD4A' }}>
             Ver más →
           </button>
         )}
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', marginBottom: '10px' }}>
         {[
-          { label: 'Sesiones', val: totalSessions, color: '#f59e0b' },
-          { label: 'Vol. total', val: `${totalVolume}kg`, color: '#06b6d4' },
-          { label: 'Esta semana', val: weekSessions.length, color: '#10b981' },
+          { label: 'Sesiones', val: totalSessions, color: '#FFBD4A' },
+          { label: 'Vol. total', val: `${totalVolume}kg`, color: '#D57A30' },
+          { label: 'Esta semana', val: weekSessions.length, color: '#6EE7B7' },
         ].map(item => (
-          <div key={item.label} style={{ textAlign: 'center', background: '#0f172a', padding: '8px 4px', border: '1px solid #1e293b' }}>
-            <div style={{ fontSize: '16px', fontWeight: 900, color: item.color }}>{item.val}</div>
-            <div style={{ fontSize: '9px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>{item.label}</div>
+          <div key={item.label} className="titan-inset-well" style={{ textAlign: 'center', padding: '8px 4px', borderTop: `2px solid ${item.color}` }}>
+            <div style={{ fontSize: '15px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: item.color }}>{item.val}</div>
+            <div style={{ fontSize: '9px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>{item.label}</div>
           </div>
         ))}
       </div>
       {topMuscles.length > 0 && (
         <div>
-          <div style={{ fontSize: '9px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>
+          <div style={{ fontSize: '9px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>
             Más trabajado esta semana
           </div>
           {topMuscles.map(([m, vol]) => {
@@ -1007,7 +1176,7 @@ export const WorkoutStatsCompact: React.FC<{ alumno: Profile; onExpand?: () => v
                   <span style={{ fontSize: '10px', fontWeight: 700, color: '#fff', textTransform: 'capitalize' }}>{m}</span>
                   <span style={{ fontSize: '10px', color: getMuscleColor(m), fontWeight: 800 }}>{Math.round(vol)} kg</span>
                 </div>
-                <div style={{ background: '#1e293b', height: '4px' }}>
+                <div style={{ background: '#141922', height: '4px' }}>
                   <div style={{ width: `${pct}%`, height: '100%', background: getMuscleColor(m), transition: 'width 0.4s' }} />
                 </div>
               </div>
@@ -1016,12 +1185,12 @@ export const WorkoutStatsCompact: React.FC<{ alumno: Profile; onExpand?: () => v
         </div>
       )}
       {lastSession && (
-        <div style={{ marginTop: '10px', padding: '8px', background: '#0f172a', border: '1px solid #1e293b', fontSize: '10px', color: '#64748b' }}>
-          <CheckCircle2 size={10} color="#10b981" style={{ display: 'inline', marginRight: '4px' }} />
+        <div className="titan-inset-well" style={{ marginTop: '10px', padding: '8px', fontSize: '10px', color: '#94A3B8' }}>
+          <CheckCircle2 size={10} color="#6EE7B7" style={{ display: 'inline', marginRight: '4px' }} />
           Última sesión: <span style={{ color: '#fff', fontWeight: 700 }}>
             {new Date(lastSession.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} · {lastSession.dia}
           </span>
-          <span style={{ marginLeft: '8px', color: '#f59e0b' }}>⚡ {lastSession.total_volumen_kg} kg</span>
+          <span style={{ marginLeft: '8px', color: '#FFBD4A' }}>⚡ {lastSession.total_volumen_kg} kg</span>
         </div>
       )}
     </div>

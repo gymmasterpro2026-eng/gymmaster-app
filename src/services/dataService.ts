@@ -5,6 +5,8 @@ import { translateExercise, translateExerciseList } from './translationService';
 import { supabase, isSupabaseConfigured } from './supabaseClient';
 import type { WorkoutSession } from '../components/WorkoutStats';
 
+const INITIAL_EXERCISE_IDS = new Set(INITIAL_EXERCISES.map((e) => e.id));
+
 export const STANDARD_MUSCLES = [
   'Pectorals', 'Abdominales', 'Abductores', 'Aductores', 'Antebrazos', 'Bíceps',
   'Cardiovascular system', 'Cuádriceps', 'Delts', 'Dorsales (espalda)',
@@ -46,19 +48,33 @@ class DataService {
   private isSyncing: boolean = false;
   private lastSyncTime: Date | null = new Date();
   private realtimeSubscribed: boolean = false;
+  private realtimeSyncTimer: ReturnType<typeof setTimeout> | null = null;
+  private exerciseByIdMap = new Map<string, Exercise>();
+  private translatedExercisesCache: Exercise[] | null = null;
+  private translatedByIdCache = new Map<string, Exercise>();
 
   constructor() {
     this.loadFromLocalStorage();
+    this.rebuildExerciseIndex();
     if (isSupabaseConfigured && supabase) {
       this.initCloudSync();
       this.subscribeRealtime();
     }
-    // Auto-polling heartbeat every 20 seconds to keep APK, Web and Local 100% synchronized
+    // Auto-polling heartbeat every 90 seconds to keep APK, Web and Local synchronized without lag
     setInterval(() => {
       if (isSupabaseConfigured && supabase && !this.isSyncing) {
         this.syncNow();
       }
-    }, 20000);
+    }, 90000);
+  }
+
+  private rebuildExerciseIndex() {
+    this.exerciseByIdMap.clear();
+    for (const ex of this.exercises) {
+      this.exerciseByIdMap.set(ex.id, ex);
+    }
+    this.translatedExercisesCache = null;
+    this.translatedByIdCache.clear();
   }
 
   public subscribe(listener: () => void) {
@@ -109,11 +125,34 @@ class DataService {
     }
   }
 
+  private scheduleRealtimeSync() {
+    if (this.realtimeSyncTimer) clearTimeout(this.realtimeSyncTimer);
+    this.realtimeSyncTimer = setTimeout(() => {
+      this.realtimeSyncTimer = null;
+      if (!this.isSyncing) this.syncNow();
+    }, 1500);
+  }
+
   private async initCloudSync() {
     if (!supabase) return;
     try {
-      // 1. Gym Tenants — cloud wins, always pull
-      const { data: remoteGyms } = await supabase.from('gym_tenants').select('*');
+      const [
+        { data: remoteGyms },
+        { data: remoteProfiles },
+        { data: remoteRoutines },
+        { data: remoteLogs },
+        { data: remoteExercises },
+        { data: remoteSessions },
+      ] = await Promise.all([
+        supabase.from('gym_tenants').select('*'),
+        supabase.from('gym_profiles').select('*'),
+        supabase.from('gym_routines').select('*'),
+        supabase.from('gym_routine_logs').select('*'),
+        supabase.from('gym_exercises').select('*'),
+        supabase.from('gym_workout_sessions').select('*'),
+      ]);
+
+      // 1. Gym Tenants — cloud wins
       if (remoteGyms && remoteGyms.length > 0) {
         this.gyms = remoteGyms as GymTenant[];
       } else {
@@ -121,32 +160,32 @@ class DataService {
       }
 
       // 2. Profiles — Cloud Wins
-      const { data: remoteProfiles } = await supabase.from('gym_profiles').select('*');
       if (remoteProfiles) {
         this.profiles = remoteProfiles as Profile[];
       }
 
       // 3. Routines — Cloud Wins
-      const { data: remoteRoutines } = await supabase.from('gym_routines').select('*');
       if (remoteRoutines) {
         this.routines = remoteRoutines as Routine[];
       }
 
       // 4. Routine Logs — Cloud Wins
-      const { data: remoteLogs } = await supabase.from('gym_routine_logs').select('*');
       if (remoteLogs) {
         this.logs = remoteLogs as RoutineLog[];
       }
 
       // 5. Custom Exercises — pull only new remote exercises
-      const { data: remoteExercises } = await supabase.from('gym_exercises').select('*');
+      let addedCustomExercises = false;
       if (remoteExercises && remoteExercises.length > 0) {
-        const existingIds = new Set(this.exercises.map((e) => e.id));
-        remoteExercises.forEach((re) => {
-          if (!existingIds.has(re.id)) {
+        for (const re of remoteExercises) {
+          if (!this.exerciseByIdMap.has(re.id)) {
             this.exercises.unshift(re as Exercise);
+            addedCustomExercises = true;
           }
-        });
+        }
+        if (addedCustomExercises) {
+          this.rebuildExerciseIndex();
+        }
       }
 
       // 6. Two-Way Sync for Workout Sessions
@@ -161,7 +200,6 @@ class DataService {
         }
       }
 
-      const { data: remoteSessions } = await supabase.from('gym_workout_sessions').select('*');
       const remote = (remoteSessions || []) as WorkoutSession[];
       
       const mergedMap = new Map<string, WorkoutSession>();
@@ -232,20 +270,20 @@ class DataService {
         }
       });
 
-      // 2. CREACIÓN: Instanciar canal nuevo, agregar listeners y al final suscribir.
+      // 2. CREACIÓN: Instanciar canal nuevo, agregar listeners con debounce para evitar cascadas de sync.
       supabase
         .channel('gymmaster-realtime-all')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routines' }, () => {
-          if (!this.isSyncing) this.syncNow();
+          this.scheduleRealtimeSync();
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_routine_logs' }, () => {
-          if (!this.isSyncing) this.syncNow();
+          this.scheduleRealtimeSync();
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_profiles' }, () => {
-          if (!this.isSyncing) this.syncNow();
+          this.scheduleRealtimeSync();
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'gym_exercises' }, () => {
-          if (!this.isSyncing) this.syncNow();
+          this.scheduleRealtimeSync();
         })
         .subscribe();
         
@@ -258,7 +296,8 @@ class DataService {
   private loadFromLocalStorage() {
     try {
       const savedProfiles = localStorage.getItem('gymmaster_profiles');
-      const savedExercises = localStorage.getItem('gymmaster_exercises');
+      const savedCustomExercises = localStorage.getItem('gymmaster_custom_exercises');
+      const legacySavedExercises = localStorage.getItem('gymmaster_exercises');
       const savedRoutines = localStorage.getItem('gymmaster_routines');
       const savedLogs = localStorage.getItem('gymmaster_logs');
       const savedGyms = localStorage.getItem('gymmaster_gyms');
@@ -272,16 +311,24 @@ class DataService {
         const parsed = JSON.parse(savedProfiles);
         if (Array.isArray(parsed) && parsed.length > 0) this.profiles = parsed;
       }
-      if (savedExercises) {
-        const parsed = JSON.parse(savedExercises);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          if (parsed[0].image_urls) {
-            this.exercises = parsed;
-          } else {
-            this.exercises = [...INITIAL_EXERCISES];
-          }
+
+      let customExercises: Exercise[] = [];
+      if (savedCustomExercises) {
+        const parsed = JSON.parse(savedCustomExercises);
+        if (Array.isArray(parsed)) {
+          customExercises = parsed.filter((e) => e && e.id && !INITIAL_EXERCISE_IDS.has(e.id));
         }
+      } else if (legacySavedExercises) {
+        // Migración única: extraer solo ejercicios personalizados y liberar ~1.5 MB de localStorage
+        const parsed = JSON.parse(legacySavedExercises);
+        if (Array.isArray(parsed)) {
+          customExercises = parsed.filter((e) => e && e.id && !INITIAL_EXERCISE_IDS.has(e.id));
+          localStorage.setItem('gymmaster_custom_exercises', JSON.stringify(customExercises));
+        }
+        localStorage.removeItem('gymmaster_exercises');
       }
+      this.exercises = [...customExercises, ...INITIAL_EXERCISES];
+
       if (savedRoutines) {
         const parsed = JSON.parse(savedRoutines);
         if (Array.isArray(parsed)) this.routines = parsed;
@@ -302,8 +349,10 @@ class DataService {
 
   private persist() {
     try {
+      const customExercises = this.exercises.filter((e) => !INITIAL_EXERCISE_IDS.has(e.id));
       localStorage.setItem('gymmaster_profiles', JSON.stringify(this.profiles));
-      localStorage.setItem('gymmaster_exercises', JSON.stringify(this.exercises));
+      localStorage.setItem('gymmaster_custom_exercises', JSON.stringify(customExercises));
+      localStorage.removeItem('gymmaster_exercises');
       localStorage.setItem('gymmaster_routines', JSON.stringify(this.routines));
       localStorage.setItem('gymmaster_logs', JSON.stringify(this.logs));
       localStorage.setItem('gymmaster_gyms', JSON.stringify(this.gyms));
@@ -316,7 +365,10 @@ class DataService {
   // LANGUAGE TOGGLE
   setLanguage(lang: 'es' | 'en') {
     this.language = lang;
+    this.translatedExercisesCache = null;
+    this.translatedByIdCache.clear();
     this.persist();
+    this.notify();
   }
 
   getLanguage(): 'es' | 'en' {
@@ -331,6 +383,7 @@ class DataService {
     this.logs = [...MOCK_ROUTINE_LOGS];
     this.gyms = [...INITIAL_GYMS];
     this.language = 'es';
+    this.rebuildExerciseIndex();
     this.persist();
 
     if (supabase) {
@@ -621,18 +674,27 @@ class DataService {
     }
   }
 
-  // EXERCISES CATALOG
+  // EXERCISES CATALOG (O(1) con caché memoizada para evitar re-traducir 1,300+ ejercicios en cada render)
   getExercises(): Exercise[] {
     if (this.language === 'es') {
-      return translateExerciseList(this.exercises);
+      if (!this.translatedExercisesCache) {
+        this.translatedExercisesCache = translateExerciseList(this.exercises);
+      }
+      return this.translatedExercisesCache;
     }
     return this.exercises;
   }
 
   getExerciseById(id: string): Exercise | undefined {
-    const found = this.exercises.find((e) => e.id === id);
+    const found = this.exerciseByIdMap.get(id);
     if (!found) return undefined;
-    return this.language === 'es' ? translateExercise(found) : found;
+    if (this.language !== 'es') return found;
+    let cached = this.translatedByIdCache.get(id);
+    if (!cached) {
+      cached = translateExercise(found);
+      this.translatedByIdCache.set(id, cached);
+    }
+    return cached;
   }
 
   addCustomExercise(exercise: Omit<Exercise, 'id'>): Exercise {
@@ -641,6 +703,7 @@ class DataService {
       id: `ex-${Date.now()}`,
     };
     this.exercises.unshift(newEx);
+    this.rebuildExerciseIndex();
     this.persist();
 
     if (supabase) {

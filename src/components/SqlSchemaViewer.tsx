@@ -160,67 +160,40 @@ CREATE POLICY "RoutineLogs: Coach full access"
   return (
     <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif", display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, #0f172a, #1e293b, #451a03)',
-        border: '1px solid #334155',
+      <div className="titan-armor-banner" style={{
         padding: '24px 32px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '20px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
       }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+            <span className="titan-badge-emerald" style={{ padding: '4px 10px', fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <ShieldCheck size={14} /> RLS Strict Security
             </span>
             <span style={{ fontSize: '11px', color: '#94a3b8' }}>PostgreSQL / Supabase Engine</span>
           </div>
-          <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 900, color: '#ffffff' }}>
+          <h1 className="titan-section-title" style={{ margin: 0, fontSize: '24px' }}>
             Arquitectura SQL & Políticas RLS (Entregable #1)
           </h1>
           <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#94a3b8' }}>
-            Aislamiento multi-tenant de datos, triggers automáticos e inmunidad al time-hack con server-side <code style={{ color: '#f59e0b' }}>now()</code>
+            Aislamiento multi-tenant de datos, triggers automáticos e inmunidad al time-hack con server-side <code style={{ color: '#FFBD4A' }}>now()</code>
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <button
             onClick={handleCopy}
-            style={{
-              background: 'rgba(245, 158, 11, 0.15)',
-              color: '#f59e0b',
-              border: '1px solid rgba(245, 158, 11, 0.4)',
-              padding: '10px 18px',
-              fontSize: '12px',
-              fontWeight: 900,
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+            className="titan-btn-sprite-idle"
           >
             {copied ? <Check size={16} color="#34d399" /> : <Copy size={16} />}
             <span>{copied ? '¡Copiado!' : 'Copiar SQL'}</span>
           </button>
           <button
             onClick={handleDownload}
-            style={{
-              background: '#f59e0b',
-              color: '#000000',
-              border: 'none',
-              padding: '10px 20px',
-              fontSize: '12px',
-              fontWeight: 900,
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+            className="titan-btn-sprite-active"
           >
             <Download size={16} />
             <span>Descargar .SQL</span>
@@ -230,50 +203,50 @@ CREATE POLICY "RoutineLogs: Coach full access"
 
       {/* RLS Highlights Banner */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
-        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f59e0b', fontWeight: 900, fontSize: '12px', textTransform: 'uppercase' }}>
+        <div className="titan-armor-card" style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div className="titan-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#FFBD4A', fontSize: '12px' }}>
             <Lock size={16} />
             1. Regla de Oro Multi-Tenant
           </div>
           <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>
-            El Alumno solo posee permisos SELECT sobre sus propias rutinas y UPDATE exclusivamente sobre el campo <code style={{ color: '#f59e0b' }}>peso_real</code> en <code style={{ color: '#94a3b8' }}>routine_logs</code>.
+            El Alumno solo posee permisos SELECT sobre sus propias rutinas y UPDATE exclusivamente sobre el campo <code style={{ color: '#FFBD4A' }}>peso_real</code> en <code style={{ color: '#94a3b8' }}>routine_logs</code>.
           </p>
         </div>
 
-        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontWeight: 900, fontSize: '12px', textTransform: 'uppercase' }}>
+        <div className="titan-armor-card" style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div className="titan-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6EE7B7', fontSize: '12px' }}>
             <ShieldCheck size={16} />
             2. Inmunidad al Time-Hack
           </div>
           <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>
-            Las validaciones de vigencia del plan de gimnasio se ejecutan en PostgreSQL usando <code style={{ color: '#34d399' }}>now()</code> del servidor, anulando intentos de modificación de reloj en móviles.
+            Las validaciones de vigencia del plan de gimnasio se ejecutan en PostgreSQL usando <code style={{ color: '#6EE7B7' }}>now()</code> del servidor, anulando intentos de modificación de reloj en móviles.
           </p>
         </div>
 
-        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#38bdf8', fontWeight: 900, fontSize: '12px', textTransform: 'uppercase' }}>
-            <Key size={16} />
+        <div className="titan-armor-card" style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div className="titan-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#E2E8F0', fontSize: '12px' }}>
+            <Key size={16} color="#D57A30" />
             3. Control Coach (managed_by)
           </div>
           <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.5' }}>
-            El Coach ostenta control CRUD total sobre alumnos bajo su tutoría (<code style={{ color: '#38bdf8' }}>managed_by = auth.uid()</code>) y sobre rutinas de su gimnasio.
+            El Coach ostenta control CRUD total sobre alumnos bajo su tutoría (<code style={{ color: '#FFBD4A' }}>managed_by = auth.uid()</code>) y sobre rutinas de su gimnasio.
           </p>
         </div>
       </div>
 
       {/* Code Viewer Container */}
-      <div style={{ background: '#020617', border: '1px solid #1e293b', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
-        <div style={{ background: '#0f172a', padding: '12px 20px', borderBottom: '1px solid #1e293b', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'monospace', color: '#f59e0b', fontSize: '12px', fontWeight: 700 }}>
-            <Terminal size={16} />
+      <div className="titan-armor-card" style={{ overflow: 'hidden' }}>
+        <div className="titan-inset-well" style={{ padding: '12px 20px', borderBottom: '1px solid rgba(201,111,40,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'monospace', color: '#FFBD4A', fontSize: '12px', fontWeight: 700 }}>
+            <Terminal size={16} color="#D57A30" />
             <span>supabase/schema.sql</span>
           </div>
-          <span style={{ fontSize: '10px', background: '#1e293b', color: '#94a3b8', padding: '4px 8px', fontWeight: 800 }}>
+          <span className="titan-badge-steel" style={{ fontSize: '10px', padding: '4px 8px' }}>
             PostgreSQL 15+ / Supabase RLS
           </span>
         </div>
 
-        <pre style={{ margin: 0, padding: '24px', fontSize: '12px', fontFamily: 'monospace', color: '#cbd5e1', lineHeight: '1.6', overflowX: 'auto', maxHeight: '500px' }}>
+        <pre className="titan-inset-well" style={{ margin: 0, padding: '24px', fontSize: '12px', fontFamily: 'monospace', color: '#cbd5e1', lineHeight: '1.6', overflowX: 'auto', maxHeight: '500px' }}>
           <code>{sqlCode}</code>
         </pre>
       </div>

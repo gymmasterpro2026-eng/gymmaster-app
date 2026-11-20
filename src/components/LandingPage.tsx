@@ -59,7 +59,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
         if (p.y > canvas.height) p.y = 0;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212, 255, 0, ${p.opacity})`;
+        ctx.fillStyle = `rgba(213, 122, 48, ${p.opacity})`;
         ctx.fill();
       });
       particles.forEach((p1, i) => {
@@ -71,7 +71,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(212, 255, 0, ${0.05 * (1 - dist / 100)})`;
+            ctx.strokeStyle = `rgba(213, 122, 48, ${0.06 * (1 - dist / 100)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -120,7 +120,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
   const S: Record<string, React.CSSProperties> = {
     root: {
       minHeight: '100vh',
-      background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(${(import.meta as any).env?.BASE_URL || '/gymmaster-app/'}gym_environment.png) center/cover no-repeat fixed`,
+      background: `linear-gradient(rgba(6, 8, 11, 0.72), rgba(6, 8, 11, 0.88)), url(${(import.meta as any).env?.BASE_URL || '/gymmaster-app/'}gym_environment.png) center/cover no-repeat fixed, #06080B`,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -143,7 +143,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       transform: 'translateX(-50%)',
       width: '600px',
       height: '400px',
-      background: 'radial-gradient(ellipse, rgba(245,158,11,0.08) 0%, transparent 70%)',
+      background: 'radial-gradient(ellipse, rgba(213,122,48,0.12) 0%, transparent 70%)',
       pointerEvents: 'none',
     },
     glow2: {
@@ -152,7 +152,7 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       right: '-10%',
       width: '400px',
       height: '400px',
-      background: 'radial-gradient(ellipse, rgba(245,158,11,0.04) 0%, transparent 70%)',
+      background: 'radial-gradient(ellipse, rgba(201,111,40,0.06) 0%, transparent 70%)',
       pointerEvents: 'none',
     },
     card: {
@@ -160,13 +160,8 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       zIndex: 10,
       width: '100%',
       maxWidth: '440px',
-      background: 'rgba(15, 23, 42, 0.40)',
-      border: '1px solid rgba(255,255,255,0.18)',
-      borderRadius: '0',
-      padding: '48px 40px',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
-      boxShadow: '0 25px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15)',
+      borderTop: '2px solid #D57A30',
+      padding: '44px 36px',
       opacity: mounted ? 1 : 0,
       transform: mounted ? 'translateY(0)' : 'translateY(30px)',
       transition: 'opacity 0.7s ease, transform 0.7s ease',
@@ -182,43 +177,48 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      marginBottom: '40px',
+      marginBottom: '34px',
     },
     logoBox: {
       width: '64px',
       height: '64px',
-      background: 'linear-gradient(135deg, #f59e0b, #a8cc00)',
+      background: 'linear-gradient(135deg, #D57A30, #8A4212)',
       borderRadius: '0',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: '20px',
-      boxShadow: '0 0 40px rgba(245,158,11,0.4), 0 8px 30px rgba(0,0,0,0.3)',
+      boxShadow: '0 0 40px rgba(213,122,48,0.4), 0 8px 30px rgba(0,0,0,0.4)',
       position: 'relative',
       overflow: 'hidden',
     },
     logoShine: {
       position: 'absolute',
       inset: 0,
-      background: 'linear-gradient(135deg, rgba(255,255,255,0.3), transparent)',
+      background: 'linear-gradient(135deg, rgba(255,255,255,0.25), transparent)',
       borderRadius: '0',
     },
     title: {
-      fontSize: '36px',
-      fontWeight: 900,
+      fontSize: '34px',
+      fontWeight: 700,
+      fontFamily: "'Chakra Petch', sans-serif",
       color: '#ffffff',
       margin: 0,
-      letterSpacing: '-1px',
+      letterSpacing: '0.04em',
       textAlign: 'center',
-      lineHeight: 1.1,
+      lineHeight: 1.08,
+      textTransform: 'uppercase',
     },
-    accent: { color: '#D4FF00' },
+    accent: { color: '#D57A30' },
     subtitle: {
-      fontSize: '13px',
-      color: 'rgba(255,255,255,0.7)',
+      fontSize: '12px',
+      fontFamily: "'Chakra Petch', sans-serif",
+      color: '#D67B35',
+      letterSpacing: '0.16em',
+      textTransform: 'uppercase',
       margin: '8px 0 0',
       textAlign: 'center',
-      fontWeight: 600,
+      fontWeight: 700,
     },
     form: { display: 'flex', flexDirection: 'column', gap: '20px' },
     errorBox: {
@@ -245,46 +245,30 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
     inputWrap: { position: 'relative', display: 'flex', alignItems: 'center' },
     inputIcon: {
       position: 'absolute', left: '16px',
-      color: '#334155', pointerEvents: 'none',
+      color: '#D57A30', pointerEvents: 'none',
       display: 'flex', alignItems: 'center', zIndex: 2,
     },
     input: {
       width: '100%',
-      background: '#e2e8f0',
-      border: '1px solid rgba(255,255,255,0.2)',
-      borderRadius: '0',
       padding: '14px 16px 14px 46px',
-      color: '#0f172a', fontSize: '14px', fontWeight: 700,
-      outline: 'none', boxSizing: 'border-box',
-      transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
+      fontSize: '14px', fontWeight: 700,
+      boxSizing: 'border-box',
     },
     inputPr: {
       width: '100%',
-      background: '#e2e8f0',
-      border: '1px solid rgba(255,255,255,0.2)',
-      borderRadius: '0',
       padding: '14px 48px 14px 46px',
-      color: '#0f172a', fontSize: '14px', fontWeight: 700,
-      outline: 'none', boxSizing: 'border-box',
-      transition: 'border-color 0.2s, box-shadow 0.2s, background 0.2s',
+      fontSize: '14px', fontWeight: 700,
+      boxSizing: 'border-box',
     },
     eyeBtn: {
-      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-      background: 'rgba(15, 23, 42, 0.08)', border: '1px solid rgba(15, 23, 42, 0.15)',
-      borderRadius: '0', cursor: 'pointer',
-      color: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: '6px', transition: 'all 0.2s', zIndex: 5,
+      position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+      padding: '6px', zIndex: 5,
     },
     submitBtn: {
       width: '100%',
-      background: 'linear-gradient(135deg, #f59e0b, #b8db00)',
-      color: '#000000', fontWeight: 900, fontSize: '12px',
-      letterSpacing: '0.12em', textTransform: 'uppercase',
-      border: 'none', borderRadius: '0', padding: '16px',
-      cursor: 'pointer', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', gap: '8px', marginTop: '4px',
-      boxShadow: '0 0 30px rgba(245,158,11,0.3)',
-      transition: 'transform 0.15s, box-shadow 0.2s, filter 0.2s',
+      fontSize: '13px',
+      padding: '16px',
+      marginTop: '4px',
     },
     divider: {
       display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px',
@@ -296,26 +280,25 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
     },
     quickGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' },
     qBtn: {
-      background: 'rgba(15, 23, 42, 0.6)',
+      background: 'rgba(14, 18, 23, 0.85)',
       border: '1px solid rgba(255,255,255,0.15)',
       borderRadius: '0', padding: '12px 14px',
       cursor: 'pointer', textAlign: 'left',
       transition: 'background 0.2s, border-color 0.2s, transform 0.15s',
       display: 'flex', flexDirection: 'column', gap: '2px',
     },
-    qLabel: { fontSize: '11px', fontWeight: 800, color: '#D4FF00' },
+    qLabel: { fontSize: '11px', fontWeight: 700, fontFamily: "'Chakra Petch', sans-serif", color: '#D57A30' },
     qSub: { fontSize: '10px', color: '#cbd5e1', fontWeight: 500 },
     footer: {
       marginTop: '32px', textAlign: 'center',
-      fontSize: '11px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.8, fontWeight: 600,
+      fontSize: '11px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.8, fontWeight: 600,
     },
-    dot: { color: '#f59e0b', margin: '0 6px' },
+    dot: { color: '#D57A30', margin: '0 6px' },
   };
 
   return (
     <div style={S.root}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         @keyframes spin { to { transform: rotate(360deg); } }
         input[data-gm]::placeholder { color: #64748b !important; }
         * { box-sizing: border-box; }
@@ -325,34 +308,38 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
       <div style={S.glow1} />
       <div style={S.glow2} />
 
-      <div style={S.card}>
+      <div className="titan-armor-card" style={S.card}>
         <div style={S.shine} />
 
         <div style={S.logoWrap}>
           <div style={{
-            width: 130,
-            height: 130,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
-            backdropFilter: 'blur(8px)',
-            border: '2px solid rgba(255,255,255,0.2)',
+            width: 112,
+            height: 112,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 40px rgba(255,200,0,0.25), 0 0 80px rgba(255,200,0,0.1)',
-            overflow: 'hidden',
-            marginBottom: 8,
+            filter: 'drop-shadow(0 0 22px rgba(213,122,48,0.45))',
+            marginBottom: 12,
           }}>
             <img
-              src={brandLogo}
+              src={brandLogo.startsWith('data:') ? brandLogo : '/gymmaster-app/titan-ui/titan-shield-emblem.png'}
               alt="Logo"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: brandLogo.startsWith('data:') ? 'none' : 'invert(1) brightness(2)' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: brandLogo.startsWith('data:') ? 'cover' : 'contain',
+                border: brandLogo.startsWith('data:') ? '2px solid #D57A30' : 'none',
+              }}
             />
           </div>
           <h1 style={S.title}>
-            {brandMain} <span style={{ ...S.accent, color: '#ffffff' }}>{brandAccent}</span>
+            {brandName === 'TU MEJOR VERSIÓN TE ESPERA' ? (
+              <>TITAN <span style={S.accent}>FITNESS CENTER</span></>
+            ) : (
+              <>{brandMain} <span style={S.accent}>{brandAccent}</span></>
+            )}
           </h1>
-          <p style={S.subtitle}>Gestión inteligente de entrenamientos</p>
+          <p style={S.subtitle}>Gestión táctica de entrenamientos</p>
         </div>
 
         <form onSubmit={handleLogin} style={S.form}>
@@ -374,20 +361,11 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
               <input
                 data-gm
                 type="text"
+                className="titan-input"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
                 placeholder="Ingresa tu usuario"
                 style={S.input}
-                onFocus={e => {
-                  e.target.style.borderColor = '#f59e0b';
-                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.15)';
-                  e.target.style.background = '#ffffff';
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = 'rgba(255,255,255,0.2)';
-                  e.target.style.boxShadow = 'none';
-                  e.target.style.background = '#e2e8f0';
-                }}
               />
             </div>
           </div>
@@ -403,27 +381,17 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
               <input
                 data-gm
                 type={showPassword ? 'text' : 'password'}
+                className="titan-input"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 style={S.inputPr}
-                onFocus={e => {
-                  e.target.style.borderColor = '#f59e0b';
-                  e.target.style.boxShadow = '0 0 0 4px rgba(245,158,11,0.15)';
-                  e.target.style.background = '#ffffff';
-                }}
-                onBlur={e => {
-                  e.target.style.borderColor = 'rgba(255,255,255,0.2)';
-                  e.target.style.boxShadow = 'none';
-                  e.target.style.background = '#e2e8f0';
-                }}
               />
               <button
                 type="button"
+                className="titan-btn-armor-steel"
                 style={S.eyeBtn}
                 onClick={() => setShowPassword(!showPassword)}
-                onMouseEnter={e => { e.currentTarget.style.color = '#f59e0b'; e.currentTarget.style.borderColor = '#f59e0b'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = '#0f172a'; e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.15)'; }}
                 title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
                 {showPassword ? (
@@ -438,17 +406,8 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
           <button
             type="submit"
             disabled={isLoading}
-            style={{ ...S.submitBtn, filter: isLoading ? 'brightness(0.85)' : 'brightness(1)' }}
-            onMouseEnter={e => {
-              if (!isLoading) {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 0 40px rgba(245,158,11,0.35)';
-              }
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'none';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(245,158,11,0.2)';
-            }}
+            className="titan-btn-armor-glow"
+            style={{ ...S.submitBtn, filter: isLoading ? 'brightness(0.85)' : undefined }}
           >
             {isLoading ? (
               <>

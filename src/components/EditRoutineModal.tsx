@@ -408,51 +408,35 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
         }
       `}</style>
       <div
-        className="gm-modal-overlay"
+        className="gm-modal-overlay titan-modal-overlay"
         style={{
-          position: 'fixed',
-          top: 0,
           left: '260px',
-          right: 0,
-          bottom: 0,
-          zIndex: 1000,
-          background: 'rgba(0, 0, 0, 0.85)',
-          backdropFilter: 'blur(8px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '16px',
-          boxSizing: 'border-box'
         }}
       >
-        <div style={{
-          background: '#0f172a',
-          border: '1px solid #334155',
+        <div className="titan-modal" style={{
           width: '100%',
-          maxWidth: '800px',
+          maxWidth: '820px',
           maxHeight: '92vh',
           padding: '24px',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          boxSizing: 'border-box',
           overflow: 'hidden'
         }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '1px solid #1e293b',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
           paddingBottom: '14px',
           flexShrink: 0
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              background: 'rgba(245, 158, 11, 0.15)',
-              color: '#f59e0b',
+              background: 'rgba(213, 122, 48, 0.16)',
+              color: '#FFBD4A',
               padding: '10px',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
+              border: '1px solid rgba(213, 122, 48, 0.4)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -460,7 +444,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               <Dumbbell size={20} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <h3 className="titan-section-title" style={{ margin: 0, fontSize: '16px' }}>
                 Editar Mi Rutina de Entrenamiento
               </h3>
               <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#94a3b8' }}>
@@ -471,23 +455,12 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
           <button 
             type="button" 
             onClick={onClose} 
+            className="titan-btn-armor-steel"
             style={{
-              background: 'rgba(245,158,11,0.12)',
-              border: '1px solid rgba(245,158,11,0.4)',
-              color: '#f59e0b',
-              cursor: 'pointer',
-              padding: '6px 10px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '4px',
-              fontSize: '22px',
-              fontWeight: 700,
+              padding: '6px 12px',
+              fontSize: '18px',
               lineHeight: 1,
-              transition: 'background 0.2s'
             }}
-            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.28)')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.12)')}
             title="Volver"
           >
             ‹
@@ -496,48 +469,37 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', flex: 1, paddingRight: '4px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Nombre de la Rutina:
             </label>
             <input
               type="text"
+              className="titan-input"
               value={nombreRutina}
               onChange={(e) => setNombreRutina(e.target.value)}
               required
               placeholder="Ej. Mi Plan Personalizado"
               style={{
                 width: '100%',
-                background: '#020617',
-                color: '#ffffff',
                 fontSize: '14px',
                 fontWeight: 800,
                 padding: '12px 14px',
-                border: '1px solid #334155',
-                outline: 'none',
                 boxSizing: 'border-box'
               }}
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
-            <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', flexWrap: 'wrap', gap: '8px' }}>
+            <h4 className="titan-section-title" style={{ margin: 0, fontSize: '12px', color: '#FFBD4A' }}>
               Ejercicios Asignados ({logsItems.length})
             </h4>
             <button
               type="button"
               onClick={() => setShowAddExercisePicker(!showAddExercisePicker)}
+              className="titan-btn-armor-copper"
               style={{
-                background: 'rgba(245, 158, 11, 0.15)',
-                color: '#f59e0b',
-                border: '1px solid rgba(245, 158, 11, 0.4)',
                 padding: '8px 14px',
                 fontSize: '11px',
-                fontWeight: 900,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                textTransform: 'uppercase'
               }}
             >
               <Plus size={14} />
@@ -546,46 +508,42 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
           </div>
 
           {showAddExercisePicker && (
-            <div style={{
-              background: '#020617',
-              border: '1px solid rgba(245, 158, 11, 0.5)',
+            <div className="titan-inset-well" style={{
+              borderColor: 'rgba(213, 122, 48, 0.5)',
               padding: '16px',
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
-              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                 <span style={{ fontSize: '12px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Search size={14} color="#f59e0b" />
+                  <Search size={14} color="#D57A30" />
                   Buscar en el Catálogo ({filteredExercises.length} de {exercises.length} GIFs)
                 </span>
 
-                <div style={{
+                <div className="titan-inset-well" style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  background: 'rgba(245, 158, 11, 0.12)',
-                  border: '1px solid rgba(245, 158, 11, 0.4)',
-                  padding: '4px 10px'
+                  borderColor: 'rgba(213, 122, 48, 0.45)',
+                  padding: '5px 10px',
+                  flexWrap: 'wrap'
                 }}>
-                  <span style={{ fontSize: '10px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <span style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#FFBD4A', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     ASIGNAR A:
                   </span>
                   
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <label style={{ fontSize: '10px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>SEMANA:</label>
                     <select
+                      className="titan-select"
                       value={selectedWeek}
                       onChange={(e) => setSelectedWeek(Number(e.target.value))}
                       style={{
-                        background: '#0f172a',
-                        color: '#f59e0b',
+                        color: '#FFBD4A',
                         fontSize: '11px',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         padding: '4px 8px',
-                        border: '1px solid rgba(245, 158, 11, 0.5)',
-                        outline: 'none',
                         cursor: 'pointer'
                       }}
                     >
@@ -598,16 +556,14 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <label style={{ fontSize: '10px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>DÍA:</label>
                     <select
+                      className="titan-select"
                       value={selectedDay}
                       onChange={(e) => setSelectedDay(e.target.value)}
                       style={{
-                        background: '#0f172a',
-                        color: '#f59e0b',
+                        color: '#FFBD4A',
                         fontSize: '11px',
-                        fontWeight: 900,
+                        fontWeight: 800,
                         padding: '4px 8px',
-                        border: '1px solid rgba(245, 158, 11, 0.5)',
-                        outline: 'none',
                         cursor: 'pointer'
                       }}
                     >
@@ -621,23 +577,22 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddExercisePicker(false)}
-                  style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '11px', cursor: 'pointer', fontWeight: 700 }}
+                  className="titan-btn-armor-steel"
+                  style={{ fontSize: '11px', padding: '5px 10px' }}
                 >
                   ✕ Cerrar
                 </button>
               </div>
 
-              <div style={{
-                background: 'rgba(16, 185, 129, 0.05)',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
+              <div className="titan-inset-well" style={{
+                borderLeft: '3px solid #D57A30',
                 padding: '12px',
-                borderRadius: '6px',
                 display: 'flex',
                 alignItems: 'center',
                 flexWrap: 'wrap',
                 gap: '12px'
               }}>
-                <span style={{ fontSize: '11px', fontWeight: 900, color: '#10b981', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#FFBD4A', textTransform: 'uppercase' }}>
                   🤖 Auto-Generador:
                 </span>
                 
@@ -649,19 +604,16 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 />
 
                 <select
+                  className="titan-select"
                   value={genLevel}
                   onChange={(e) => setGenLevel(e.target.value)}
                   style={{
-                    background: '#0f172a',
-                    color: '#10b981',
+                    color: '#FFBD4A',
                     fontSize: '11px',
-                    fontWeight: 800,
+                    fontWeight: 700,
                     padding: '8px 10px',
-                    border: '1px solid rgba(16, 185, 129, 0.4)',
-                    outline: 'none',
                     textTransform: 'uppercase',
                     cursor: 'pointer',
-                    borderRadius: '4px'
                   }}
                 >
                   <option value="Principiante">NIVEL: LIVIANA (Principiante)</option>
@@ -672,41 +624,25 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 <button
                   type="button"
                   onClick={handleGenerateRoutine}
+                  className="titan-btn-armor-copper"
                   style={{
-                    background: '#10b981',
-                    color: '#fff',
-                    border: 'none',
                     padding: '8px 16px',
                     fontSize: '11px',
-                    fontWeight: 900,
-                    cursor: 'pointer',
-                    textTransform: 'uppercase',
-                    borderRadius: '4px',
                     marginLeft: 'auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    boxShadow: '0 4px 10px -2px rgba(16, 185, 129, 0.4)'
                   }}
                 >
                   ⚡ Generar Rutina
                 </button>
               </div>
 
-              <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #1e293b', paddingBottom: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' }}>
                 <button
                   type="button"
                   onClick={() => setPickerViewMode('list')}
+                  className={pickerViewMode === 'list' ? 'titan-btn-armor-glow' : 'titan-btn-armor-steel'}
                   style={{
-                    background: pickerViewMode === 'list' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
-                    color: pickerViewMode === 'list' ? '#f59e0b' : '#64748b',
-                    border: pickerViewMode === 'list' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
-                    padding: '6px 12px',
+                    padding: '6px 14px',
                     fontSize: '11px',
-                    fontWeight: 800,
-                    cursor: 'pointer',
-                    textTransform: 'uppercase',
-                    borderRadius: '4px'
                   }}
                 >
                   Vista Lista
@@ -714,16 +650,10 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setPickerViewMode('anatomy')}
+                  className={pickerViewMode === 'anatomy' ? 'titan-btn-armor-glow' : 'titan-btn-armor-steel'}
                   style={{
-                    background: pickerViewMode === 'anatomy' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
-                    color: pickerViewMode === 'anatomy' ? '#f59e0b' : '#64748b',
-                    border: pickerViewMode === 'anatomy' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid transparent',
-                    padding: '6px 12px',
+                    padding: '6px 14px',
                     fontSize: '11px',
-                    fontWeight: 800,
-                    cursor: 'pointer',
-                    textTransform: 'uppercase',
-                    borderRadius: '4px'
                   }}
                 >
                   Vista Anatómica
@@ -746,33 +676,28 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 <>
                   <input
                 type="text"
+                className="titan-input"
                 placeholder="Buscar por Nº de ejercicio (ej. 2, 81), nombre o músculo..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  background: '#0f172a',
-                  color: '#ffffff',
                   fontSize: '12px',
                   padding: '10px 12px',
-                  border: '1px solid #334155',
-                  outline: 'none',
                   boxSizing: 'border-box'
                 }}
               />
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
                 <select
+                  className="titan-select"
                   value={selectedMuscle}
                   onChange={(e) => setSelectedMuscle(e.target.value)}
                   style={{
-                    background: '#0f172a',
-                    color: '#f59e0b',
+                    color: '#FFBD4A',
                     fontSize: '11px',
-                    fontWeight: 800,
+                    fontWeight: 700,
                     padding: '8px 10px',
-                    border: '1px solid #334155',
-                    outline: 'none',
                     textTransform: 'uppercase',
                     cursor: 'pointer'
                   }}
@@ -784,16 +709,14 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 </select>
 
                 <select
+                  className="titan-select"
                   value={selectedEquipment}
                   onChange={(e) => setSelectedEquipment(e.target.value)}
                   style={{
-                    background: '#0f172a',
-                    color: '#f59e0b',
+                    color: '#FFBD4A',
                     fontSize: '11px',
-                    fontWeight: 800,
+                    fontWeight: 700,
                     padding: '8px 10px',
-                    border: '1px solid #334155',
-                    outline: 'none',
                     textTransform: 'uppercase',
                     cursor: 'pointer'
                   }}
@@ -805,16 +728,14 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                 </select>
 
                 <select
+                  className="titan-select"
                   value={selectedLevel}
                   onChange={(e) => setSelectedLevel(e.target.value)}
                   style={{
-                    background: '#0f172a',
-                    color: '#f59e0b',
+                    color: '#FFBD4A',
                     fontSize: '11px',
-                    fontWeight: 800,
+                    fontWeight: 700,
                     padding: '8px 10px',
-                    border: '1px solid #334155',
-                    outline: 'none',
                     textTransform: 'uppercase',
                     cursor: 'pointer'
                   }}
@@ -834,25 +755,25 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                       key={ex.id}
                       onClick={() => openPreview(ex, catalogList)}
                       title="Toca para ver vista previa y detalles"
+                      className="titan-armor-card titan-armor-card-interactive"
                       style={{
                         padding: '8px 12px',
-                        background: '#0f172a',
-                        border: '1px solid #1e293b',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         cursor: 'pointer',
-                        transition: 'background 0.2s'
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         {ex.image_urls?.[0] && (
-                          <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="gm-exercise-gif" style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#000', padding: '2px' }} />
+                          <div className="gm-gif-wrap" style={{ width: '44px', height: '44px', background: '#000', padding: '2px', border: '1px solid rgba(213,122,48,0.32)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="gm-exercise-gif" style={{ width: '100%', height: '100%', objectFit: 'contain', background: 'transparent', display: 'block' }} />
+                          </div>
                         )}
                         <div>
                           <p style={{ margin: 0, fontSize: '12px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             {ex.name}
-                            <span style={{ fontSize: '9px', fontWeight: 900, color: '#f59e0b', background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', padding: '1px 5px', fontFamily: 'monospace' }}>
+                            <span className="titan-badge-copper" style={{ fontSize: '9px', padding: '1px 5px', fontFamily: 'monospace' }}>
                               Nº {catNum}
                             </span>
                           </p>
@@ -861,19 +782,14 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                       </div>
                     <button
                       type="button"
+                      className="titan-btn-armor-copper"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleAddExercise(ex);
                       }}
                       style={{
-                        fontSize: '11px',
-                        fontWeight: 900,
-                        color: '#f59e0b',
-                        background: 'rgba(245,158,11,0.15)',
-                        border: '1px solid rgba(245,158,11,0.3)',
+                        fontSize: '10px',
                         padding: '6px 12px',
-                        cursor: 'pointer',
-                        textTransform: 'uppercase'
                       }}
                     >
                       + Añadir a Sem {selectedWeek} ({selectedDay})
@@ -893,17 +809,14 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               const dayNum = getDayExerciseNumber(logsItems, idx);
 
               return (
-                <div key={item.id || idx} style={{
-                  background: dayColor.bg,
-                  border: `1px solid ${dayColor.border}`,
+                <div key={item.id || idx} className="titan-armor-card" style={{
                   borderLeft: `5px solid ${dayColor.main}`,
                   padding: '16px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
-                  transition: 'all 0.2s ease'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${dayColor.border}`, paddingBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid rgba(255,255,255,0.08)`, paddingBottom: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <button
@@ -911,23 +824,17 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                           disabled={idx === 0}
                           onClick={() => handleMoveUp(idx)}
                           title="Mover arriba"
+                          className="titan-btn-armor-steel"
                           style={{
-                            background: idx === 0 ? 'rgba(255,255,255,0.05)' : dayColor.main,
-                            color: idx === 0 ? '#475569' : '#090d16',
-                            border: 'none',
                             width: '24px',
                             height: '24px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: idx === 0 ? 'not-allowed' : 'pointer',
-                            fontWeight: 900
+                            padding: 0,
                           }}
                         >
-                          <ChevronUp size={16} />
+                          <ChevronUp size={15} />
                         </button>
 
-                        <span style={{ background: dayColor.main, color: '#090d16', fontSize: '12px', fontWeight: 900, padding: '3px 8px', borderRadius: '2px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ background: dayColor.main, color: '#090d16', fontSize: '12px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, padding: '3px 8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                           #{dayNum}
                         </span>
 
@@ -936,50 +843,57 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                           disabled={idx === logsItems.length - 1}
                           onClick={() => handleMoveDown(idx)}
                           title="Mover abajo"
+                          className="titan-btn-armor-steel"
                           style={{
-                            background: idx === logsItems.length - 1 ? 'rgba(255,255,255,0.05)' : dayColor.main,
-                            color: idx === logsItems.length - 1 ? '#475569' : '#090d16',
-                            border: 'none',
                             width: '24px',
                             height: '24px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: idx === logsItems.length - 1 ? 'not-allowed' : 'pointer',
-                            fontWeight: 900
+                            padding: 0,
                           }}
                         >
-                          <ChevronDown size={16} />
+                          <ChevronDown size={15} />
                         </button>
                       </div>
 
                       {/* GIF del ejercicio */}
                       {item.exercise?.image_urls?.[0] && (
-                        <img
-                          src={fixImageUrl(item.exercise.image_urls[0])}
-                          alt={item.exercise.name}
+                        <div
+                          className="gm-gif-wrap"
                           title="Ver GIF del ejercicio"
                           style={{
-                            width: '54px',
-                            height: '54px',
-                            objectFit: 'cover',
-                            borderRadius: '6px',
-                            border: `2px solid ${dayColor.border}`,
+                            width: '56px',
+                            height: '56px',
+                            border: `1.5px solid ${dayColor.border}`,
                             flexShrink: 0,
                             cursor: 'pointer',
                             background: '#000',
+                            padding: '3px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                           }}
-                          className="gm-exercise-gif"
                           onClick={() => {
                             const ex = item.exercise || exercises.find((e) => e.id === item.exercise_id);
                             if (ex) {
                               const routineExercises = logsItems
                                 .map((l) => l.exercise || exercises.find((e) => e.id === l.exercise_id))
                                 .filter(Boolean) as Exercise[];
-                              openPreview(ex, routineExercises, idx, true); // solo ver, navegar por la rutina
+                              openPreview(ex, routineExercises, idx, true);
                             }
                           }}
-                        />
+                        >
+                          <img
+                            src={fixImageUrl(item.exercise.image_urls[0])}
+                            alt={item.exercise.name}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'contain',
+                              background: 'transparent',
+                              display: 'block',
+                            }}
+                            className="gm-exercise-gif"
+                          />
+                        </div>
                       )}
 
                       <span style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -987,7 +901,7 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                         {(() => {
                           const cIdx = item.exercise_id ? exercises.findIndex(e => e.id === item.exercise_id) : -1;
                           return cIdx >= 0 ? (
-                            <span style={{ fontSize: '10px', fontWeight: 900, color: dayColor.text, background: 'rgba(0,0,0,0.3)', border: `1px solid ${dayColor.border}`, padding: '2px 6px', fontFamily: 'monospace' }}>
+                            <span className="titan-badge-copper" style={{ fontSize: '10px', padding: '2px 6px', fontFamily: 'monospace' }}>
                               Nº {cIdx + 1}/{exercises.length}
                             </span>
                           ) : null;
@@ -997,10 +911,11 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     <button
                       type="button"
                       onClick={() => handleRemoveExercise(idx)}
-                      style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', padding: '4px' }}
+                      className="titan-btn-armor-danger"
+                      style={{ padding: '6px' }}
                       title="Eliminar de la rutina"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={15} />
                     </button>
                   </div>
 
@@ -1010,19 +925,21 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                       <input
                         type="number"
                         min="1"
+                        className="titan-input"
                         value={dayNum}
                         onChange={(e) => handleReorderDirect(idx, parseInt(e.target.value) || 1)}
-                        style={{ width: '100%', background: '#0f172a', color: dayColor.text, fontSize: '12px', fontWeight: 900, padding: '8px', border: `1px solid ${dayColor.border}`, boxSizing: 'border-box' }}
+                        style={{ width: '100%', color: dayColor.text, fontSize: '12px', fontWeight: 900, padding: '8px', boxSizing: 'border-box' }}
                         title="Cambia la posición del ejercicio en este día"
                       />
                     </div>
 
                     <div>
-                      <label style={{ fontSize: '10px', fontWeight: 800, color: '#f59e0b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Semana:</label>
+                      <label style={{ fontSize: '10px', fontWeight: 800, color: '#D57A30', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Semana:</label>
                       <select
+                        className="titan-select"
                         value={item.semana}
                         onChange={(e) => handleItemChange(idx, 'semana', parseInt(e.target.value) || 1)}
-                        style={{ width: '100%', background: '#0f172a', color: '#f59e0b', fontSize: '12px', fontWeight: 800, padding: '8px', border: '1px solid rgba(245, 158, 11, 0.4)', boxSizing: 'border-box' }}
+                        style={{ width: '100%', color: '#FFBD4A', fontSize: '12px', fontWeight: 800, padding: '8px', boxSizing: 'border-box' }}
                       >
                         {WEEKS.map((w) => (
                           <option key={w} value={w}>Semana {w}</option>
@@ -1033,9 +950,10 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     <div>
                       <label style={{ fontSize: '10px', fontWeight: 800, color: dayColor.main, display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Día:</label>
                       <select
+                        className="titan-select"
                         value={item.dia}
                         onChange={(e) => handleItemChange(idx, 'dia', e.target.value)}
-                        style={{ width: '100%', background: '#0f172a', color: dayColor.text, fontSize: '12px', fontWeight: 900, padding: '8px', border: `1px solid ${dayColor.border}`, boxSizing: 'border-box' }}
+                        style={{ width: '100%', color: dayColor.text, fontSize: '12px', fontWeight: 900, padding: '8px', boxSizing: 'border-box' }}
                       >
                         {DAYS.map((d) => (
                           <option key={d} value={d}>{d}</option>
@@ -1044,36 +962,39 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     </div>
 
                   <div>
-                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Series:</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#94A3B8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Series:</label>
                     <input
                       type="number"
                       min="1"
+                      className="titan-input"
                       value={item.series}
                       onChange={(e) => handleItemChange(idx, 'series', parseInt(e.target.value) || 1)}
-                      style={{ width: '100%', background: '#0f172a', color: '#fff', fontSize: '12px', fontWeight: 800, padding: '8px', border: '1px solid #334155', boxSizing: 'border-box' }}
+                      style={{ width: '100%', fontSize: '12px', fontWeight: 800, padding: '8px', boxSizing: 'border-box' }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Reps:</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#94A3B8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Reps:</label>
                     <input
                       type="number"
                       min="1"
+                      className="titan-input"
                       value={item.repeticiones}
                       onChange={(e) => handleItemChange(idx, 'repeticiones', parseInt(e.target.value) || 1)}
-                      style={{ width: '100%', background: '#0f172a', color: '#fff', fontSize: '12px', fontWeight: 800, padding: '8px', border: '1px solid #334155', boxSizing: 'border-box' }}
+                      style={{ width: '100%', fontSize: '12px', fontWeight: 800, padding: '8px', boxSizing: 'border-box' }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#f59e0b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Objetivo (KG):</label>
+                    <label style={{ fontSize: '10px', fontWeight: 800, color: '#FFBD4A', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Objetivo (KG):</label>
                     <input
                       type="number"
                       step="0.5"
                       min="0"
+                      className="titan-input"
                       value={item.peso_objetivo}
                       onChange={(e) => handleItemChange(idx, 'peso_objetivo', parseFloat(e.target.value) || 0)}
-                      style={{ width: '100%', background: '#0f172a', color: '#f59e0b', fontSize: '12px', fontWeight: 900, padding: '8px', border: '1px solid rgba(245, 158, 11, 0.4)', boxSizing: 'border-box' }}
+                      style={{ width: '100%', color: '#FFBD4A', fontSize: '12px', fontWeight: 900, padding: '8px', boxSizing: 'border-box' }}
                     />
                   </div>
                 </div>
@@ -1088,39 +1009,26 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             justifyContent: 'flex-end',
             gap: '12px',
             paddingTop: '14px',
-            borderTop: '1px solid #1e293b',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
             flexShrink: 0
           }}>
             <button
               type="button"
               onClick={onClose}
+              className="titan-btn-armor-steel"
               style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#94a3b8',
-                fontSize: '12px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                padding: '8px 12px',
-                textTransform: 'uppercase'
+                fontSize: '11px',
+                padding: '9px 16px',
               }}
             >
               Cancelar
             </button>
             <button
               type="submit"
+              className="titan-btn-armor-glow"
               style={{
-                background: '#f59e0b',
-                color: '#000000',
-                border: 'none',
                 padding: '10px 20px',
                 fontSize: '12px',
-                fontWeight: 900,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                textTransform: 'uppercase'
               }}
             >
               <Save size={16} />
@@ -1138,109 +1046,75 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
         const totalNum = activePreviewList.length;
 
         return (
-          <div style={{
-            position: 'fixed',
-            inset: 0,
+          <div className="titan-modal-overlay" style={{
             zIndex: 1100,
-            background: 'rgba(0, 0, 0, 0.85)',
-            backdropFilter: 'blur(8px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '16px',
-            boxSizing: 'border-box'
           }} onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }}>
 
             <button
               type="button"
+              className="titan-btn-armor-glow"
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevExercise();
               }}
               title="Ejercicio anterior (Flecha Izquierda)"
               style={{
-                background: 'rgba(15, 23, 42, 0.9)',
-                border: '2px solid rgba(245, 158, 11, 0.7)',
-                color: '#f59e0b',
-                borderRadius: '50%',
-                width: '56px',
-                height: '56px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                boxShadow: '0 0 25px rgba(245, 158, 11, 0.4)',
+                width: '52px',
+                height: '52px',
                 marginRight: '16px',
-                transition: 'transform 0.2s, background 0.2s',
                 flexShrink: 0,
                 zIndex: 1102
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.background = '#f59e0b';
-                e.currentTarget.style.color = '#000000';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.background = 'rgba(15, 23, 42, 0.9)';
-                e.currentTarget.style.color = '#f59e0b';
-              }}
             >
-              <ChevronLeft size={36} />
+              <ChevronLeft size={30} />
             </button>
 
             {/* Modal Box */}
-            <div style={{
-              background: '#0f172a',
-              border: '1px solid #334155',
+            <div className="titan-modal" style={{
               width: '100%',
               maxWidth: '520px',
               maxHeight: '90vh',
               padding: '24px',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
               display: 'flex',
               flexDirection: 'column',
               gap: '16px',
               overflowY: 'auto',
-              boxSizing: 'border-box'
             }} onClick={(e) => e.stopPropagation()}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff' }}>{previewExercise.name}</h3>
-                  <span style={{ fontSize: '10px', fontWeight: 900, color: '#f59e0b', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '2px 8px' }}>
+                  <h3 className="titan-section-title" style={{ margin: 0, fontSize: '16px' }}>{previewExercise.name}</h3>
+                  <span className="titan-badge-copper" style={{ fontSize: '10px', padding: '2px 8px' }}>
                     {currentNum} / {totalNum}
                   </span>
                 </div>
-                <button onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
-                  <X size={20} />
+                <button className="titan-btn-armor-steel" style={{ padding: '5px' }} onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }}>
+                  <X size={18} />
                 </button>
               </div>
 
               {/* GIF Large Container */}
               {previewExercise.image_urls?.[0] && (
-                <div className="gm-gif-wrap" style={{
+                <div className="gm-gif-wrap titan-inset-well" style={{
                   position: 'relative',
                   width: '100%',
                   height: '240px',
-                  background: '#000',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '16px',
-                  border: '1px solid #334155',
                   boxSizing: 'border-box'
                 }}>
-                  <img src={fixImageUrl(previewExercise.image_urls[0])} alt={previewExercise.name} className="gm-exercise-gif" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  <img src={fixImageUrl(previewExercise.image_urls[0])} alt={previewExercise.name} className="gm-exercise-gif gm-exercise-gif-lg" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                 </div>
               )}
 
               {/* Muscle and Equipment Badges */}
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase' }}>
+                <span className="titan-badge-copper" style={{ padding: '4px 10px', fontSize: '10px' }}>
                   {previewExercise.equipment || 'Máquina'}
                 </span>
                 {previewExercise.primary_muscles.map((m) => (
-                  <span key={m} style={{ background: '#1e293b', color: '#94a3b8', padding: '4px 10px', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase' }}>
+                  <span key={m} className="titan-badge-steel" style={{ padding: '4px 10px', fontSize: '10px' }}>
                     {m}
                   </span>
                 ))}
@@ -1248,8 +1122,8 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
 
               {/* Execution Instructions */}
               {previewExercise.instructions && previewExercise.instructions.length > 0 && (
-                <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '14px' }}>
-                  <h4 style={{ margin: '0 0 8px', fontSize: '11px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>Instrucciones de Ejecución</h4>
+                <div className="titan-inset-well" style={{ padding: '14px' }}>
+                  <h4 style={{ margin: '0 0 8px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#FFBD4A', textTransform: 'uppercase' }}>Instrucciones de Ejecución</h4>
                   <ol style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: '#cbd5e1', lineHeight: '1.6' }}>
                     {previewExercise.instructions.map((step, idx) => (
                       <li key={idx} style={{ marginBottom: '4px' }}>{step}</li>
@@ -1259,11 +1133,12 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
               )}
 
               {/* Actions */}
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                 <button
                   type="button"
                   onClick={() => { setPreviewExercise(null); setPreviewContextList(null); setPreviewIndex(null); }}
-                  style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: 800, cursor: 'pointer', padding: '8px 12px', textTransform: 'uppercase' }}
+                  className="titan-btn-armor-steel"
+                  style={{ fontSize: '11px', padding: '8px 14px' }}
                 >
                   Cerrar
                 </button>
@@ -1276,7 +1151,8 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
                     setPreviewContextList(null);
                     setPreviewIndex(null);
                   }}
-                  style={{ background: '#f59e0b', color: '#000000', border: 'none', padding: '10px 20px', fontSize: '12px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'uppercase' }}
+                  className="titan-btn-armor-copper"
+                  style={{ padding: '10px 20px', fontSize: '12px' }}
                 >
                   <Plus size={16} />
                   <span>Añadir a Sem {selectedWeek} ({selectedDay})</span>
@@ -1288,40 +1164,21 @@ export const EditRoutineModal: React.FC<EditRoutineModalProps> = ({
             {/* Right Navigation Arrow Button */}
             <button
               type="button"
+              className="titan-btn-armor-glow"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNextExercise();
               }}
               title="Siguiente ejercicio (Flecha Derecha)"
               style={{
-                background: 'rgba(15, 23, 42, 0.9)',
-                border: '2px solid rgba(245, 158, 11, 0.7)',
-                color: '#f59e0b',
-                borderRadius: '50%',
-                width: '56px',
-                height: '56px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                boxShadow: '0 0 25px rgba(245, 158, 11, 0.4)',
+                width: '52px',
+                height: '52px',
                 marginLeft: '16px',
-                transition: 'transform 0.2s, background 0.2s',
                 flexShrink: 0,
                 zIndex: 1102
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.background = '#f59e0b';
-                e.currentTarget.style.color = '#000000';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.background = 'rgba(15, 23, 42, 0.9)';
-                e.currentTarget.style.color = '#f59e0b';
-              }}
             >
-              <ChevronRight size={36} />
+              <ChevronRight size={30} />
             </button>
           </div>
         );

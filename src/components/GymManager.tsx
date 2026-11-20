@@ -6,59 +6,44 @@ import { GymTenant, Profile } from '../types';
 
 /* ─── Shared Styles ─── */
 const S = {
-  page: { padding: '32px 24px', maxWidth: '800px', margin: '0 auto', fontFamily: "'Inter', sans-serif" },
+  page: { padding: '24px', maxWidth: '920px', margin: '0 auto', fontFamily: "'Inter', sans-serif" },
   card: {
-    background: '#111827', border: '1px solid #1e293b', borderRadius: '0',
-    padding: '32px', position: 'relative' as const, overflow: 'hidden' as const,
-    boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-  },
-  glow: {
-    position: 'absolute' as const, top: '-100px', right: '-100px', width: '250px', height: '250px',
-    background: '#D4FF00', filter: 'blur(120px)', opacity: 0.1, borderRadius: '0', pointerEvents: 'none' as const,
+    padding: '32px', position: 'relative' as const
   },
   header: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' },
-  iconBox: { background: 'rgba(245,158,11,0.1)', padding: '8px', borderRadius: '0', color: '#D4FF00', display: 'flex' },
-  title: { fontSize: '20px', fontWeight: 900, color: '#fff', margin: 0 },
-  subtitle: { fontSize: '12px', color: 'rgba(255,255,255,0.4)', margin: 0, paddingBottom: '24px', borderBottom: '1px solid #1e293b' },
+  iconBox: { background: 'linear-gradient(135deg, rgba(213,122,48,0.22), rgba(140,62,16,0.12))', border: '1px solid rgba(213,122,48,0.45)', padding: '9px', color: '#FFBD4A', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  title: { fontSize: '20px', fontWeight: 700, fontFamily: "'Chakra Petch', sans-serif", color: '#fff', margin: 0, textTransform: 'uppercase' as const, letterSpacing: '0.04em' },
+  subtitle: { fontSize: '12px', color: '#94A3B8', margin: 0, paddingBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.08)' },
   
-  form: { display: 'flex', flexDirection: 'column' as const, gap: '20px', marginTop: '24px', position: 'relative' as const, zIndex: 10 },
+  form: { display: 'flex', flexDirection: 'column' as const, gap: '20px', marginTop: '24px' },
   fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: '8px' },
-  label: { fontSize: '10px', fontWeight: 800, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' as const, letterSpacing: '0.1em' },
+  label: { fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#CBD5E1', textTransform: 'uppercase' as const, letterSpacing: '0.1em' },
   input: {
-    width: '100%', boxSizing: 'border-box' as const, background: '#121212', border: '1px solid #334155',
-    borderRadius: '0', padding: '14px 16px', color: '#fff', fontSize: '14px', fontFamily: 'inherit',
-    outline: 'none', transition: 'border-color 0.2s',
+    width: '100%', boxSizing: 'border-box' as const,
+    padding: '13px 16px', fontSize: '14px', fontFamily: 'inherit',
   },
   
-  sectionTitle: { fontSize: '14px', fontWeight: 800, color: '#fff', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' },
+  sectionTitle: { fontSize: '14px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#fff', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', textTransform: 'uppercase' as const },
   grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' },
   
   submitBtn: {
-    width: '100%', background: 'linear-gradient(135deg, #f59e0b, #a8cc00)', border: 'none',
-    borderRadius: '0', padding: '16px', color: '#000', fontSize: '14px', fontWeight: 900,
-    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer',
-    boxShadow: '0 10px 20px rgba(245,158,11,0.15)', textTransform: 'uppercase' as const, letterSpacing: '0.05em',
-    marginTop: '16px', transition: 'all 0.2s',
+    width: '100%', padding: '16px', fontSize: '14px', marginTop: '8px'
   },
   
-  alertErr: { background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171', padding: '12px', borderRadius: '0', fontSize: '12px', fontWeight: 600 },
-  alertSucc: { background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#34d399', padding: '12px', borderRadius: '0', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' },
+  alertErr: { background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)', color: '#FCA5A5', padding: '12px', fontSize: '12px', fontWeight: 600 },
+  alertSucc: { background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(52,211,153,0.3)', color: '#6EE7B7', padding: '12px', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' },
 
   gymCard: {
-    background: '#111827', border: '1px solid #1e293b', borderRadius: '0', padding: '24px',
+    padding: '24px',
     display: 'flex', flexDirection: 'column' as const, justifyContent: 'space-between', gap: '16px',
-    transition: 'all 0.2s',
   },
-  gymTitle: { fontSize: '16px', fontWeight: 900, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' },
-  planBadge: { background: '#1e293b', border: '1px solid #334155', color: '#D4FF00', fontSize: '10px', padding: '2px 6px', borderRadius: '0', textTransform: 'uppercase' as const, fontFamily: 'monospace' },
-  coachBox: { background: '#1e293b', border: '1px solid #334155', borderRadius: '0', padding: '12px', marginTop: '8px' },
-  coachLabel: { fontSize: '10px', fontWeight: 800, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' as const, marginBottom: '4px' },
+  gymTitle: { fontSize: '16px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' as const },
+  planBadge: { fontSize: '10px', padding: '2px 7px', fontFamily: 'monospace' },
+  coachBox: { padding: '12px', marginTop: '10px' },
+  coachLabel: { fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase' as const, marginBottom: '4px' },
   coachName: { fontSize: '13px', fontWeight: 700, color: '#fff' },
-  coachEmail: { fontSize: '12px', color: 'rgba(255,255,255,0.4)' },
   enterBtn: {
-    width: '100%', background: '#1e293b', border: '1px solid #334155', color: '#fff', padding: '12px',
-    borderRadius: '0', fontSize: '13px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-    cursor: 'pointer', transition: 'all 0.2s',
+    width: '100%', padding: '12px', fontSize: '13px'
   }
 };
 
@@ -91,10 +76,8 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
 
   return (
     <div style={S.page}>
-      <div style={S.card}>
-        <div style={S.glow} />
-        
-        <div style={{ position: 'relative', zIndex: 10 }}>
+      <div className="titan-armor-card" style={S.card}>
+        <div>
           <div style={S.header}>
             <div style={S.iconBox}><Building2 size={24} /></div>
             <h2 style={S.title}>Generar Nuevo Gimnasio</h2>
@@ -108,13 +91,13 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
 
           <div style={S.fieldGroup}>
             <label style={S.label}>Nombre del Gimnasio / Negocio</label>
-            <input style={S.input} type="text" value={gymName} onChange={e => setGymName(e.target.value)} placeholder="Sucursal Coach" required onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+            <input className="titan-input" style={S.input} type="text" value={gymName} onChange={e => setGymName(e.target.value)} placeholder="Sucursal Coach" required />
           </div>
 
           <div style={S.grid2}>
             <div style={S.fieldGroup}>
               <label style={S.label}>Plan SaaS</label>
-              <select style={S.input} value={plan} onChange={e => setPlan(e.target.value as any)} onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'}>
+              <select className="titan-select" style={S.input} value={plan} onChange={e => setPlan(e.target.value as any)}>
                 <option value="free">Free (Limitado)</option>
                 <option value="pro">PRO (Recomendado)</option>
                 <option value="enterprise">Enterprise</option>
@@ -122,22 +105,22 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid #1e293b', paddingTop: '24px', marginTop: '8px' }}>
-            <h3 style={S.sectionTitle}><Shield size={16} color="#f59e0b" /> Crear Entrenador Administrador</h3>
+          <div className="titan-inset-well" style={{ padding: '20px', marginTop: '4px' }}>
+            <h3 style={S.sectionTitle}><Shield size={16} color="#D57A30" /> Crear Entrenador Administrador</h3>
             
             <div style={S.grid2}>
               <div style={S.fieldGroup}>
                 <label style={S.label}>Nombre Completo</label>
-                <input style={S.input} type="text" value={adminName} onChange={e => setAdminName(e.target.value)} required placeholder="Ej. Carlos Mendoza" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+                <input className="titan-input" style={S.input} type="text" value={adminName} onChange={e => setAdminName(e.target.value)} required placeholder="Ej. Carlos Mendoza" />
               </div>
               <div style={S.fieldGroup}>
                 <label style={S.label}>Usuario</label>
-                <input style={S.input} type="text" value={adminEmail} onChange={e => setAdminEmail(e.target.value)} required placeholder="Ej. gym" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+                <input className="titan-input" style={S.input} type="text" value={adminEmail} onChange={e => setAdminEmail(e.target.value)} required placeholder="Ej. gym" />
               </div>
               <div style={{ ...S.fieldGroup, gridColumn: 'span 2' }}>
                 <label style={S.label}>Contraseña Temporal</label>
                 <div style={{ position: 'relative' }}>
-                  <input style={{ ...S.input, paddingRight: '40px' }} type={showAdminPassword ? "text" : "password"} value={adminPassword} onChange={e => setAdminPassword(e.target.value)} required placeholder="Mínimo 4 caracteres" onFocus={e=>e.target.style.borderColor='#f59e0b'} onBlur={e=>e.target.style.borderColor='#334155'} />
+                  <input className="titan-input" style={{ ...S.input, paddingRight: '44px' }} type={showAdminPassword ? "text" : "password"} value={adminPassword} onChange={e => setAdminPassword(e.target.value)} required placeholder="Mínimo 4 caracteres" />
                   <button type="button" onClick={() => setShowAdminPassword(!showAdminPassword)} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0 }}>
                     {showAdminPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -146,9 +129,7 @@ export const CreateGymView: React.FC<{ onGymCreated: (gym: GymTenant, coach: Pro
             </div>
           </div>
 
-          <button type="submit" style={S.submitBtn}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'none'}>
+          <button type="submit" className="titan-btn-armor-glow" style={S.submitBtn}>
             <Globe2 size={18} /> Generar y Desplegar Gimnasio
           </button>
         </form>
@@ -207,31 +188,33 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
   };
 
   return (
-    <div style={S.page}>
+    <div style={{ ...S.page, maxWidth: '1200px' }}>
       {/* Modal de confirmación */}
       {confirmGym && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
-          <div style={{ background: '#0f172a', border: '2px solid #dc2626', padding: '32px', maxWidth: '420px', width: '100%', boxShadow: '0 25px 50px rgba(220,38,38,0.3)' }}>
+        <div className="titan-modal-overlay" style={{ zIndex: 9999 }}>
+          <div className="titan-modal titan-armor-card-danger" style={{ padding: '32px', maxWidth: '420px', width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <AlertTriangle size={28} color="#dc2626" />
-              <h3 style={{ color: '#fff', fontSize: '18px', fontWeight: 900, margin: 0 }}>¿Eliminar definitivamente?</h3>
+              <AlertTriangle size={28} color="#EF4444" />
+              <h3 className="titan-section-title" style={{ fontSize: '18px', margin: 0 }}>¿Eliminar definitivamente?</h3>
             </div>
             <p style={{ color: '#94a3b8', fontSize: '14px', marginBottom: '8px' }}>
               Estás por eliminar el gym:
             </p>
-            <p style={{ color: '#f59e0b', fontWeight: 800, fontSize: '16px', margin: '0 0 8px' }}>📍 {confirmGym.name}</p>
-            <p style={{ color: '#ef4444', fontSize: '13px', marginBottom: '24px', lineHeight: 1.5 }}>
+            <p style={{ color: '#FFBD4A', fontWeight: 800, fontSize: '16px', margin: '0 0 8px' }}>📍 {confirmGym.name}</p>
+            <p style={{ color: '#FCA5A5', fontSize: '13px', marginBottom: '24px', lineHeight: 1.5 }}>
               ⚠️ Se eliminarán <strong>todos los perfiles, rutinas, ejercicios y logs</strong> de este gym de Supabase de forma permanente. Esta acción <strong>no se puede deshacer</strong>.
             </p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button
+                className="titan-btn-armor-steel"
                 onClick={() => setConfirmGym(null)}
-                style={{ flex: 1, padding: '12px', background: '#1e293b', color: '#fff', border: '1px solid #334155', fontWeight: 700, cursor: 'pointer', fontSize: '14px' }}
+                style={{ flex: 1, padding: '12px', fontSize: '13px' }}
               >Cancelar</button>
               <button
+                className="titan-btn-armor-danger"
                 onClick={() => handleDeleteGym(confirmGym)}
                 disabled={!!deletingGymId}
-                style={{ flex: 1, padding: '12px', background: '#dc2626', color: '#fff', border: 'none', fontWeight: 900, cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                style={{ flex: 1, padding: '12px', fontSize: '13px' }}
               >
                 <Trash2 size={16} /> {deletingGymId ? 'Eliminando...' : 'SÍ, ELIMINAR TODO'}
               </button>
@@ -240,20 +223,20 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
         </div>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
-        <div style={{ background: '#D4FF00', padding: '12px', borderRadius: '0', color: '#000', display: 'flex' }}>
+      <div className="titan-armor-banner" style={{ padding: '24px 28px', display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '28px' }}>
+        <div style={S.iconBox}>
           <Building2 size={24} />
         </div>
         <div>
-          <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#fff', margin: 0 }}>Lista de Gimnasios (Tenants)</h2>
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>Total aislados por Row Level Security: {allGyms.length}</p>
+          <h2 className="titan-section-title" style={{ fontSize: '22px', margin: 0 }}>Lista de Gimnasios (Tenants)</h2>
+          <p style={{ fontSize: '12px', color: '#94A3B8', margin: '4px 0 0' }}>Total aislados por Row Level Security: <strong style={{ color: '#FFBD4A' }}>{allGyms.length}</strong></p>
         </div>
       </div>
       {deleteMsg && (
-        <div style={{ padding: '12px 16px', background: deleteMsg.startsWith('✅') ? 'rgba(34,197,94,0.1)' : 'rgba(220,38,38,0.1)', border: `1px solid ${deleteMsg.startsWith('✅') ? '#22c55e' : '#dc2626'}`, color: deleteMsg.startsWith('✅') ? '#22c55e' : '#ef4444', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>{deleteMsg}</div>
+        <div style={{ padding: '12px 16px', background: deleteMsg.startsWith('✅') ? 'rgba(16,185,129,0.12)' : 'rgba(220,38,38,0.12)', border: `1px solid ${deleteMsg.startsWith('✅') ? '#34D399' : '#EF4444'}`, color: deleteMsg.startsWith('✅') ? '#6EE7B7' : '#FCA5A5', fontSize: '14px', fontWeight: 700, marginBottom: '16px' }}>{deleteMsg}</div>
       )}
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: '20px' }}>
         {allGyms.map((gym) => {
           const gymProfiles = allProfiles.filter(p => p.gym_id === gym.id);
           const coach = gymProfiles.find(p => p.role === 'coach') || gymProfiles[0];
@@ -278,54 +261,53 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
           };
 
           return (
-            <div key={gym.id} style={S.gymCard}
-              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(245,158,11,0.3)'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = '#1e293b'}>
+            <div key={gym.id} className="titan-armor-card titan-armor-card-interactive" style={S.gymCard}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                <div style={{ background: '#1e293b', padding: '12px', borderRadius: '0', border: '1px solid #334155', color: isMaster ? '#f59e0b' : '#D4FF00', display: 'flex' }}>
+                <div style={S.iconBox}>
                   <Building2 size={20} />
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
                     <h4 style={S.gymTitle}>
-                      {gym.name} <span style={S.planBadge}>{gym.plan}</span>
-                      {isMaster && <span style={{ ...S.planBadge, background: 'rgba(245,158,11,0.2)', color: '#f59e0b', marginLeft: '4px' }}>MASTER</span>}
+                      {gym.name} <span className="titan-badge-copper" style={S.planBadge}>{gym.plan}</span>
+                      {isMaster && <span className="titan-badge-copper" style={{ ...S.planBadge, marginLeft: '2px' }}>MASTER</span>}
                     </h4>
                     {!isMaster && (
                       <button
+                        className="titan-btn-armor-danger"
                         onClick={() => setConfirmGym(gym)}
                         title="Eliminar gym definitivamente"
-                        style={{ background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.4)', color: '#ef4444', padding: '6px 8px', cursor: 'pointer', borderRadius: '0', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, transition: 'all 0.2s' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#dc2626'; e.currentTarget.style.color = '#fff'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(220,38,38,0.15)'; e.currentTarget.style.color = '#ef4444'; }}
+                        style={{ padding: '5px 8px', fontSize: '10px', flexShrink: 0 }}
                       >
-                        <Trash2 size={13} /> Eliminar
+                        <Trash2 size={12} /> Eliminar
                       </button>
                     )}
                   </div>
-                  <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace', margin: '4px 0 0' }}>ID: {gym.id}</p>
+                  <p style={{ fontSize: '11px', color: '#64748B', fontFamily: 'monospace', margin: '4px 0 0' }}>ID: {gym.id}</p>
                   
                   {coach && (
-                    <div style={S.coachBox}>
+                    <div className="titan-inset-well" style={S.coachBox}>
                       <div style={S.coachLabel}>Admin / Coach:</div>
                       <div style={S.coachName}>{coach.full_name}</div>
                       <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
                         <div style={{ flex: 1 }}>
-                          <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>USUARIO</label>
+                          <label style={{ display: 'block', fontSize: '10px', color: '#94A3B8', marginBottom: '2px', fontWeight: 700 }}>USUARIO</label>
                           <input 
                             type="text" 
+                            className="titan-input"
                             value={draft.email} 
                             onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, email: e.target.value } }))}
-                            style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
+                            style={{ padding: '6px 8px', fontSize: '12px', width: '100%' }}
                           />
                         </div>
                         <div style={{ flex: 1 }}>
-                          <label style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '2px', fontWeight: 700 }}>CONTRASEÑA</label>
+                          <label style={{ display: 'block', fontSize: '10px', color: '#94A3B8', marginBottom: '2px', fontWeight: 700 }}>CONTRASEÑA</label>
                           <input 
                             type="text" 
+                            className="titan-input"
                             value={draft.password} 
                             onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, password: e.target.value } }))}
-                            style={{ background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', width: '100%', outline: 'none' }}
+                            style={{ padding: '6px 8px', fontSize: '12px', width: '100%' }}
                           />
                         </div>
                       </div>
@@ -333,26 +315,29 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                   )}
                   
                   {!isMaster && (
-                    <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.2)', padding: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                      <label style={{ display: 'block', fontSize: '11px', color: '#f59e0b', fontWeight: 700, marginBottom: '6px' }}>VENCIMIENTO DE LA SUCURSAL:</label>
+                    <div className="titan-inset-well" style={{ marginTop: '12px', padding: '10px' }}>
+                      <label style={{ display: 'block', fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#D57A30', fontWeight: 700, marginBottom: '6px', letterSpacing: '0.06em' }}>VENCIMIENTO DE LA SUCURSAL:</label>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <input 
                           type="date"
+                          className="titan-input"
                           value={draft.valid_until ? draft.valid_until.split('T')[0] : ''}
                           onChange={e => setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, valid_until: e.target.value } }))}
-                          style={{ flex: 1, background: '#0f172a', border: '1px solid #334155', color: '#fff', padding: '6px', fontSize: '12px', outline: 'none', colorScheme: 'dark' }}
+                          style={{ flex: 1, padding: '6px', fontSize: '12px', colorScheme: 'dark' }}
                         />
-                        <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)' }}>
+                        <div style={{ display: 'flex', alignItems: 'stretch' }}>
                           <input
                             type="number"
                             min="1"
+                            className="titan-input"
                             value={renewDays[gym.id] === undefined ? 20 : renewDays[gym.id]}
                             onChange={(e) => setRenewDays(prev => ({ ...prev, [gym.id]: parseInt(e.target.value) || 0 }))}
-                            style={{ width: '45px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 4px', fontSize: '14px', fontWeight: 900, textAlign: 'center', outline: 'none' }}
+                            style={{ width: '45px', padding: '5px 4px', fontSize: '13px', fontWeight: 900, textAlign: 'center', borderRight: 'none' }}
                             title="Días a sumar"
                           />
                           <button 
                             type="button"
+                            className="titan-btn-armor-copper"
                             onClick={() => {
                               const days = renewDays[gym.id] === undefined ? 20 : renewDays[gym.id];
                               if (days > 0) {
@@ -362,7 +347,7 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                                 setDrafts(prev => ({ ...prev, [gym.id]: { ...draft, valid_until: next.toISOString() } }));
                               }
                             }} 
-                            style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '0 8px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                            style={{ padding: '0 9px', fontSize: '11px' }}
                           >
                             <RotateCcw size={12} />
                           </button>
@@ -373,7 +358,8 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
 
                   <button
                     onClick={handleSave}
-                    style={{ marginTop: '12px', width: '100%', background: saveSuccessId === gym.id ? '#22c55e' : '#f59e0b', color: saveSuccessId === gym.id ? '#fff' : '#000', border: 'none', padding: '8px', fontWeight: 900, fontSize: '12px', cursor: 'pointer', transition: 'all 0.2s' }}
+                    className={saveSuccessId === gym.id ? 'titan-btn-armor-emerald' : 'titan-btn-armor-copper'}
+                    style={{ marginTop: '12px', width: '100%', padding: '9px', fontSize: '11px' }}
                   >
                     {saveSuccessId === gym.id ? '¡GUARDADO CON ÉXITO!' : 'GUARDAR CAMBIOS DEL PERFIL'}
                   </button>
@@ -385,10 +371,9 @@ export const GymListView: React.FC<{ onEnterGym: (gym: GymTenant, coach: Profile
                   const isExpired = !isMaster && gym.valid_until && new Date(gym.valid_until) < new Date();
                   return (
                     <button
-                      style={{ ...S.enterBtn, background: isExpired ? '#334155' : '#1e293b', color: isExpired ? '#94a3b8' : '#fff', cursor: isExpired ? 'not-allowed' : 'pointer', border: isExpired ? '1px solid #1e293b' : S.enterBtn.border }}
+                      className="titan-btn-armor-steel"
+                      style={S.enterBtn}
                       onClick={() => !isExpired && onEnterGym(gym, coach)}
-                      onMouseEnter={e => { if (!isExpired) { e.currentTarget.style.background = '#f59e0b'; e.currentTarget.style.color = '#000'; } }}
-                      onMouseLeave={e => { if (!isExpired) { e.currentTarget.style.background = '#1e293b'; e.currentTarget.style.color = '#fff'; } }}
                       disabled={isExpired}
                     >
                       {isExpired ? 'ACCESO BLOQUEADO (VENCIDO)' : <>Entrar al Gym <ArrowRight size={16} /></>}

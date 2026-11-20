@@ -83,45 +83,31 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 1000,
-      background: 'rgba(0, 0, 0, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '16px',
-      boxSizing: 'border-box'
-    }}>
-      <div style={{
-        background: '#0f172a',
-        border: '1px solid #334155',
+    <div className="titan-modal-overlay">
+      <div className="titan-modal" style={{
         width: '100%',
-        maxWidth: '440px',
+        maxWidth: '460px',
+        maxHeight: '92vh',
+        overflowY: 'auto',
         padding: '24px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px',
-        position: 'relative',
-        boxSizing: 'border-box'
+        gap: '18px',
       }}>
         {/* Header */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '1px solid #1e293b',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
           paddingBottom: '14px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              background: 'rgba(245, 158, 11, 0.15)',
-              color: '#f59e0b',
+              background: 'rgba(213, 122, 48, 0.16)',
+              color: '#FFBD4A',
               padding: '10px',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
+              border: '1px solid rgba(213, 122, 48, 0.4)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -129,7 +115,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
               <User size={20} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <h3 className="titan-section-title" style={{ margin: 0, fontSize: '16px' }}>
                 Editar Mi Perfil
               </h3>
               <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#94a3b8' }}>
@@ -140,34 +126,21 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
           <button 
             type="button" 
             onClick={onClose} 
+            className="titan-btn-armor-steel"
             style={{
-              background: 'rgba(245,158,11,0.12)',
-              border: '1px solid rgba(245,158,11,0.4)',
-              color: '#f59e0b',
-              cursor: 'pointer',
-              padding: '6px 10px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '4px',
-              fontSize: '22px',
-              fontWeight: 700,
+              padding: '6px 12px',
+              fontSize: '18px',
               lineHeight: 1,
-              transition: 'background 0.2s'
             }}
-            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.28)')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.12)')}
             title="Volver"
           >
             ‹
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           {/* Avatar Section */}
-          <div style={{
-            background: '#020617',
-            border: '1px solid #1e293b',
+          <div className="titan-inset-well" style={{
             padding: '16px',
             display: 'flex',
             flexDirection: 'column',
@@ -182,7 +155,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                   width: '96px',
                   height: '96px',
                   objectFit: 'cover',
-                  border: '2px solid #f59e0b',
+                  border: '2px solid #D57A30',
                   display: 'block'
                 }}
                 onError={(e) => {
@@ -202,18 +175,10 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
+              className="titan-btn-armor-steel"
               style={{
-                background: '#1e293b',
-                color: '#f59e0b',
-                border: '1px solid rgba(245, 158, 11, 0.4)',
                 padding: '8px 16px',
                 fontSize: '11px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                textTransform: 'uppercase'
               }}
             >
               <Upload size={14} />
@@ -221,8 +186,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
             </button>
 
             {/* Presets Grid */}
-            <div style={{ width: '100%', paddingTop: '10px', borderTop: '1px solid #1e293b', textAlign: 'center' }}>
-              <label style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+            <div style={{ width: '100%', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'center' }}>
+              <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
                 O elige un avatar prediseñado:
               </label>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
@@ -237,8 +202,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
                       height: '36px',
                       objectFit: 'cover',
                       cursor: 'pointer',
-                      border: avatarUrl === preset ? '2px solid #f59e0b' : '1px solid #334155',
-                      opacity: avatarUrl === preset ? 1 : 0.6,
+                      border: avatarUrl === preset ? '2px solid #D57A30' : '1px solid rgba(148,163,184,0.3)',
+                      opacity: avatarUrl === preset ? 1 : 0.65,
                       transition: 'all 0.2s'
                     }}
                   />
@@ -249,26 +214,23 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
 
           {/* Full Name Input */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Nombre Completo:
             </label>
             <div style={{ position: 'relative' }}>
-              <User size={16} color="#f59e0b" style={{ position: 'absolute', left: '12px', top: '12px' }} />
+              <User size={16} color="#D57A30" style={{ position: 'absolute', left: '12px', top: '12px', pointerEvents: 'none' }} />
               <input
                 type="text"
+                className="titan-input"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
                 placeholder="Ej. Diego Perez"
                 style={{
                   width: '100%',
-                  background: '#020617',
-                  color: '#ffffff',
                   fontSize: '13px',
                   fontWeight: 700,
                   padding: '10px 12px 10px 38px',
-                  border: '1px solid #334155',
-                  outline: 'none',
                   boxSizing: 'border-box'
                 }}
               />
@@ -278,79 +240,66 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
           <div style={{ display: 'flex', gap: '12px' }}>
             {/* Email Input */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
-              <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
                 Usuario (Correo):
               </label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="coach@gym.com"
-                  style={{
-                    width: '100%',
-                    background: '#020617',
-                    color: '#ffffff',
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    padding: '10px 12px',
-                    border: '1px solid #334155',
-                    outline: 'none',
-                    boxSizing: 'border-box'
-                  }}
-                />
-              </div>
+              <input
+                type="text"
+                className="titan-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="coach@gym.com"
+                style={{
+                  width: '100%',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px',
+                  boxSizing: 'border-box'
+                }}
+              />
             </div>
 
             {/* Password Input */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
-              <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+              <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
                 Contraseña:
               </label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="text"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="********"
-                  style={{
-                    width: '100%',
-                    background: '#020617',
-                    color: '#ffffff',
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    padding: '10px 12px',
-                    border: '1px solid #334155',
-                    outline: 'none',
-                    boxSizing: 'border-box'
-                  }}
-                />
-              </div>
+              <input
+                type="text"
+                className="titan-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="********"
+                style={{
+                  width: '100%',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  padding: '10px 12px',
+                  boxSizing: 'border-box'
+                }}
+              />
             </div>
           </div>
 
           {/* Phone Input */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Número de Celular / WhatsApp:
             </label>
             <div style={{ position: 'relative' }}>
-              <Phone size={16} color="#f59e0b" style={{ position: 'absolute', left: '12px', top: '12px' }} />
+              <Phone size={16} color="#D57A30" style={{ position: 'absolute', left: '12px', top: '12px', pointerEvents: 'none' }} />
               <input
                 type="text"
+                className="titan-input"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+54 9 11 1234-5678"
                 style={{
                   width: '100%',
-                  background: '#020617',
-                  color: '#ffffff',
                   fontSize: '13px',
                   fontWeight: 700,
                   padding: '10px 12px 10px 38px',
-                  border: '1px solid #334155',
-                  outline: 'none',
                   boxSizing: 'border-box'
                 }}
               />
@@ -359,52 +308,45 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
 
           {/* Gender Input */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Género:
             </label>
-            <div style={{ position: 'relative' }}>
-              <select
-                value={gender}
-                onChange={(e) => setGender(e.target.value as 'male' | 'female')}
-                style={{
-                  width: '100%',
-                  background: '#020617',
-                  color: '#ffffff',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  padding: '10px 12px',
-                  border: '1px solid #334155',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              >
-                <option value="male">Hombre</option>
-                <option value="female">Mujer</option>
-              </select>
-            </div>
+            <select
+              className="titan-select"
+              value={gender}
+              onChange={(e) => setGender(e.target.value as 'male' | 'female')}
+              style={{
+                width: '100%',
+                fontSize: '13px',
+                fontWeight: 700,
+                padding: '10px 12px',
+                boxSizing: 'border-box'
+              }}
+            >
+              <option value="male">Hombre</option>
+              <option value="female">Mujer</option>
+            </select>
           </div>
 
           {/* Vigencia Input */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '11px', fontWeight: 800, color: '#cbd5e1', textTransform: 'uppercase' }}>
+            <label style={{ fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Vigencia del Plan (Desde - Hasta):
             </label>
             <div style={{ display: 'flex', gap: '8px' }}>
               <input
                 type="datetime-local"
+                className="titan-input"
                 value={planStart.slice(0, 16)}
                 onChange={(e) => setPlanStart(new Date(e.target.value).toISOString())}
                 required
                 disabled={readOnlyPlan}
                 style={{
                   flex: 1,
-                  background: readOnlyPlan ? '#1e293b' : '#020617',
-                  color: readOnlyPlan ? '#94a3b8' : '#ffffff',
-                  fontSize: '13px',
+                  opacity: readOnlyPlan ? 0.55 : 1,
+                  fontSize: '12px',
                   fontWeight: 700,
                   padding: '10px 12px',
-                  border: '1px solid #334155',
-                  outline: 'none',
                   boxSizing: 'border-box',
                   cursor: readOnlyPlan ? 'not-allowed' : 'text',
                   colorScheme: 'dark'
@@ -412,19 +354,17 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
               />
               <input
                 type="datetime-local"
+                className="titan-input"
                 value={planExpiry.slice(0, 16)}
                 onChange={(e) => setPlanExpiry(new Date(e.target.value).toISOString())}
                 required
                 disabled={readOnlyPlan}
                 style={{
                   flex: 1,
-                  background: readOnlyPlan ? '#1e293b' : '#020617',
-                  color: readOnlyPlan ? '#94a3b8' : '#ffffff',
-                  fontSize: '13px',
+                  opacity: readOnlyPlan ? 0.55 : 1,
+                  fontSize: '12px',
                   fontWeight: 700,
                   padding: '10px 12px',
-                  border: '1px solid #334155',
-                  outline: 'none',
                   boxSizing: 'border-box',
                   cursor: readOnlyPlan ? 'not-allowed' : 'text',
                   colorScheme: 'dark'
@@ -434,12 +374,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
           </div>
 
           {/* Action buttons */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '12px', borderTop: '1px solid #1e293b' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             {saveError && (
               <div style={{
                 background: 'rgba(239,68,68,0.15)',
                 border: '1px solid rgba(239,68,68,0.4)',
-                borderRadius: '8px',
                 padding: '10px 14px',
                 color: '#f87171',
                 fontSize: '12px',
@@ -458,15 +397,10 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
             <button
               type="button"
               onClick={onClose}
+              className="titan-btn-armor-steel"
               style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#94a3b8',
-                fontSize: '12px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                padding: '8px 12px',
-                textTransform: 'uppercase'
+                fontSize: '11px',
+                padding: '9px 14px',
               }}
             >
               Cancelar
@@ -474,21 +408,13 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ profile, onC
             <button
               type="submit"
               disabled={isSaving}
+              className="titan-btn-armor-copper"
               style={{
-                background: '#f59e0b',
-                color: '#000000',
-                border: 'none',
                 padding: '10px 20px',
                 fontSize: '12px',
-                fontWeight: 900,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                textTransform: 'uppercase'
               }}
             >
-              <Save size={16} />
+              <Save size={15} />
               <span>{isSaving ? 'Guardando...' : 'Guardar Cambios'}</span>
             </button>
           </div>

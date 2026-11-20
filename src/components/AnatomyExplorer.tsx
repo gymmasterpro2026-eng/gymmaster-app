@@ -116,26 +116,20 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
   }, [exercises, selectedMuscle]);
 
   return (
-    <div style={{ display: 'flex', gap: '20px', minHeight: '540px', maxHeight: '540px', width: '100%', background: '#020617', padding: '16px', boxSizing: 'border-box' }}>
+    <div className="titan-inset-well" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', minHeight: '540px', width: '100%', padding: '16px', boxSizing: 'border-box' }}>
       
       {/* Left Pane - Anatomy Model */}
-      <div style={{ flex: '0 0 240px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '16px', display: 'flex', flexDirection: 'column', maxHeight: '540px', flexShrink: 0, overflow: 'hidden' }}>
+      <div className="titan-armor-card" style={{ flex: '0 0 250px', padding: '16px', display: 'flex', flexDirection: 'column', maxHeight: '540px', flexShrink: 0, overflow: 'hidden' }}>
         
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginBottom: '14px', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', gap: '4px' }}>
             <button 
               type="button"
               onClick={() => setModelType('front')}
+              className={modelType === 'front' ? 'titan-btn-armor-glow' : 'titan-btn-armor-steel'}
               style={{
-                background: modelType === 'front' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
-                color: modelType === 'front' ? '#f59e0b' : '#64748b',
-                border: modelType === 'front' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
-                padding: '4px 8px',
-                fontSize: '11px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textTransform: 'uppercase',
-                borderRadius: '4px'
+                padding: '4px 9px',
+                fontSize: '10px',
               }}
             >
               Frente
@@ -143,16 +137,10 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
             <button 
               type="button"
               onClick={() => setModelType('back')}
+              className={modelType === 'back' ? 'titan-btn-armor-glow' : 'titan-btn-armor-steel'}
               style={{
-                background: modelType === 'back' ? 'rgba(245, 158, 11, 0.15)' : 'transparent',
-                color: modelType === 'back' ? '#f59e0b' : '#64748b',
-                border: modelType === 'back' ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid #cbd5e1',
-                padding: '4px 8px',
-                fontSize: '11px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textTransform: 'uppercase',
-                borderRadius: '4px'
+                padding: '4px 9px',
+                fontSize: '10px',
               }}
             >
               Espalda
@@ -162,16 +150,10 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
             <button 
               type="button"
               onClick={() => setGender('male')}
+              className={gender === 'male' ? 'titan-btn-armor-copper' : 'titan-btn-armor-steel'}
               style={{
-                background: gender === 'male' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-                color: gender === 'male' ? '#10b981' : '#64748b',
-                border: gender === 'male' ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid #cbd5e1',
-                padding: '4px 8px',
-                fontSize: '11px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textTransform: 'uppercase',
-                borderRadius: '4px'
+                padding: '4px 9px',
+                fontSize: '10px',
               }}
             >
               Hombre
@@ -179,16 +161,10 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
             <button 
               type="button"
               onClick={() => setGender('female')}
+              className={gender === 'female' ? 'titan-btn-armor-copper' : 'titan-btn-armor-steel'}
               style={{
-                background: gender === 'female' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-                color: gender === 'female' ? '#10b981' : '#64748b',
-                border: gender === 'female' ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid #cbd5e1',
-                padding: '4px 8px',
-                fontSize: '11px',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textTransform: 'uppercase',
-                borderRadius: '4px'
+                padding: '4px 9px',
+                fontSize: '10px',
               }}
             >
               Mujer
@@ -196,31 +172,31 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
           </div>
         </div>
 
-        <div style={{ width: '100%', flex: '1', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', minHeight: '450px', overflow: 'hidden' }}>
+        <div style={{ width: '100%', flex: '1', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', minHeight: '430px', overflow: 'hidden' }}>
           <Body
             data={bodyData}
             onBodyPartClick={handleMuscleClick}
             side={modelType}
             gender={gender}
-            colors={['#475569', '#10b981', '#f59e0b']}
+            colors={['#334155', '#8C4D20', '#FF9838']}
             scale={1.2}
           />
         </div>
         
-        <p style={{ margin: '16px 0 0', fontSize: '11px', color: '#64748b', textAlign: 'center' }}>
+        <p style={{ margin: '12px 0 0', fontSize: '11px', color: '#94A3B8', textAlign: 'center' }}>
           Haz clic en un músculo para ver los ejercicios.
         </p>
       </div>
 
       {/* Right Pane - Exercise List */}
-      <div style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: '12px', overflow: 'hidden' }}>
-        <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>
+      <div style={{ flex: '1 1 280px', display: 'flex', flexDirection: 'column', gap: '12px', overflow: 'hidden', maxHeight: '540px' }}>
+        <h4 className="titan-section-title" style={{ margin: 0, fontSize: '13px', color: '#FFBD4A' }}>
           {selectedMuscle ? `Ejercicios para: ${selectedMuscle}` : 'Selecciona un músculo'}
         </h4>
 
         <div style={{ flex: '1', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px' }}>
           {selectedMuscle && filteredExercises.length === 0 && (
-            <div style={{ padding: '20px', textAlign: 'center', color: '#64748b', fontSize: '12px' }}>
+            <div style={{ padding: '20px', textAlign: 'center', color: '#94A3B8', fontSize: '12px' }}>
               No hay ejercicios registrados para este músculo específico.
             </div>
           )}
@@ -230,21 +206,20 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
               key={ex.id}
               onClick={() => onPreviewExercise(ex, filteredExercises)}
               title="Toca para ver vista previa y detalles"
+              className="titan-armor-card titan-armor-card-interactive"
               style={{
                 padding: '10px 12px',
-                background: '#0f172a',
-                border: '1px solid #1e293b',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                borderRadius: '6px',
                 cursor: 'pointer',
-                transition: 'background 0.2s'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 {ex.image_urls?.[0] && (
-                  <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="gm-exercise-gif" style={{ width: '40px', height: '40px', objectFit: 'contain', background: '#000', padding: '2px', borderRadius: '4px' }} />
+                  <div className="gm-gif-wrap" style={{ width: '44px', height: '44px', background: '#000', padding: '2px', border: '1px solid rgba(213,122,48,0.32)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <img src={fixImageUrl(ex.image_urls[0])} alt={ex.name} className="gm-exercise-gif" style={{ width: '100%', height: '100%', objectFit: 'contain', background: 'transparent', display: 'block' }} />
+                  </div>
                 )}
                 <div>
                   <p style={{ margin: 0, fontSize: '12px', fontWeight: 800, color: '#ffffff' }}>
@@ -257,20 +232,14 @@ export const AnatomyExplorer: React.FC<AnatomyExplorerProps> = ({
               </div>
               <button
                 type="button"
+                className="titan-btn-armor-copper"
                 onClick={(e) => {
                   e.stopPropagation();
                   onAddExercise(ex);
                 }}
                 style={{
                   fontSize: '10px',
-                  fontWeight: 900,
-                  color: '#f59e0b',
-                  background: 'rgba(245,158,11,0.15)',
-                  border: '1px solid rgba(245,158,11,0.3)',
                   padding: '6px 10px',
-                  cursor: 'pointer',
-                  textTransform: 'uppercase',
-                  borderRadius: '4px'
                 }}
               >
                 + Añadir

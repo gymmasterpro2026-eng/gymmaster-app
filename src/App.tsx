@@ -3,24 +3,26 @@
  * Basado en la Arquitectura de Aislamiento RLS de Anexo Cobro
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { UserRole, Profile, Exercise, GymTenant } from './types';
 import { dataService } from './services/dataService';
 import { Navbar } from './components/Navbar';
 import { DashboardAlumno } from './components/DashboardAlumno';
 import { DashboardCoach } from './components/DashboardCoach';
-import { ExerciseCatalog } from './components/ExerciseCatalog';
-import { CreateGymView, GymListView } from './components/GymManager';
-import { SqlSchemaViewer } from './components/SqlSchemaViewer';
-import { ImportScriptViewer } from './components/ImportScriptViewer';
 import { RunningTrainer } from './components/RunningTrainer';
-import { FolderStructureViewer } from './components/FolderStructureViewer';
 import { GymGeneratorModal } from './components/GymGeneratorModal';
 import { LandingPage } from './components/LandingPage';
-import { DietPlanner } from './components/DietPlanner';
-import { AlumnosCuotas } from './components/AlumnosCuotas';
-import { CobrosMes } from './components/CobrosMes';
 import { WorkoutStats } from './components/WorkoutStats';
+
+const ExerciseCatalog = lazy(() => import('./components/ExerciseCatalog').then((m) => ({ default: m.ExerciseCatalog })));
+const CreateGymView = lazy(() => import('./components/GymManager').then((m) => ({ default: m.CreateGymView })));
+const GymListView = lazy(() => import('./components/GymManager').then((m) => ({ default: m.GymListView })));
+const SqlSchemaViewer = lazy(() => import('./components/SqlSchemaViewer').then((m) => ({ default: m.SqlSchemaViewer })));
+const ImportScriptViewer = lazy(() => import('./components/ImportScriptViewer').then((m) => ({ default: m.ImportScriptViewer })));
+const FolderStructureViewer = lazy(() => import('./components/FolderStructureViewer').then((m) => ({ default: m.FolderStructureViewer })));
+const DietPlanner = lazy(() => import('./components/DietPlanner').then((m) => ({ default: m.DietPlanner })));
+const AlumnosCuotas = lazy(() => import('./components/AlumnosCuotas').then((m) => ({ default: m.AlumnosCuotas })));
+const CobrosMes = lazy(() => import('./components/CobrosMes').then((m) => ({ default: m.CobrosMes })));
 
 export default function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('alumno');
@@ -144,13 +146,12 @@ export default function App() {
       height: '100vh', 
       width: '100%', 
       overflow: 'hidden', 
-      background: `linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)), url('/gymmaster-app/gym_bg.jpg')`, 
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      background: '#06080B',
       position: 'relative', 
-      fontFamily: "'Inter', system-ui, -apple-system, sans-serif" 
+      fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+      color: '#E2E8F0'
     }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'); * { box-sizing: border-box; margin: 0; }`}</style>
+      <style>{`* { box-sizing: border-box; margin: 0; } ::selection { background: #D57A30; color: #06080B; }`}</style>
       
       <Navbar
         currentRole={currentRole}
@@ -168,15 +169,13 @@ export default function App() {
       />
 
       {/* Main Content Scrollable Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflowY: 'auto', position: 'relative', zIndex: 10 }}>
-        {/* Glow */}
-        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '75%', height: '128px', background: '#f59e0b', borderRadius: '0', filter: 'blur(120px)', opacity: 0.02, pointerEvents: 'none' }} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflowY: 'auto', position: 'relative', zIndex: 10, background: '#06080B' }}>
 
         <main id="main-content-area" className="main-content-area">
           {isAlumnoBlocked ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
-              <div style={{ background: '#0f172a', border: '1px solid #ef4444', padding: '40px', borderRadius: '8px', maxWidth: '500px' }}>
-                <h2 style={{ color: '#ef4444', margin: '0 0 16px 0', fontSize: '24px', fontWeight: 900, textTransform: 'uppercase' }}>Acceso Denegado</h2>
+              <div className="titan-armor-card titan-armor-card-danger" style={{ padding: '40px', maxWidth: '500px' }}>
+                <h2 className="titan-section-title" style={{ color: '#FCA5A5', margin: '0 0 16px 0', fontSize: '24px' }}>Acceso Denegado</h2>
                 <p style={{ color: '#cbd5e1', fontSize: '14px', lineHeight: '1.6' }}>
                   Tu plan de entrenamiento ha vencido el <strong>{new Date(activeAlumnoProfile!.plan_active_until).toLocaleDateString()}</strong>.
                   <br /><br />
@@ -218,6 +217,7 @@ export default function App() {
           </>
         )}
 
+        <Suspense fallback={<div className="p-10 text-center font-titan text-xs tracking-widest uppercase text-amber-400">Cargando módulo...</div>}>
         {currentTab === 'create-gym' && (
           <CreateGymView onGymCreated={(gym, coach) => {
             handleGymGeneratedOrLoggedIn(gym, coach);
@@ -253,6 +253,7 @@ export default function App() {
         {currentTab === 'structure' && <FolderStructureViewer />}
 
         {currentTab === 'diet' && <DietPlanner />}
+        </Suspense>
 
         {currentTab === 'stats' && activeAlumnoProfile && (
           <WorkoutStats alumno={activeAlumnoProfile} />

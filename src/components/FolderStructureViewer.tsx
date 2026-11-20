@@ -32,19 +32,16 @@ export const FolderStructureViewer: React.FC = () => {
   return (
     <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif", display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Header Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, #0f172a, #1e293b, #451a03)',
-        border: '1px solid #334155',
+      <div className="titan-armor-banner" style={{
         padding: '24px 32px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+          <span className="titan-badge-copper" style={{ padding: '4px 10px', fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <FolderTree size={14} /> Arquitectura de Software
           </span>
           <span style={{ fontSize: '11px', color: '#94a3b8' }}>GymMaster Pro Architecture</span>
         </div>
-        <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 900, color: '#ffffff' }}>
+        <h1 className="titan-section-title" style={{ margin: 0, fontSize: '24px' }}>
           Estructura de Carpetas del Proyecto (Entregable #2)
         </h1>
         <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#94a3b8' }}>
@@ -53,9 +50,9 @@ export const FolderStructureViewer: React.FC = () => {
       </div>
 
       {/* Tree Visualization Card */}
-      <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
-          <span style={{ fontSize: '12px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase' }}>
+      <div className="titan-armor-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px' }}>
+          <span className="titan-section-title" style={{ fontSize: '12px', color: '#FFBD4A' }}>
             Directorio Raíz del Proyecto React
           </span>
           <span style={{ fontSize: '11px', color: '#94a3b8', fontFamily: 'monospace' }}>/ (Raíz Workspace)</span>
@@ -65,26 +62,27 @@ export const FolderStructureViewer: React.FC = () => {
           {structureTree.map((item, index) => (
             <div
               key={index}
+              className="titan-inset-well"
               style={{
                 padding: '10px 14px',
-                background: item.isDir ? '#020617' : 'rgba(15, 23, 42, 0.6)',
-                border: `1px solid ${item.isDir ? 'rgba(245, 158, 11, 0.2)' : '#1e293b'}`,
+                borderColor: item.isDir ? 'rgba(213, 122, 48, 0.35)' : undefined,
+                borderLeft: item.isDir ? '3px solid #D57A30' : undefined,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                color: item.isDir ? '#f59e0b' : '#cbd5e1',
+                color: item.isDir ? '#FFBD4A' : '#cbd5e1',
                 fontWeight: item.isDir ? 800 : 400
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden' }}>
                 {item.isDir ? (
-                  <Folder size={16} color="#f59e0b" style={{ flexShrink: 0 }} />
+                  <Folder size={16} color="#D57A30" style={{ flexShrink: 0 }} />
                 ) : (
                   <FileCode size={16} color="#94a3b8" style={{ flexShrink: 0 }} />
                 )}
                 <span style={{ whiteSpace: 'pre' }}>{item.name}</span>
               </div>
-              <span style={{ fontSize: '11px', color: '#64748b', fontFamily: "'Inter', sans-serif", fontWeight: 500, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '400px' }}>
+              <span style={{ fontSize: '11px', color: '#94A3B8', fontFamily: "'Inter', sans-serif", fontWeight: 500, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '420px' }}>
                 {item.desc}
               </span>
             </div>

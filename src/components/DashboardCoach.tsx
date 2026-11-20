@@ -49,47 +49,29 @@ const getWeekDayColor = (semana: number, dia: string) => {
 const S = {
   container: { padding: '24px', maxWidth: '1400px', margin: '0 auto', fontFamily: "'Inter', sans-serif" },
   headerBanner: {
-    background: 'linear-gradient(135deg, #0f172a, #1e293b, #451a03)',
-    border: '1px solid #334155', padding: '24px 32px',
+    padding: '24px 32px',
     display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' as const, gap: '20px',
-    marginBottom: '28px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+    marginBottom: '28px'
   },
-  coachAvatar: { width: '72px', height: '72px', minWidth: '72px', minHeight: '72px', objectFit: 'cover' as const, border: '2px solid #f59e0b', flexShrink: 0 },
-  badgeGold: { background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '4px 10px', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase' as const },
-  title: { fontSize: '24px', fontWeight: 900, color: '#ffffff', margin: '4px 0 0' },
-  subtitle: { fontSize: '12px', color: '#94a3b8', margin: '2px 0 0' },
+  coachAvatar: { width: '72px', height: '72px', minWidth: '72px', minHeight: '72px', objectFit: 'cover' as const, border: '2px solid #D57A30', clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)', flexShrink: 0, boxShadow: '0 0 18px rgba(213,122,48,0.28)' },
+  badgeGold: { padding: '4px 10px', fontSize: '10px', display: 'inline-flex', alignItems: 'center', gap: '4px' },
+  title: { fontSize: '24px', fontWeight: 700, fontFamily: "'Chakra Petch', sans-serif", color: '#ffffff', margin: '4px 0 0', textTransform: 'uppercase' as const, letterSpacing: '0.04em' },
+  subtitle: { fontSize: '12px', color: '#94A3B8', margin: '2px 0 0' },
   
-  btnPrimary: { background: '#f59e0b', color: '#000000', border: 'none', padding: '10px 18px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase' as const, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' },
-  btnSecondary: { background: '#92400e', color: '#ffffff', border: '1px solid #b45309', padding: '10px 18px', fontSize: '12px', fontWeight: 900, textTransform: 'uppercase' as const, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' },
+  btnPrimary: { padding: '9px 14px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' },
+  btnSecondary: { padding: '9px 14px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' },
   
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '20px' },
-  card: (selected: boolean, urgency: 'normal' | 'warning' | 'critical'): React.CSSProperties => {
-    if (urgency === 'critical') return {
-      background: '#7f1d1d',
-      border: '2px solid #ef4444',
-      boxShadow: '0 0 18px rgba(239,68,68,0.25)',
-      padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
-    };
-    if (urgency === 'warning') return {
-      background: '#92400e',
-      border: '2px solid #f59e0b',
-      boxShadow: '0 0 18px rgba(245,158,11,0.20)',
-      padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
-    };
-    return {
-      background: selected ? '#64748b' : '#475569',
-      border: `1px solid ${selected ? '#f59e0b' : '#64748b'}`,
-      padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', transition: 'all 0.3s'
-    };
+  cardLayout: {
+    padding: '20px', display: 'flex', flexDirection: 'column' as const, gap: '16px'
   },
-  alumnoAvatar: { width: '60px', height: '60px', minWidth: '60px', minHeight: '60px', objectFit: 'cover' as const, border: '2px solid #f59e0b', flexShrink: 0 },
+  alumnoAvatar: { width: '60px', height: '60px', minWidth: '60px', minHeight: '60px', objectFit: 'cover' as const, border: '2px solid #D57A30', clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)', flexShrink: 0 },
   
-  inputBox: { background: '#020617', border: '1px solid #1e293b', padding: '14px', display: 'flex', flexDirection: 'column', gap: '8px' },
-  inputLbl: { fontSize: '10px', fontWeight: 800, color: '#ffffff', textTransform: 'uppercase' as const },
-  input: { width: '100%', background: '#0f172a', color: '#ffffff', fontSize: '12px', fontWeight: 700, padding: '8px 12px', border: '1px solid #334155', outline: 'none', boxSizing: 'border-box' as const },
+  inputBox: { padding: '14px', display: 'flex', flexDirection: 'column' as const, gap: '8px' },
+  inputLbl: { fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#D57A30', textTransform: 'uppercase' as const, letterSpacing: '0.08em' },
+  input: { width: '100%', fontSize: '12px', fontWeight: 700, padding: '8px 12px', boxSizing: 'border-box' as const },
   
-  modalOverlay: { position: 'fixed' as const, inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' },
-  modal: { background: '#0f172a', border: '1px solid #334155', width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto' as const, padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', boxSizing: 'border-box' as const }
+  modal: { width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto' as const, padding: '24px', display: 'flex', flexDirection: 'column' as const, gap: '16px' }
 };
 
 export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises, onRefreshData, onViewStudentProfile }) => {
@@ -244,14 +226,20 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
     <div style={S.container}>
       {/* Fullscreen Image Overlay */}
       {fullscreenImage && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }} onClick={() => setFullscreenImage(null)}>
-          <button style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '0', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>Cerrar ✕</button>
-          <img src={fullscreenImage} alt="Fullscreen" className="gm-exercise-gif gm-exercise-gif-lg" style={{ width: '100%', maxWidth: '800px', maxHeight: '80vh', objectFit: 'contain', background: '#000', padding: '16px', borderRadius: '0' }} />
+        <div className="titan-modal-overlay" style={{ zIndex: 9999 }} onClick={() => setFullscreenImage(null)}>
+          <button className="titan-btn-armor-steel" style={{ position: 'absolute', top: '24px', right: '24px', padding: '10px 18px', fontSize: '12px' }}>Cerrar ✕</button>
+          <div className="titan-modal gm-gif-wrap" style={{ padding: '24px', maxWidth: '520px', width: '92%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#000', border: '1px solid rgba(213,122,48,0.45)', boxShadow: '0 24px 64px rgba(0,0,0,0.92), 0 0 32px rgba(213,122,48,0.18)' }} onClick={e => e.stopPropagation()}>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', paddingBottom: '10px', borderBottom: '1px solid rgba(213,122,48,0.22)' }}>
+              <span className="titan-badge-copper" style={{ fontSize: '10px', padding: '3px 10px' }}>VISTA UHD • SUPER-RESOLUCIÓN</span>
+              <button className="titan-btn-armor-steel" style={{ padding: '4px 12px', fontSize: '11px' }} onClick={() => setFullscreenImage(null)}>✕</button>
+            </div>
+            <img src={fullscreenImage} alt="Fullscreen" className="gm-exercise-gif gm-exercise-gif-lg" style={{ width: '100%', maxWidth: '420px', maxHeight: '420px', objectFit: 'contain', background: 'transparent', padding: 0, display: 'block' }} />
+          </div>
         </div>
       )}
 
       {/* Coach Header Banner */}
-      <div style={S.headerBanner}>
+      <div className="titan-armor-banner" style={S.headerBanner}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ position: 'relative' }}>
             <img
@@ -262,19 +250,18 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             <button
               onClick={() => setEditingProfileTarget(coach)}
               title="Editar Mi Foto y Nombre"
+              className="titan-btn-armor-copper"
               style={{
                 position: 'absolute', bottom: '-4px', right: '-4px',
-                background: '#f59e0b', color: '#000', border: 'none',
-                borderRadius: '50%', padding: '4px', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
+                padding: '4px', minWidth: 0
               }}
             >
-              <Edit2 size={12} />
+              <Edit2 size={11} />
             </button>
           </div>
           <div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span style={coach.gym_id === 'gym-titan-001' ? { ...S.badgeGold, background: 'linear-gradient(135deg, #f59e0b, #dc2626)', color: '#fff' } : S.badgeGold}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <span className="titan-badge-copper" style={coach.gym_id === 'gym-titan-001' ? { ...S.badgeGold, background: 'linear-gradient(135deg, #D57A30, #991B1B)', color: '#fff', borderColor: 'rgba(255,190,120,0.45)' } : S.badgeGold}>
                 {coach.gym_id === 'gym-titan-001' ? '⭐ ADMINISTRADOR MASTER' : 'SUCURSAL COACH'}
               </span>
               <span style={{ fontSize: '10px', color: '#64748b', fontFamily: 'monospace' }}>ID: {coach.gym_id}</span>
@@ -283,7 +270,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
               <h1 style={S.title}>{coach.full_name}</h1>
               <button
                 onClick={() => setEditingProfileTarget(coach)}
-                style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: '11px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                style={{ background: 'none', border: 'none', color: '#D57A30', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', textTransform: 'uppercase' }}
               >
                 <Edit2 size={12} /> Editar
               </button>
@@ -292,37 +279,35 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button style={S.btnSecondary} onClick={() => setShowAddAlumnoModal(true)}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <button className="titan-btn-sprite-idle" onClick={() => setShowAddAlumnoModal(true)}>
             <UserPlus size={16} />
             <span>Nuevo Alumno</span>
           </button>
-          <button style={S.btnPrimary} onClick={() => { setRoutineBuilderAlumnoId(undefined); setShowRoutineBuilder(true); }}>
+          <button className="titan-btn-sprite-active" onClick={() => { setRoutineBuilderAlumnoId(undefined); setShowRoutineBuilder(true); }}>
             <Plus size={16} />
             <span>Crear Rutina</span>
           </button>
         </div>
       </div>
 
-
-
       {/* Add Alumno Modal */}
       {showAddAlumnoModal && (
-        <div style={S.modalOverlay} onClick={() => setShowAddAlumnoModal(false)}>
-          <div style={S.modal} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1e293b', paddingBottom: '12px' }}>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <UserPlus size={18} color="#f59e0b" />
+        <div className="titan-modal-overlay" onClick={() => setShowAddAlumnoModal(false)}>
+          <div className="titan-modal" style={S.modal} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px' }}>
+              <h3 className="titan-section-title" style={{ margin: 0, fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <UserPlus size={18} color="#D57A30" />
                 Registrar Nuevo Alumno
               </h3>
-              <button onClick={() => setShowAddAlumnoModal(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
-                <X size={20} />
+              <button className="titan-btn-armor-steel" onClick={() => setShowAddAlumnoModal(false)} style={{ padding: '6px' }}>
+                <X size={16} />
               </button>
             </div>
 
             <form onSubmit={handleCreateAlumno} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {/* Avatar Selector */}
-              <div style={S.inputBox}>
+              <div className="titan-inset-well" style={S.inputBox}>
                 <label style={S.inputLbl}>Foto de Perfil del Alumno:</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <img src={newAvatarUrl} alt="Preview" style={S.alumnoAvatar} />
@@ -330,6 +315,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
                     <button
                       type="button"
+                      className="titan-btn-armor-steel"
                       onClick={() => fileInputRef.current?.click()}
                       style={S.btnSecondary}
                     >
@@ -346,7 +332,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                           onClick={() => setNewAvatarUrl(preset)}
                           style={{
                             width: '32px', height: '32px', objectFit: 'cover', cursor: 'pointer',
-                            border: newAvatarUrl === preset ? '2px solid #f59e0b' : '1px solid #334155'
+                            border: newAvatarUrl === preset ? '2px solid #D57A30' : '1px solid rgba(148,163,184,0.28)'
                           }}
                         />
                       ))}
@@ -357,26 +343,26 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
               <div>
                 <label style={S.inputLbl}>Nombre Completo:</label>
-                <input type="text" value={newNombre} onChange={(e) => setNewNombre(e.target.value)} required placeholder="Ej: Laura Ramírez" style={S.input} />
+                <input className="titan-input" type="text" value={newNombre} onChange={(e) => setNewNombre(e.target.value)} required placeholder="Ej: Laura Ramírez" style={S.input} />
               </div>
               <div>
                 <label style={S.inputLbl}>Usuario / Email:</label>
-                <input type="text" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required placeholder="ej: laura_ramirez" style={S.input} />
+                <input className="titan-input" type="text" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} required placeholder="ej: laura_ramirez" style={S.input} />
               </div>
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                   <label style={S.inputLbl}>Contraseña:</label>
-                  <button type="button" onClick={() => setNewPassword(Math.random().toString(36).slice(-8))} style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: '10px', fontWeight: 800, cursor: 'pointer' }}>GENERAR RANDOM</button>
+                  <button type="button" onClick={() => setNewPassword(Math.random().toString(36).slice(-8))} style={{ background: 'none', border: 'none', color: '#D57A30', fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, cursor: 'pointer' }}>GENERAR RANDOM</button>
                 </div>
-                <input type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required placeholder="Contraseña de ingreso" style={S.input} />
+                <input className="titan-input" type="text" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required placeholder="Contraseña de ingreso" style={S.input} />
               </div>
               <div>
                 <label style={S.inputLbl}>Teléfono:</label>
-                <input type="text" value={newTelefono} onChange={(e) => setNewTelefono(e.target.value)} placeholder="+54 9 11 0000-0000" style={S.input} />
+                <input className="titan-input" type="text" value={newTelefono} onChange={(e) => setNewTelefono(e.target.value)} placeholder="+54 9 11 0000-0000" style={S.input} />
               </div>
               <div>
                 <label style={S.inputLbl}>Género:</label>
-                <select value={newGender} onChange={(e) => setNewGender(e.target.value as 'male' | 'female')} style={S.input}>
+                <select className="titan-select" value={newGender} onChange={(e) => setNewGender(e.target.value as 'male' | 'female')} style={S.input}>
                   <option value="male">Hombre</option>
                   <option value="female">Mujer</option>
                 </select>
@@ -384,22 +370,22 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
               <div>
                 <label style={S.inputLbl}>Vigencia del Plan (Desde - Hasta):</label>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <input type="datetime-local" value={newPlanStart.slice(0, 16)} onChange={(e) => setNewPlanStart(new Date(e.target.value).toISOString())} required style={{ ...S.input, flex: 1 }} />
-                  <input type="datetime-local" value={newPlanExpiry.slice(0, 16)} onChange={(e) => setNewPlanExpiry(new Date(e.target.value).toISOString())} required style={{ ...S.input, flex: 1 }} />
+                  <input className="titan-input" type="datetime-local" value={newPlanStart.slice(0, 16)} onChange={(e) => setNewPlanStart(new Date(e.target.value).toISOString())} required style={{ ...S.input, flex: 1, colorScheme: 'dark' }} />
+                  <input className="titan-input" type="datetime-local" value={newPlanExpiry.slice(0, 16)} onChange={(e) => setNewPlanExpiry(new Date(e.target.value).toISOString())} required style={{ ...S.input, flex: 1, colorScheme: 'dark' }} />
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '12px', borderTop: '1px solid #1e293b', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.08)', flexDirection: 'column' }}>
                 {createAlumnoError && (
-                  <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', borderRadius: '8px', padding: '10px 14px', color: '#f87171', fontSize: '12px', fontWeight: 600, textAlign: 'center' }}>
+                  <div style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', padding: '10px 14px', color: '#f87171', fontSize: '12px', fontWeight: 600, textAlign: 'center' }}>
                     {createAlumnoError}
                   </div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                  <button type="button" onClick={() => { setShowAddAlumnoModal(false); setCreateAlumnoError(''); }} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '12px', fontWeight: 800, cursor: 'pointer' }}>
+                  <button type="button" className="titan-btn-armor-steel" onClick={() => { setShowAddAlumnoModal(false); setCreateAlumnoError(''); }} style={{ padding: '10px 16px', fontSize: '11px' }}>
                     Cancelar
                   </button>
-                  <button type="submit" style={S.btnPrimary}>
+                  <button type="submit" className="titan-btn-armor-glow" style={{ padding: '10px 20px', fontSize: '12px' }}>
                     Guardar Alumno
                   </button>
                 </div>
@@ -411,29 +397,25 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
       {/* Alumnos List Section */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Users size={20} color="#f59e0b" />
-            Alumnos Asignados <span style={{ color: '#64748b', fontSize: '14px' }}>({alumnos.length})</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <h2 className="titan-section-title" style={{ fontSize: '18px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Users size={20} color="#D57A30" />
+            Alumnos Asignados <span style={{ color: '#94A3B8', fontSize: '14px' }}>({alumnos.length})</span>
           </h2>
-          <div style={{ position: 'relative', width: '300px' }}>
-            <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', pointerEvents: 'none' }}>
+          <div style={{ position: 'relative', width: '300px', maxWidth: '100%' }}>
+            <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#D57A30', pointerEvents: 'none' }}>
               <Search size={16} />
             </div>
             <input 
               type="text" 
+              className="titan-input"
               placeholder="Buscar por nombre o email..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                background: '#0f172a',
-                border: '1px solid #1e293b',
-                color: '#ffffff',
-                padding: '10px 10px 10px 36px',
-                borderRadius: '4px',
+                padding: '10px 12px 10px 36px',
                 fontSize: '13px',
-                outline: 'none',
                 boxSizing: 'border-box'
               }}
             />
@@ -455,67 +437,59 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
             const lastGrace = alumno.last_grace_date ? new Date(alumno.last_grace_date).getTime() : 0;
             const canAddGrace = hasPaidBefore && (Date.now() - lastGrace > 30 * 86400000);
 
+            const cardClass = `titan-armor-card titan-armor-card-interactive ${
+              urgency === 'critical' ? 'titan-armor-card-danger' : urgency === 'warning' ? 'titan-armor-card-warn' : isSelected ? 'titan-armor-card-active' : ''
+            }`;
+
             return (
               <React.Fragment key={alumno.id}>
-              <div style={S.card(isSelected, urgency)}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className={cardClass} style={S.cardLayout}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
                     <div style={{ position: 'relative' }}>
                       <img src={alumno.avatar_url || AVATAR_PRESETS[0]} alt={alumno.full_name} style={S.alumnoAvatar} />
                       <button
                         onClick={() => setEditingProfileTarget(alumno)}
                         title="Editar foto y nombre"
+                        className="titan-btn-armor-copper"
                         style={{
                           position: 'absolute', bottom: '-4px', right: '-4px',
-                          background: '#f59e0b', color: '#000', border: 'none',
-                          borderRadius: '50%', padding: '3px', cursor: 'pointer',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center'
+                          padding: '3px', minWidth: 0
                         }}
                       >
                         <Edit2 size={10} />
                       </button>
                     </div>
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 900, color: '#ffffff' }}>{alumno.full_name}</h3>
+                        <h3 className="titan-section-title" style={{ margin: 0, fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{alumno.full_name}</h3>
                         <button
                           onClick={() => setEditingProfileTarget(alumno)}
                           title="Editar Perfil"
-                          style={{ background: 'none', border: 'none', color: '#f59e0b', cursor: 'pointer', padding: '2px' }}
+                          style={{ background: 'none', border: 'none', color: '#D57A30', cursor: 'pointer', padding: '2px', flexShrink: 0 }}
                         >
                           <Edit2 size={12} />
                         </button>
                       </div>
-                      <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#ffffff' }}>{alumno.email}</p>
+                      <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#CBD5E1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{alumno.email}</p>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#020617', padding: '6px 12px', borderRadius: '4px', border: `1px solid ${urgency === 'critical' ? 'rgba(239,68,68,0.4)' : urgency === 'warning' ? 'rgba(245,158,11,0.4)' : 'rgba(255,255,255,0.05)'}`, minWidth: '80px', marginRight: '8px' }}>
-                      <span style={{ fontSize: '8px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', fontWeight: 800, letterSpacing: '0.5px' }}>VENCIMIENTO</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                    <div className="titan-inset-well" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px 10px', borderColor: urgency === 'critical' ? 'rgba(239,68,68,0.45)' : urgency === 'warning' ? 'rgba(245,158,11,0.45)' : 'rgba(213,122,48,0.28)', minWidth: '74px' }}>
+                      <span style={{ fontSize: '8px', fontFamily: "'Chakra Petch', sans-serif", color: urgency === 'critical' ? '#FCA5A5' : urgency === 'warning' ? '#FFBD4A' : '#94A3B8', fontWeight: 700, letterSpacing: '0.08em' }}>VENCIMIENTO</span>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
-                        <span style={{ fontSize: '20px', fontWeight: 900, color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
-                        <span style={{ fontSize: '9px', color: urgency === 'critical' ? '#ef4444' : urgency === 'warning' ? '#f59e0b' : '#ffffff', fontWeight: 800 }}>días</span>
+                        <span style={{ fontSize: '19px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: urgency === 'critical' ? '#F87171' : urgency === 'warning' ? '#FFBD4A' : '#FFFFFF', lineHeight: '1' }}>{daysLeft > 0 ? daysLeft : 0}</span>
+                        <span style={{ fontSize: '9px', color: urgency === 'critical' ? '#F87171' : urgency === 'warning' ? '#FFBD4A' : '#94A3B8', fontWeight: 700 }}>días</span>
                       </div>
                     </div>
-                    <div style={{
-                      width: '32px', height: '32px',
-                      background: isPlanActive ? 'rgba(16,185,129,0.15)' : 'rgba(248,113,113,0.15)',
-                      border: `1px solid ${isPlanActive ? '#34d399' : '#f87171'}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}>
-                      {isPlanActive ? <CheckCircle2 size={16} color="#34d399" /> : <AlertCircle size={16} color="#f87171" />}
+                    <div className={isPlanActive ? 'titan-btn-armor-emerald' : 'titan-btn-armor-danger'} style={{ width: '32px', height: '32px', padding: 0, cursor: 'default' }}>
+                      {isPlanActive ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
                     </div>
                     <button
                       onClick={() => handleDeleteAlumno(alumno)}
                       title="Eliminar Alumno"
-                      style={{
-                        width: '32px', height: '32px',
-                        background: 'rgba(248,113,113,0.15)',
-                        border: '1px solid rgba(248,113,113,0.3)',
-                        color: '#f87171',
-                        cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
-                      }}
+                      className="titan-btn-armor-danger"
+                      style={{ width: '32px', height: '32px', padding: 0 }}
                     >
                       <Trash2 size={15} />
                     </button>
@@ -523,20 +497,21 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 </div>
 
                 {/* Plan Validity Box */}
-                <div style={S.inputBox}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div className="titan-inset-well" style={S.inputBox}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                     <div>
                       <span style={S.inputLbl}>Vencimiento Plan</span>
                       <span style={{ display: 'block', fontSize: '13px', fontWeight: 900, color: isPlanActive ? '#34d399' : '#f87171', fontFamily: 'monospace' }}>
                         {new Date(alumno.plan_active_until).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(245,158,11,0.4)', opacity: canAddGrace ? 1 : 0.5 }}>
+                    <div style={{ display: 'flex', alignItems: 'stretch', opacity: canAddGrace ? 1 : 0.45 }}>
                       <input
                         type="number"
                         min="1"
                         max="1"
                         disabled={!canAddGrace}
+                        className="titan-input"
                         value={renewDays[alumno.id] === undefined ? 1 : renewDays[alumno.id]}
                         onChange={(e) => {
                           let val = parseInt(e.target.value) || 0;
@@ -544,11 +519,12 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                           if (val < 1) val = 1;
                           setRenewDays(prev => ({ ...prev, [alumno.id]: val }));
                         }}
-                        style={{ width: '60px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 8px', fontSize: '18px', fontWeight: 900, textAlign: 'center', outline: 'none', cursor: canAddGrace ? 'text' : 'not-allowed' }}
+                        style={{ width: '50px', padding: '5px 4px', fontSize: '15px', fontWeight: 900, textAlign: 'center', cursor: canAddGrace ? 'text' : 'not-allowed', borderRight: 'none' }}
                         title={!hasPaidBefore ? "El alumno debe tener al menos un pago registrado" : !canAddGrace ? "Solo se puede usar 1 vez cada 30 días" : "Días a sumar (sin registrar pago)"}
                       />
                       <button 
                         disabled={!canAddGrace}
+                        className="titan-btn-armor-copper"
                         onClick={() => {
                           if (!canAddGrace) return;
                           const days = renewDays[alumno.id] === undefined ? 1 : renewDays[alumno.id];
@@ -557,7 +533,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                             onRefreshData();
                           }
                         }} 
-                        style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: canAddGrace ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        style={{ padding: '6px 12px', fontSize: '10px' }}
                         title={!hasPaidBefore ? "El alumno debe tener al menos un pago registrado" : !canAddGrace ? "Solo se puede usar 1 vez cada 30 días" : "Agregar días de gracia"}
                       >
                         <RotateCcw size={12} /> Agregar
@@ -565,11 +541,12 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '8px', gap: '8px', flexWrap: 'wrap' }}>
                     <div>
-                      <span style={{...S.inputLbl, color: '#34d399'}}>Cobrar Cuota</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                      <span style={{...S.inputLbl, color: '#6EE7B7'}}>Cobrar Cuota</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '3px' }}>
                         <select
+                          className="titan-select"
                           value={paymentFrequencies[alumno.id] || 'mensual'}
                           onChange={(e) => {
                             const freq = e.target.value as 'mensual' | 'semanal' | 'diario';
@@ -577,7 +554,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                             const daysToAdd = freq === 'mensual' ? 30 : freq === 'semanal' ? 7 : 1;
                             setPaymentDates(prev => ({ ...prev, [alumno.id]: new Date(Date.now() + daysToAdd * 86400000).toISOString().split('T')[0] }));
                           }}
-                          style={{ background: '#0f172a', border: '1px solid rgba(16,185,129,0.3)', color: '#34d399', fontSize: '10px', outline: 'none', borderRadius: '4px', padding: '2px 4px' }}
+                          style={{ color: '#6EE7B7', fontSize: '10px', padding: '3px 6px' }}
                         >
                           <option value="mensual">Mensual</option>
                           <option value="semanal">Semanal</option>
@@ -587,22 +564,23 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                           type="date"
                           value={paymentDates[alumno.id] || new Date(Date.now() + ((paymentFrequencies[alumno.id] || 'mensual') === 'semanal' ? 7 : (paymentFrequencies[alumno.id] || 'mensual') === 'diario' ? 1 : 30) * 86400000).toISOString().split('T')[0]}
                           onChange={(e) => setPaymentDates(prev => ({ ...prev, [alumno.id]: e.target.value }))}
-                          style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '11px', outline: 'none', cursor: 'pointer' }}
+                          style={{ background: 'transparent', border: 'none', color: '#CBD5E1', fontSize: '11px', outline: 'none', cursor: 'pointer', colorScheme: 'dark' }}
                           title="Nuevo Vencimiento"
                         />
                       </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'stretch', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(16,185,129,0.4)' }}>
-                      <span style={{ background: 'rgba(0,0,0,0.5)', color: '#10b981', display: 'flex', alignItems: 'center', padding: '0 8px', fontSize: '12px', fontWeight: 900 }}>Gs.</span>
+                    <div style={{ display: 'flex', alignItems: 'stretch' }}>
+                      <span style={{ background: '#070A0F', color: '#6EE7B7', border: '1px solid rgba(52,211,153,0.35)', borderRight: 'none', display: 'flex', alignItems: 'center', padding: '0 7px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700 }}>Gs.</span>
                       <input
                         type="number"
                         min="0"
+                        className="titan-input"
                         value={paymentAmounts[alumno.id] === undefined ? 150000 : paymentAmounts[alumno.id]}
                         onChange={(e) => setPaymentAmounts(prev => ({ ...prev, [alumno.id]: parseInt(e.target.value) || 0 }))}
-                        style={{ width: '80px', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', padding: '6px 2px 6px 4px', fontSize: '14px', fontWeight: 900, textAlign: 'right', outline: 'none' }}
+                        style={{ width: '76px', padding: '5px 4px', fontSize: '13px', fontWeight: 800, textAlign: 'right', borderColor: 'rgba(52,211,153,0.35)', borderRight: 'none' }}
                         title="Monto a cobrar"
                       />
-                      <button onClick={() => handleRegisterPayment(alumno.id)} style={{ background: '#10b981', color: '#000', border: 'none', padding: '6px 12px', fontSize: '11px', fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <button className="titan-btn-armor-emerald" onClick={() => handleRegisterPayment(alumno.id)} style={{ padding: '6px 10px', fontSize: '10px' }}>
                         <CheckCircle2 size={12} /> Pagar
                       </button>
                     </div>
@@ -610,7 +588,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 </div>
 
                 {/* Credentials Box */}
-                <div style={S.inputBox}>
+                <div className="titan-inset-well" style={S.inputBox}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={S.inputLbl}>Credenciales de Ingreso</span>
                     {editingCredsAlumnoId !== alumno.id && (
@@ -620,7 +598,7 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                           setEditCredsEmail(alumno.email);
                           setEditCredsPassword(alumno.password || '');
                         }}
-                        style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: '11px', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        style={{ background: 'none', border: 'none', color: '#FFBD4A', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
                       >
                         <Edit2 size={12} /> Editar
                       </button>
@@ -629,13 +607,13 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
                   {editingCredsAlumnoId === alumno.id ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
-                      <input type="text" value={editCredsEmail} onChange={(e) => setEditCredsEmail(e.target.value)} style={S.input} placeholder="Usuario / Email" />
-                      <input type="text" value={editCredsPassword} onChange={(e) => setEditCredsPassword(e.target.value)} style={S.input} placeholder="Contraseña" />
+                      <input type="text" className="titan-input" value={editCredsEmail} onChange={(e) => setEditCredsEmail(e.target.value)} style={S.input} placeholder="Usuario / Email" />
+                      <input type="text" className="titan-input" value={editCredsPassword} onChange={(e) => setEditCredsPassword(e.target.value)} style={S.input} placeholder="Contraseña" />
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
-                        <button onClick={() => setEditingCredsAlumnoId(null)} style={{ background: '#334155', color: '#fff', border: 'none', padding: '6px 10px', fontSize: '11px', cursor: 'pointer' }}>
+                        <button className="titan-btn-armor-steel" onClick={() => setEditingCredsAlumnoId(null)} style={{ padding: '6px 10px', fontSize: '11px' }}>
                           <X size={14} />
                         </button>
-                        <button onClick={() => handleSaveCredentials(alumno.id)} style={{ background: '#f59e0b', color: '#000', border: 'none', padding: '6px 10px', fontSize: '11px', fontWeight: 900, cursor: 'pointer' }}>
+                        <button className="titan-btn-armor-copper" onClick={() => handleSaveCredentials(alumno.id)} style={{ padding: '6px 10px', fontSize: '11px' }}>
                           <Save size={14} />
                         </button>
                       </div>
@@ -643,12 +621,12 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700 }}>
-                        <span style={{ color: '#ffffff' }}>Usuario:</span>
-                        <span style={{ color: '#ffffff' }}>{alumno.email}</span>
+                        <span style={{ color: '#94A3B8' }}>Usuario:</span>
+                        <span style={{ color: '#F1F5F9' }}>{alumno.email}</span>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 700 }}>
-                        <span style={{ color: '#ffffff' }}>Clave:</span>
-                        <span style={{ color: '#f59e0b' }}>{alumno.password ? '••••••••' : 'Sin asignar'}</span>
+                        <span style={{ color: '#94A3B8' }}>Clave:</span>
+                        <span style={{ color: '#FFBD4A' }}>{alumno.password ? '••••••••' : 'Sin asignar'}</span>
                       </div>
                     </div>
                   )}
@@ -658,35 +636,37 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                 <div>
                   <span style={S.inputLbl}>Rutina Activa</span>
                   {activeRoutine ? (
-                    <div style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', padding: '10px 12px', marginTop: '4px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div className="titan-inset-well" style={{ borderLeft: '3px solid #D57A30', padding: '10px 12px', marginTop: '4px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
                         <div>
-                          <h5 style={{ margin: '0 0 6px', fontSize: '13px', color: '#f59e0b', fontWeight: 800 }}>{activeRoutine.nombre_rutina}</h5>
-                          <span style={{ fontSize: '10px', color: '#ffffff' }}>{activeRoutine.logs.length} ejercicios asignados</span>
+                          <h5 className="titan-section-title" style={{ margin: '0 0 4px', fontSize: '13px', color: '#FFBD4A' }}>{activeRoutine.nombre_rutina}</h5>
+                          <span style={{ fontSize: '10px', color: '#CBD5E1' }}>{activeRoutine.logs.length} ejercicios asignados</span>
                         </div>
-                        <span style={{ fontSize: '9px', fontWeight: 900, color: '#34d399', background: 'rgba(16,185,129,0.15)', padding: '2px 6px' }}>EN SALA</span>
+                        <span className="titan-badge-emerald" style={{ fontSize: '9px', padding: '2px 7px' }}>EN SALA</span>
                       </div>
                     </div>
                   ) : (
-                    <div style={{ background: '#020617', border: '1px solid #1e293b', padding: '10px', marginTop: '4px', textAlign: 'center', fontSize: '12px', color: '#ffffff' }}>
+                    <div className="titan-inset-well" style={{ padding: '10px', marginTop: '4px', textAlign: 'center', fontSize: '12px', color: '#94A3B8' }}>
                       Sin rutina activa asignada
                     </div>
                   )}
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '8px', marginTop: '4px', flexWrap: 'wrap' }}>
                   <button
                     onClick={() => setSelectedAlumnoForDetails(isSelected ? null : alumno.id)}
-                    style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', minWidth: '120px' }}
+                    className="titan-btn-armor-steel"
+                    style={{ ...S.btnSecondary, flex: 1, minWidth: '116px' }}
                   >
                     <span>{isSelected ? 'Ocultar' : 'Ver Registros'}</span>
-                    <ChevronRight size={14} style={{ transform: isSelected ? 'rotate(90deg)' : 'none' }} />
+                    <ChevronRight size={14} style={{ transform: isSelected ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }} />
                   </button>
                   {onViewStudentProfile && (
                     <button
                       onClick={() => onViewStudentProfile(alumno.id)}
-                      style={{ ...S.btnSecondary, flex: 1, justifyContent: 'center', borderColor: '#2563eb', color: '#ffffff', background: '#1e3a8a', minWidth: '120px' }}
+                      className="titan-btn-armor-glow"
+                      style={{ ...S.btnSecondary, flex: 1, minWidth: '116px' }}
                       title="Ver perfil del alumno como si fueras él"
                     >
                       Perfil Alumno
@@ -694,13 +674,15 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                   )}
                   <button
                     onClick={() => setShowStatsForAlumno(showStatsForAlumno === alumno.id ? null : alumno.id)}
-                    style={{ ...S.btnSecondary, justifyContent: 'center', borderColor: showStatsForAlumno === alumno.id ? '#06b6d4' : '#334155', color: showStatsForAlumno === alumno.id ? '#06b6d4' : '#94a3b8', background: showStatsForAlumno === alumno.id ? 'rgba(6,182,212,0.1)' : '#92400e' }}
+                    className={showStatsForAlumno === alumno.id ? 'titan-btn-armor-glow' : 'titan-btn-armor-steel'}
+                    style={{ ...S.btnSecondary, padding: '9px 12px' }}
                     title="Ver estadísticas del alumno"
                   >
                     <BarChart2 size={14} />
                   </button>
                   <button
                     onClick={() => { setRoutineBuilderAlumnoId(alumno.id); setShowRoutineBuilder(!(showRoutineBuilder && routineBuilderAlumnoId === alumno.id)); }}
+                    className="titan-btn-armor-copper"
                     style={S.btnPrimary}
                   >
                     + Rutina
@@ -717,22 +699,22 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
               {/* Panel Registros - aparece justo debajo de este card */}
               {isSelected && (
-                <div style={{ gridColumn: '1 / -1', background: '#0f172a', border: '1px solid #334155', padding: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b', paddingBottom: '12px', marginBottom: '16px' }}>
-                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 900, color: '#ffffff' }}>Historial de <span style={{ color: '#f59e0b' }}>{alumno.full_name}</span></h3>
-                    <button onClick={() => setSelectedAlumnoForDetails(null)} style={{ background: '#1e293b', color: '#94a3b8', border: 'none', padding: '6px 14px', fontSize: '11px', fontWeight: 800, cursor: 'pointer' }}>Cerrar</button>
+                <div className="titan-armor-card" style={{ gridColumn: '1 / -1', padding: '22px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px', marginBottom: '16px' }}>
+                    <h3 className="titan-section-title" style={{ margin: 0, fontSize: '16px' }}>Historial de <span style={{ color: '#FFBD4A' }}>{alumno.full_name}</span></h3>
+                    <button className="titan-btn-armor-steel" onClick={() => setSelectedAlumnoForDetails(null)} style={{ padding: '6px 14px', fontSize: '11px' }}>Cerrar</button>
                   </div>
                   {selectedAlumnoRoutines.length === 0 ? (
-                    <div style={{ padding: '24px', textAlign: 'center', color: '#64748b' }}>Sin rutinas en historial.</div>
+                    <div style={{ padding: '24px', textAlign: 'center', color: '#94A3B8' }}>Sin rutinas en historial.</div>
                   ) : selectedAlumnoRoutines.map((routine) => (
-                    <div key={routine.id} style={{ background: '#020617', border: '1px solid #1e293b', marginBottom: '16px' }}>
-                      <div style={{ padding: '12px 16px', background: '#0f172a', borderBottom: '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 900, color: '#fff' }}>{routine.nombre_rutina}</h4>
-                        <span style={{ fontSize: '9px', fontWeight: 900, padding: '2px 8px', background: routine.activa ? 'rgba(16,185,129,0.15)' : '#1e293b', color: routine.activa ? '#34d399' : '#64748b', border: `1px solid ${routine.activa ? '#34d399' : '#334155'}` }}>{routine.activa ? 'EN USO' : 'ARCHIVADA'}</span>
+                    <div key={routine.id} className="titan-inset-well" style={{ marginBottom: '16px', overflow: 'hidden' }}>
+                      <div style={{ padding: '12px 16px', background: 'linear-gradient(180deg, #1E242E 0%, #12161D 100%)', borderBottom: '1px solid rgba(201,111,40,0.35)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h4 className="titan-section-title" style={{ margin: 0, fontSize: '13px' }}>{routine.nombre_rutina}</h4>
+                        <span className={routine.activa ? 'titan-badge-emerald' : 'titan-badge-steel'} style={{ fontSize: '9px', padding: '3px 8px' }}>{routine.activa ? 'EN USO' : 'ARCHIVADA'}</span>
                       </div>
                       <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '12px', color: '#cbd5e1' }}>
-                          <thead><tr style={{ background: '#090d16', color: '#64748b', fontSize: '10px', textTransform: 'uppercase' }}>
+                        <table className="titan-table" style={{ fontSize: '12px', color: '#cbd5e1' }}>
+                          <thead><tr style={{ fontSize: '10px' }}>
                             <th style={{ padding: '10px 14px' }}>#</th>
                             <th style={{ padding: '10px 14px' }}>Ejercicio</th>
                             <th style={{ padding: '10px 14px', textAlign: 'center' }}>Vol</th>
@@ -742,22 +724,26 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
                             <th style={{ padding: '10px 14px', textAlign: 'center' }}>Acc</th>
                           </tr></thead>
                           <tbody>{routine.logs.map((log) => (
-                            <tr key={log.id} style={{ borderBottom: '1px solid #1e293b' }}>
+                            <tr key={log.id}>
                               <td style={{ padding: '10px 14px' }}><span style={{ fontWeight: 900, color: '#fff', fontSize: '13px' }}>#{log.orden}</span><br/><span style={{ fontSize: '9px', color: getWeekDayColor(log.semana, log.dia), fontWeight: 800 }}>S{log.semana} {log.dia}</span></td>
                               <td style={{ padding: '10px 14px', fontWeight: 800, color: '#fff' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                  {log.exercise?.image_urls?.[0] && <img src={fixImageUrl(log.exercise.image_urls[0])} alt="" onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))} className="gm-exercise-gif" style={{ width: '32px', height: '32px', objectFit: 'contain', background: '#000', borderRadius: '3px', padding: '2px', cursor: 'pointer' }} />}
+                                  {log.exercise?.image_urls?.[0] && (
+                                    <span className="gm-gif-wrap" onClick={() => setFullscreenImage(fixImageUrl(log.exercise!.image_urls![0]))} style={{ width: '36px', height: '36px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#000', border: '1px solid rgba(213,122,48,0.32)', padding: '2px', cursor: 'pointer', flexShrink: 0 }}>
+                                      <img src={fixImageUrl(log.exercise.image_urls[0])} alt="" className="gm-exercise-gif" style={{ width: '100%', height: '100%', objectFit: 'contain', background: 'transparent', display: 'block' }} />
+                                    </span>
+                                  )}
                                   <span>{log.exercise?.name}</span>
                                 </div>
                               </td>
                               <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace' }}>{log.series}x{log.repeticiones}</td>
-                              <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: '#64748b' }}>{log.peso_objetivo}</td>
+                              <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: '#94A3B8' }}>{log.peso_objetivo}</td>
                               <td style={{ padding: '10px 14px', textAlign: 'center' }}>
-                                <span onClick={() => { const v = window.prompt('Peso (KG):', log.peso_real.toString()); if (v !== null) { const n = parseFloat(v); if (!isNaN(n)) { dataService.updatePesoReal(log.id, n, routine.alumno_id); onRefreshData(); } } }} title="Clic para editar" style={{ cursor: 'pointer', fontFamily: 'monospace', fontWeight: 900, fontSize: '11px', padding: '2px 6px', background: log.peso_real >= log.peso_objetivo ? 'rgba(16,185,129,0.15)' : '#1e293b', color: log.peso_real >= log.peso_objetivo ? '#34d399' : '#cbd5e1', border: `1px solid ${log.peso_real >= log.peso_objetivo ? '#34d399' : '#334155'}` }}>{log.peso_real} KG</span>
+                                <span onClick={() => { const v = window.prompt('Peso (KG):', log.peso_real.toString()); if (v !== null) { const n = parseFloat(v); if (!isNaN(n)) { dataService.updatePesoReal(log.id, n, routine.alumno_id); onRefreshData(); } } }} title="Clic para editar" className={log.peso_real >= log.peso_objetivo ? 'titan-badge-emerald' : 'titan-badge-steel'} style={{ cursor: 'pointer', fontFamily: 'monospace', fontSize: '11px', padding: '2px 7px' }}>{log.peso_real} KG</span>
                               </td>
-                              <td style={{ padding: '10px 14px', textAlign: 'right', fontFamily: 'monospace', fontSize: '10px', color: '#64748b' }}>{new Date(log.fecha_ultimo_cambio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                              <td style={{ padding: '10px 14px', textAlign: 'right', fontFamily: 'monospace', fontSize: '10px', color: '#94A3B8' }}>{new Date(log.fecha_ultimo_cambio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
                               <td style={{ padding: '10px 14px', textAlign: 'center' }}>
-                                <button onClick={() => { if (window.confirm(`¿Eliminar "${log.exercise?.name}"?`)) { dataService.deleteRoutineLog(log.id); onRefreshData(); } }} style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.4)', color: '#ef4444', padding: '5px', borderRadius: '3px', cursor: 'pointer', display: 'inline-flex' }}><Trash2 size={13} /></button>
+                                <button className="titan-btn-armor-danger" onClick={() => { if (window.confirm(`¿Eliminar "${log.exercise?.name}"?`)) { dataService.deleteRoutineLog(log.id); onRefreshData(); } }} style={{ padding: '5px', minWidth: 0 }}><Trash2 size={13} /></button>
                               </td>
                             </tr>
                           ))}</tbody>
@@ -785,14 +771,24 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
               </React.Fragment>
             );
           }) : (
-            <div style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', background: '#020617', border: '1px solid #1e293b', borderRadius: '4px', color: '#94a3b8' }}>
+            <div className="titan-armor-card" style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', color: '#94a3b8' }}>
               No se encontraron alumnos que coincidan con "{searchQuery}"
             </div>
           )}
         </div>
       </div>
 
-
+      {/* Modal Rutina Builder General */}
+      {showRoutineBuilder && !routineBuilderAlumnoId && (
+        <RoutineBuilder
+          coachId={coach.id}
+          gymId={coach.gym_id}
+          alumnos={alumnos}
+          exercises={exercises}
+          onRoutineCreated={() => { setShowRoutineBuilder(false); onRefreshData(); }}
+          onCancel={() => setShowRoutineBuilder(false)}
+        />
+      )}
 
       {editingProfileTarget && (
         <EditProfileModal
@@ -807,20 +803,16 @@ export const DashboardCoach: React.FC<DashboardCoachProps> = ({ coach, exercises
 
       {/* 📊 Full stats modal for coach viewing an alumno */}
       {fullStatsAlumno && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 9000,
-          background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(12px)',
-          overflowY: 'auto', padding: '24px',
-        }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-              <h2 style={{ fontSize: '20px', fontWeight: 900, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="titan-modal-overlay" style={{ zIndex: 9000, alignItems: 'flex-start', overflowY: 'auto', padding: '24px' }}>
+          <div style={{ width: '100%', maxWidth: '860px', margin: '0 auto' }}>
+            <div className="titan-armor-banner" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', marginBottom: '20px' }}>
+              <h2 className="titan-section-title" style={{ fontSize: '18px', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <img src={fullStatsAlumno.avatar_url || 'https://api.dicebear.com/7.x/big-smile/svg?seed=default'} alt=""
-                  style={{ width: '36px', height: '36px', objectFit: 'cover', border: '2px solid #f59e0b' }} />
-                📊 Progreso de {fullStatsAlumno.full_name}
+                  style={{ width: '36px', height: '36px', objectFit: 'cover', border: '2px solid #D57A30' }} />
+                Progreso de {fullStatsAlumno.full_name}
               </h2>
-              <button onClick={() => setFullStatsAlumno(null)}
-                style={{ background: '#1e293b', color: '#fff', border: '1px solid #334155', padding: '10px 18px', fontSize: '12px', fontWeight: 800, cursor: 'pointer', borderRadius: '0' }}>
+              <button className="titan-btn-armor-steel" onClick={() => setFullStatsAlumno(null)}
+                style={{ padding: '9px 16px', fontSize: '12px' }}>
                 ✕ Cerrar
               </button>
             </div>

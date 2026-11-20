@@ -512,7 +512,7 @@ export const DietPlanner: React.FC = () => {
         margin:       10,
         filename:     'Plan_Nutricional_GymMaster.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, backgroundColor: '#0f172a' },
+        html2canvas:  { scale: 2, backgroundColor: '#0B0E13' },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak:    { mode: ['css', 'legacy'] }
       };
@@ -526,30 +526,33 @@ export const DietPlanner: React.FC = () => {
   };
 
   const inputStyle = {
-    background: '#1e293b', border: '1px solid #334155', borderRadius: '0', 
-    padding: '12px 14px', color: '#fff', fontSize: '14px', fontWeight: 700,
-    width: '100%', boxSizing: 'border-box' as const, outline: 'none'
+    padding: '12px 14px', fontSize: '14px', fontWeight: 700,
+    width: '100%', boxSizing: 'border-box' as const
   };
-  const labelStyle = { color: '#94a3b8', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '6px', display: 'block' };
+  const labelStyle = { color: '#CBD5E1', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.07em', marginBottom: '6px', display: 'block' };
 
   return (
-    <div style={{ padding: '0 20px 40px', maxWidth: '1000px', margin: '0 auto', fontFamily: "'Inter', sans-serif" }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '30px' }}>
-        <div style={{ width: 48, height: 48, background: 'linear-gradient(135deg, rgba(34,197,94,0.2), rgba(34,197,94,0.05))', border: '1px solid #22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Apple color="#22c55e" size={24} />
-        </div>
-        <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 900, color: '#fff', margin: 0, textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
-            Evaluación <span style={{ color: '#22c55e' }}>Nutricional</span>
-          </h1>
-          <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '13px' }}>Cálculo Antropométrico y Generador de Dietas (Déficit Calórico)</p>
+    <div style={{ padding: '24px 20px 40px', maxWidth: '1080px', margin: '0 auto', fontFamily: "'Inter', sans-serif" }}>
+      <div className="titan-armor-banner" style={{ padding: '22px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '22px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ width: 48, height: 48, background: 'linear-gradient(135deg, rgba(213,122,48,0.24), rgba(140,62,16,0.12))', border: '1px solid rgba(213,122,48,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Apple color="#FFBD4A" size={24} />
+          </div>
+          <div>
+            <span className="titan-badge-copper" style={{ fontSize: '9px', padding: '2px 8px' }}>NUTRICIÓN TÁCTICA</span>
+            <h1 className="titan-section-title" style={{ fontSize: '24px', margin: '4px 0 0' }}>
+              Evaluación <span style={{ color: '#FFBD4A' }}>Nutricional</span>
+            </h1>
+            <p style={{ color: '#94a3b8', margin: '3px 0 0', fontSize: '12px' }}>Cálculo Antropométrico y Generador de Dietas (Déficit Calórico)</p>
+          </div>
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '24px', borderBottom: '1px solid #334155', paddingBottom: '16px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0', marginBottom: '0', borderBottom: '2px solid #C96F28' }}>
         <button
           onClick={() => setActiveTab('calculator')}
-          style={{ background: activeTab === 'calculator' ? '#22c55e' : 'transparent', color: activeTab === 'calculator' ? '#000' : '#94a3b8', border: 'none', padding: '10px 24px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }}
+          className={`titan-tab ${activeTab === 'calculator' ? 'titan-tab-active' : ''}`}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
         >
           <Activity size={16} /> 1. Antropometría
         </button>
@@ -558,56 +561,57 @@ export const DietPlanner: React.FC = () => {
             if (!calculated) alert('Calcula la antropometría primero.');
             else setActiveTab('diet');
           }}
-          style={{ background: activeTab === 'diet' ? '#22c55e' : 'transparent', color: activeTab === 'diet' ? '#000' : '#94a3b8', border: 'none', padding: '10px 24px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', cursor: calculated ? 'pointer' : 'not-allowed', opacity: calculated ? 1 : 0.5, transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }}
+          className={`titan-tab ${activeTab === 'diet' ? 'titan-tab-active' : ''}`}
+          style={{ cursor: calculated ? 'pointer' : 'not-allowed', opacity: calculated ? 1 : 0.55, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
         >
           <Apple size={16} /> 2. Creador de Dieta
         </button>
       </div>
 
       {activeTab === 'calculator' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: calculated ? 'repeat(auto-fit, minmax(320px, 1fr))' : '1fr', gap: '24px', marginTop: '20px' }}>
           {/* Formulario */}
-          <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '24px', borderRadius: '0' }}>
-            <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#22c55e', textTransform: 'uppercase', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Scale size={18} /> Datos del Paciente
+          <div className="titan-armor-card" style={{ padding: '24px' }}>
+            <h2 className="titan-section-title" style={{ fontSize: '14px', color: '#FFBD4A', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Scale size={18} color="#D57A30" /> Datos del Paciente
             </h2>
             
             <div style={{ marginBottom: '16px' }}>
               <label style={labelStyle}>Nombre del Paciente</label>
-              <input type="text" placeholder="Ej. Juan Pérez" style={inputStyle} value={patientName} onChange={e => setPatientName(e.target.value)} />
+              <input className="titan-input" type="text" placeholder="Ej. Juan Pérez" style={inputStyle} value={patientName} onChange={e => setPatientName(e.target.value)} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               <div>
                 <label style={labelStyle}>Género</label>
-                <select style={inputStyle} value={gender} onChange={e => setGender(e.target.value as any)}>
+                <select className="titan-select" style={inputStyle} value={gender} onChange={e => setGender(e.target.value as any)}>
                   <option value="male">Hombre</option>
                   <option value="female">Mujer</option>
                 </select>
               </div>
               <div>
                 <label style={labelStyle}>Edad (años)</label>
-                <input type="number" style={inputStyle} value={age} onChange={e => setAge(Number(e.target.value))} />
+                <input className="titan-input" type="number" style={inputStyle} value={age} onChange={e => setAge(Number(e.target.value))} />
               </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               <div>
                 <label style={labelStyle}>Peso (kg)</label>
-                <input type="number" style={inputStyle} value={weight} onChange={e => setWeight(Number(e.target.value))} />
+                <input className="titan-input" type="number" style={inputStyle} value={weight} onChange={e => setWeight(Number(e.target.value))} />
               </div>
               <div>
                 <label style={labelStyle}>Altura (cm)</label>
-                <input type="number" style={inputStyle} value={height} onChange={e => setHeight(Number(e.target.value))} />
+                <input className="titan-input" type="number" style={inputStyle} value={height} onChange={e => setHeight(Number(e.target.value))} />
               </div>
               <div>
                 <label style={labelStyle}>Muñeca (cm)</label>
-                <input type="number" style={inputStyle} value={wrist} onChange={e => setWrist(Number(e.target.value))} />
+                <input className="titan-input" type="number" style={inputStyle} value={wrist} onChange={e => setWrist(Number(e.target.value))} />
               </div>
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '22px' }}>
               <label style={labelStyle}>Nivel de Actividad Física</label>
-              <select style={inputStyle} value={activityLevel} onChange={e => setActivityLevel(Number(e.target.value))}>
+              <select className="titan-select" style={inputStyle} value={activityLevel} onChange={e => setActivityLevel(Number(e.target.value))}>
                 <option value={1.2}>Sedentario (Poco o nada de ejercicio)</option>
                 <option value={1.375}>Ligero (1-3 días por semana)</option>
                 <option value={1.55}>Moderado (3-5 días por semana)</option>
@@ -616,85 +620,83 @@ export const DietPlanner: React.FC = () => {
               </select>
             </div>
 
-            <div style={{ marginBottom: '24px', background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)', padding: '16px' }}>
-              <h3 style={{ fontSize: '11px', color: '#22c55e', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 900 }}>Observaciones Clínicas (Gastrointestinal y Metabólico)</h3>
+            <div className="titan-inset-well" style={{ marginBottom: '22px', borderLeft: '3px solid #D57A30', padding: '16px' }}>
+              <h3 style={{ fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 700, letterSpacing: '0.07em' }}>Observaciones Clínicas (Gastrointestinal y Metabólico)</h3>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '10px' }}>
                 <input type="checkbox" checked={constipation} onChange={e => {
                   setConstipation(e.target.checked);
                   if (e.target.checked) { setGutFlora(false); setCeliac(false); setDiabetic(false); setHypertension(false); setPcos(false); }
-                }} style={{ width: '16px', height: '16px', accentColor: '#22c55e' }} />
+                }} style={{ width: '16px', height: '16px', accentColor: '#D57A30' }} />
                 <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Estreñimiento o tránsito lento</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '10px' }}>
                 <input type="checkbox" checked={gutFlora} onChange={e => {
                   setGutFlora(e.target.checked);
                   if (e.target.checked) { setConstipation(false); setCeliac(false); setDiabetic(false); setHypertension(false); setPcos(false); }
-                }} style={{ width: '16px', height: '16px', accentColor: '#22c55e' }} />
+                }} style={{ width: '16px', height: '16px', accentColor: '#D57A30' }} />
                 <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Mejorar la flora intestinal (microbiota)</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '10px' }}>
                 <input type="checkbox" checked={celiac} onChange={e => {
                   setCeliac(e.target.checked);
                   if (e.target.checked) { setConstipation(false); setGutFlora(false); setDiabetic(false); setHypertension(false); setPcos(false); }
-                }} style={{ width: '16px', height: '16px', accentColor: '#22c55e' }} />
+                }} style={{ width: '16px', height: '16px', accentColor: '#D57A30' }} />
                 <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Paciente Celíaco (libre de TACC)</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '10px' }}>
                 <input type="checkbox" checked={diabetic} onChange={e => {
                   setDiabetic(e.target.checked);
                   if (e.target.checked) { setConstipation(false); setGutFlora(false); setCeliac(false); setHypertension(false); setPcos(false); }
-                }} style={{ width: '16px', height: '16px', accentColor: '#22c55e' }} />
+                }} style={{ width: '16px', height: '16px', accentColor: '#D57A30' }} />
                 <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Paciente Diabético (control glucémico)</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '10px' }}>
                 <input type="checkbox" checked={hypertension} onChange={e => {
                   setHypertension(e.target.checked);
                   if (e.target.checked) { setConstipation(false); setGutFlora(false); setCeliac(false); setDiabetic(false); setPcos(false); }
-                }} style={{ width: '16px', height: '16px', accentColor: '#22c55e' }} />
+                }} style={{ width: '16px', height: '16px', accentColor: '#D57A30' }} />
                 <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Hipertensión (Dieta DASH baja en sodio)</span>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                 <input type="checkbox" checked={pcos} onChange={e => {
                   setPcos(e.target.checked);
                   if (e.target.checked) { setConstipation(false); setGutFlora(false); setCeliac(false); setDiabetic(false); setHypertension(false); }
-                }} style={{ width: '16px', height: '16px', accentColor: '#22c55e' }} />
+                }} style={{ width: '16px', height: '16px', accentColor: '#D57A30' }} />
                 <span style={{ color: '#cbd5e1', fontSize: '13px' }}>Síndrome de Ovario Poliquístico (SOP)</span>
               </label>
             </div>
 
-            <button onClick={calculateMetrics} style={{ width: '100%', background: '#22c55e', color: '#000', border: 'none', padding: '14px', fontSize: '13px', fontWeight: 900, textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <button onClick={calculateMetrics} className="titan-btn-armor-glow" style={{ width: '100%', padding: '14px', fontSize: '13px' }}>
               <Activity size={18} /> Procesar Evaluación
             </button>
           </div>
 
           {/* Resultados */}
           {calculated && (
-            <div style={{ background: '#0f172a', border: '1px solid #22c55e', padding: '24px', borderRadius: '0', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(34,197,94,0.1), transparent)', pointerEvents: 'none' }} />
-              
-              <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#22c55e', textTransform: 'uppercase', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Check size={18} /> Resultados Antropométricos
+            <div className="titan-armor-card" style={{ padding: '24px' }}>
+              <h2 className="titan-section-title" style={{ fontSize: '14px', color: '#FFBD4A', marginBottom: '22px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Check size={18} color="#D57A30" /> Resultados Antropométricos
               </h2>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ background: '#1e293b', padding: '16px', borderLeft: '4px solid #22c55e' }}>
-                  <p style={{ margin: '0 0 4px', fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800 }}>Body Frame Size (Complexión)</p>
-                  <p style={{ margin: 0, fontSize: '20px', color: '#fff', fontWeight: 900 }}>{frameSize}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div className="titan-inset-well" style={{ padding: '16px', borderLeft: '4px solid #D57A30' }}>
+                  <p style={{ margin: '0 0 4px', fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.07em' }}>Body Frame Size (Complexión)</p>
+                  <p style={{ margin: 0, fontSize: '20px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{frameSize}</p>
                 </div>
                 
-                <div style={{ background: '#1e293b', padding: '16px', borderLeft: '4px solid #3b82f6' }}>
-                  <p style={{ margin: '0 0 4px', fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800 }}>Peso Ideal Estimado (IBW)</p>
-                  <p style={{ margin: 0, fontSize: '20px', color: '#fff', fontWeight: 900 }}>{ibw.toFixed(1)} <span style={{ fontSize: '14px', color: '#64748b' }}>kg</span></p>
+                <div className="titan-inset-well" style={{ padding: '16px', borderLeft: '4px solid #CBD5E1' }}>
+                  <p style={{ margin: '0 0 4px', fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.07em' }}>Peso Ideal Estimado (IBW)</p>
+                  <p style={{ margin: 0, fontSize: '20px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{ibw.toFixed(1)} <span style={{ fontSize: '13px', color: '#94A3B8' }}>kg</span></p>
                 </div>
 
-                <div style={{ background: '#1e293b', padding: '16px', borderLeft: '4px solid #f59e0b' }}>
-                  <p style={{ margin: '0 0 4px', fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800 }}>Tasa Metabólica Basal (BMR)</p>
-                  <p style={{ margin: 0, fontSize: '20px', color: '#fff', fontWeight: 900 }}>{Math.round(bmr)} <span style={{ fontSize: '14px', color: '#64748b' }}>kcal/día</span></p>
+                <div className="titan-inset-well" style={{ padding: '16px', borderLeft: '4px solid #F59E0B' }}>
+                  <p style={{ margin: '0 0 4px', fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.07em' }}>Tasa Metabólica Basal (BMR)</p>
+                  <p style={{ margin: 0, fontSize: '20px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{Math.round(bmr)} <span style={{ fontSize: '13px', color: '#94A3B8' }}>kcal/día</span></p>
                 </div>
 
-                <div style={{ background: 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))', padding: '16px', border: '1px solid rgba(34,197,94,0.3)' }}>
-                  <p style={{ margin: '0 0 4px', fontSize: '11px', color: '#22c55e', textTransform: 'uppercase', fontWeight: 900 }}>Gasto Energético Total (TDEE)</p>
-                  <p style={{ margin: 0, fontSize: '28px', color: '#fff', fontWeight: 900 }}>{Math.round(tdee)} <span style={{ fontSize: '16px', color: '#22c55e' }}>kcal/día</span></p>
+                <div className="titan-inset-well" style={{ padding: '18px', borderLeft: '4px solid #FFBD4A', borderColor: 'rgba(213,122,48,0.45)' }}>
+                  <p style={{ margin: '0 0 4px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.07em' }}>Gasto Energético Total (TDEE)</p>
+                  <p style={{ margin: 0, fontSize: '28px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{Math.round(tdee)} <span style={{ fontSize: '15px', color: '#D57A30' }}>kcal/día</span></p>
                 </div>
               </div>
             </div>
@@ -703,17 +705,17 @@ export const DietPlanner: React.FC = () => {
       )}
 
       {activeTab === 'diet' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: generatedDiet ? 'repeat(auto-fit, minmax(340px, 1fr))' : '1fr', gap: '24px', marginTop: '20px' }}>
           {/* Configuración de Dieta */}
-          <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '24px', borderRadius: '0' }}>
-            <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Apple size={18} /> Parámetros de la Dieta
+          <div className="titan-armor-card" style={{ padding: '24px' }}>
+            <h2 className="titan-section-title" style={{ fontSize: '14px', color: '#FFBD4A', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Apple size={18} color="#D57A30" /> Parámetros de la Dieta
             </h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               <div>
                 <label style={labelStyle}>Objetivo Calórico Fijo</label>
-                <select style={inputStyle} value={deficit} onChange={e => setDeficit(Number(e.target.value))}>
+                <select className="titan-select" style={inputStyle} value={deficit} onChange={e => setDeficit(Number(e.target.value))}>
                   <option value={1500}>1500 kcal</option>
                   <option value={1700}>1700 kcal</option>
                   <option value={2000}>2000 kcal</option>
@@ -724,7 +726,7 @@ export const DietPlanner: React.FC = () => {
               </div>
               <div>
                 <label style={labelStyle}>Duración</label>
-                <select style={inputStyle} value={duration} onChange={e => setDuration(Number(e.target.value))}>
+                <select className="titan-select" style={inputStyle} value={duration} onChange={e => setDuration(Number(e.target.value))}>
                   <option value={7}>7 Días</option>
                   <option value={14}>14 Días</option>
                   <option value={30}>30 Días</option>
@@ -732,22 +734,23 @@ export const DietPlanner: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '22px' }}>
               <label style={labelStyle}>Selección Estricta de Alimentos</label>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {foodCategories.map((category) => (
-                  <div key={category.id} style={{ background: '#1e293b', border: '1px solid #334155' }}>
+                  <div key={category.id} className="titan-inset-well" style={{ overflow: 'hidden' }}>
                     <button 
                       onClick={() => setOpenPanel(openPanel === category.id ? null : category.id)}
-                      style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', padding: '12px 16px', color: '#fff', fontSize: '12px', fontWeight: 700, cursor: 'pointer', textTransform: 'uppercase' }}
+                      className="titan-btn-armor-steel"
+                      style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', fontSize: '11px', border: 'none', borderBottom: openPanel === category.id ? '1px solid rgba(213,122,48,0.35)' : 'none' }}
                     >
-                      {category.title}
-                      {openPanel === category.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      <span>{category.title}</span>
+                      {openPanel === category.id ? <ChevronUp size={16} color="#D57A30" /> : <ChevronDown size={16} color="#94A3B8" />}
                     </button>
                     
                     {openPanel === category.id && (
-                      <div style={{ padding: '12px 16px', background: 'rgba(15, 23, 42, 0.5)', borderTop: '1px solid #334155', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {category.items.map(item => (
                           <label key={item.name} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                             <input 
@@ -755,9 +758,9 @@ export const DietPlanner: React.FC = () => {
                               disabled={isFoodDisabled(item.name)}
                               checked={selectedFoods.includes(item.name) && !isFoodDisabled(item.name)}
                               onChange={() => toggleFood(item.name)}
-                              style={{ width: '16px', height: '16px', accentColor: '#22c55e', opacity: isFoodDisabled(item.name) ? 0.3 : 1 }}
+                              style={{ width: '16px', height: '16px', accentColor: '#D57A30', opacity: isFoodDisabled(item.name) ? 0.3 : 1 }}
                             />
-                            <span style={{ color: isFoodDisabled(item.name) ? '#475569' : '#cbd5e1', fontSize: '13px', textDecoration: isFoodDisabled(item.name) ? 'line-through' : 'none' }}>
+                            <span style={{ color: isFoodDisabled(item.name) ? '#64748B' : '#cbd5e1', fontSize: '13px', textDecoration: isFoodDisabled(item.name) ? 'line-through' : 'none' }}>
                               {item.name} <span style={{ color: '#64748b', fontSize: '10px' }}>({item.kcal} kcal / 100{item.cat === 'bebida' || (item.cat === 'lacteo' && item.name.includes('Leche')) ? 'ml' : 'g'})</span>
                             </span>
                           </label>
@@ -767,62 +770,62 @@ export const DietPlanner: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <p style={{ margin: '12px 0 0', fontSize: '11px', color: '#f59e0b', fontWeight: 600 }}>El sistema construirá TODA la dieta EXCLUSIVAMENTE con los alimentos que marques. (Si no marcas NINGUNO, el sistema generará una dieta variada automáticamente).</p>
+              <p style={{ margin: '12px 0 0', fontSize: '11px', color: '#FFBD4A', fontWeight: 600 }}>El sistema construirá TODA la dieta EXCLUSIVAMENTE con los alimentos que marques. (Si no marcas NINGUNO, el sistema generará una dieta variada automáticamente).</p>
             </div>
 
-            <button onClick={generateDiet} style={{ width: '100%', background: '#f59e0b', color: '#000', border: 'none', padding: '14px', fontSize: '13px', fontWeight: 900, textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <button onClick={generateDiet} className="titan-btn-armor-glow" style={{ width: '100%', padding: '14px', fontSize: '13px' }}>
               <Calendar size={18} /> {selectedFoods.length === 0 ? 'Generar Dieta Automática' : 'Generar Plan Nutricional'}
             </button>
           </div>
 
           {/* Plan Generado */}
           {generatedDiet && (
-            <div id="diet-plan-container" style={{ background: '#0f172a', border: '1px solid #f59e0b', padding: '24px', borderRadius: '0', position: 'relative' }}>
-              <h2 style={{ fontSize: '14px', fontWeight: 900, color: '#f59e0b', textTransform: 'uppercase', marginBottom: '20px' }}>
+            <div id="diet-plan-container" className="titan-armor-card" style={{ padding: '24px' }}>
+              <h2 className="titan-section-title" style={{ fontSize: '14px', color: '#FFBD4A', marginBottom: '20px' }}>
                 Plan Generado: {patientName || 'Paciente'} ({gender === 'male' ? 'Hombre' : 'Mujer'}) - {generatedDiet.duration} Días
               </h2>
 
-              <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-                <div style={{ flex: 1, background: '#1e293b', padding: '12px', textAlign: 'center' }}>
-                  <p style={{ margin: 0, fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800 }}>Objetivo Diario</p>
-                  <p style={{ margin: '4px 0 0', fontSize: '20px', color: '#f59e0b', fontWeight: 900 }}>{generatedDiet.targetCalories} <span style={{ fontSize: '12px', color: '#64748b' }}>kcal</span></p>
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
+                <div className="titan-inset-well" style={{ flex: 1, padding: '12px', textAlign: 'center', borderLeft: '3px solid #D57A30' }}>
+                  <p style={{ margin: 0, fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Objetivo Diario</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '22px', fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A', fontWeight: 700 }}>{generatedDiet.targetCalories} <span style={{ fontSize: '12px', color: '#94A3B8' }}>kcal</span></p>
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '24px' }}>
-                <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px', textAlign: 'center' }}>
-                  <p style={{ margin: 0, fontSize: '10px', color: '#ef4444', textTransform: 'uppercase', fontWeight: 800 }}>Proteínas</p>
-                  <p style={{ margin: '4px 0 0', fontSize: '18px', color: '#fff', fontWeight: 900 }}>{generatedDiet.macros.protein}g</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '22px' }}>
+                <div className="titan-inset-well" style={{ borderTop: '2px solid #EF4444', padding: '12px', textAlign: 'center' }}>
+                  <p style={{ margin: 0, fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#FCA5A5', textTransform: 'uppercase', fontWeight: 700 }}>Proteínas</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '18px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{generatedDiet.macros.protein}g</p>
                 </div>
-                <div style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', padding: '12px', textAlign: 'center' }}>
-                  <p style={{ margin: 0, fontSize: '10px', color: '#3b82f6', textTransform: 'uppercase', fontWeight: 800 }}>Carbos</p>
-                  <p style={{ margin: '4px 0 0', fontSize: '18px', color: '#fff', fontWeight: 900 }}>{generatedDiet.macros.carbs}g</p>
+                <div className="titan-inset-well" style={{ borderTop: '2px solid #D57A30', padding: '12px', textAlign: 'center' }}>
+                  <p style={{ margin: 0, fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A', textTransform: 'uppercase', fontWeight: 700 }}>Carbos</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '18px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{generatedDiet.macros.carbs}g</p>
                 </div>
-                <div style={{ background: 'rgba(234,179,8,0.1)', border: '1px solid rgba(234,179,8,0.2)', padding: '12px', textAlign: 'center' }}>
-                  <p style={{ margin: 0, fontSize: '10px', color: '#eab308', textTransform: 'uppercase', fontWeight: 800 }}>Grasas</p>
-                  <p style={{ margin: '4px 0 0', fontSize: '18px', color: '#fff', fontWeight: 900 }}>{generatedDiet.macros.fats}g</p>
+                <div className="titan-inset-well" style={{ borderTop: '2px solid #CBD5E1', padding: '12px', textAlign: 'center' }}>
+                  <p style={{ margin: 0, fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#CBD5E1', textTransform: 'uppercase', fontWeight: 700 }}>Grasas</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '18px', fontFamily: "'Chakra Petch', sans-serif", color: '#fff', fontWeight: 700 }}>{generatedDiet.macros.fats}g</p>
                 </div>
               </div>
 
-              <h3 style={{ fontSize: '12px', color: '#fff', textTransform: 'uppercase', marginBottom: '16px', borderBottom: '1px solid #334155', paddingBottom: '8px' }}>Estructura del Menú por Día</h3>
+              <h3 className="titan-section-title" style={{ fontSize: '12px', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>Estructura del Menú por Día</h3>
               
               {generatedDiet.lowFiberWarning && (
-                <div style={{ background: 'rgba(234,179,8,0.1)', border: '1px solid #eab308', padding: '12px', borderRadius: '4px', marginBottom: '20px' }}>
-                  <p style={{ margin: 0, fontSize: '11px', color: '#eab308', fontWeight: 800 }}>⚠️ ADVERTENCIA DE FIBRA (Recomendación OMS)</p>
-                  <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#fef08a' }}>El menú generado contiene menos de 25g de fibra diaria. Se recomienda agregar 1 cucharada (15g) de semillas de chía o lino a las meriendas, o incrementar el consumo de vegetales crudos.</p>
+                <div className="titan-inset-well" style={{ borderLeft: '4px solid #F59E0B', padding: '12px', marginBottom: '20px' }}>
+                  <p style={{ margin: 0, fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A', fontWeight: 700 }}>⚠️ ADVERTENCIA DE FIBRA (Recomendación OMS)</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#E2E8F0' }}>El menú generado contiene menos de 25g de fibra diaria. Se recomienda agregar 1 cucharada (15g) de semillas de chía o lino a las meriendas, o incrementar el consumo de vegetales crudos.</p>
                 </div>
               )}
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: '14px', marginBottom: '22px' }}>
                 {generatedDiet.days.map((d: any, idx: number) => (
-                  <div key={idx} style={{ background: '#1e293b', borderTop: '4px solid #3b82f6', borderRadius: '4px', overflow: 'hidden', pageBreakInside: 'avoid' }}>
-                    <div style={{ background: '#0f172a', padding: '10px', textAlign: 'center', fontWeight: 900, color: '#3b82f6', textTransform: 'uppercase', fontSize: '12px', borderBottom: '1px solid #1e293b' }}>
+                  <div key={idx} className="titan-inset-well" style={{ borderTop: '3px solid #D57A30', overflow: 'hidden', pageBreakInside: 'avoid' }}>
+                    <div style={{ background: 'linear-gradient(180deg, #1E242E 0%, #12161D 100%)', padding: '10px', textAlign: 'center', fontFamily: "'Chakra Petch', sans-serif", fontWeight: 700, color: '#FFBD4A', textTransform: 'uppercase', fontSize: '12px', borderBottom: '1px solid rgba(213,122,48,0.35)' }}>
                       {d.day}
                     </div>
                     <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                       {d.meals.map((m: any, mIdx: number) => (
                         <div key={mIdx}>
-                          <p style={{ margin: 0, fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 800 }}>{m.name}</p>
+                          <p style={{ margin: 0, fontSize: '10px', fontFamily: "'Chakra Petch', sans-serif", color: '#D57A30', textTransform: 'uppercase', fontWeight: 700 }}>{m.name}</p>
                           {isExporting ? (
                             <div style={{
                                margin: '4px 0 0', 
@@ -858,9 +861,9 @@ export const DietPlanner: React.FC = () => {
                                  padding: '2px',
                                  boxSizing: 'border-box'
                               }}
-                              onFocus={(e) => e.target.style.border = '1px dashed rgba(255,255,255,0.3)'}
+                              onFocus={(e) => e.target.style.border = '1px dashed rgba(213,122,48,0.5)'}
                               onBlur={(e) => e.target.style.border = '1px dashed transparent'}
-                              onMouseEnter={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed rgba(255,255,255,0.1)'; }}
+                              onMouseEnter={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed rgba(255,255,255,0.12)'; }}
                               onMouseLeave={(e) => { if(document.activeElement !== e.target) e.target.style.border = '1px dashed transparent'; }}
                               rows={Math.max(3, Math.ceil(m.foods.length / 22))}
                             />
@@ -870,11 +873,12 @@ export const DietPlanner: React.FC = () => {
                       {d.totalDayKcal && (
                         <div style={{ 
                            marginTop: '8px', 
-                           paddingTop: '12px', 
-                           borderTop: '1px solid #334155', 
+                           paddingTop: '10px', 
+                           borderTop: '1px solid rgba(255,255,255,0.08)', 
                            textAlign: 'center', 
-                           color: '#f59e0b', 
-                           fontWeight: 900,
+                           color: '#FFBD4A', 
+                           fontFamily: "'Chakra Petch', sans-serif",
+                           fontWeight: 700,
                            fontSize: '11px',
                            textTransform: 'uppercase'
                         }}>
@@ -887,8 +891,8 @@ export const DietPlanner: React.FC = () => {
               </div>
 
               {(generatedDiet.constipationWarning || generatedDiet.gutFloraWarning || generatedDiet.celiacWarning || generatedDiet.diabeticWarning) && (
-                <div style={{ marginTop: '20px', background: 'rgba(245,158,11,0.1)', borderLeft: '4px solid #f59e0b', padding: '12px' }}>
-                  <h4 style={{ margin: '0 0 6px', fontSize: '11px', color: '#f59e0b', textTransform: 'uppercase', fontWeight: 900 }}>Indicaciones Clínicas Añadidas:</h4>
+                <div className="titan-inset-well" style={{ marginTop: '20px', borderLeft: '4px solid #D57A30', padding: '14px' }}>
+                  <h4 style={{ margin: '0 0 6px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", color: '#FFBD4A', textTransform: 'uppercase', fontWeight: 700 }}>Indicaciones Clínicas Añadidas:</h4>
                   <ul style={{ margin: 0, paddingLeft: '20px', color: '#cbd5e1', fontSize: '12px', lineHeight: '1.5' }}>
                     {generatedDiet.constipationWarning && <li><strong>Para el Estreñimiento:</strong> Asegurar un alto consumo de fibra insoluble (salvado de trigo, verduras de hoja verde) y aumentar la ingesta de agua a mínimo 3 litros diarios. Se recomienda incluir ciruelas pasas o semillas de chía hidratadas en el desayuno.</li>}
                     {generatedDiet.gutFloraWarning && <li><strong>Para la Flora Intestinal:</strong> Priorizar alimentos ricos en probióticos naturales (Kéfir, Yogur natural sin azúcar, Chucrut, Kombucha) y fibra prebiótica (plátano verde, avena, ajo, cebolla). Evitar edulcorantes artificiales.</li>}
@@ -898,8 +902,8 @@ export const DietPlanner: React.FC = () => {
                 </div>
               )}
 
-              <div style={{ marginTop: '20px', background: 'rgba(59,130,246,0.1)', borderLeft: '4px solid #3b82f6', padding: '12px' }}>
-                <h4 style={{ margin: '0 0 6px', fontSize: '11px', color: '#3b82f6', textTransform: 'uppercase', fontWeight: 900 }}>💧 Recomendación de Hidratación (Basal)</h4>
+              <div className="titan-inset-well" style={{ marginTop: '16px', borderLeft: '4px solid #94A3B8', padding: '14px' }}>
+                <h4 style={{ margin: '0 0 6px', fontSize: '11px', fontFamily: "'Chakra Petch', sans-serif", color: '#E2E8F0', textTransform: 'uppercase', fontWeight: 700 }}>💧 Recomendación de Hidratación (Basal)</h4>
                 <p style={{ margin: 0, color: '#cbd5e1', fontSize: '12px', lineHeight: '1.5' }}>
                   Basado en un peso corporal de {weight} kg, se recomienda un consumo diario de <strong>{(weight * 35).toLocaleString()} ml ({(weight * 0.035).toFixed(1)} Litros)</strong> de agua pura. <br/>
                   <span style={{ fontSize: '11px', color: '#94a3b8' }}>* Aumentar entre 500ml y 1 Litro adicional los días de entrenamiento intenso.</span>
@@ -909,7 +913,8 @@ export const DietPlanner: React.FC = () => {
               <button 
                 onClick={exportToPDF}
                 disabled={isExporting}
-                style={{ marginTop: '24px', width: '100%', background: 'transparent', color: '#f59e0b', border: '1px solid #f59e0b', padding: '10px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'background 0.2s', opacity: isExporting ? 0.5 : 1 }} 
+                className="titan-btn-armor-steel"
+                style={{ marginTop: '20px', width: '100%', padding: '12px', fontSize: '12px', opacity: isExporting ? 0.5 : 1 }} 
               >
                 <Save size={14} /> {isExporting ? 'Generando PDF...' : 'Descargar Dieta en PDF'}
               </button>

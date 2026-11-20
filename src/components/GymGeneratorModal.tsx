@@ -51,48 +51,48 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-200">
-      <div className="bg-[#0f172a] border border-[#334155] rounded-none w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="p-4 sm:p-6 border-b border-[#1e293b] flex items-center justify-between relative z-10">
+    <div className="titan-modal-overlay" style={{ zIndex: 50 }}>
+      <div className="titan-modal w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between relative z-10">
           <div className="flex items-center space-x-3">
-            <div className="bg-[#f59e0b] p-2 rounded-none text-black">
+            <div className="titan-btn-armor-copper p-2">
               <LogIn className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-black text-white">
+              <h2 className="titan-section-title text-lg">
                 Iniciar Sesión
               </h2>
-              <p className="text-xs text-zinc-400">Ingresa tus credenciales para acceder a tu tenant.</p>
+              <p className="text-xs text-slate-400">Ingresa tus credenciales para acceder a tu tenant.</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-zinc-500 hover:text-white rounded-none hover:bg-[#1e293b] transition-all">
+          <button onClick={onClose} className="titan-btn-armor-steel p-2">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-4 sm:p-6 relative z-10">
+        <div className="p-4 sm:p-6 relative z-10 overflow-y-auto">
           <div className="space-y-5">
             <form onSubmit={handleLogin} className="space-y-4">
               {loginError && (
-                <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-none flex items-center gap-2">
+                <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
                   <X className="w-4 h-4 shrink-0" />
                   <span>{loginError}</span>
                 </div>
               )}
 
-              <div className="p-3 bg-[#181818] border border-[#2F2F2F] rounded-none flex items-center justify-between text-xs text-zinc-300">
+              <div className="titan-inset-well p-3 flex items-center justify-between flex-wrap gap-2 text-xs text-slate-300">
                 <span className="font-bold text-white flex items-center gap-1.5">
-                  <KeyRound className="w-4 h-4 text-[#f59e0b]" />
+                  <KeyRound className="w-4 h-4 text-amber-400" />
                   Credenciales por defecto:
                 </span>
-                <span className="font-mono bg-[#1e293b] px-2.5 py-1 rounded-none border border-[#334155] text-[#f59e0b]">
+                <span className="titan-badge-copper font-mono px-2.5 py-1">
                   Usuario: <strong className="text-white">gym</strong> | Clave: <strong className="text-white">123456</strong>
                 </span>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-zinc-300 flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-[#f59e0b]" />
+                <label className="text-[11px] font-titan font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-amber-400" />
                   Usuario
                 </label>
                 <input
@@ -101,13 +101,13 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
                   placeholder="gym"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full bg-[#121212] border border-[#334155] rounded-none px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#f59e0b]"
+                  className="titan-input w-full px-3.5 py-2.5 text-sm"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-zinc-300 flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-[#f59e0b]" />
+                <label className="text-[11px] font-titan font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                  <Lock className="w-3.5 h-3.5 text-amber-400" />
                   Contraseña
                 </label>
                 <input
@@ -116,51 +116,51 @@ export const GymGeneratorModal: React.FC<GymGeneratorModalProps> = ({
                   placeholder="123456"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full bg-[#121212] border border-[#334155] rounded-none px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#f59e0b]"
+                  className="titan-input w-full px-3.5 py-2.5 text-sm"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#f59e0b] text-black font-black py-3 px-4 rounded-none hover:bg-[#c2eb00] transition-all flex items-center justify-center space-x-2 shadow-lg shadow-[#f59e0b]/10"
+                className="titan-btn-armor-glow w-full py-3 px-4 text-sm"
               >
                 <LogIn className="w-4 h-4" />
                 <span>Iniciar Sesión</span>
               </button>
             </form>
 
-            <div className="border-t border-[#1F1F1F] pt-4">
-              <p className="text-xs text-zinc-400 font-bold mb-2 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-[#f59e0b]" />
+            <div className="border-t border-white/10 pt-4">
+              <p className="text-xs text-slate-400 font-bold mb-2 flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-amber-400" />
                 Acceso Rápido 1-Clic:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => handleQuickLoginDemo('gym', '123456')}
-                  className="p-2.5 bg-[#121212] hover:bg-[#1e293b] border border-[#f59e0b]/40 rounded-none text-left transition-all flex items-center justify-between group"
+                  className="titan-btn-armor-steel p-2.5 text-left justify-between group"
                 >
                   <div>
-                    <div className="text-xs font-bold text-[#f59e0b]">
+                    <div className="text-xs font-bold text-amber-400">
                       Coach Principal (gym / 123456)
                     </div>
-                    <div className="text-[11px] text-zinc-400">Usuario: gym • Clave: 123456</div>
+                    <div className="text-[10px] text-slate-400 normal-case">Usuario: gym • Clave: 123456</div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-[#f59e0b]" />
+                  <ArrowRight className="w-4 h-4 text-amber-400 shrink-0" />
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleQuickLoginDemo('santiago.gomez@alumno.gymmaster.io', 'santi123')}
-                  className="p-2.5 bg-[#121212] hover:bg-[#1e293b] border border-[#334155] rounded-none text-left transition-all flex items-center justify-between group"
+                  className="titan-btn-armor-steel p-2.5 text-left justify-between group"
                 >
                   <div>
-                    <div className="text-xs font-bold text-white group-hover:text-[#f59e0b]">
+                    <div className="text-xs font-bold text-white group-hover:text-amber-400">
                       Santiago Gómez (Alumno)
                     </div>
-                    <div className="text-[11px] text-zinc-500">santiago.gomez@alumno.gymmaster.io</div>
+                    <div className="text-[10px] text-slate-400 normal-case truncate max-w-[160px]">santiago.gomez@alumno...</div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-zinc-500 group-hover:text-[#f59e0b]" />
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-400 shrink-0" />
                 </button>
               </div>
             </div>
