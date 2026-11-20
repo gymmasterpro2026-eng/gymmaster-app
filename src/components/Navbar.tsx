@@ -237,7 +237,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       flexShrink: 0,
       display: 'flex',
       flexDirection: 'column',
-      height: '100vh',
+      height: '100dvh',
       position: 'relative',
       zIndex: 50,
       fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
@@ -298,7 +298,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       letterSpacing: '0.18em',
     },
     scrollArea: {
-      flex: 1,
+      flex: '0 1 auto',
+      minHeight: 0,
       overflowY: 'auto',
       overflowX: 'hidden',
       padding: '10px 16px 6px 8px',
@@ -319,7 +320,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       marginBottom: '6px',
     },
     footer: {
-      padding: '4px 10px 12px',
+      padding: '10px 10px 18px',
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',
