@@ -699,21 +699,39 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         )}
 
-        {/* Pieza Armadura Intermedia 3D (Cobre + LED vertical rojo-naranja como en Imagen 1) */}
-        {currentRole === 'alumno' && (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', marginTop: '4px', minHeight: '115px' }}>
-            <img
-              src="/gymmaster-app/titan-ui/sidebar-armor-divider.png"
-              alt=""
-              className="titan-armor-divider"
-              style={{ width: '100%', height: '100%', maxHeight: '185px', objectFit: 'contain' }}
-            />
-          </div>
-        )}
       </div>
 
       {/* Footer */}
       <div style={S.footer}>
+        {/* Botón Armadura 3D Cerrar Sesión (mismo estilo y posición para Alumno y Coach/Gym) */}
+        {currentUser && (
+          <button
+            type="button"
+            onClick={() => {
+              setIsMobileOpen(false);
+              onLogout();
+            }}
+            title="Cerrar Sesión"
+            className="titan-logout-plate"
+          >
+            <LogOut size={15} color="#FF5A45" style={{ filter: 'drop-shadow(0 0 6px rgba(255, 72, 42, 0.65))', flexShrink: 0 }} />
+            <span
+              style={{
+                fontSize: '13px',
+                fontFamily: "'Chakra Petch', sans-serif",
+                fontWeight: 700,
+                color: '#FFFFFF',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                textShadow: '0 1px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 72, 42, 0.45)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              CERRAR SESIÓN
+            </span>
+          </button>
+        )}
+
         {/* Realtime Sync Status Plate 3D */}
         <button
           type="button"
