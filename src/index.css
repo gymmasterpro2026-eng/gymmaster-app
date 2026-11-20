@@ -163,9 +163,9 @@ body {
   padding: 0 24px 20px 14px;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
   gap: 8px;
-  cursor: pointer;
+  cursor: default;
   transition: filter 0.2s ease, transform 0.15s ease;
 }
 .titan-logout-plate:hover {

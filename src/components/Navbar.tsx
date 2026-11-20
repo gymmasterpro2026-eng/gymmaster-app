@@ -643,15 +643,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div style={S.scrollArea}>
         <div style={S.section}>
           {currentRole === 'coach' && <p style={S.sectionLabel}>Principal</p>}
-          {currentUser?.role === 'coach' && (
-            <NavButton
-              active={false}
-              onClick={() => handleNavClick('home', currentRole === 'coach' ? 'alumno' : 'coach')}
-              icon={User}
-              label={currentRole === 'coach' ? 'Ver como Alumno' : 'Volver a Coach'}
-              compact={currentRole === 'coach'}
-            />
-          )}
           <NavButton
             active={currentTab === 'home'}
             onClick={() => handleNavClick('home')}
@@ -713,16 +704,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Footer */}
       <div style={S.footer}>
-        {/* Botón Armadura 3D Cerrar Sesión (mismo estilo y posición para Alumno y Coach/Gym) */}
+        {/* Botón Armadura 3D Cerrar Sesión + Cambio rápido Alumno/Coach integrado */}
         {currentUser && (
-          <button
-            type="button"
-            onClick={() => {
-              setIsMobileOpen(false);
-              onLogout();
-            }}
-            title="Cerrar Sesión"
+          <div
             className="titan-logout-plate"
+            style={{ padding: currentUser.role === 'coach' ? '0 16px 17px 14px' : '0 24px 20px 14px', justifyContent: currentUser.role === 'coach' ? 'space-between' : 'center' }}
           >
             <span
               title={currentUser.full_name}
@@ -757,22 +743,63 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {currentUser.full_name}
               </span>
             </span>
-            <LogOut size={15} color="#FF5A45" style={{ filter: 'drop-shadow(0 0 6px rgba(255, 72, 42, 0.65))', flexShrink: 0 }} />
-            <span
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileOpen(false);
+                onLogout();
+              }}
+              title="Cerrar Sesión"
               style={{
-                fontSize: '13px',
-                fontFamily: "'Chakra Petch', sans-serif",
-                fontWeight: 700,
-                color: '#FFFFFF',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                textShadow: '0 1px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 72, 42, 0.45)',
-                whiteSpace: 'nowrap',
+                background: 'transparent',
+                border: 'none',
+                padding: '4px 6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                cursor: 'pointer',
               }}
             >
-              CERRAR SESIÓN
-            </span>
-          </button>
+              <LogOut size={14} color="#FF5A45" style={{ filter: 'drop-shadow(0 0 6px rgba(255, 72, 42, 0.65))', flexShrink: 0 }} />
+              <span
+                style={{
+                  fontSize: currentUser.role === 'coach' ? '11px' : '13px',
+                  fontFamily: "'Chakra Petch', sans-serif",
+                  fontWeight: 700,
+                  color: '#FFFFFF',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  textShadow: '0 1px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 72, 42, 0.45)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                CERRAR SESIÓN
+              </span>
+            </button>
+
+            {currentUser.role === 'coach' && (
+              <button
+                type="button"
+                onClick={() => handleNavClick('home', currentRole === 'coach' ? 'alumno' : 'coach')}
+                title={currentRole === 'coach' ? 'Ver perfil como Alumno' : 'Volver al panel de Coach'}
+                className={currentRole === 'coach' ? 'titan-btn-armor-copper' : 'titan-btn-armor-emerald'}
+                style={{
+                  padding: '4px 10px',
+                  fontSize: '10px',
+                  fontFamily: "'Chakra Petch', sans-serif",
+                  fontWeight: 800,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  flexShrink: 0,
+                  cursor: 'pointer',
+                }}
+              >
+                {currentRole === 'coach' ? 'ALUMNO' : 'COACH'}
+              </button>
+            )}
+          </div>
         )}
 
         {/* Realtime Sync Status Plate 3D */}
